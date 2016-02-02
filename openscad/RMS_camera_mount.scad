@@ -1,3 +1,14 @@
+/*
+Copyright (c) Richard Bowman January 2016
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-
+ShareAlike 4.0 International License. To view a copy of this license, visit 
+http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
+For a commercial license, please contact me through GitHub.
+*/
+
+
 use <utilities.scad>;
 use <picam_push_fit.scad>;
 use <tube_lens_gripper.scad>;
