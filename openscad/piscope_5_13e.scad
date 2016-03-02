@@ -9,23 +9,22 @@ For a commercial license, please contact me through GitHub.
 */
 
 use <utilities.scad>;
-use <./nut_seat_with_flex_6a.scad>;
-use <./picam_push_fit.scad>;
+use <./nut_seat_with_flex.scad>;
 use <./logo.scad>;
 
 d = 0.05;
 $fn=32;
 
-version_string = "5.13d";
+version_string = "5.13e";
 
 big_stage = true;
 motor_lugs = true;
 
-sample_z = big_stage?60:40; //height of the top of the stage
+sample_z = big_stage?70:40; //height of the top of the stage
 stage_t=5; //thickness of the stage (at thickest point, most is 1mm less)
 leg_r = big_stage?30:25; //radius of innermost part of legs
 hole_r = big_stage?15:10; //size of hole in the stage
-xy_lever_ratio = big_stage?0.7:1.0; //mechanical advantage of actuator over stage
+xy_lever_ratio = big_stage?4.0/7.0:1.0; //mechanical advantage of actuator over stage
 z_lever_ratio = big_stage?2.4:2.6; //as above, for Z axis (must be >1)
 
 stage_flex_w = 4; //width of XY axis flexures

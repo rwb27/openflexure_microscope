@@ -6,11 +6,11 @@ use <./logo.scad>;
 d = 0.05;
 $fn=32;
 
-big_stage = false;
+big_stage = true;
 
 sample_z = 40; //height of the top of the stage
 stage_t=5; //thickness of the stage (at thickest point, most is 1mm less)
-leg_r = big_stage?30:25; //radius of innermost part of legs
+leg_r = big_stage?27:25; //radius of innermost part of legs
 leg_dr = 20;
 hole_r = big_stage?15:10; //size of hole in the stage
 lever_ratio = 1; //mechanical advantage of actuator over stage
@@ -21,8 +21,8 @@ flex_t = 0.75;
 flex_z1 = 0;      //height of lower flexures
 flex_z2 = sample_z-stage_t; //height of upper flexures
 leg = [4,flex_w,flex_z2+flex_t];
-leg_middle_w = 24; //width of the middle part of each leg
-motor_lugs=false;
+leg_middle_w = 34; //width of the middle part of each leg
+motor_lugs=true;
 objective_clip_y = big_stage?12:6;
 objective_clip_w = 10;
 
@@ -179,7 +179,7 @@ union(){
             union(){
                 f=[3,6,12,24];
                 rotate(90) for(i=[0:(len(f)-1)]) rotate(180/f[i])
-                    cylinder(r=10/cos(180/f[i]),
+                    cylinder(r=hole_r/cos(180/f[i]),
                              h=i*0.5+flex_z2+2.5,
                              $fn=f[i]);
             }
@@ -228,7 +228,7 @@ union(){
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
 
 		//post mounting holes
-		for(a=[0,120,-120]) rotate(a+60) repeat([12.5,0,0],3,center=true) translate([0,sin(30)*(actuating_nut_r+leg_r)+5,0]) cylinder(r=4/2*1.1,h=999,center=true);
+		for(a=[0,120,-120]) rotate(a+60) repeat([12.5,0,0],1,center=true) translate([0,sin(30)*(actuating_nut_r+leg_r)+5,0]) cylinder(r=4/2*1.1,h=999,center=true);
         
         //central hole for the optics module
         hull() each_leg() translate([0,-flex_l-wall_t-d,0]) rotate([flex_angle,0,0]) cube([leg_outer_w+1.5*2+(1-cos(60))*wall_t, 2*d,wall_h*4],center=true);

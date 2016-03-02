@@ -25,6 +25,7 @@ objective_r = 25/2;
 //tube_lens_r = 10/2+0.2;
 //f_tube = 1/(1/20+1/160);
 tube_lens_r = 16/2+0.2;
+tube_lens_aperture = tube_lens_r - 1.5;
 f_tube = 1/(1/21.5+1/160);
 pedestal_h = 2;
 t=0.95;
@@ -37,7 +38,8 @@ dt_bottom = -1; //where the dovetail starts (<0 to allow some play)
 lens_assembly_z = bottom+f_tube-pedestal_h; //base of the lens assembly
 lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
 top = lens_assembly_z; //top of the mount
-dt_top = top+12;
+lens_assembly_h = 15; //18.5 for Comar doublet tube lens, 15 for singlet;
+dt_top = top + lens_assembly_h - 3;
 dt_h=dt_top-dt_bottom;
 d = 0.05;
 //neck_h=h-dovetail_h;
@@ -133,7 +135,7 @@ module optical_path(){
         rotate(camera_angle) translate([0,0,bottom]) picam_push_fit_2(); 
         //light path between lens and sensor
         translate([0,0,bottom+6]) lighttrap_cylinder(r1=5, r2=tube_lens_r-0.5, h=lens_assembly_z-bottom-6+d-0.5,ridge=0.75); //beam path
-        translate([0,0,lens_assembly_z-0.5-d]) cylinder(r=tube_lens_r-0.5,h=0.5+2*d);
+        translate([0,0,lens_assembly_z-0.5-d]) cylinder(r=tube_lens_aperture,h=0.5+2*d); //shrank tube lens aperture for easier assembly
     }
 }
 
@@ -168,11 +170,11 @@ module body(){
 
 module lens_assembly(){
     translate([0,0,lens_assembly_z]){
-        lens_gripper(lens_r=rms_r, lens_h=12.5,h=15, base_r=lens_assembly_base_r);
+        lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
         lens_gripper(lens_r=tube_lens_r, lens_h=3.5,h=6);
         difference(){
-            cylinder(r=tube_lens_r,h=2);
-            cylinder(r=tube_lens_r-0.5,h=999,center=true);
+            cylinder(r=tube_lens_aperture + 1.0,h=2);
+            cylinder(r=tube_lens_aperture,h=999,center=true);
         }
     }
 }
