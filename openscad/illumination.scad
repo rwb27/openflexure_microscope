@@ -1,3 +1,17 @@
+/******************************************************************
+*                                                                 *
+* OpenFlexure Microscope: Illumination arm                        *
+*                                                                 *
+* This is part of the OpenFlexure microscope, an open-source      *
+* microscope and 3-axis translation stage.  It gets really good   *
+* precision over a ~10mm range, by using plastic flexure          *
+* mechanisms.                                                     *
+*                                                                 *
+* (c) Richard Bowman, January 2016                                *
+* Released under the CERN Open Hardware License                   *
+*                                                                 *
+******************************************************************/
+
 use <utilities.scad>;
 $fn=16;
 d=0.05;

@@ -1,3 +1,15 @@
+/******************************************************************
+*                                                                 *
+* OpenFlexure Microscope: DeltaBot Stage                          *
+*                                                                 *
+* This is a delta-bot XYZ stage based on the OpenFlexure          *
+* microscope stage.                                               *
+*                                                                 *
+* (c) Richard Bowman, January 2016                                *
+* Released under the CERN Open Hardware License                   *
+*                                                                 *
+******************************************************************/
+
 use <utilities.scad>;
 use <./nut_seat_with_flex_6a.scad>;
 use <./picam_push_fit.scad>;

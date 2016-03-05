@@ -1,3 +1,18 @@
+/******************************************************************
+*                                                                 *
+* OpenFlexure Microscope: OpenSCAD Utility functions              *
+*                                                                 *
+* This is part of the OpenFlexure microscope, an open-source      *
+* microscope and 3-axis translation stage.  It gets really good   *
+* precision over a ~10mm range, by using plastic flexure          *
+* mechanisms.                                                     *
+*                                                                 *
+* (c) Richard Bowman, January 2016                                *
+* Released under the CERN Open Hardware License                   *
+*                                                                 *
+******************************************************************/
+
+
 //utilities
 
 d=0.05;

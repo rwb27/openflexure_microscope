@@ -1,3 +1,18 @@
+/******************************************************************
+*                                                                 *
+* OpenFlexure Microscope: Optics unit                             *
+*                                                                 *
+* This is part of the OpenFlexure microscope, an open-source      *
+* microscope and 3-axis translation stage.  It gets really good   *
+* precision over a ~10mm range, by using plastic flexure          *
+* mechanisms.                                                     *
+*                                                                 *
+* (c) Richard Bowman, January 2016                                *
+* Released under the CERN Open Hardware License                   *
+*                                                                 *
+******************************************************************/
+
+
 use <utilities.scad>;
 use <picam_push_fit.scad>;
 use <tube_lens_gripper.scad>;
