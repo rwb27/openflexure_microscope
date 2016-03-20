@@ -1,6 +1,6 @@
 /******************************************************************
 *                                                                 *
-* OpenFlexure Microscope: Optics unit                             *
+* OpenFlexure Microscope: Optics unit (single small lens version) *
 *                                                                 *
 * This is part of the OpenFlexure microscope, an open-source      *
 * microscope and 3-axis translation stage.  It gets really good   *
@@ -13,7 +13,12 @@
 ******************************************************************/
 
 use <utilities.scad>;
-use <picam_push_fit.scad>;
+use <cameras/picam_push_fit.scad>;
+use <cameras/C270_mount.scad>;
+use <dovetail.scad>;
+
+camera = "C270";
+//camera = "picamera";
 
 ///picamera lens
 lens_outer_r=3.04+0.2; //outer radius of lens (plus tape)
@@ -53,7 +58,13 @@ d = 0.05;
 //neck_h=h-dovetail_h;
 body_r=8;
 neck_r=max( (body_r+lens_aperture_r)/2, lens_outer_r+1.5);
-camera_angle = 45;
+
+camera_angle = (camera=="picamera"?45:
+               (camera=="C270"?-45:0));
+camera_h = (camera=="picamera"?24:
+           (camera=="C270"?53:0));
+camera_shift = (camera=="picamera"?2.4:
+               (camera=="C270"?(45-53/2):0));
 
 objective_clip_w = 10;
 objective_clip_y = 6;
@@ -86,9 +97,19 @@ module clip_tooth(h){
 }
 
 
+module camera(){
+    //This creates a cut-out for the camera we've selected
+    if(camera=="picamera"){
+        picam_push_fit();
+    }else{
+        C270(beam_r=5,beam_h=6+d);
+    }
+}
+
 module optical_path(){
     union(){
-        rotate(camera_angle) translate([0,0,bottom]) picam_push_fit_2(); //camera
+        rotate(camera_angle) translate([0,0,bottom]) camera();
+        // //camera
         translate([0,0,bottom+6]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom-6+d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_outer_r,h=parfocal_distance); //lens
     }
@@ -102,12 +123,13 @@ module optical_path_with_lens(){
 }
 
 module body(){
-    difference(){
-        union(){
+    union(){
+        difference(){
+            // This is the main body of the mount
             sequential_hull(){
-                rotate(camera_angle) translate([0,2.4,bottom]) cube([25,24,d],center=true);
-                rotate(camera_angle) translate([0,2.4,bottom+1.5]) cube([25,24,d],center=true);
-                rotate(camera_angle) translate([0,2.4,bottom+4]) cube([25-5,24,d],center=true);
+                rotate(camera_angle) translate([0,camera_shift,bottom]) cube([25,camera_h,d],center=true);
+                rotate(camera_angle) translate([0,camera_shift,bottom+1.5]) cube([25,camera_h,d],center=true);
+                rotate(camera_angle) translate([0,camera_shift,bottom+4]) cube([25-5,camera_h,d],center=true);
                 //translate([0,0,dt_bottom]) cube([15,16,d],center=true);
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=body_r,h=d);
@@ -120,17 +142,15 @@ module body(){
             }
             
             //dovetail
-			reflect([1,0,0]) translate(corner+[sqrt(3)*r,-r,0]) hull() repeat([1,0,0],2) cylinder(r=r,h=dt_h);	
-			hull() reflect([1,0,0]) translate(corner) rotate(45) translate([sqrt(3)*r,r,0]) repeat([1,0,0],2) cylinder(r=r,h=dt_h);
+            reflect([1,0,0]) translate([3,objective_clip_y-0.5,dt_bottom]){
+                cube(999);
+            }
+			
         }
         //dovetail
-        r=0.5;
-        corner=[objective_clip_w/2-1.5,objective_clip_y,dt_bottom];
-		reflect([1,0,0]) translate(corner) cylinder(r=r,h=dt_h);
-		reflect([1,0,0]) translate(corner+[0,0,-d]) clip_tooth(dt_h);
-        
-        //clearance for camera clip
-        reflect([1,0,0]) translate([4,camera_clip_y-1,dt_bottom]) cylinder(r=2,h=999);
+        translate([0,objective_clip_y,dt_bottom]){
+            dovetail_m([14,2,dt_h],waist=dt_h-15);
+        }
     }
 }
 
