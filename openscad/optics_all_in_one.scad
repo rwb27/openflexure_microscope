@@ -130,7 +130,6 @@ module body(){
                 rotate(camera_angle) translate([0,camera_shift,bottom]) cube([25,camera_h,d],center=true);
                 rotate(camera_angle) translate([0,camera_shift,bottom+1.5]) cube([25,camera_h,d],center=true);
                 rotate(camera_angle) translate([0,camera_shift,bottom+4]) cube([25-5,camera_h,d],center=true);
-                //translate([0,0,dt_bottom]) cube([15,16,d],center=true);
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=body_r,h=d);
                     translate([0,objective_clip_y,0]) cube([objective_clip_w,4,d],center=true);
