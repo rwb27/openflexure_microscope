@@ -13,8 +13,11 @@
 ******************************************************************/
 
 use <utilities.scad>;
-use <picam_push_fit.scad>;
-use <./C270_mount.scad>;
+use <cameras/picam_push_fit.scad>;
+use <cameras/C270_mount.scad>;
+
+camera = "C270";
+//camera = "picamera";
 
 ///picamera lens
 lens_outer_r=3.04+0.2; //outer radius of lens (plus tape)
@@ -54,10 +57,13 @@ d = 0.05;
 //neck_h=h-dovetail_h;
 body_r=8;
 neck_r=max( (body_r+lens_aperture_r)/2, lens_outer_r+1.5);
-use_c270 = true;
-camera_angle = use_c270?-45:45; //different angle for c270 webcam/picam
-camera_h = use_c270?53:24;
-camera_shift = use_c270?(45-53/2):2.4;
+
+camera_angle = (camera=="picamera"?45:
+               (camera=="C270"?-45:0));
+camera_h = (camera=="picamera"?24:
+           (camera=="C270"?53:0));
+camera_shift = (camera=="picamera"?2.4:
+               (camera=="C270"?(45-53/2):0));
 
 objective_clip_w = 10;
 objective_clip_y = 6;
@@ -90,10 +96,19 @@ module clip_tooth(h){
 }
 
 
+module camera(){
+    //This creates a cut-out for the camera we've selected
+    if(camera=="picamera"){
+        picam_push_fit();
+    }else{
+        C270(beam_r=5,beam_h=6+d);
+    }
+}
+
 module optical_path(){
     union(){
-        rotate(camera_angle) translate([0,0,bottom]) C270(beam_r=5,beam_h=6+d);
-        //picam_push_fit_2(); //camera
+        rotate(camera_angle) translate([0,0,bottom]) camera();
+        // //camera
         translate([0,0,bottom+6]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom-6+d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_outer_r,h=parfocal_distance); //lens
     }
@@ -133,9 +148,6 @@ module body(){
         corner=[objective_clip_w/2-1.5,objective_clip_y,dt_bottom];
 		reflect([1,0,0]) translate(corner) cylinder(r=r,h=dt_h);
 		reflect([1,0,0]) translate(corner+[0,0,-d]) clip_tooth(dt_h);
-        
-        //clearance for camera clip
-//        reflect([1,0,0]) translate([4,camera_clip_y-1,dt_bottom]) cylinder(r=2,h=999);
     }
 }
 

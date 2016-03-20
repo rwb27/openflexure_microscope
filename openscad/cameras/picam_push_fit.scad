@@ -1,4 +1,28 @@
-use <utilities.scad>;
+/******************************************************************
+*                                                                 *
+* OpenFlexure Microscope: Raspberry Pi Camera push-fit mount      *
+*                                                                 *
+* This is part of the OpenFlexure microscope, an open-source      *
+* microscope and 3-axis translation stage.  It gets really good   *
+* precision over a ~10mm range, by using plastic flexure          *
+* mechanisms.                                                     *
+*                                                                 *
+* This file defines one useful function, picam_push_fit().  It is *
+* designed to be subtracted from a solid block, with the bottom   *
+* of the block at z=0.  It grips the plastic camera housing with  *
+* four slightly flexible fingers, which ensures the camera pops   *
+* in easily but is held relatively firmly.  Two screw holes are   *
+* also provided that should self-tap with M2 or similar screws.   *
+* I recommend you use these for extra security if the camera is   *
+* likely to be handled a lot.                                     *
+*                                                                 *
+* (c) Richard Bowman, January 2016                                *
+* Released under the CERN Open Hardware License                   *
+*                                                                 *
+******************************************************************/
+
+
+use <../utilities.scad>;
 
 
 //outer_r=8.5;   //square side length
@@ -7,42 +31,14 @@ d=0.05; //small distance!
 
 
 module camera_bits(){
+    // the non-camera bits on the pi camera PCB
 	union(){
 		translate([0,6.5+5,0]) cube([8.5,10,3],center=true);
 		translate([7,10,0]) cube([4,3,2],center=true);
 	}
 }
 
-module picam_push_fit(){
-    // This uses four slightly flexible fingers to grip the
-    // camera module.  It's designed to be subtracted from a
-    // larger shape, and needs space above it.
-    // it's often a bit too stiff, and tends to rotate the
-    // camera slightly.  v2 is better (see below).
-	assign(r=8-0.25) //un-flexed side length of camera box
-	assign(finger_w=2) //width of flexure "fingers"
-	assign(chamfer=0.75) //How much to shrink the bottom layer
-	union(){
-		//very tight cut-out for camera
-		sequential_hull(){
-			cube([r+chamfer*2,r+chamfer*2,d],center=true);
-			cube([r,r,chamfer*2],center=true);
-			cube([r,r,40],center=true);
-		}
-		for(a=[0:90:360]) rotate(a){
-			translate([0,r/2-1,0.48]) cube([r/2+finger_w+1,1,20]);
-			translate([r/2+finger_w,-r/2,-d]) cube([1,r,20]);
-		}
-		camera_bits();
-
-		//screw holes for safety (M2 "threaded")
-		reflect([1,0,0]) translate([21/2,0,0]) cylinder(r=1,h=10);
-	}
-}
-
-
-
-module picam_push_fit_2( beam_length=15){
+module picam_push_fit( beam_length=15){
     // This module is designed to be subtracted from the bottom of a shape.
     // The z=0 plane should be the print bed.
     // It includes cut-outs for the components on the PCB and also a push-fit hole
@@ -99,6 +95,8 @@ module picam_push_fit_2( beam_length=15){
 	}
 }
 
+//hole_from_bottom(10,12);
+
 //difference(){
 //    translate([-12.5,-12+2.4,0]) cube([25,24,6]);
 //    picam_push_fit_2();
@@ -124,4 +122,4 @@ module picam_pcb_bottom(){
         }
     }
 }
-translate([0,0,-1]) picam_pcb_bottom();
+//translate([0,0,-1]) picam_pcb_bottom();

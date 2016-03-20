@@ -1,3 +1,24 @@
+/******************************************************************
+*                                                                 *
+* OpenFlexure Microscope: Logitech C270 screw-on-from-bottm mount *
+*                                                                 *
+* This is part of the OpenFlexure microscope, an open-source      *
+* microscope and 3-axis translation stage.  It gets really good   *
+* precision over a ~10mm range, by using plastic flexure          *
+* mechanisms.                                                     *
+*                                                                 *
+* This file defines one useful function, C270().  It is           *
+* designed to be subtracted from a solid block, with the bottom   *
+* of the block at z=0.  The screws that are normally used to fix  *
+* the lens on to the PCB are used to mount the PCB onto the part. *
+*                                                                 *
+*                                                                 *
+* (c) Richard Bowman, January 2016                                *
+* Released under the CERN Open Hardware License                   *
+*                                                                 *
+******************************************************************/
+
+
 use <utilities.scad>;
 
 
@@ -40,6 +61,9 @@ module C270(beam_r=5, beam_h=6){
             }
             translate([-6,41.8,-5]) cylinder(r=0.8*1.2,h=999,$fn=12);
         }
+        
+        //exit for cable
+        translate([4,20,0]) rotate([-90,0,0]) cylinder(r=3,h=99);
     }
 }
 

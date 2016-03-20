@@ -247,6 +247,8 @@ module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
     }
 }
 
+//hole_from_bottom(3, 10, base_w=12);
+
 //feather_vertical_edges(fin_r=1){
 //	cylinder(r=12,h=10);
 //}

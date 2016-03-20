@@ -15,6 +15,7 @@
 use <utilities.scad>;
 use <./nut_seat_with_flex.scad>;
 use <./logo.scad>;
+use <./dovetail.scad>;
 
 d = 0.05;
 $fn=32;
@@ -237,11 +238,8 @@ module objective_clip_3(){
 			}
 			rotate(45) cube([1,1,999]*z_flexure_x*sqrt(2),center=true);
 		}
-		//opening for clip (forms the arms from the block)
-		hull() reflect([1,0,0]) translate([0,objective_clip_y,0.5]){
-			translate([-inner_w/2+2,arm_length-2,0]) cylinder(r=2,h=999);
-			translate([-inner_w/2,1.5,0]) rotate(-45) cube([3,d,999]);
-		}
+		// carve out the block to form a dovetail
+        translate([0,objective_clip_y,0.5+d]) dovetail_clip_cutout([clip_outer_w,arm_length,999]);
 		//clearance for top linker bar between flexure arms
 		translate([-999,z_carriage_y-zflex_l-z_link_w-1.5,z_flexure_spacing-2]) cube([999*2,zflex_l+z_link_w+1.5,999]);
 		//clearance for z axis struts passing under the carriage
@@ -260,18 +258,6 @@ module objective_clip_3(){
             rotate([45,0,0]) cube([999,1,1]*sqrt(2)*2.5,center=true); //slope up arms
             hull() reflect([0,0,1]) translate([0,0,2.5]) rotate([0,45,0]) cube([inner_w/sqrt(2),8,inner_w/sqrt(2)],center=true);
         }
-	}
-}
-module dovetail_clip_cutout(size,dt=1.5,t=2,h=999){
-	hull() reflect([1,0,0]) translate([-size[0]/2+t,0,-d]){
-		translate([dt,size[1]-dt,0]) cylinder(r=dt,h=h,$fn=16);
-		translate([0,dt,0]) rotate(-45) cube([dt*2,d,h]);
-	}
-}
-module dovetail_clip(size,dt=1.5,t=2){
-	difference(){
-		translate([-size[0]/2,0,0]) cube(size);
-		dovetail_clip_cutout(size,dt=dt,t=t,h=999);
 	}
 }
 
@@ -416,10 +402,10 @@ union(){
 			translate([0,-leg_r-10,sample_z]) scale([1,1.1,1]) cylinder(r=4,h=d);
 			//cutout for the clip at the top
 			translate([0,-leg_r-2,sample_z+5]) intersection(){
-				mirror([0,1,0]) dovetail_clip_cutout([12,8,d],h=d);
+				mirror([0,1,0]) dovetail_clip_cutout([12,8,d]);
 				translate([0,-2-999,0]) cube([1,1,1]*999*2,center=true);
 			}
-			translate([0,-leg_r-2,sample_z+5]) mirror([0,1,0]) dovetail_clip_cutout([12,8,12]);
+			translate([0,-leg_r-2,sample_z+5]) mirror([0,1,0]) dovetail_clip_cutout([12,8,99]);
 		}
 		reflect([1,0,0]) translate([6*0.8,-leg_r-8,3]) sphere(r=1);
 		//hole from back for access to objective
