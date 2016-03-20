@@ -50,7 +50,7 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0){
     // will add material at the back (by shortening the arms).
 	difference(){
 		translate([-size[0]/2,0,0]) cube(size);
-		dovetail_clip_cutout(size-[0,back_t,0],dt=dt,t=t,h=999);
+		dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,h=999);
 	}
 }
 
@@ -144,4 +144,4 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
 test_size = [12,10,24];
 test_dt = 2;
 color("blue") dovetail_clip(test_size,dt=test_dt);
-color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
+//color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
