@@ -20,7 +20,7 @@ use <./dovetail.scad>;
 d = 0.05;
 $fn=32;
 
-version_string = "5.13e";
+version_string = "5.14";
 
 big_stage = true;
 motor_lugs = true;
@@ -252,7 +252,8 @@ module objective_clip_3(){
 		//cut-outs for flexures
 		reflect([1,0,0]) hull() translate([-z_flexure_x-d,0,0]) shear_x()
 			translate([-d,0,-d]) cube([z_flex_w+1.5,z_carriage_y,z_strut_t+1.5]);
-		//sloped bottom to improve quality of the dovetail clip and
+		//TODO: this code is now in dovetail.scad.  Should use it!
+        //sloped bottom to improve quality of the dovetail clip and
         //allow insertion of the optics from the bottom
         translate([0,objective_clip_y,0]){
             rotate([45,0,0]) cube([999,1,1]*sqrt(2)*2.5,center=true); //slope up arms
@@ -362,8 +363,8 @@ union(){
         x_shift = 3.1;
         size = big_stage?0.28:0.25;
         translate([z_flexure_x+x_shift,0,10]) rotate([90,0,atan(((leg_r+actuating_nut_r-12)/sqrt(2))/((leg_r+actuating_nut_r+12)/sqrt(2)-z_flexure_x-x_shift))]){
-            rotate([-4,0,0]) translate([3,2,0.0]) scale([size,size,1]) logo_and_name();
-            translate([leg_r+actuating_nut_r-26,-5,0]) linear_extrude(1) text(str("v",version_string, big_stage?"-LS":"", motor_lugs?"-M":""), size=3, font="Calibri",halign="right");
+            rotate([-4,0,0]) translate([3,2,0.0]) scale([size,size,2]) logo_and_name();
+            translate([leg_r+actuating_nut_r-26,-5,0]) linear_extrude(2) text(str("v",version_string, big_stage?"-LS":"", motor_lugs?"-M":""), size=3, font="Calibri",halign="right");
         }
             
 	}
@@ -383,36 +384,16 @@ union(){
         //Z actuator cut-out
 		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
     }
-	////////////// illumination mount ///////////////////
-	difference(){
+	////////////// illumination/back foot mount ///////////////////
+	union(){
 		sequential_hull(){ //leg structure (oval tube)
 			hull() reflect([1,0,0]) leg_frame(-135) translate([leg_outer_w/2,-zflex_l-2,0]){
 				translate([0,0,base_t-d]) rotate([6,6,0]) cube([d,2,12]);
 				cube([d,2,base_t]);
 			}
-			translate([0,-leg_r-8,0]) scale([0.8,1.2,1]) cylinder(r=8,h=12+base_t);
-			translate([0,-leg_r-10,sample_z]) scale([1,1.1,1]) cylinder(r=6,h=d);
-			translate([-6,-leg_r-12,sample_z+4]) cube([12,10,15]);
+            translate([-8,-leg_r,0]) cube([16,2,12]);
 		}
-		//hole in the bottom for foot
-		translate([0,-leg_r-8,-d]) scale([0.8,1.1,1]) cylinder(r1=6+0.75,r2=6,h=2); //chamfered bottom
-		sequential_hull(){
-			//make the tube hollow
-			translate([0,-leg_r-8,-d]) scale([0.8,1.1,1]) cylinder(r=6,h=12+base_t); 
-			translate([0,-leg_r-10,sample_z]) scale([1,1.1,1]) cylinder(r=4,h=d);
-			//cutout for the clip at the top
-			translate([0,-leg_r-2,sample_z+5]) intersection(){
-				mirror([0,1,0]) dovetail_clip_cutout([12,8,d]);
-				translate([0,-2-999,0]) cube([1,1,1]*999*2,center=true);
-			}
-			translate([0,-leg_r-2,sample_z+5]) mirror([0,1,0]) dovetail_clip_cutout([12,8,99]);
-		}
-		reflect([1,0,0]) translate([6*0.8,-leg_r-8,3]) sphere(r=1);
-		//hole from back for access to objective
-		hull(){
-			translate([0,0,sample_z/2]) cube([6,999,sample_z/2],center=true);
-			translate([0,0,sample_z]) cube([2,999,d],center=true);
-		}
+        translate([0,-leg_r-8,0]) dovetail_clip([16,8,12],solid_bottom=0.5, slope_front=3);
 	}
 }
 

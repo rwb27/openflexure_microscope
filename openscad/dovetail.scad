@@ -38,7 +38,7 @@ module dovetail_clip_cutout(size,dt=1.5,t=2){
 		translate([0,dt,0]) rotate(-45) cube([dt*2,d,size[2]+2*d]);
 	}
 }
-module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0){
+module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0,slope_front=0,solid_bottom=0){
     // This forms a clip that will grip a dovetail, with the
     // contact between the m/f parts in the y=0 plane.
     // This is the female part, and it is centred in X and 
@@ -48,9 +48,23 @@ module dovetail_clip(size=[10,2,10],dt=1.5,t=2,back_t=0){
     // thickness of the arms.  By default it has no back, and
     // should be attached to a solid surface.  Specifying back_t>0
     // will add material at the back (by shortening the arms).
+    // slope_front will add a sloped section to the front of the arms.
+    // this can improve the quality of the bottom of the dovetail 
+    // (good if you're inserting from the bottom)
+    // solid_bottom will join the arms together at the bottom, which
+    // can help with bed adhesion.
+    inner_w=size[0]-2*t;
+    solid_bottom = solid_bottom > 0 ? solid_bottom+d : 0;
 	difference(){
 		translate([-size[0]/2,0,0]) cube(size);
-		dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,h=999);
+		translate([0,0,solid_bottom]) //allow for thin bottom to enhance adhesion
+            dovetail_clip_cutout(size-[0,back_t+d,0],dt=dt,t=t,h=999);
+        if(slope_front>0){
+            //sloped bottom to improve quality of the dovetail clip and
+            //allow insertion of the male dovetail from the bottom
+            rotate([45,0,0]) cube([999,1,1]*sqrt(2)*slope_front,center=true); //slope up arms
+            hull() reflect([0,0,1]) translate([0,0,slope_front]) rotate([0,45,0]) cube([(inner_w)/sqrt(2),dt*2,inner_w/sqrt(2)],center=true);
+        }
 	}
 }
 
@@ -141,7 +155,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
 	}
 }
 
-test_size = [12,10,24];
+test_size = [14,10,24];
 test_dt = 2;
-color("blue") dovetail_clip(test_size,dt=test_dt);
-//color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
+color("blue") dovetail_clip(test_size,dt=test_dt,slope_front=3,solid_bottom=0.5);
+color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
