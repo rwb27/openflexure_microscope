@@ -97,7 +97,7 @@ module dovetail_plug(corner_x, r, dt, zx_profile=[[0,0],[10,0],[12,-1]]){
         }
     }
 }
-module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0,waist_dx=0.5){
+module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0,waist_dx=0.5,r=0.5){
     // Male dovetail, contact plane is y=0, dovetail is in y>0
     // size is a box that is centred in X, sits on Z=0, and extends
     // in the -y direction from y=0.  This is the mount for the
@@ -106,7 +106,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
     // female dovetail clip.  The size of the dovetail is set by dt.
     // t sets the thickness of the female dovetail arms; the dovetail
     // is actually size[0]-2*t wide.
-    r=0.5; //radius of curvature - something around nozzle width is good.
+    r=r; //radius of curvature - something around nozzle width is good.
     w=size[0]-2*t; //width of dovetail
     h=size[2]; //height
     corner=[w/2-dt,0,0]; //location of the pointy bit of the dovetail

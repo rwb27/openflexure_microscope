@@ -9,6 +9,9 @@
 * precision over a ~10mm range, by using plastic flexure          *
 * mechanisms.                                                     *
 *                                                                 *
+* WaterScope is a company that uses the microscope, and will      *
+* hopefully sell it quite soon.                                   *
+*                                                                 *
 * (c) Richard Bowman, January 2016                                *
 * Released under the CERN Open Hardware License                   *
 *                                                                 *
@@ -43,14 +46,17 @@ module waterscope_logo(){
     }
 }
 
-module logo_and_name(){
+module logo_and_name(subtitle=""){
     union(){
         waterscope_logo();
         
         translate([30,-6,0]) linear_extrude(1){
             text("WaterScope", size=15, font="Calibri");
         }
+        translate([110,-17,0]) linear_extrude(1){
+            text(subtitle, size=9, font="Calibri", halign="right");
+        }
     }
 }
 
-logo_and_name();
+logo_and_name("");
