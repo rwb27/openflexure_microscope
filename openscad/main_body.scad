@@ -23,7 +23,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = false;
 motor_lugs = false;
-version_numstring = "5.14";
+version_numstring = "5.14a";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?70:40; // height of the top of the stage
@@ -400,11 +400,16 @@ difference(){union(){
             }
             add_hull_base(base_t) {
                 // Next, link the XY actuators to the wall
-                reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([-12+wall_t/2,actuating_nut_r,0]){
+                reflect([1,0,0]) sequential_hull(){
+                    z_anchor_wall_vertex(); // join at the Z anchor
+                    // anchor at the same angle on the actuator
+                    // NB the base of the wall is outside the
+                    // base of the screw seat
+                    leg_frame(45) translate([-12-wall_t/2,actuating_nut_r,0]){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
-                    z_anchor_wall_vertex();
+                    // neatly join to the screw seat (actuator column)
+                    leg_frame(45) translate([0,actuating_nut_r,0]) screw_seat_outline(h=wall_h);
                 }
                 // Link the Z actuator to the wall
                 add_roof(zbwall_h-2) reflect([1,0,0]) hull(){
@@ -456,7 +461,7 @@ difference(){union(){
         //this is a complicated transformation!  The wall runs from
         wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
         wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
-                     +[1,-1,0]*(12-wall_t/2))/sqrt(2);
+                     +[1,-1,0]*(12+wall_t/2))/sqrt(2);
         wall_disp = wall_end - wall_start; // vector along the wall base
         // pivot about the starting corner of the wall so X is along it
         translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
