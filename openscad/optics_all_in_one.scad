@@ -17,8 +17,8 @@ use <cameras/picam_push_fit.scad>;
 use <cameras/C270_mount.scad>;
 use <dovetail.scad>;
 
-camera = "C270";
-//camera = "picamera";
+//camera = "C270";
+camera = "picamera";
 
 ///picamera lens
 lens_outer_r=3.04+0.2; //outer radius of lens (plus tape)
@@ -59,6 +59,8 @@ d = 0.05;
 body_r=8;
 neck_r=max( (body_r+lens_aperture_r)/2, lens_outer_r+1.5);
 
+// The camera parameters depend on what camera we're using,
+// sorry about the ugly syntax, but I couldn't find a neater way.
 camera_angle = (camera=="picamera"?45:
                (camera=="C270"?-45:0));
 camera_h = (camera=="picamera"?24:
@@ -66,6 +68,8 @@ camera_h = (camera=="picamera"?24:
 camera_shift = (camera=="picamera"?2.4:
                (camera=="C270"?(45-53/2):0));
 
+// This needs to match the microscope body (NB this is for the 
+// standard-sized version, not the LS version)
 objective_clip_w = 10;
 objective_clip_y = 6;
 camera_clip_y = -7;
