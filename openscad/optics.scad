@@ -289,7 +289,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
-/*/ Optics module for pi camera, with standard stage (i.e. the classic)
+// Optics module for pi camera, with standard stage (i.e. the classic)
 optics_module_single_lens(
     ///picamera lens
     lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
@@ -297,7 +297,7 @@ optics_module_single_lens(
     lens_t=3.0, //thickness of lens
     parfocal_distance = 6 //sample to bottom of lens
 );//*/
-// Optics module for RMS objective, using Comar singlet tube lens
+/*/ Optics module for RMS objective, using Comar singlet tube lens
 optics_module_rms(
     tube_lens_ffd=16.1, 
     tube_lens_f=20, 
