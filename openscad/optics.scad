@@ -218,7 +218,7 @@ module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=160){
     // This optics module takes an RMS objective and a 20mm focal length
     // correction lens.
     rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
@@ -231,11 +231,30 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     dovetail_top = 27; //height of the top of the dovetail
     sample_z = 70; // height of the sample above the bottom of the microscope (depends on size of microscope)
     
+    // calculate the position of the tube lens based on a thin-lens
+    // approximation: the light is focussing from the objective shoulder
+    // to a point 160mm away, but we want to refocus it so it's
+    // closer (i.e. focusses at the bottom of the mount).  If we let:
+    // dos = distance from objective to sensor
+    // dts = distance from tube lens to sensor
+    // ft = focal length of tube lens
+    // fo = tube length of objective lens
+    // then 1/dts = 1/ft + 1/(fo-dos+dts)
+    // the solution to this, if b=fo-dos and a=ft, is:
+    // dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b)
+    a = tube_lens_f;
+    dos = sample_z - objective_parfocal_distance - bottom;
+    b = tube_length - dos;
+    dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b);
+    echo("Distance from tube lens principal plane to sensor:",dts);
+    // that's the distance to the nominal "principal plane", in reality
+    // we measure the front focal distance, and shift accordingly:
+    tube_lens_z = bottom + dts - (tube_lens_f - tube_lens_ffd);
         
     //we need to shift the tube lens so that it focuses the
         //already-converging light from the objective:
-    tube_lens_shift = tube_lens_f - 1/(1/tube_lens_f+1/160);
-    tube_lens_z = bottom + tube_lens_ffd - tube_lens_shift;
+    //tube_lens_shift = tube_lens_f - 1/(1/tube_lens_f+1/160);
+    //tube_lens_z = bottom + tube_lens_ffd - tube_lens_shift;
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
     lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
     lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance; //the
@@ -260,7 +279,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             // gripper for the objective
             lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
             // gripper for the tube lens
-            lens_gripper(lens_r=tube_lens_r, lens_h=3.5,h=6);
+            lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5);
             // pedestal to raise the tube lens up within the gripper
             difference(){
                 cylinder(r=tube_lens_aperture + 1.0,h=2);
@@ -278,10 +297,11 @@ optics_module_single_lens(
     lens_t=3.0, //thickness of lens
     parfocal_distance = 6 //sample to bottom of lens
 );//*/
-// Optics module for RMS objective
-intersection(){
-    optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35);
-//    cube([999,999,40],center=true);
-}//*/
+// Optics module for RMS objective, using Comar singlet tube lens
+optics_module_rms(
+    tube_lens_ffd=16.1, 
+    tube_lens_f=20, 
+    tube_lens_r=16/2+0.2, 
+    objective_parfocal_distance=35
+);//*/
 //picam_cover();
