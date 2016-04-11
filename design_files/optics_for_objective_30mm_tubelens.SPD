@@ -1,0 +1,73 @@
+"-- Version 5.0 file --","04-11-2016"
+"","",1
+#FALSE#
+0,#FALSE#,#FALSE#,#FALSE#,0
+3,1,0,0,587.6,486.1,656.3,440,700
+"1","Stop",#FALSE#,"","",0,"0, 0",#TRUE#,"","","","","","air"," ","","","NonSH","",0
+"2","   ",#TRUE#,"Nom","thinlens",2,"0, 2",#TRUE#,"","","","","","air"," ","","","NonSH","",0
+" LENS 2"
+"   Surf  1","sphere",0,160,#TRUE#,"","",0,587.6,3,0,"","","","FALSE","TRUE|0|"
+"   Space 1",0,"","THINLENSMAT","                              ","","","","","","",""
+"      GlassIndex",1.5,1.5,1.5,"",""
+"   Surf  2","sphere",0,-160,#TRUE#,"","",0,587.6,3,0,"","","","FALSE","TRUE|0|"
+" LENS 2 End"
+"3","   ",#TRUE#,"Nom","lens",2,"0, 0",#TRUE#,"","","","","","air"," ","","","NonSH","",0
+" LENS 3"
+"   Surf  1","sphere",0,16.3999996185303,#TRUE#,"","",0,587.6,8,0,"","","","FALSE","FALSE|0|"
+"   Space 1",3.59999990463257,"","BK7","Schott                        ","","","","","","",""
+"      GlassIndex",1.51679849624634,1.52237868309021,1.51432144641876,"",""
+"   Surf  2","sphere",0,0,#TRUE#,"","",0,587.6,5,0,"","","","FALSE","FALSE|0|"
+" LENS 3 End"
+"Defocus",-.15,0,""
+""
+"Zoom",1," ",0
+"ObjMedia","air",""," ","ImgMedia","air",""," "
+"ParameterTypes",0,0,0,0,"WaveWt"
+1,1,1,.5,.5
+"Waveband",587.6,486.1,656.3,440,700
+"efl",26.7607196345601
+"ObjDist",-5E+20,"   ImagDist",24.0527906274775
+"l",-5E+20,"   l'",26.7607196345601
+"Mag",-5.35214392691202E-20,"   AngMag",0
+"Track",5E+20
+"ObjNa",6E-21,"   ImagNa",.1121046,"Stop Rad",3
+"entr rad",3,"exit rad",2.696429
+"fNos",4.46012
+"Entr Pup Rad",3,"Exit Pup Rad",3.20179
+"fNosEff",4.46012
+"ObjAngle",4,"   ObjHeight",3.49634059717552E+19
+"ImagAngle",-3.748646,"ImagHeight",-1.87129180935889
+0,"GaussianBeam1 1,Circ, 632.8, .8057059, .001, 805.7059, 2, .8057059, .001, 805.7059, 2,-1000, 0","","","","","","",""
+"Scales"
+"Grid",2,2,.707106,.707106,.5,100,1
+"GridRatio",#FALSE#,0,0
+"Nos colors",1,"Nos fields",2
+"0","0"
+"Nos rings",5,"Spot sepn",.1
+"Spot Scl",.02,"Tra Scl",.1
+"Opd Scl wv",1,"OPD Scl mm",.001
+"Astig",.1,"Dist",1,"LatCol",.1,"Astig a",1,"LatCol a",100
+"Spot Scl a",100,"Tra Scl a",100
+"Coat",100,0,800,400,25
+"Max MTF",0,"Thru MTF",0,"Thru Scale",0,#FALSE#
+"Max MTF a",0,"Thru MTF a",0,"Thru Scale a",0
+"OSC",.1,"OIC",.1
+"RelIll Mid",.6666667,"RelIll Small",.3333333
+"FldMtf Mid",.6666667,"FldMtf Small",.3333333
+0,-1,0,0
+0,0,0,0
+#FALSE#,0,0
+#FALSE#,0,0,0
+0,-1,0,0
+400,800,632.8,.001,.8057059,805.7059,587.6,0,0,0
+#FALSE#,0
+#FALSE#,5,"","","","","","","",""
+"GROUPS START"
+"   GROUP: ",1,1,3,1
+"GROUPS END"
+"NOPD"
+""
+"","","","","","","","",#FALSE#
+#FALSE#,0
+"","","","","","",""
+"optics_for_objective_30mm_tubelens.SPD"

@@ -21,12 +21,12 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = false;
+big_stage = true;
 motor_lugs = false;
-version_numstring = "5.14a";
+version_numstring = "5.14.1";
 
 // This sets the basic geometry of the microscope
-sample_z = big_stage?70:40; // height of the top of the stage
+sample_z = big_stage?65:40; // height of the top of the stage
 leg_r = big_stage?30:25; // radius of innermost part of legs
 hole_r = big_stage?15:10; // size of hole in the stage
 xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision

@@ -20,9 +20,7 @@ use <dovetail.scad>;
 //camera = "C270";
 camera = "picamera";
 
-
-sample_z = 40; //height of the sample above the bottom of the microscope
-bottom = -8; //nominal distance from PCB to microscope bottom (was 8, increased to 10)
+bottom = -8; //nominal distance from PCB to microscope bottom
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 d = 0.05;
 
@@ -35,8 +33,9 @@ camera_h = (camera=="picamera"?24:
 camera_shift = (camera=="picamera"?2.4:
                (camera=="C270"?(45-53/2):0));
 
-// This needs to match the microscope body (NB this is for the 
-// standard-sized version, not the LS version)
+// This is the size of the objective clip, must match the main body.
+// NB the position of the clip is set in the module that draws the
+// optics module
 objective_clip_w = 10;
 
 $fn=24;
@@ -122,7 +121,7 @@ module camera_mount_body(body_r, body_top, dt_top, objective_clip_y, extra_rz = 
         }
     }
 }
-module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65){
+module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
     // This creates a tapering, distorted hollow cylinder suitable for
     // gripping a small cylindrical (or spherical) object
     // The gripping occurs lens_h above the base, and it flares out
@@ -136,7 +135,7 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65){
             translate([0,0,lens_h+0.5]) trylinder(r=lens_r-1+t,flat=2.5,h=d);
             translate([0,0,h-d]) trylinder(r=lens_r-0.5+t,flat=3,h=d);
         }
-        sequential_hull(){
+        if(solid==false) sequential_hull(){
             translate([0,0,-d]) cylinder(r=bottom_r-t,h=d);
             translate([0,0,lens_h-0.5]) trylinder(r=lens_r-1,flat=2.5,h=d);
             translate([0,0,lens_h+0.5]) trylinder(r=lens_r-1,flat=2.5,h=d);
@@ -185,7 +184,7 @@ module picam_cover(){
 
 
 
-module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal_distance){
+module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal_distance, sample_z){
     // This is the "classic" optics module, using the raspberry pi lens
     // It should be fitted to the smaller microscope body
     
@@ -218,7 +217,7 @@ module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=160){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, sample_z = 60, tube_length=160){
     // This optics module takes an RMS objective and a 20mm focal length
     // correction lens.
     rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
@@ -228,8 +227,8 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of above
     pedestal_h = 2; //height of tube lens above bottom of lens assembly
     
-    dovetail_top = 27; //height of the top of the dovetail
-    sample_z = 70; // height of the sample above the bottom of the microscope (depends on size of microscope)
+    //sample_z (argument) // height of the sample above the bottom of the microscope (depends on size of microscope)
+    dovetail_top = min(27, sample_z-objective_parfocal_distance-1); //height of the top of the dovetail
     
     // calculate the position of the tube lens based on a thin-lens
     // approximation: the light is focussing from the objective shoulder
@@ -268,10 +267,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             optical_path(tube_lens_aperture, lens_assembly_z);
             // make sure it makes contact with the lens gripper, but
             // doesn't foul the inside of it
-            hull() intersection(){
-                 translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d); //same as the big gripper below
-                cylinder(r=999,h=dovetail_top+d,$fn=8);
-            }
+            translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
             
         }
         // A pair of nested lens grippers to hold the objective
@@ -289,7 +285,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
-// Optics module for pi camera, with standard stage (i.e. the classic)
+/*/ Optics module for pi camera, with standard stage (i.e. the classic)
 optics_module_single_lens(
     ///picamera lens
     lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
@@ -297,11 +293,13 @@ optics_module_single_lens(
     lens_t=3.0, //thickness of lens
     parfocal_distance = 6 //sample to bottom of lens
 );//*/
-/*/ Optics module for RMS objective, using Comar singlet tube lens
+// Optics module for RMS objective, using Comar singlet tube lens
 optics_module_rms(
     tube_lens_ffd=16.1, 
     tube_lens_f=20, 
     tube_lens_r=16/2+0.2, 
-    objective_parfocal_distance=35
+    objective_parfocal_distance=35,
+    sample_z = 65
 );//*/
+//
 //picam_cover();

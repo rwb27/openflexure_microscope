@@ -17,14 +17,12 @@ use <dovetail.scad>;
 $fn=16;
 d=0.05;
 
-big_stage = false;
+big_stage = true;
 // MAKE SURE THESE MATCH THE VARIABLES IN main_body.scad
-sample_z = big_stage?70:40; //height of the top of the stage
-leg_r = big_stage?30:25;
 stage_t=5; //thickness of the stage (at thickest point, most is 1mm less)
 clip_w = 16; //external width of clip for dovetail
 //clip_y is no longer correct - need to take the value from main_body.scad
-//clip_y = -leg_r-8; //position of clip relative to optical axis
+//clip_y and sample_z are defined below
 clip_h = 12; //height of dovetail clip
 bottom = -15; //the foot extends below the bottom of the dovetail
 
@@ -112,8 +110,8 @@ module back_foot_and_illumination(clip_y=-35,sample_z=40){
 
 difference(){
     // standard size
-    rotate([90,0,0]) back_foot_and_illumination(clip_y=-33.0416, sample_z=40);
+    //rotate([90,0,0]) back_foot_and_illumination(clip_y=-33.0416, sample_z=40);
     // large stage version
-    //rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=70);
+    rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }
