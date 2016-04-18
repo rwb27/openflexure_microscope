@@ -33,7 +33,8 @@ module nut(d,h=-1,center=false,fudge=1.18,shaft=false){ //make a nut, for metric
 	//center: works as for cylinder
 	//fudge: multiply the diameter by this number (1.22 works when vertical)
 	//shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-	assign(h=(h<0)?d*0.8:h) union(){
+	h=(h<0)?d*0.8:h;
+    union(){
 		cylinder(h=h,center=center,r=0.9*d*fudge,$fn=6); 
 		if(shaft){
 			reflect([0,0,1]) cylinder(r=d/2*1.05*(fudge+1)/2,h=99999999999,$fn=16); 
@@ -50,11 +51,13 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
 	//center: works as for cylinder
 	//fudge: multiply the diameter by this number (1.22 works when vertical)
 	//shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-	assign(h=(h<0)?d*0.8:h) union(){
+	h=(h<0)?d*0.8:h;
+    union(){
 		cylinder(h=h,r=0.9*d*fudge,$fn=6); 
 		translate([0,0,-0.05]) cylinder(h=chamfer_h,r1=0.9*d*fudge+chamfer_r,r2=0.9*d*fudge,$fn=6); 
 		mirror([0,0,1]) cylinder(h=9999,r=0.9*d*fudge+chamfer_r,$fn=6); 
-		if(shaft) assign(sr=d/2*1.05*(fudge+1)/2){
+		if(shaft){
+             sr=d/2*1.05*(fudge+1)/2; //radius of shaft
 			translate([0,0,h/2]) reflect([0,0,1]) cylinder(r=sr,h=99999999999,$fn=16); 
 			//the reason I reflect rather than use center=true is that the latter 
 			//fails in fast preview mode (I guess because of the lack of points 
@@ -101,7 +104,9 @@ module screw_y(d,h=-1,center=false,fudge=1.05,extra_height=0.7,shaft=false,shaft
 	//center: works as for cylinder
 	//fudge: multiply the diameter by this number (1.22 works when vertical)
 	//shaft: include a long cylinder representing the bolt shaft, diameter=d*1.05
-	assign(h=(h<0)?d*0.8:h, r=0.9*d*fudge) union(){
+	h=(h<0)?d*0.8:h; //height of screw head
+    r=0.9*d*fudge; //radius of screw head
+    union(){
 		cylinder_with_45deg_top(h=h,r=d*1.05*fudge,$fn=16,extra_height=extra_height); 
 		if(shaft){
 			translate([0,center ? 0 : h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=shaft_length+h/2,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height); 
@@ -140,7 +145,9 @@ module unrotate(rotation){
 
 module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, outline=false){
 	//generate "support material" in the STL file for selective supporting of things
-	module support_2d() assign(sw=1.0, sp=3){
+	module support_2d(){
+        sw=1.0;
+        sp=3;
 		union(){
 			if(outline){
 				difference()	{

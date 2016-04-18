@@ -31,7 +31,7 @@ bottom = -15; //the foot extends below the bottom of the dovetail
 led_z = 12;
 dt_h = 13;
 below_led = 6;
-led_r = 3/2*1.1;
+led_r = 3/2*1.1; //change to 5/2*1.1 if you want a bigger LED
 led_angle = 20;
 working_distance = clip_h;
 
