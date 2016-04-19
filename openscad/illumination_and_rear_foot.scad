@@ -20,7 +20,7 @@ d=0.05;
 big_stage = true;
 // MAKE SURE THESE MATCH THE VARIABLES IN main_body.scad
 stage_t=5; //thickness of the stage (at thickest point, most is 1mm less)
-clip_w = 16; //external width of clip for dovetail
+clip_w = 12; //external width of clip for dovetail
 //clip_y is no longer correct - need to take the value from main_body.scad
 //clip_y and sample_z are defined below
 clip_h = 12; //height of dovetail clip
@@ -33,7 +33,7 @@ dt_h = 13;
 below_led = 6;
 led_r = 3/2*1.1; //change to 5/2*1.1 if you want a bigger LED
 led_angle = 20;
-working_distance = clip_h;
+working_distance = clip_h; //wd should be >= clip_h so it fits on nicely...
 
 /*
 intersection(){
@@ -55,48 +55,63 @@ intersection(){
 	}
 }*/
 
-module back_foot_and_illumination(clip_y=-35,sample_z=40){
+
+module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
     // Arm that clips on to the microscope, providing the back foot
     // and illumination mount
     w = clip_w; //width (size in x direction)
     b = 8; //breadth (size of main pillar in y direction)
-    back = clip_y-b-1; //y coordinate of back of pillar
-    wd = working_distance;
-    arm_h = b;
-    arm_w = b;
+    back = clip_y-b-stage_clearance; //y coordinate of back of pillar
+    wd = working_distance; //distance from bottom of "condenser" to sample
+    arm_h = b; //height of the horizontal arm (cross-sectional size in z)
+    arm_w = b; //width of the arm (cross-sectional size in x)
+    t = 2; //thickness of shell
+    hole_h = max(stage_clearance, b); //height of cut-out above clip
     difference(){
+        $fn=32;
         union(){
             sequential_hull(){
                 translate([0,back,bottom+1]) rotate([-90,0,0])cylinder(r=1,h=2); //foot
                 //translate([-w/2,back,-1]) cube([w,b+4,1]); //height stop
-                translate([-w/2,back,-1]) cube([w,b,d]); //dovetail mounts here
-                translate([-w/2,back,clip_h]) cube([w,b,d]);//dovetail
-                translate([-w/2,back,clip_h]) cube([w,b+2.5,1]);//height stop
-                translate([-w/2,back,clip_h]) cube([w,b,2]);//main shaft
+                //translate([-w/2,back,-1]) cube([w,b,d]); //dovetail mounts here
+                //translate([-w/2,back,clip_h]) cube([w,b,d]);//dovetail
+                //translate([-w/2,back,clip_h]) cube([w,b+2.5,1]);//height stop
+                //translate([-w/2,back,clip_h]) cube([w,b,2]);//main shaft
+                //translate([0,back,0]) rotate([-90,0,0]) cylinder(d=w,h=b+stage_clearance-2);
+                translate([-w/2,back,-2]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
+                translate([-w/2,back,clip_h+2]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
+                translate([-w/2,back,clip_h+hole_h]) cube([w,b,d]); //start of main shaft
+                //translate([0,back,clip_h]) rotate([-90,0,0]) cylinder(d=w,h=b);
                 translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w,b*sqrt(2),d],center=true);//main shaft (top)
                 translate([-arm_w/2,-6-4,sample_z+wd+4]) cube([arm_w,d,arm_h]);
                 translate([0,0,sample_z+wd]) cylinder(r=6,h=arm_h+4,$fn=32);
             }
-            translate([0,clip_y,clip_h]) mirror([0,0,1]) dovetail_m([clip_w,3,clip_h],r=0.1,top_taper=2);
+            translate([0,clip_y,clip_h]) rotate([-90,0,0]) dovetail_clip_y([clip_w,clip_h,2+d],t=t,taper=2);
         }
         
         // make the structure hollow, for faster printing and 
         // cable management
         sequential_hull(){
-            translate([0,back+1,bottom+1]) rotate([-90,0,0]) cylinder(r=d,h=d); //foot
+            translate([0,back+t,bottom+t]) rotate([-90,0,0]) cylinder(r=d,h=d); //foot
             //translate([-w/2+1,back+1,-1]) cube([w-2,b+2-0.5,d]); //height stop
-            translate([-w/2+1,back+1,-1]) cube([w-2,b-2,d]); //dovetail mounts here
-            translate([-w/2+1,back+1,clip_h]) cube([w-2,b-2,2]);//main shaft
-            translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w-2,(b-2)*sqrt(2),2*d],center=true);//main shaft (top)
-            translate([-3,-8,sample_z+wd+4+4]) cube([6,d,3]);
+            //translate([-w/2+t,back+t,-1]) cube([w-2*t,b-2*t,d]); //dovetail mounts here
+            //translate([-w/2+t,back+t,clip_h]) cube([w-2*t,b-2*t,2]);//main shaft
+            //translate([0,back+t,0]) rotate([-90,0,0]) cylinder(d=w-2*t,h=b+stage_clearance-2-t+d);
+            translate([-w/2+t,back+t,-2]) cube([w-t*2,b+stage_clearance-2-t+d,d]); //dovetail mounts here
+            translate([-w/2+t,back+t,clip_h+2]) cube([w-t*2,b+stage_clearance-2-t+d,d]); //dovetail mounts here
+            translate([-w/2+t,back+t,clip_h+hole_h]) cube([w-2*t,b-t+d,d]);//main shaft
+            translate([-w/2+t,back+t,clip_h+hole_h]) cube([w-2*t,b-2*t,d]);//main shaft
+            //translate([0,back+t,clip_h]) rotate([-90,0,0]) cylinder(d=w-2*t,h=b-2*t);
+            translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w-2*t,(b-2*t)*sqrt(2),2*d],center=true);//main shaft (top)
+            translate([-3,-8,sample_z+wd+4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.
             translate([-3,-8,sample_z+wd+4+4]) cube([6,8,10]);
             translate([0,0,sample_z+wd+4+4]) cylinder(r=3,h=999);
         }
         // exit holes for cable (option to leave from front or back)
         hull(){
-            b=bottom+2; // -height of the triangular void inside the foot
-            translate([0,0,-1]) cube([w-2,999,d],center=true);
-            translate([0,0,-1+b/2])cube([(w-2)/2,999,d],center=true);
+            b=bottom+3; // -height of the triangular void inside the foot
+            translate([0,0,-2]) cube([w-2*t,999,d],center=true);
+            translate([0,0,-2+b/2])cube([(w-2*t)/2,999,d],center=true);
         }
         
         // Holes for LED and beam
@@ -108,10 +123,23 @@ module back_foot_and_illumination(clip_y=-35,sample_z=40){
     }
 }
 
+null() union(){
+    intersection(){
+        translate([0,0,6+3]) dovetail_clip_y([12,8,3+d], t=1, taper=6, endstop=true);
+        translate([0,-2,0]) hull() repeat([0,8+4,0],2) cylinder(r=6,h=999,$fn=32);
+    }
+    translate([0,-2,0]) difference(){
+        hull() repeat([0,8+4,0],2) cylinder(r=6,h=6,$fn=32);
+        translate([0,0,0.5]) hull() repeat([0,8+4,0],2) cylinder(r=5,h=999,$fn=32);
+    }
+}
+
+
 difference(){
     // standard size
-    //rotate([90,0,0]) back_foot_and_illumination(clip_y=-33.0416, sample_z=40);
+    //rotate([90,0,0]) 
+    back_foot_and_illumination(clip_y=-26.0416, sample_z=40);
     // large stage version
-    rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
+    //rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }

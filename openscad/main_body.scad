@@ -21,9 +21,9 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = true;
+big_stage = false;
 motor_lugs = false;
-version_numstring = "5.14.1";
+version_numstring = "5.15.0";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -77,7 +77,7 @@ wall_t=2; //thickness of the stiffening walls
 zawall_h = z_flexure_spacing - 5; //height of wall near Z anchor
 zbwall_h = z_actuator_travel+z_strut_t+1+2; //height of bridge over Z lever
 illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
-                       -wall_t/2-8); //position of clip for
+                       -wall_t/2-1); //position of clip for
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs.
@@ -479,7 +479,8 @@ difference(){union(){
         screw_seat(travel=z_actuator_travel, motor_lugs=motor_lugs);
     }
 	////////////// clip for illumination/back foot ///////////////////
-	translate([0,illumination_clip_y,0]) dovetail_clip([16,8,12], slope_front = 3, solid_bottom = 0.5);
+	translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
+    // was dovetail_clip([16,8,12], slope_front = 3, solid_bottom = 0.5);
     echo("Clip for illumination at y=",illumination_clip_y);
 }
 

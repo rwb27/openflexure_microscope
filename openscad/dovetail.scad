@@ -155,7 +155,36 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
 	}
 }
 
+module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false, endstop_w = 1, endstop_t = 0.5){
+    // Make a dovetail where the sliding axis is along y, i.e. horizontal
+    // This means it's the top of the object that grips the dovetail.
+    //
+    // the x and y elements of size set the dovetail width and "height"
+    // the z element sets the distance from the end of the teeth (z=0) to
+    // the bottom of the mount.
+    // dt is the size of the dovetail teeth
+    // endstop enables a link on the other side of the Y axis, to stop motion there.
+    // endstop_w, endstop_t set the width and thickness (in y and z) of the link
+    // taper optionally feathers the dovetail onto an edge
+    // the dovetail extends along the +y direction from y=0
+    h = size[1];
+    ew = endstop ? endstop_w : 0;
+    reflect([1,0,0]) translate([-size[0]/2,0,0]) mirror([0,0,1]) sequential_hull(){
+        translate([0,dt,0]) cube([t+dt,h-2*dt,d]);
+        cube([t,h,dt]);
+        translate([0,-ew,0]) cube([t,h+ew,dt]);
+        translate([0,-taper,size[2]-d]) cube([t,h+2*taper,d]);
+    }
+    if(endstop){
+        translate([-size[0]/2,-ew,-endstop_t]) cube([size[0],ew,endstop_t]);
+        translate([-size[0]/2,-ew,-dt*2]) cube([size[0],ew,endstop_t]);
+        reflect([1,0,0]) translate([-size[0]/2,-ew,-dt*2]) cube([t+dt,ew,dt*2]);
+    }
+}
+
+/*
 test_size = [14,10,24];
 test_dt = 2;
 color("blue") dovetail_clip(test_size,dt=test_dt,slope_front=3,solid_bottom=0.5);
 color("green") translate([0,0,-2]) dovetail_m(test_size, waist=10, dt=test_dt,waist_dx=0.2);
+*/
