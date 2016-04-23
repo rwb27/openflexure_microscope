@@ -65,42 +65,35 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
     wd = working_distance; //distance from bottom of "condenser" to sample
     arm_h = b; //height of the horizontal arm (cross-sectional size in z)
     arm_w = b; //width of the arm (cross-sectional size in x)
-    t = 2; //thickness of shell
+    t = 1; //thickness of shell
+    clip_t = 2; //thickness of arms for the dovetail clip
     hole_h = max(stage_clearance, b); //height of cut-out above clip
+    dt_taper = 2; //size of sloping part at top/bottom of dovetail
     difference(){
         $fn=32;
         union(){
             sequential_hull(){
-                translate([0,back,bottom+1]) rotate([-90,0,0])cylinder(r=1,h=2); //foot
-                //translate([-w/2,back,-1]) cube([w,b+4,1]); //height stop
-                //translate([-w/2,back,-1]) cube([w,b,d]); //dovetail mounts here
-                //translate([-w/2,back,clip_h]) cube([w,b,d]);//dovetail
-                //translate([-w/2,back,clip_h]) cube([w,b+2.5,1]);//height stop
-                //translate([-w/2,back,clip_h]) cube([w,b,2]);//main shaft
-                //translate([0,back,0]) rotate([-90,0,0]) cylinder(d=w,h=b+stage_clearance-2);
-                translate([-w/2,back,-2]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
-                translate([-w/2,back,clip_h+2]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
+                translate([0,back,bottom+clip_t]) rotate([-90,0,0])cylinder(r=clip_t,h=2); //foot
+                translate([-w/2,back,-dt_taper]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
+                translate([-w/2,back,clip_h+dt_taper]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
                 translate([-w/2,back,clip_h+hole_h]) cube([w,b,d]); //start of main shaft
-                //translate([0,back,clip_h]) rotate([-90,0,0]) cylinder(d=w,h=b);
-                translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w,b*sqrt(2),d],center=true);//main shaft (top)
+                translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w,b*sqrt(2),d],center=true);//top of main shaft
                 translate([-arm_w/2,-6-4,sample_z+wd+4]) cube([arm_w,d,arm_h]);
                 translate([0,0,sample_z+wd]) cylinder(r=6,h=arm_h+4,$fn=32);
             }
-            translate([0,clip_y,clip_h]) rotate([-90,0,0]) dovetail_clip_y([clip_w,clip_h,2+d],t=t,taper=2);
+            translate([0,clip_y,0]) rotate([-90,180,0]) dovetail_clip_y([clip_w,clip_h,2+d],t=clip_t,taper=dt_taper,endstop=true);
         }
         
         // make the structure hollow, for faster printing and 
         // cable management
+        hw = w - 2*clip_t; // width of hole near dovetail clip
         sequential_hull(){
-            translate([0,back+t,bottom+t]) rotate([-90,0,0]) cylinder(r=d,h=d); //foot
-            //translate([-w/2+1,back+1,-1]) cube([w-2,b+2-0.5,d]); //height stop
-            //translate([-w/2+t,back+t,-1]) cube([w-2*t,b-2*t,d]); //dovetail mounts here
-            //translate([-w/2+t,back+t,clip_h]) cube([w-2*t,b-2*t,2]);//main shaft
-            //translate([0,back+t,0]) rotate([-90,0,0]) cylinder(d=w-2*t,h=b+stage_clearance-2-t+d);
-            translate([-w/2+t,back+t,-2]) cube([w-t*2,b+stage_clearance-2-t+d,d]); //dovetail mounts here
-            translate([-w/2+t,back+t,clip_h+2]) cube([w-t*2,b+stage_clearance-2-t+d,d]); //dovetail mounts here
-            translate([-w/2+t,back+t,clip_h+hole_h]) cube([w-2*t,b-t+d,d]);//main shaft
-            translate([-w/2+t,back+t,clip_h+hole_h]) cube([w-2*t,b-2*t,d]);//main shaft
+            //translate([0,back,bottom+clip_t
+            translate([-hw/2,back+t,-dt_taper]) cube([hw,b+stage_clearance-2-t+d,d]); //dovetail mounts here
+            translate([-hw/2,back+t,clip_h+dt_taper]) cube([hw,b+stage_clearance-2-t+d,d]); //dovetail mounts here
+            translate([-hw/2,back+t,clip_h+hole_h]) cube([hw,b-t+d,d]);//top of hole
+            translate([-hw/2,back+t,clip_h+hole_h]) cube([hw,b-2*t,d]);//start of bridge over the main shaft
+            translate([-w/2+t,back+t,clip_h+hole_h+clip_t-t]) cube([w-2*t,b-2*t,d]);//main shaft starts here
             //translate([0,back+t,clip_h]) rotate([-90,0,0]) cylinder(d=w-2*t,h=b-2*t);
             translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w-2*t,(b-2*t)*sqrt(2),2*d],center=true);//main shaft (top)
             translate([-3,-8,sample_z+wd+4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.
@@ -108,10 +101,12 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
             translate([0,0,sample_z+wd+4+4]) cylinder(r=3,h=999);
         }
         // exit holes for cable (option to leave from front or back)
-        hull(){
-            b=bottom+3; // -height of the triangular void inside the foot
-            translate([0,0,-2]) cube([w-2*t,999,d],center=true);
-            translate([0,0,-2+b/2])cube([(w-2*t)/2,999,d],center=true);
+        difference(){
+            hull(){
+                translate([0,back+t,-dt_taper]) cube([hw,999,2*d],center=true); //bottom of dovetail mount
+                translate([0,back+t,bottom+clip_t]) rotate([-90,0,0]) cylinder(r=d,h=d); //foot
+            }
+            translate([0,0,bottom*2/3]) mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
         }
         
         // Holes for LED and beam
@@ -120,17 +115,6 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
             cylinder(r=4*1.2/2,h=999,$fn=24);
         }
         translate([0,0,sample_z]) cylinder(h=wd+4,r1=(wd+4)*tan(led_angle/2)+3/2,r2=3/2);
-    }
-}
-
-null() union(){
-    intersection(){
-        translate([0,0,6+3]) dovetail_clip_y([12,8,3+d], t=1, taper=6, endstop=true);
-        translate([0,-2,0]) hull() repeat([0,8+4,0],2) cylinder(r=6,h=999,$fn=32);
-    }
-    translate([0,-2,0]) difference(){
-        hull() repeat([0,8+4,0],2) cylinder(r=6,h=6,$fn=32);
-        translate([0,0,0.5]) hull() repeat([0,8+4,0],2) cylinder(r=5,h=999,$fn=32);
     }
 }
 

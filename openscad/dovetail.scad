@@ -155,7 +155,7 @@ module dovetail_m(size=[10,2,10],dt=1.5,t=2,top_taper=1,bottom_taper=0.5,waist=0
 	}
 }
 
-module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false, endstop_w = 1, endstop_t = 0.5){
+module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false){
     // Make a dovetail where the sliding axis is along y, i.e. horizontal
     // This means it's the top of the object that grips the dovetail.
     //
@@ -168,7 +168,7 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false, endstop_w = 1,
     // taper optionally feathers the dovetail onto an edge
     // the dovetail extends along the +y direction from y=0
     h = size[1];
-    ew = endstop ? endstop_w : 0;
+    ew = 0;//endstop ? endstop_w : 0;
     reflect([1,0,0]) translate([-size[0]/2,0,0]) mirror([0,0,1]) sequential_hull(){
         translate([0,dt,0]) cube([t+dt,h-2*dt,d]);
         cube([t,h,dt]);
@@ -176,12 +176,17 @@ module dovetail_clip_y(size, dt=1.5, t=2, taper=0, endstop=false, endstop_w = 1,
         translate([0,-taper,size[2]-d]) cube([t,h+2*taper,d]);
     }
     if(endstop){
-        translate([-size[0]/2,-ew,-endstop_t]) cube([size[0],ew,endstop_t]);
-        translate([-size[0]/2,-ew,-dt*2]) cube([size[0],ew,endstop_t]);
-        reflect([1,0,0]) translate([-size[0]/2,-ew,-dt*2]) cube([t+dt,ew,dt*2]);
+        difference(){
+            hull(){ // make a bridge between the lower tapers
+                translate([0,-taper/2,-size[2]+d]) cube([size[0],taper,2*d],center=true);
+                translate([0,0,-d]) cube([size[0],d,2*d],center=true);
+            }
+            translate([0,0,-size[2]+0.5+999/2]) cube([(size[0]-2*t-2*dt)-2,999,999],center=true); //cut the middle
+            translate([0,-taper/2,-size[2]]) cube([size[0],taper-1.5,0.5*2+d],center=true);
+        }
     }
 }
-
+dovetail_clip_y([12,12,3],taper=2,endstop=true);
 /*
 test_size = [14,10,24];
 test_dt = 2;
