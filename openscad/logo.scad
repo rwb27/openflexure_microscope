@@ -46,6 +46,10 @@ module waterscope_logo(){
     }
 }
 
+module oshw_logo(){
+    translate([-17.5,-16]) resize([35,0],auto=true) import("oshw_gear.dxf");
+}
+
 module logo_and_name(subtitle=""){
     union(){
         waterscope_logo();
@@ -59,4 +63,5 @@ module logo_and_name(subtitle=""){
     }
 }
 
-logo_and_name("");
+logo_and_name("v5.15.2-LS-M");
+translate([0,-40,0]) oshw_logo();
