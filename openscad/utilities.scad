@@ -215,15 +215,6 @@ module cylinder_with_45deg_top(h,r,center=false,extra_height=0.7,$fn=$fn){
 		rotate([90,0,180]) translate([0,r-0.001,(center?0:h/2)]) cube([2*sin(45/2)*r,0.002+2*extra_height,h],center=true);
 	}
 }
-module cylinder_with_45deg_top_old(h,r,center=false,extra_height=0.7,$fn=$fn){
-	union(){
-		rotate([90,0,0]) hull(){
-			cylinder(h=h,r=r,$fn=$fn,center=center);
-			translate([0,r-0.001,center?0:h/2]) cube([2*(sqrt(2)-1)*r,0.002,h],center=true);
-		}
-		rotate([90,0,0]) translate([0,r-0.001,(center?0:h/2)]) cube([2*(sqrt(2)-1)*r,0.002+2*extra_height,h],center=true);
-	}
-}
 
 module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
 	union(){
@@ -239,13 +230,17 @@ module feather_vertical_edges(flat_h=0.2,fin_r=0.5,fin_h=0.72,object_h=20){
 }
 
 module square_to_circle(r, h, layers=4, top_cylinder=0){
-    sides=[4,8,16,32]; //number of sides
+    // A stack of thin shapes, starting as a square and
+    // gradually gaining sides to turn into a cylinder
+    sides=[4,8,16,32,64,128,256]; //number of sides
     for(i=[0:(layers-1)]) rotate(180/sides[i]) 
         translate([0,0,i*h/layers]) cylinder(r=r/cos(180/sides[i]),h=h/layers+d,$fn=sides[i]);
     if(top_cylinder>0) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
 }
 
 module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
+    // This creates a cut-out that can be used to make a hole in a large
+    // bridge, without too much spaghetti!
     base = base_w>0 ? [base_w,2*r,dz] : [2*r,2*r,dz];
     union(){
         translate([0,0,dz/2]) cube(base,center=true);
@@ -254,7 +249,7 @@ module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
     }
 }
 
-//hole_from_bottom(3, 10, base_w=12);
+hole_from_bottom(3, 10, base_w=12);
 
 //feather_vertical_edges(fin_r=1){
 //	cylinder(r=12,h=10);
