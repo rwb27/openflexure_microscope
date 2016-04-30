@@ -13,6 +13,7 @@
 ******************************************************************/
 
 use <./utilities.scad>;
+include <./microscope_parameters.scad>;
 
 ns_flex = [2.5,1,0.75];
 ns_outer_r = 7;

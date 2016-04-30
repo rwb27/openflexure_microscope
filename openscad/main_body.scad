@@ -268,6 +268,21 @@ module z_anchor_wall_vertex(){
     }
 }
 
+module place_on_wall(){
+    //this is a complicated transformation!  The wall runs from
+    wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
+    wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
+                 +[1,-1,0]*(12+wall_t/2))/sqrt(2);
+    wall_disp = wall_end - wall_start; // vector along the wall base
+    // pivot about the starting corner of the wall so X is along it
+    translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
+    // move out to the surface (the above are centres of cylinders)
+    // and then align y with the vertical axis of the wall
+    translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/zawall_h/sqrt(2)),0,0])
+    // now X and Y are in the plane of the wall, and z=0 is its surface.
+    children();
+}
+
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
 union(){
 
@@ -384,17 +399,11 @@ union(){
         
         //////////////// logo and version string /////////////////////
         size = big_stage?0.28:0.22;
-        //this is a complicated transformation!  The wall runs from
-        wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
-        wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
-                     +[1,-1,0]*(12+wall_t/2))/sqrt(2);
-        wall_disp = wall_end - wall_start; // vector along the wall base
-        // pivot about the starting corner of the wall so X is along it
-        translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
-        // move out to the surface (the above are centres of cylinders)
-        // and then align y with the vertical axis of the wall
-        translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/zawall_h/sqrt(2)),0,0])
-        translate([8,wall_h-2-15*size,-0.5]) scale([size,size,10]) logo_and_name(version_string);
+        place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
+        scale([size,size,10]) logo_and_name(version_string);
+        
+        mirror([1,0,0]) place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
+        scale([size,size,10]) oshw_logo();
 	} ///////// End of things to chop out of base/walls ///////
     
 	//Actuator housings (screw seats and motor mounts)

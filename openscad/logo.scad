@@ -47,7 +47,7 @@ module waterscope_logo(){
 }
 
 module oshw_logo(){
-    translate([-17.5,-16]) resize([35,0],auto=true) import("oshw_gear.dxf");
+    linear_extrude(1) translate([-17.5,-16]) resize([35,0],auto=true) import("oshw_gear.dxf");
 }
 
 module logo_and_name(subtitle=""){

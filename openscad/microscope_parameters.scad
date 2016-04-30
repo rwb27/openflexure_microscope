@@ -30,7 +30,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = false;
 motor_lugs = false;
-version_numstring = "5.15.0";
+version_numstring = "5.15.1";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -63,17 +63,15 @@ z_flex_w = 4;   // width of struts for Z axis
 leg = [4,stage_flex_w,flex_z2+zflex_t]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
 
-leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stage
+leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stagef
 actuator = [6,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y
 actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
 xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
-xy_actuator_travel_top = nut_seat_h+xy_actuator_travel; // max Z for XY axis actuator
 z_flexure_x = (leg_r-zflex_l-max(5,leg[2]*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis)
 z_flexure_spacing = min(flex_z2-actuator[2]-z_strut_l*0.22-2, 30); // distance between the two sets of flexures on the Z axis
 z_carriage = [(z_flexure_x-zflex_l*2-z_strut_l)+d,4,z_flexure_spacing+zflex_t]; //size of the moving block for the Z carriage
 z_nut_y = (z_strut_l+zflex_l)*z_lever_ratio+zflex_l/2; // position of Z actuator
 z_actuator_travel = z_nut_y*0.15; // distance moved by the Z actuator
-z_actuator_travel_top = nut_seat_h+z_actuator_travel; // max Z of actuator
 z_carriage_y = z_strut_l+2*zflex_l; // y position of moving pivot on Z axis
 z_link_w = 4; // width of linking bar between top Z-axis flexure struts
 bridge_dz = 10; // spacing between thin links on legs
