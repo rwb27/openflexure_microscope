@@ -12,7 +12,8 @@
 *                                                                 *
 ******************************************************************/
 
-use <MCAD\involute_gears.scad>;
+use <MCAD/involute_gears.scad>; //NB forward slash - it works on 
+// both unix-like and Windows platforms. Backslash doesn't...
 use <utilities.scad>;
 
 //pi=3.14159;
