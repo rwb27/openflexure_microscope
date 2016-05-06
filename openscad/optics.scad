@@ -14,11 +14,13 @@
 
 use <utilities.scad>;
 use <cameras/picam_push_fit.scad>;
+use <cameras/picam_2_push_fit.scad>;
 use <cameras/C270_mount.scad>;
 use <dovetail.scad>;
 
 //camera = "C270";
-camera = "picamera";
+//camera = "picamera";
+camera = "picamera2";
 
 bottom = -8; //nominal distance from PCB to microscope bottom
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
@@ -26,11 +28,11 @@ d = 0.05;
 
 // The camera parameters depend on what camera we're using,
 // sorry about the ugly syntax, but I couldn't find a neater way.
-camera_angle = (camera=="picamera"?45:
+camera_angle = (camera=="picamera"||camera=="picamera2"?45:
                (camera=="C270"?-45:0));
-camera_h = (camera=="picamera"?24:
+camera_h = (camera=="picamera"||camera=="picamera2"?24:
            (camera=="C270"?53:0));
-camera_shift = (camera=="picamera"?2.4:
+camera_shift = (camera=="picamera"||camera=="picamera2"?2.4:
                (camera=="C270"?(45-53/2):0));
 
 // This is the size of the objective clip, must match the main body.
@@ -66,7 +68,9 @@ module camera(){
     //This creates a cut-out for the camera we've selected
     if(camera=="picamera"){
         picam_push_fit();
-    }else{
+    }else if(camera=="picamera2"){
+        picam2_push_fit();
+    }else if(camera=="C270"){
         C270(beam_r=5,beam_h=6+d);
     }
 }
@@ -285,7 +289,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
-/*/ Optics module for pi camera, with standard stage (i.e. the classic)
+// Optics module for pi camera, with standard stage (i.e. the classic)
 optics_module_single_lens(
     ///picamera lens
     lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
@@ -293,7 +297,7 @@ optics_module_single_lens(
     lens_t=3.0, //thickness of lens
     parfocal_distance = 6 //sample to bottom of lens
 );//*/
-// Optics module for RMS objective, using Comar singlet tube lens
+/*/ Optics module for RMS objective, using Comar singlet tube lens
 optics_module_rms(
     tube_lens_ffd=16.1, 
     tube_lens_f=20, 

@@ -241,10 +241,10 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
 module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
     // This creates a cut-out that can be used to make a hole in a large
     // bridge, without too much spaghetti!
-    base = base_w>0 ? [base_w,2*r,dz] : [2*r,2*r,dz];
+    base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,d];
     union(){
-        translate([0,0,dz/2]) cube(base,center=true);
-        translate([0,0,dz]) square_to_circle(r, dz*4, 4, h-dz*5);
+        translate([0,0,0]) cube(base,center=true);
+        translate([0,0,base[2]/2]) square_to_circle(r, dz*4, 4, h-dz*5);
         if(big_bottom) mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     }
 }
