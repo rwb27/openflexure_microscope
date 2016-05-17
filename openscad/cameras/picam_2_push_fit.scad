@@ -100,12 +100,12 @@ difference(){
     picam2_push_fit();
 }
 
-module picam_pcb_bottom(){
+module picam2_pcb_bottom(){
     // This is an approximate model of the pi camera PCB for the purposes of making
     // a slide-on cover.  NB z=0 is the bottom of the PCB, which is nominally 1mm thick.
     pcb = [25+0.5,24+0.5,1+0.3];
     socket = [pcb[0],6.0+0.5,2.7];
-    components = [pcb[0]-3*2, pcb[1]-1-socket[1], 2];
+    components = [pcb[0]-1*2, pcb[1]-1-socket[1], 2];
     translate([0,2.4,0]) union(){ //NB the camera bit isn't centred!
         translate([0,0,pcb[2]/2]) cube(pcb,center=true); //the PCB
         translate([-components[0]/2,-pcb[1]/2+socket[1],-components[2]+d]) cube(components); //the little components

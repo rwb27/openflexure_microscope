@@ -163,7 +163,7 @@ module rms_mount_and_tube_lens_gripper(){
 /////////// Cover for camera board //////////////
 module picam_cover(){
     // A cover for the camera PCB, slips over the bottom of the camera
-    // mount.
+    // mount.  This version should be compatible with v1 and v2 of the board
     start_y=-12+2.4;//-3.25;
     l=-start_y+12+2.4; //we start just after the socket and finish at 
     //the end of the board - this is that distance!
@@ -180,7 +180,7 @@ module picam_cover(){
                 }
             }
         }
-        translate([0,0,-1]) picam_pcb_bottom();
+        translate([0,0,-1]) picam2_pcb_bottom();
         //chamfer the connector edge for ease of access
         translate([-999,start_y,0]) rotate([-135,0,0]) cube([9999,999,999]);
     }
@@ -289,7 +289,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
-// Optics module for pi camera, with standard stage (i.e. the classic)
+/*/ Optics module for pi camera, with standard stage (i.e. the classic)
 optics_module_single_lens(
     ///picamera lens
     lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
@@ -306,4 +306,4 @@ optics_module_rms(
     sample_z = 65
 );//*/
 //
-//picam_cover();
+picam_cover();
