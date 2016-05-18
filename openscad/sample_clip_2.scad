@@ -38,15 +38,15 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
             hull() repeat([sample[0],0,0],2) cylinder(r=w/2,h=t);
             
             translate([0,0,roc+t]) rotate([0,90,0]) difference(){
-                cylinder(r=roc+t,h=6,center=true);
+                cylinder(r=roc+t,h=w,center=true);
                 cylinder(r=roc,h=999,center=true);
                 translate([0,0,-99]) rotate(0) cube([999,999,999]);
                 translate([0,0,-99]) rotate(angle) cube([999,999,999]);
             }
             sequential_hull(){
-                translate([0,0,roc+t]) rotate([0,90,0]) rotate(angle) translate([0,roc+t/2,0]) cylinder(r=t/2,h=6,center=true);
-                translate([0,sample[1],sample[2]+t/2]) rotate([0,90,0]) cylinder(r=t/2,h=6,center=true);
-                translate([0,sample[1]+t,sample[2]+t]) rotate([0,90,0]) cylinder(r=t/2,h=6,center=true);
+                translate([0,0,roc+t]) rotate([0,90,0]) rotate(angle) translate([0,roc+t/2,0]) cylinder(r=t/2,h=w,center=true);
+                translate([0,sample[1],sample[2]+t/2]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
+                translate([0,sample[1]+t,sample[2]+t]) rotate([0,90,0]) cylinder(r=t/2,h=w,center=true);
             }
             
         }
@@ -54,7 +54,12 @@ module sample_clip(sample,t=2.5,w=6,roc=-1,slope=30){
     }
 }
 
-sample_clip([0,19/2+3,12.4-1.5],slope=7.5);
+
+//this is for mini culture plates, 39mm outer diameter and 12.4mm high
+//sample_clip([0,19/2+3,12.4-1.5],slope=7.5); //mini culture dish
+
+//for a standard microscope slide, use [0,20,0] to clamp from both holes next to one leg
+sample_clip([0,20,-1], w=7, roc=7); //microscope slide
 /*
 translate([10,0,0]) sample_clip([0,20,0]);
 translate([20,0,0]) sample_clip([0,20,10]);

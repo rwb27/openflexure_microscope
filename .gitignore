@@ -3,5 +3,9 @@
 # Do allow them in the stl folder though
 ! /stl/*.stl
 
+# Ignore gcode files
+*.g
+*.gcode
+
 # Ignore VIM swap files
 *.swp
