@@ -8,9 +8,9 @@
 --!>
 <docubricks>
   <physical_part id="152726439">
-    <description>M3 Nuts (preferably brass)</description>
-    <supplier />
-    <supplier_part_num />
+    <description>M3 Nuts (preferably brass), Qty: 3</description>
+    <supplier>Anglian Fasteners Limited</supplier>
+    <supplier_part_num>11355</supplier_part_num>
     <manufacturer_part_num />
     <url />
     <material_amount />
@@ -18,15 +18,15 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>These nuts form part of the actuator.  Brass ones will have less friction and result in smoother motion.</description>
+        <description>These nuts form part of the actuator.  Brass ones will have less friction and result in smoother motion, though it's possible they will wear out more quickly.</description>
         <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="994401804">
     <description>30mm M3 Hexagon-head screw, Qty:3</description>
-    <supplier />
-    <supplier_part_num />
+    <supplier>Anglian Fasteners Limited</supplier>
+    <supplier_part_num>6663</supplier_part_num>
     <manufacturer_part_num />
     <url />
     <material_amount />
@@ -41,8 +41,19 @@
   </physical_part>
   <physical_part id="1673661896">
     <description>M3 Washer, Qty: 6</description>
-    <supplier />
-    <supplier_part_num />
+    <supplier>Anglian Fasteners Limited</supplier>
+    <supplier_part_num>7118</supplier_part_num>
+    <manufacturer_part_num />
+    <url />
+    <material_amount />
+    <material_unit>NONE</material_unit>
+    <media />
+    <manufacturing_instruction />
+  </physical_part>
+  <physical_part id="589229119">
+    <description>8mm M3 screws, Qty: 2</description>
+    <supplier>Anglian Fasteners Limited</supplier>
+    <supplier_part_num>14315</supplier_part_num>
     <manufacturer_part_num />
     <url />
     <material_amount />
@@ -93,13 +104,13 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>You need wires to connect the LED to the 5V power supply from the Raspberry Pi.  My preferred option is two cores from a ribbon cable, soldered to the LED and resistor at one end and with a crimped-on connector at the other.  If you want a no-soldering solution, four female-female jumpers allow you to connect everything (using a cut-off leg of the resistor to join two of them together).</description>
+        <description>You need wires to connect the LED to the 5V power supply from the Raspberry Pi.  If you've bought a kit, it will be supplied with a ready-made lead that has the LED at one end and the header connector at the other end.  My preferred DIY option is two cores from a ribbon cable, soldered to the LED and resistor at one end and with a crimped-on connector at the other.  If you want a no-soldering solution, four female-female jumpers allow you to connect everything (using a cut-off leg of the resistor to join two of them together).</description>
         <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1798060650">
-    <description>Elastic bands, qty:6</description>
+    <description>Elastic bands, qty:3</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -109,7 +120,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>I use thin (~1mmx1mm in cross section) elastic bands, around 15cm long unstretched, and put two of them on each actuator.</description>
+        <description>The elastic bands are important to provide a return force on the nut that is pulled upwards by the screw.  I use number ??? bands, which are about 3mm wide and about ???mm in circumference.  It would also be possible to use shorter bands and wrap them round the foot fewer times.  If only thin elastic bands are available, you may need to use multiple bands or fold bands in half to get enough force.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -125,7 +136,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>Any model will do!</description>
+        <description>Any model will do!  If you buy a kit, it may or may not come with a Pi.  NB if you buy a Pi Zero, only the Zero+ has a camera connector, and even that needs a special lead.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -152,7 +163,7 @@
     <material_amount>0.1</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/piscope_5_12.stl" />
+      <file url="././usdata/main_body.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -183,9 +194,13 @@
     <material_unit>KG</material_unit>
     <media>
       <file url="././usdata/untilted_foot.stl" />
-      <file url="././usdata/0-untilted_foot.stl" />
-    </media>
-    <manufacturing_instruction />
+      <file url="././usdata/tilted_foot.stl" />
+    </media>    <manufacturing_instruction>
+      <step>
+        <description>You need two tilted feet (tilted_foot.stl) and one untilted foot (untilted_foot.stl).</description>
+        <media />
+      </step>
+    </manufacturing_instruction>
   </physical_part>
   <physical_part id="53886429">
     <description>Optics module plastic parts</description>
@@ -196,12 +211,12 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/optics_all_in_one.stl" />
-      <file url="././usdata/camera_cover.stl" />
+      <file url="././usdata/optics_picam_pilens.stl" />
+      <file url="././usdata/picam_cover.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either other copies of the same thing, or possibly even print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.</description>
+        <description>The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either print more than one optics module at a time, or print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.  The optics module is best printed in black to cut down on stray light inside the tube - though it will still work in other colours.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -215,18 +230,18 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/camera_lens_pliers.stl" />
-      <file url="././usdata/camera_board_gripper.stl" />
+      <file url="././usdata/picam2_lens_remover.stl" />
+      <file url="././usdata/picam2_board_gripper.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>These tools make it much easier to remove the lens from a Raspberry Pi camera module.  See the documentation for the Raspberry Pi Camera Mount/Extension Tube for instructions.</description>
+        <description>These tools make it much easier to remove the lens from a Raspberry Pi camera module.  See the documentation for the Raspberry Pi Camera Mount/Extension Tube for instructions.  These tools are for version 2 of the camera board; see v5.14 or earlier of this design for tools that work with the picamera v1.</description>
         <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="735104653">
-    <description>Gear/thumbscrew</description>
+    <description>Gear/thumbscrew, Qty: 3</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -238,7 +253,7 @@
     </media>
     <manufacturing_instruction>
       <step>
-        <description>These gears are used to control the leadscrews that move the stage.  You can replace them with more comfortable thumbscrews if desired, or use stepper motors to drive them automatically.</description>
+        <description>These gears are used to control the leadscrews that move the stage.  You can replace them with more comfortable thumbscrews if desired, or use stepper motors to drive them automatically.  You need three gears.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -256,7 +271,7 @@
       <step>
         <description>You need a paperclip (or other relatively stiff piece of wire) to pull the elastic bands through the structure.  I find the handle from a foldback clip works well.  The exact shape you use is not important, but it probably needs to have a small (&lt;3mm wide) hook at one end, a straight section in the middle, and some sort of handle at the end.  I have included a photograph of my usual shape.
 
-Typically I use two pairs of pliers to bend this.  Hopefully this will come as a part of the kit of non-printed parts that we hope to start selling soon.</description>
+Typically I use two pairs of pliers to bend this.  This will come as a part of the kit of non-printed parts that we hope to start selling soon.</description>
         <media>
           <file url="./usdata/DSCF3595c.jpg" />
         </media>
@@ -272,25 +287,14 @@ Typically I use two pairs of pliers to bend this.  Hopefully this will come as a
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./usdata/illumination.stl" />
+      <file url="./usdata/illumination_and_rear_foot_standard_stage.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>The illumination fits on to the microscope using a dovetail: this prints best with other parts (i.e. the time for each layer to cool is increased by printing other parts at the same time).  It's not too tall, so could be printed with (for example) the microscope feet.</description>
+        <description>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  This prints best with other parts of a similar height, e.g. other illumination arms, the optics module, or the microscope body.</description>
         <media />
       </step>
     </manufacturing_instruction>
-  </physical_part>
-  <physical_part id="589229119">
-    <description>8mm M3 screws, Qty: 2</description>
-    <supplier />
-    <supplier_part_num />
-    <manufacturer_part_num />
-    <url />
-    <material_amount />
-    <material_unit>NONE</material_unit>
-    <media />
-    <manufacturing_instruction />
   </physical_part>
   <physical_part id="640980340">
     <description>Sample Clip, Qty:2</description>
@@ -352,28 +356,50 @@ Typically I use two pairs of pliers to bend this.  Hopefully this will come as a
     <long_description>Optomechanics is a crucial part of any microscope; when working at high magnification, it is absolutely crucial to keep the sample steady and to be able to bring it into focus precisely.  Accurate motion control is extremely difficult using printed mechanical parts, as good linear motion typically requires tight tolerances and a smooth surface finish.  This design for a 3D printed microscope stage uses plastic flexures, meaning its motion is free from friction and vibration.  It achieves steps well below 100nm when driven with miniature stepper motors, and is stable to within a few microns over several days.
 
 This design aims to minimise both the amount of post-print assembly required, and the number of non-printed parts required - partly to make it as easy as possible to print, and partly to maximise stability; most of the microscope (including all the parts with flexures) prints as a single piece.  The majority of the expense is in the Raspberry Pi and its camera module; the design requires only around 100g of plastic and a few nuts, bolts and other parts.  The optics module (containing the camera and lens) can be easily swapped out or modified, for example to add epifluorescence or change the magnification.</long_description>
-    <notes>This is the first "stable" release of the microscope; ongoing development lives on the Github page https://github.com/rwb27/openflexure_microscope and the accompanying paper is available at http://dx.doi.org/10.1063/1.4941068 (the paper is also open-access).
+    <notes>This is the second "stable" release of the microscope; ongoing development lives on the Github page https://github.com/rwb27/openflexure_microscope and the accompanying paper is available at http://dx.doi.org/10.1063/1.4941068 (the paper is open-access).
 
-There is a preprint describing the mechanical performance of the microscope on arXiv here: http://arxiv.org/abs/1509.05394
-
-This microscope will be available through http://www.waterscope.org/ in the next few months, as a kit (with or without printed parts and Raspberry Pi) or fully assembled.</notes>
+This microscope will be available through http://www.waterscope.org/ in Summer 2016, as a kit (with or without printed parts and Raspberry Pi) or fully assembled.</notes>
     <license>CERN Open Hardware License</license>
     <media />
     <assembly_instruction>
       <step>
         <description>First, you will need to print or obtain the 3D printed parts.
 
-The microscope is designed to print without support material.  This is quite important; if you use support material it will require a lot of cleaning up, and you may well damage the mechanism.  I usually print with a layer size of 0.24mm on my Ormerod, which takes 8 hours for the main structure.  “low” quality on an Ultimaker 2 produced similar results in about 5 hours. 
-If your printer has a standard-sized bed (180mmx180mm should be fine) then it might be possible to print the complete microscope in one go.  I do this whenever I’m using a machine that is well calibrated and reliable.  However, I find that it’s often more reliable to print in batches (as small parts at the edge of the print bed can detach and cause it to fail).  I would recommend:
-Batch 1: Microscope and Optics module (main part)
-Batch 2: Feet, gears, camera cover, illumination
+The microscope is designed to print without support material.  This is quite important; if you use support material it will require a lot of cleaning up, and you may well damage the mechanism.  I usually print with a layer size of 0.24mm on my Ormerod, which takes 8 hours for the main structure.  “low” quality on an Ultimaker 2 (0.15mm layers) produced similar results in about 5 hours.
+
+If your printer has a standard-sized bed (180mmx180mm should be fine) then it should be possible to print the complete microscope in one go.  I do this if I’m using a machine that is well calibrated and reliable.  However, I find that it’s often more reliable to print in batches (as small parts at the edge of the print bed can detach and cause it to fail).  I would recommend:
+Batch 1: Microscope, illumination and Optics module (main part)
+Batch 2: Feet, gears, camera cover
 There is a test file that prints a single leg of the microscope - the Microscope leg test object. It's worth printing this first to check your settings are OK.</description>
         <media>
           <file url="./usdata/DSCF3584.jpg" />
         </media>
       </step>
       <step>
-        <description>Next, assemble all the necessary parts and tools.  You'll likely need needle nose pliers (preferably two pairs), a 3mm drill bit (for cleaning out the holes, you can use a screw in a pinch), and the all-important bent paperclip (see the physical part description).  The parts should all be listed in the bill of materials.
+        <description>Next, assemble all the necessary parts and tools.  You may want needle nose pliers if you have difficulty removing the camera lens with the plastic tool, a 3mm drill bit (for cleaning out the holes, you can use a screw in a pinch), and the all-important bent paperclip (see the physical part description).  The parts should all be listed in the bill of materials, but for clarity you will need:
+
+Plastic parts:
+* 1x microscope body
+* 1x optics module
+* 1x illumination and rear foot
+* 2x tilted foot
+* 1x untilted foot
+* 3x gear
+* 1x camera cover
+* 2x sample clip (optional)
+Metal hardware:
+* 3x M3 hexagon head 25mm screws, stainless steel
+* 3x M3 brass nut
+* 3x M3 stainless steel washer
+* 2x M3 8mm cap head screw (optional, for sample clips)
+* 2x M2 6mm cap head screw (optional, to secure camera more strongly)
+Electronic parts:
+* White LED
+* Resistor
+* 2-way JST header connector
+* Suitable wire
+* Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)
+* Raspberry Pi
 
 Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).</description>
         <media>
