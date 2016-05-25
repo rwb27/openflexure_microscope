@@ -222,18 +222,19 @@ module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
     tube_lens_r=16/2+0.2, objective_parfocal_distance=35, sample_z = 60, tube_length=160){
-    // This optics module takes an RMS objective and a 20mm focal length
-    // correction lens.
+    // This optics module takes an RMS objective and a tube length correction lens.
+    // important parameters are below:
+        
     rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
     //tube_lens_r (argument) is the radius of the tube lens
-    //tube_lens_ffd is the front focal distance (from flat side to focus)
-    //tube_lens_f is the nominal focal length of the tube lens.
-    tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of above
-    pedestal_h = 2; //height of tube lens above bottom of lens assembly
-    
+    //tube_lens_ffd (argument) is the front focal distance (from flat side to focus) - measure this.
+    //tube_lens_f (argument) is the nominal focal length of the tube lens.
+    tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the correction lens
+    pedestal_h = 2; // height of tube lens above bottom of lens assembly
     //sample_z (argument) // height of the sample above the bottom of the microscope (depends on size of microscope)
     dovetail_top = min(27, sample_z-objective_parfocal_distance-1); //height of the top of the dovetail
     
+    ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens
     // approximation: the light is focussing from the objective shoulder
     // to a point 160mm away, but we want to refocus it so it's
@@ -254,10 +255,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     // we measure the front focal distance, and shift accordingly:
     tube_lens_z = bottom + dts - (tube_lens_f - tube_lens_ffd);
         
-    //we need to shift the tube lens so that it focuses the
-        //already-converging light from the objective:
-    //tube_lens_shift = tube_lens_f - 1/(1/tube_lens_f+1/160);
-    //tube_lens_z = bottom + tube_lens_ffd - tube_lens_shift;
+    // having calculated where the lens should go, now make the mount:
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
     lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
     lens_assembly_h = sample_z-lens_assembly_z-objective_parfocal_distance; //the
@@ -289,21 +287,33 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     }
 }
 
-/*/ Optics module for pi camera, with standard stage (i.e. the classic)
-optics_module_single_lens(
-    ///picamera lens
-    lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
-    lens_aperture_r=2.2, //clear aperture of lens
-    lens_t=3.0, //thickness of lens
-    parfocal_distance = 6 //sample to bottom of lens
-);//*/
-/*/ Optics module for RMS objective, using Comar singlet tube lens
-optics_module_rms(
-    tube_lens_ffd=16.1, 
-    tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, 
-    objective_parfocal_distance=35,
-    sample_z = 65
-);//*/
-//
-picam_cover();
+difference(){
+    /*/ Optics module for pi camera, with standard stage (i.e. the classic)
+    optics_module_single_lens(
+        ///picamera lens
+        lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
+        lens_aperture_r=2.2, //clear aperture of lens
+        lens_t=3.0, //thickness of lens
+        parfocal_distance = 6 //sample to bottom of lens
+    );//*/
+    /*/ Optics module for RMS objective, using Comar 20mm singlet tube lens
+    optics_module_rms(
+        tube_lens_ffd=16.1, 
+        tube_lens_f=20, 
+        tube_lens_r=16/2+0.2, 
+        objective_parfocal_distance=35,
+        sample_z = 65
+    );//*/
+    // Optics module for RMS objective, using Comar 40mm singlet tube lens
+    optics_module_rms(
+        tube_lens_ffd=38, 
+        tube_lens_f=40, 
+        tube_lens_r=16/2+0.1, 
+        objective_parfocal_distance=35,
+        sample_z = 65
+    );//*/
+    //
+    //picam_cover();
+
+    rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
+}

@@ -14,47 +14,20 @@
 
 use <utilities.scad>;
 use <dovetail.scad>;
-$fn=16;
-d=0.05;
+include <microscope_parameters.scad>;
 
-big_stage = true;
-// MAKE SURE THESE MATCH THE VARIABLES IN main_body.scad
-stage_t=5; //thickness of the stage (at thickest point, most is 1mm less)
+// geometry is now defined by microscope_parameters.scad
+
 clip_w = 12; //external width of clip for dovetail
-//clip_y is no longer correct - need to take the value from main_body.scad
-//clip_y and sample_z are defined below
 clip_h = 12; //height of dovetail clip
 bottom = -15; //the foot extends below the bottom of the dovetail
+  //currently this is also defined in nut_seat_with_flex.scad, should
+  //move them both to microscope_parameters really!
 
-//the dovetail should sit at ([0,-leg_r-2,sample_z+5])
-//the LED should sit at ([0,0,sample_z+30])
-led_z = 12;
-dt_h = 13;
-below_led = 6;
 led_r = 3/2*1.1; //change to 5/2*1.1 if you want a bigger LED
-led_angle = 20;
+led_angle = 20; //cone angle for LED beam
 working_distance = clip_h; //wd should be >= clip_h so it fits on nicely...
-
-/*
-intersection(){
-	cylinder(r=999,h=999,$fn=8);
-//rotate([atan(25/(leg_r+3)),0,0])
-	translate([0,0,-led_z+below_led]) //rotate([atan((25+3-14)/(leg_r)),180,0])
-    rotate(atan((led_z-below_led-5)/(leg_r+2)),[1,0,0])
-    difference(){
-		union(){
-			translate([0,leg_r+2,5]) dovetail_m([clip_w,2,dt_h]);
-			hull(){
-				translate([-clip_w/2,leg_r+d,5]) cube([clip_w,d,dt_h]);
-				translate([0,0,led_z-below_led]) cylinder(r=4,h=below_led+1);
-			}
-		}
-		#translate([0,0,led_z-4]) cylinder(r=led_r,h=5);
-		translate([0,0,led_z]) cylinder(r=led_r+1,h=999);
-		translate([0,0,led_z-30-2]) cylinder(r1=led_r+30*tan(led_angle),r2=led_r,h=30);
-	}
-}*/
-
+                //working_distance is the distance from condenser to stage
 
 module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
     // Arm that clips on to the microscope, providing the back foot
@@ -121,8 +94,8 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
 
 difference(){
     // standard size
-    //rotate([90,0,0]) 
-    back_foot_and_illumination(clip_y=-26.0416, sample_z=40);
+    rotate([90,0,0]) 
+    back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z);
     // large stage version
     //rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
