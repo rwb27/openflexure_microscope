@@ -1,7 +1,6 @@
 # Don't take stl files from the openscad folder
-*.stl
+openscad/*.stl
 # Do allow them in the stl folder though
-! /stl/*.stl
 
 # Ignore gcode files
 *.g
