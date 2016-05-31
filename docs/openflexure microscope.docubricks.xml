@@ -5,14 +5,14 @@
      if the accompanying stylesheet and scripts are in the same directory.  It should
      also be available at http://www.docubricks.com/ in an easily-digestible HTML 
      format.
---!>
+-->
 <docubricks>
   <physical_part id="152726439">
     <description>M3 Nuts (preferably brass), Qty: 3</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>11355</supplier_part_num>
     <manufacturer_part_num />
-    <url />
+    <url>http://www.anglianfasteners.co.uk/</url>
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
@@ -24,11 +24,11 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="994401804">
-    <description>30mm M3 Hexagon-head screw, Qty:3</description>
+    <description>25mm M3 Hexagon-head screw, Qty:3</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>6663</supplier_part_num>
     <manufacturer_part_num />
-    <url />
+    <url>http://www.anglianfasteners.co.uk/</url>
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
@@ -44,7 +44,7 @@
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>7118</supplier_part_num>
     <manufacturer_part_num />
-    <url />
+    <url>http://www.anglianfasteners.co.uk/</url>
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
@@ -55,7 +55,7 @@
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>14315</supplier_part_num>
     <manufacturer_part_num />
-    <url />
+    <url>http://www.anglianfasteners.co.uk/</url>
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
@@ -63,25 +63,25 @@
   </physical_part>
   <physical_part id="1392832614">
     <description>White LED, 3mm diameter, 15 degree beam angle</description>
-    <supplier />
-    <supplier_part_num />
-    <manufacturer_part_num />
+    <supplier>Farnell Element14</supplier>
+    <supplier_part_num>1716696</supplier_part_num>
+    <manufacturer_part_num>OVL-3321</manufacturer_part_num>
     <url />
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
     <manufacturing_instruction>
       <step>
-        <description>The white LED is for illumination.  Exact specifications are unimportant, but this is the one I use.</description>
+        <description>The white LED is for illumination.  Exact specifications are unimportant, but this is the one I use.  3mm diameter is what I've designed for, but there's no reason you couldn't tweak the illumination arm to use a 5mm LED.</description>
         <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1476094922">
-    <description>40 Ohm resistor</description>
-    <supplier />
-    <supplier_part_num />
-    <manufacturer_part_num />
+    <description>60 Ohm resistor</description>
+    <supplier>Farnell Element14</supplier>
+    <supplier_part_num>1565328</supplier_part_num>
+    <manufacturer_part_num>MFR3-68RFC</manufacturer_part_num>
     <url />
     <material_amount />
     <material_unit>NONE</material_unit>
@@ -150,9 +150,15 @@
     <material_amount />
     <material_unit>NONE</material_unit>
     <media>
-      <file url="././usdata/DSCF3661.jpg" />
+      <file url="./images/camera_board_v1.jpg" />
     </media>
-    <manufacturing_instruction />
+    <manufacturing_instruction>
+      <step>
+        <description>NB I've pictured v1.3 of the camera board here; the microscope works with v1 or v2, but you need to make sure you print the correct optics module to fit your camera.</description>
+        <media />
+      </step>
+    </manufacturing_instruction>
+
   </physical_part>
   <physical_part id="238216425">
     <description>Microscope Body</description>
@@ -163,19 +169,25 @@
     <material_amount>0.1</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/main_body.stl" />
+      <file url="./stl/main_body_vanilla.stl" />
     </media>
     <manufacturing_instruction>
       <step>
         <description>This should be printed without support material.  On smaller/less well calibrated machines, I print this part on its own and then print the rest of the parts in a second print.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.</description>
         <media>
-          <file url="././usdata/DSCF3583.jpg" />
+          <file url="./images/main_body.jpg" />
         </media>
       </step>
       <step>
         <description>After printing, you should run a 3mm drill bit through the 3mm holes in each actuator, to ensure the screws can rotate freely.</description>
         <media>
-          <file url="././usdata/DSCF3602.jpg" />
+          <file url="./images/main_body_drill.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>If the bottom layer has oozed out too much, or if you used a brim (not reccommended) you might need to clean up the bottom so it looks like this - it's important that the moving parts aren't stuck to the body with a thin layer of plastic (this most often happens around the struts connecting the objective clip to the rest of the microscope).</description>
+        <media>
+          <file url="./images/main_body_bottom.jpg" />
         </media>
       </step>
       <step>
@@ -185,7 +197,7 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="291392559">
-    <description>Microscope feet</description>
+    <description>Microscope feet, Qty: 3</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -193,9 +205,10 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/untilted_foot.stl" />
-      <file url="././usdata/tilted_foot.stl" />
-    </media>    <manufacturing_instruction>
+      <file url="././stl/untilted_foot.stl" />
+      <file url="././stl/tilted_foot.stl" />
+    </media>
+    <manufacturing_instruction>
       <step>
         <description>You need two tilted feet (tilted_foot.stl) and one untilted foot (untilted_foot.stl).</description>
         <media />
@@ -211,12 +224,18 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/optics_picam_pilens.stl" />
-      <file url="././usdata/picam_cover.stl" />
+      <file url="./stl/optics_picam2_pilens.stl" />
+      <file url="./stl/optics_picam1_pilens.stl" />
+      <file url="./stl/picam_cover.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either print more than one optics module at a time, or print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.  The optics module is best printed in black to cut down on stray light inside the tube - though it will still work in other colours.</description>
+        <description>There are two versions of the optics module, for the two versions of the Raspberry Pi camera board.  Make sure you pick the right STL file for your camera module!  The cover is the same for both.</description>
+        <media />
+      </step>
+      <step>
+        <description>   
+          The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either print more than one optics module at a time, or print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.  The optics module is best printed in black to cut down on stray light inside the tube - though it will still work in other colours.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -230,12 +249,13 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././usdata/picam2_lens_remover.stl" />
-      <file url="././usdata/picam2_board_gripper.stl" />
+      <file url="./stl/picam2_lens_remover.stl" />
+      <file url="./stl/picam2_board_gripper.stl" />
+      <file url="./stl/picam1_board_gripper.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>These tools make it much easier to remove the lens from a Raspberry Pi camera module.  See the documentation for the Raspberry Pi Camera Mount/Extension Tube for instructions.  These tools are for version 2 of the camera board; see v5.14 or earlier of this design for tools that work with the picamera v1.</description>
+        <description>These tools make it much easier to remove the lens from a Raspberry Pi camera module.  See the documentation for the Raspberry Pi Camera Mount/Extension Tube for instructions.  These tools are for version 2 of the camera board.  The board gripper for v1 is included for convenience - you'll need a small pair of pliers (I like mini combination pliers) to unscrew the lens if you have v1 of the board.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -249,11 +269,11 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./usdata/gear.stl" />
+      <file url="./stl/large_gear.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>These gears are used to control the leadscrews that move the stage.  You can replace them with more comfortable thumbscrews if desired, or use stepper motors to drive them automatically.  You need three gears.</description>
+        <description>These gears are used to control the leadscrews that move the stage.  You can replace them with more comfortable thumbscrews if desired, or use stepper motors to drive them automatically.  You need three gears.  NB the gears are designed to print with the circular face down, this avoids marring of the teeth and helps it stick to the bed better.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -271,15 +291,15 @@
       <step>
         <description>You need a paperclip (or other relatively stiff piece of wire) to pull the elastic bands through the structure.  I find the handle from a foldback clip works well.  The exact shape you use is not important, but it probably needs to have a small (&lt;3mm wide) hook at one end, a straight section in the middle, and some sort of handle at the end.  I have included a photograph of my usual shape.
 
-Typically I use two pairs of pliers to bend this.  This will come as a part of the kit of non-printed parts that we hope to start selling soon.</description>
+Typically I use two pairs of pliers to bend this.  This will come as a part of the kit of non-printed parts.</description>
         <media>
-          <file url="./usdata/DSCF3595c.jpg" />
+          <file url="./images/bent_paperclip.jpg" />
         </media>
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1995350498">
-    <description>Illumination mount</description>
+    <description>Illumination arm and rear foot</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -287,7 +307,7 @@ Typically I use two pairs of pliers to bend this.  This will come as a part of t
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./usdata/illumination_and_rear_foot_standard_stage.stl" />
+      <file url="./stl/illumination_and_rear_foot_standard_stage.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -305,11 +325,11 @@ Typically I use two pairs of pliers to bend this.  This will come as a part of t
     <material_amount>0.002</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./usdata/sample_clip.stl" />
+      <file url="./stl/sample_clip.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>These are optional, but they are useful for holding slides on the stage.  Two are required.</description>
+        <description>These are optional, but they are useful for holding slides on the stage.  Usually, I use two of these for a normal microscope slide, screwed onto the top of the stage.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -323,7 +343,7 @@ Typically I use two pairs of pliers to bend this.  This will come as a part of t
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./usdata/just_leg_test.stl" />
+      <file url="./stl/just_leg_test.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -341,11 +361,11 @@ Typically I use two pairs of pliers to bend this.  This will come as a part of t
     <material_amount>0.001</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./usdata/gear_elevator.stl" />
+      <file url="./stl/gear_elevator.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>This part is optional - it's useful if you want to assemble the elastic bands after putting the gears on; it lifts the gear out of the way.</description>
+        <description>This part is useful if you want to assemble the elastic bands after putting the gears on; it lifts the gear up and out of the way, so you can reach in with the bent paperclip tool.  However, I reccommend assembling the elastic bands before putting the gear on - this is simpler although it takes slightly longer.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -372,7 +392,21 @@ Batch 1: Microscope, illumination and Optics module (main part)
 Batch 2: Feet, gears, camera cover
 There is a test file that prints a single leg of the microscope - the Microscope leg test object. It's worth printing this first to check your settings are OK.</description>
         <media>
-          <file url="./usdata/DSCF3584.jpg" />
+          <file url="./images/all_printed_parts.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>The files attached to this step will print the whole microscope in one go.  Note that there are two versions, depending on whether you have a pi camera module v1 or v2.</description>
+        <media>
+          <file url="./stl/all_parts_picam2.stl" />
+          <file url="./stl/all_parts_picam1.stl" />
+        </media>
+      </step>
+      <step>
+        <description>The files attached to this step will print the whole microscope in two batches, best if your machine has a small bed or is less reliable.  This assumes you're using the pi camera module v2.</description>
+        <media>
+          <file url="./stl/bed1_tall_picam2.stl" />
+          <file url="./stl/bed2_shallow.stl" />
         </media>
       </step>
       <step>
@@ -394,101 +428,77 @@ Metal hardware:
 * 2x M3 8mm cap head screw (optional, for sample clips)
 * 2x M2 6mm cap head screw (optional, to secure camera more strongly)
 Electronic parts:
-* White LED
-* Resistor
-* 2-way JST header connector
-* Suitable wire
+* White LED, resistor, wire, and 2-way JST header connector (assembled as one cable in the kit)
 * Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)
-* Raspberry Pi
+* Raspberry Pi (with associated power supply, keyboard, monitor, etc.)
 
 Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).</description>
         <media>
-          <file url="./usdata/DSCF3588.jpg" />
-          <file url="./usdata/DSCF3590.jpg" />
-          <file url="./usdata/DSCF3592.jpg" />
-          <file url="./usdata/0-DSCF3595c.jpg" />
+          <file url="./images/all_parts.jpg" />
         </media>
       </step>
       <step>
-        <description>We start by opening out the three holes in the microscope body with a drill as shown.  Make sure to go all the way through.  If you don’t have a drill, you can improvise by screwing in an M3 screw all the way, then forcibly rotating it with a screwdriver.  While you’re at it, do the same for the illumination mount.  Also, remove any loose strings of plastic from the underside of the actuator housings or sample stage, using a pair of pliers. The last step shouldn't be necessary if your machine is calibrated nicely for printing bridges.</description>
+        <description>If you printed the parts yourself, start by opening out the three holes in the microscope body with a drill as shown.  Make sure to go all the way through.  If you don’t have a drill, you can improvise by screwing in an M3 screw all the way, then forcibly rotating it with a screwdriver.  While you’re at it, do the same for the illumination mount.  Also, remove any loose strings of plastic from the underside of the actuator housings or sample stage, using a pair of pliers. The last step shouldn't be necessary if your machine is calibrated nicely for printing bridges.  If you purchased a kit, this may well have been done for you.</description>
         <media>
-          <file url="./usdata/0-DSCF3602.jpg" />
-          <file url="./usdata/DSCF3606.jpg" />
+          <file url="./images/main_body_drill.jpg" />
         </media>
       </step>
       <step>
-        <description>First, the rear foot fits in the bottom of the illumination column – the opening faces the centre of the microscope.  You may need to squeeze it slightly to fit it in.</description>
+        <description>First, assemble the three actuators, as described in the "<a href="#brick_909106319">anti-backlash flexure actuator</a>" brick - it's the same procedure done three times, once for each actuator.  You might find the central actuator is the best one to start with.  This accounts for most of the time assembling the microscope.  NB the instructions for this are later on in this file; if viewing it in Firefox, click "OpenFlexure Microscope" on the left, then pick it from the list of links that appears.</description>
         <media>
-          <file url="./usdata/DSCF3680.jpg" />
-          <file url="./usdata/DSCF3681.jpg" />
-          <file url="./usdata/DSCF3682.jpg" />
+          <file url="./images/actuator_parts_and_tools.jpg" />
         </media>
       </step>
       <step>
-        <description>Next, assemble the three actuators, as described in the "Anti-backlash flexure actuator" brick.  You might find the central actuator is the best one to start with.  This step is the most time consuming in the microscope.</description>
+        <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
         <media>
-          <file url="./usdata/0-DSCF3643.jpg" />
+          <file url="./images/illumination_0.jpg" />
+          <file url="./images/illumination_1.jpg" />
+          <file url="./images/illumination_2.jpg" />
+          <file url="./images/illumination_3.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Now thread the wire for the LED through the illumination arm.  It's usually easiest to start at the LED end.  If you have a pre-made LED wire with a connector on the end, threading it through is all that's needed - if you just have the components you will need to connect them together in series, and solder or crimp them.</description>
+        <media>
+          <file url="./images/illumination_led_0.jpg" />
+          <file url="!TODO!" />
         </media>
       </step>
       <step>
         <description>Assemble the Raspberry Pi lens and camera into the optics module, as described in the "Raspberry Pi Camera Mount/Extension Tube" brick.</description>
         <media>
-          <file url="./usdata/0-DSCF3686.jpg" />
+          <file url="./images/lens_insertion_0.jpg" />
         </media>
       </step>
       <step>
-        <description>Slot the optics module onto the dovetail mount, from the bottom.  You may find it easier to fit if you wiggle the module from side to side as it goes in.  It may also help to support the dovetail from the top (through the hole in the stage), as it will flex when you push the objective on to it. 
-NB the module shown here doesn't have the cover fitted on the PCB - yours should.</description>
+        <description>Slot the optics module onto the dovetail mount, from the bottom.  You may find it easier to fit if you wiggle the module from side to side as it goes in.  It may also help to support the dovetail from the top (through the hole in the stage), as it will flex when you push the objective on to it.  If you push too hard it is possible to break the flexure mechanism that holds the optics module.</description>
         <media>
-          <file url="./usdata/DSCF3690.jpg" />
-          <file url="./usdata/DSCF3691.jpg" />
+          <file url="./images/optics_insertion_0.jpg" />
+          <file url="./images/optics_insertion_1.jpg" />
+          <file url="./images/optics_insertion_2.jpg" />
+          <file url="./images/optics_insertion_3.jpg" />
+          <file url="./images/optics_insertion_4.jpg" />
         </media>
       </step>
       <step>
-        <description>Slot the illumination arm into the holder at the top of the microscope.  Again, a little wiggle might help persuade it in.</description>
+        <description>Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.  Plug in the camera to the camera connector as described in the Raspberry Pi documentation (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).</description>
         <media>
-          <file url="./usdata/DSCF3687.jpg" />
-          <file url="./usdata/DSCF3696.jpg" />
+          <file url="./images/pi_gpio.jpg" />
         </media>
       </step>
       <step>
         <description>After this, there are only the sample clips to go – exactly where you place these will depend on the samples you intend to use, but in any case you simply push the M3 screws into the clips, then screw down into the holes on the stage.</description>
         <media>
-          <file url="./usdata/DSCF3698.jpg" />
-          <file url="./usdata/DSCF3700.jpg" />
-          <file url="./usdata/DSCF3701.jpg" />
-          <file url="./usdata/DSCF3707.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>The LED needs to sit in the illumination mount, and the wires then run inside the illumination column to the GPIO pins on the raspberry pi, where they connect to the 5v supply.  First, make up the leads by joining two jumpers with a resistor, and the other two with an offcut of the resistor’s leg.</description>
-        <media>
-          <file url="./usdata/DSCF3711.jpg" />
-          <file url="./usdata/DSCF3712.jpg" />
-          <file url="./usdata/DSCF3713.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Next, fit the LED into the hole, and bend the legs so they run down the illumination mount.</description>
-        <media>
-          <file url="./usdata/DSCF3716.jpg" />
-          <file url="./usdata/DSCF3717.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Thread the leads up through the slit at the back of the microscope and connect to the LED (the longer lead is the positive terminal). Secure this with some tape (I use kapton tape but any tape should do). 
-The ground (blue in the picture above) and positive (red) wires fit on to the Raspberry Pi GPIO pins, I use the 5V closest to the corner of the Pi (or the second one along), and the ground pin next-but-one to it (i.e. the third pin from the corner, closest to the edge).</description>
-        <media>
-          <file url="./usdata/DSCF3718.jpg" />
-          <file url="./usdata/DSCF3719.jpg" />
-          <file url="./usdata/DSCF3720.jpg" />
+          <file url="./images/sample_clip_0.jpg" />
+          <file url="./images/sample_clip_1.jpg" />
         </media>
       </step>
       <step>
         <description>Your microscope is now complete – happy observing! 
 You might want to consult https://www.raspberrypi.org/documentation/usage/camera/ or https://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md if you need a hand setting up the camera.</description>
         <media>
-          <file url="./usdata/DSCF3721.jpg" />
+          <file url="./images/microscope_complete.jpg" />
         </media>
       </step>
     </assembly_instruction>
@@ -548,49 +558,70 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
   </brick>
   <brick id="107837596">
     <name>Raspbery Pi Camera Mount/Extension Tube</name>
-    <abstract>This is a push-fit extension tube that turns a Raspberry Pi camera module into a microscope with a field of view about 400um across and a resolution of around 2um.</abstract>
+    <abstract>This is a push-fit extension tube that turns a Raspberry Pi camera module into a microscope with a field of view about 400um across and a resolution of around 2um (better than 2um in the case of v2 of the camera module).</abstract>
     <long_description>This is the optics module for the OpenFlexure Microscope.  It holds a Raspberry Pi camera module and lens, but the lens is reversed and placed 40mm from the sensor, allowing it to function as a high-magnification microscope with a resolution of around 2um.  The push-fit mount for the camera module should be useful in other designs, too.</long_description>
     <notes />
     <license />
     <media />
     <assembly_instruction>
       <step>
-        <description>First, we need to remove the lens from the camera module.  This is usually held in with glue - while you can often crack the glue just by twisting the lens, it can be much easier if you first run a scalpel or craft knife around the join between the lens and the square plastic holder.</description>
+        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module, the tools for removing the camera lens, optionally two M2 screws to secure the camera, and ideally a sharp craft knife and some tape.</description>
         <media />
       </step>
       <step>
-        <description>Next, unscrew the lens from the camera module.  This step must be done with great care, as there is a small brown ribbon cable connecting the camera to the PCB that is very easy to break.  The printed tools make this much safer: there's a square plastic piece that fits over the camera and PCB, which stops the camera twisting and damaging the ribbon cable.  There's also a pair of plastic pliers that are good at gripping the lens module, though miniature combination pliers may well do a better job.  Care is needed to avoid marring the plastic lens holder too badly - some cosmetic damage is inevitable but too much is a problem.  I find it easier to hold the pliers still on the lens and rotate the camera board to unscrew it than to hold the board still and rotate the pliers, but your experience may vary.
-
-Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</description>
+        <description>First, we need to remove the lens from the camera module.  This is usually held in with glue - while you can often crack the glue just by twisting the lens, it can be much easier if you first run a scalpel or craft knife around the join between the lens and the square plastic holder.</description>
         <media>
-          <file url="././usdata/DSCF3664.jpg" />
-          <file url="././usdata/DSCF3665.jpg" />
+          <file url="./images/optics_module_parts.jpg" />
         </media>
       </step>
       <step>
-        <description>Before assembling the parts into the holder, make sure it's free from dust by blowing air through it.</description>
+        <description>Next, unscrew the lens from the camera module.  This step must be done with great care, as there is a small ribbon cable connecting the camera to the PCB that is very easy to break.  The printed tools make this much safer: there's a square plastic piece that fits over the camera and PCB ("picamera2_board_gripper.stl"), which stops the camera twisting and damaging the ribbon cable.  There's also a plastic tool to grip the lens module, though miniature combination pliers sometimes do a better job.  Care is needed to avoid marring the plastic lens holder too badly - some cosmetic damage is inevitable but too much can prevent it from sitting flat in the microscope.
+
+Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</description>
+        <media>
+          <file url="./images/picamera_lens_removal_1.jpg" />
+          <file url="./images/picamera_lens_removal_2.jpg" />
+          <file url="./images/picamera_lens_removal_3.jpg" />
+          <file url="./images/picamera_lens_removal_4.jpg" />
+          <file url="./images/picamera_lens_removal_5.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Before assembling the parts into the holder, make sure it's free from dust by blowing some air through it, and check there are no strings of plastic in the central hole through the mount.</description>
         <media />
       </step>
       <step>
-        <description>Next, put the lens into the holder.  This may take a small amount of force, or may fit very easily and require a layer of insulating tape wrapped around the lens to make it fit tightly (depending on your printer).  If it looks like it will require too much force, you may have a different design of camera module and you should re-print the part slightly larger.  If you wrapped tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.
-
-NB the photos here are for an older version (5.11), where the lens and camera were held on separate mounts.  The latest version has the lens in one end and the camera in the other end of the same mount.</description>
+        <description>Next, put the lens into the holder.  This may take a small amount of force, or may fit very easily and require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If it looks like it will require too much force, you may have a different design of camera module and you should re-print the part slightly larger.  If you wrapped tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.</description>
         <media>
-          <file url="././usdata/DSCF3684.jpg" />
-          <file url="././usdata/DSCF3685.jpg" />
-          <file url="././usdata/DSCF3686.jpg" />
+          <file url="./images/lens_insertion_0.jpg" />
+          <file url="./images/lens_insertion_1.jpg" />
+          <file url="./images/lens_insertion_2.jpg" />
+          <file url="./images/lens_insertion_3.jpg" />
+          <file url="./images/lens_insertion_4.jpg" />
         </media>
       </step>
       <step>
         <description>Finally, press the camera module onto the bottom of the optics mount.  This used to require considerable force, so I recommended placing the camera board on a soft surface (e.g. some bubble wrap) and pushing down.  The newer push-fit is much easier to use, and should fit in with a firm press from your thumb.</description>
         <media>
-          <file url="././usdata/DSCF3669.jpg" />
-          <file url="././usdata/DSCF3670.jpg" />
+          <file url="./images/optics_assembly_0.jpg" />
+          <file url="./images/optics_assembly_1.jpg" />
+          <file url="./images/optics_assembly_2.jpg" />
         </media>
       </step>
       <step>
-        <description>Lastly, slide the cover over the camera board, starting at the end farthest from the ribbon cable connector.  This will stop the camera falling out, and also protects the PCB from short circuits.</description>
-        <media />
+        <description>Slide the cover over the camera board, starting at the end farthest from the ribbon cable connector.  This will stop the camera falling out, and also protects the PCB from short circuits.</description>
+        <media>
+          <file url="./images/camera_cover_0.jpg" />
+          <file url="./images/camera_cover_1.jpg" />
+          <file url="./images/camera_cover_2.jpg" />
+          <file url="./images/camera_cover_3.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Lastly, if you want to make the module more robust, you can insert two M2 screws from the bottom, to lock the cover on and hold the PCB in place.  This is useful if the ribbon cable might be pulled accidentally, for example.</description>
+        <media>
+          <file url="./images/camera_screws_1.jpg" />
+        </media>
       </step>
     </assembly_instruction>
     <function id="592176179">
@@ -621,122 +652,117 @@ NB the photos here are for an older version (5.11), where the lens and camera we
     <assembly_instruction>
       <step>
         <description>There are three of these actuators on the microscope: these steps should be followed for each one in turn.  Note the quantities in the parts list are for one actuator, and they don't include the microscope body.</description>
-        <media />
-      </step>
-      <step>
-        <description>We need to place a nut inside each actuator: screw a brass nut onto the end of a screw, and press it in firmly.  The actuator will move – this is normal.</description>
         <media>
-          <file url="./usdata/DSCF3597.jpg" />
-          <file url="./usdata/DSCF3598.jpg" />
-          <file url="./usdata/DSCF3609.jpg" />
+          <file url="./images/actuator_parts_and_tools.jpg" />
         </media>
       </step>
       <step>
-        <description>Gently unscrew the screw, leaving the nut in place.  Then screw into the nut from the top of the microscope, gently at first to avoid dislodging the nut, but then do it up tightly.  Use a couple of washers to avoid damaging the microscope.  Hold the microscope upside down if the nut didn’t wedge in correctly.
-
-You can also do this using one of the hex-head screws with the thumbwheel/gear attached - this means you don't need a screwdriver.</description>
+        <description>First, put one of the hex-head screws into the gear as shown, then place a washer over the screw.</description>
         <media>
-          <file url="./usdata/DSCF3610.jpg" />
-          <file url="./usdata/DSCF3611.jpg" />
-          <file url="./usdata/DSCF3614.jpg" />
+          <file url="./images/thumbscrew_0.jpg" />
+          <file url="./images/thumbscrew_1.jpg" />
+          <file url="./images/thumbscrew_2.jpg" />
+          <file url="./images/thumbscrew_washer_0.jpg" />
+          <file url="./images/thumbscrew_washer_1.jpg" />
         </media>
       </step>
       <step>
-        <description>After doing up the screw very tightly (to pull the nut firmly into the actuator), unscrew the screw to lower the actuator a few millimetres, but don’t lower it all the way.  If you're using an assembled screw with gear, you can print a U-shaped spacer to lift the gear out of the way and allow you to hook the elastic bands through more easily.
-If you're using a hexagon-head screw, you may not be able to do it up very tightly.  In that case, pull it as tight as you can, and then tighten it all the way once you've assembled the gear in a later step.</description>
+        <description>Next, we need to place a nut inside each actuator: screw a brass nut onto the end of the screw, and press it in firmly.  The actuator will move – this is normal.  The brass nut should stick in place, so that the screw is able to hang from it.</description>
         <media>
-          <file url="./usdata/DSCF3616.jpg" />
-          <file url="./usdata/DSCF3622.jpg" />
+          <file url="./images/nut_insertion_0.jpg" />
+          <file url="./images/nut_insertion_1.jpg" />
+          <file url="./images/nut_insertion_2.jpg" />
+          <file url="./images/nut_insertion_3.jpg" />
+          <file url="./images/nut_insertion_4.jpg" />
+          <file url="./images/nut_insertion_5.jpg" />
         </media>
       </step>
       <step>
-        <description>This is the tricky part.  Remember the middle foot is different (it’s not tilted on the bottom) so don’t get mixed up!  For each actuator you will need a foot and two elastic bands, as well as the all-important bent paperclip tool!</description>
+        <description>Gently unscrew the screw, leaving the nut in place.  Then screw into the nut from the top of the microscope, gently at first to avoid dislodging the nut, but then do it up tightly.  Make sure the washer is on the screw before screwing it in, to avoid damaging the microscope.  Hold the microscope upside down if the nut didn’t wedge in correctly.  Put the screw in until the gear touches the microscope body, then keep turning - you will feel some resistance as the nut (and the head of the screw) is pulled into the plastic.  When the resistance increases, stop turning and unscrew until the bottom of the actuator sits flush with the bottom of the microscope.</description>
         <media>
-          <file url="./usdata/DSCF3624.jpg" />
-          <file url="./usdata/1-DSCF3595c.jpg" />
+          <file url="./images/screw_insertion_0.jpg" />
+          <file url="./images/screw_insertion_1.jpg" />
         </media>
       </step>
       <step>
-        <description>First, double up the elastic bands (so it looks like you have four smaller elastic bands) and pull it part way through one of the slots in the foot.  It helps if you stretch the elastic bands while you do this, as it makes them narrower.  Hold the bands in place with a screwdriver, spare screw, or other suitable object.</description>
+        <description>Now it's time for the elastic band.  Using the bent paperclip, hook the band through the slots on either side of the foot.  Remember that the feet are not all the same - there are two tilted feed for the outer actuators, and one untilted foot for the inner actuator.</description>
         <media>
-          <file url="./usdata/DSCF3625.jpg" />
-          <file url="./usdata/DSCF3626.jpg" />
-          <file url="./usdata/DSCF3627.jpg" />
-          <file url="./usdata/DSCF3628.jpg" />
+          <file url="./images/foot_band_1.jpg" />
+          <file url="./images/foot_band_2.jpg" />
+          <file url="./images/foot_band_3.jpg" />
+          <file url="./images/foot_band_4.jpg" />
         </media>
       </step>
       <step>
-        <description>Repeat the process on the other slot:</description>
+        <description>Now it's time to pull the elastic band into the body of the microscope - this is the tricky part!  First, check you have the right foot (the outer ones are tilted, so the microscope sits on the edge of the foot, the middle one is not tilted and is slightly shorter).  Also, make sure it's round the right way - the notch in the foot should point towards the centre of the microscope so the actuator can protrude below the bottom of the main body.  For each actuator you will need a foot and two elastic bands, as well as the all-important bent paperclip tool!</description>
         <media>
-          <file url="./usdata/DSCF3629.jpg" />
-          <file url="./usdata/DSCF3630.jpg" />
-          <file url="./usdata/DSCF3631.jpg" />
-          <file url="./usdata/DSCF3632.jpg" />
+          <file url="./images/band_hooking_0.jpg" />
         </media>
       </step>
       <step>
-        <description>You should now have something that looks like the pictures below – you may need to push the elastic bands around a little to neaten it up.</description>
+        <description>Now place the foot underneath the microscope as shown.  Note that the cut-out on the foot goes towards the stage.  Use the hook to pull the elastic band through and over the slots on one side of the actuator.  You can use the printed "elevator" (a U-shaped spacer) to raise the gear up slightly and make it easier to get the hook in.  It's easiest to pull the elastic band through when the actuator is raised a few millimetres, though it's hard when it's raised all the way to the top.</description>
         <media>
-          <file url="./usdata/DSCF3634.jpg" />
-          <file url="./usdata/DSCF3635.jpg" />
+          <file url="./images/band_hooking_1_1.jpg" />
+          <file url="./images/band_hooking_1_2.jpg" />
+          <file url="./images/band_hooking_1_3.jpg" />
+          <file url="./images/band_hooking_1_4.jpg" />
         </media>
       </step>
       <step>
-        <description>Now place the foot underneath the microscope as shown.  Note that the cut-out on the foot goes towards the stage.  Use the hook to pull the elastic bands up and over the slots on each side of the actuator.</description>
+        <description>Repeat the process on the other side, so the arrangement is symmetrical.</description>
         <media>
-          <file url="./usdata/DSCF3638.jpg" />
-          <file url="./usdata/DSCF3639.jpg" />
-          <file url="./usdata/DSCF3641.jpg" />
-          <file url="./usdata/DSCF3643.jpg" />
+          <file url="./images/band_hooking_2_1.jpg" />
+          <file url="./images/band_hooking_2_2.jpg" />
+          <file url="./images/band_hooking_2_3.jpg" />
         </media>
       </step>
       <step>
-        <description>After hooking one band over, it should look like the picture below.  Repeat until all the bands are hooked over, you can hook multiple bands each time.  Once you’re done, remove the screwdriver and the foot should snap into place.  If you pull the foot down a few millimetres, you should see the bands running neatly vertical – if not, you’ve probably crossed them over (though this isn’t a major problem).</description>
+        <description>The elastic band is now in place, but we need to tighten it.  Depending on the precise size and stretchiness of your elastic band, you may need to do this to one or both ends of it.  If you only do this once, you might need to shuffle the band around to transfer some tension from one side to the other.  The basic idea is that you pull the elastic band through the slot on the bottom of the foot, and wrap it around the outside of the foot to take up the slack.</description>
         <media>
-          <file url="./usdata/DSCF3645.jpg" />
-          <file url="./usdata/DSCF3647.jpg" />
-          <file url="./usdata/DSCF3648.jpg" />
-          <file url="./usdata/DSCF3650.jpg" />
+          <file url="./images/band_tightening_1_1.jpg" />
+          <file url="./images/band_tightening_1_2.jpg" />
+          <file url="./images/band_tightening_1_3.jpg" />
+          <file url="./images/band_tightening_1_4.jpg" />
+          <file url="./images/band_tightening_1_5.jpg" />
+          <file url="./images/band_tightening_1_6.jpg" />
         </media>
       </step>
       <step>
-        <description>Once the bands are in place, it is time to put the gear on the top, assuming you've not already done so.  You’ll need a hexagon-head screw (possibly the one you used to hold the actuator up during assembly), and one or two washers.  Push the screw through the hole, so that the hexagonal head (or the steel nut that was screwed up against the head, if you don't have hexagon head screws) sits in the hexagonal recess.  If it's a tight fit (which is a good thing) you may find it easiest to place the head of the screw on the table and push down on the gear.
-Place the washer(s) onto the shaft of the screw before inserting into the microscope.</description>
+        <description>Repeat on the other loop (unless your elastic band is shorter than mine, in which case you might need to adjust the procedure slightly).</description>
         <media>
-          <file url="./usdata/DSCF3652.jpg" />
-          <file url="./usdata/DSCF3653.jpg" />
-          <file url="./usdata/DSCF3654.jpg" />
-          <file url="./usdata/DSCF3659.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Now thread the screw into the nut that's inside the microscope.  You'll need to be gentle, particularly if you've not jammed it in too hard.  It might help to push up on the bottom of the actuator as shown, to align the nut properly.  Once you're sure the nut is sitting properly on the screw, screw it in all the way until the resistance - most likely there will be a period of several (up to ten or so) turns of the gear when there is quite a bit of resistance.  Keep going through this (it's the nut being pulled through the plastic to the right place, and also the screw head being properly pulled into the gear) and stop when the resistance increases markedly a second time.</description>
-        <media>
-          <file url="./usdata/DSCF3672.jpg" />
-          <file url="./usdata/DSCF3673.jpg" />
-          <file url="./usdata/DSCF3674.jpg" />
+          <file url="./images/band_tightening_2_1.jpg" />
+          <file url="./images/band_tightening_2_2.jpg" />
+          <file url="./images/band_tightening_2_3.jpg" />
+          <file url="./images/band_tightening_2_4.jpg" />
         </media>
       </step>
       <step>
         <description>Congratulations, you've assembled the actuator!  There are three to do, so you may now need to go back and make the next one.</description>
-        <media>
-          <file url="./usdata/DSCF3677.jpg" />
-          <file url="./usdata/DSCF3679.jpg" />
-        </media>
+        <media />
       </step>
     </assembly_instruction>
     <function id="118469770">
-      <description>Lead screw, nut and washers</description>
+      <description>Lead screw</description>
       <designator />
       <quantity>1</quantity>
       <implementation type="physical_part" id="994401804" />
+    </function>
+    <function id="118469770">
+      <description>Nut for lead screw</description>
+      <designator />
+      <quantity>1</quantity>
       <implementation type="physical_part" id="152726439" />
+    </function>
+    <function id="118469770">
+      <description>Washer</description>
+      <designator />
+      <quantity>1</quantity>
       <implementation type="physical_part" id="1673661896" />
     </function>
     <function id="1977413028">
       <description>Return spring</description>
       <designator />
-      <quantity>2</quantity>
+      <quantity>1</quantity>
       <implementation type="physical_part" id="1798060650" />
     </function>
     <function id="1731604542">
