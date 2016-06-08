@@ -1,0 +1,10 @@
+# Don't take stl files from the openscad folder
+openscad/*.stl
+# Do allow them in the stl folder though
+
+# Ignore gcode files
+*.g
+*.gcode
+
+# Ignore VIM swap files
+*.swp

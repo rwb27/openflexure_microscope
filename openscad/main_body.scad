@@ -12,75 +12,11 @@
 *                                                                 *
 ******************************************************************/
 
-use <utilities.scad>;
+use <./utilities.scad>;
 use <./nut_seat_with_flex.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
-
-d = 0.05;
-$fn=32;
-
-// These are the most useful parameters to change!
-big_stage = true;
-motor_lugs = false;
-version_numstring = "5.14.1";
-
-// This sets the basic geometry of the microscope
-sample_z = big_stage?65:40; // height of the top of the stage
-leg_r = big_stage?30:25; // radius of innermost part of legs
-hole_r = big_stage?15:10; // size of hole in the stage
-xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
-z_lever_ratio = big_stage?2.4:2.6; // as above, for Z axis (must be >1)
-// The variables below affect the position of the objective mount
-z_strut_l = big_stage?20:15; //length of struts supporting Z carriage
-objective_clip_y = big_stage?12:6; // y position of clip for optics
-objective_clip_w = 10; // width of the dovetail clip for the optics
-
-// These variables set the dimensions of flexures
-// You might want to tweak them if your material (or printer)
-// is different from the ones I've tested, though ABS/PLA extrusion
-// is generally fine with my parameters
-stage_flex_w = 4; // width of XY axis flexures
-zflex_l = 1.5;    // length of (all) flexible bits
-zflex_t = 0.75;   // thickness of (all) flexible bits
-
-// Compile a sensible version string
-version_string = str("v",version_numstring, big_stage?"-LS":"", motor_lugs?"-M":"");
-echo("Compiling OpenFlexure Microscope ",version_string);
-
-stage_t=5; //thickness of the stage (at thickest point, most is 1mm less)
-flex_z1 = 0;      // z position of lower flexures for XY axis
-flex_z2 = sample_z-stage_t; //height of upper XY flexures
-z_strut_t = 6;  // (z) thickness of struts for Z axis
-z_flex_w = 4;   // width of struts for Z axis
-leg = [4,stage_flex_w,flex_z2+zflex_t]; // size of vertical legs
-leg_middle_w = 12; // width of the middle part of each leg
-
-nut_seat_h = 14; // height of the actuator column that holds the nut
-leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stage
-actuator = [6,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y
-actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
-xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
-xy_actuator_travel_top = nut_seat_h+xy_actuator_travel; // max Z for XY axis actuator
-z_flexure_x = (leg_r-zflex_l-max(5,leg[2]*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis)
-z_flexure_spacing = min(flex_z2-actuator[2]-z_strut_l*0.22-2, 30); // distance between the two sets of flexures on the Z axis
-z_carriage = [(z_flexure_x-zflex_l*2-z_strut_l)+d,4,z_flexure_spacing+zflex_t]; //size of the moving block for the Z carriage
-z_nut_y = (z_strut_l+zflex_l)*z_lever_ratio+zflex_l/2; // position of Z actuator
-z_actuator_travel = z_nut_y*0.15; // distance moved by the Z actuator
-z_actuator_travel_top = nut_seat_h+z_actuator_travel; // max Z of actuator
-z_carriage_y = z_strut_l+2*zflex_l; // y position of moving pivot on Z axis
-z_link_w = 4; // width of linking bar between top Z-axis flexure struts
-bridge_dz = 10; // spacing between thin links on legs
-base_t=1; // thickness of the flat base of the structure
-wall_h=15; // height of the stiffening vertical(ish) walls
-wall_t=2; //thickness of the stiffening walls
-zawall_h = z_flexure_spacing - 5; //height of wall near Z anchor
-zbwall_h = z_actuator_travel+z_strut_t+1+2; //height of bridge over Z lever
-illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
-                       -wall_t/2-8); //position of clip for
-                      // illumination/back foot.  This is set to
-                      // coincide with the wall between the back
-                      // two legs.
+include <./microscope_parameters.scad>; //All the geometric variables are now in here.
 
 module shear_x(amount=1){
     // Shear transformation: tilt the Y axis towards the X axis
@@ -188,10 +124,6 @@ module each_actuator(){
     // Repeat this for both of the actuated legs (the ones with levers)
 	reflect([1,0,0]) leg_frame(45) children();
 }
-module each_nonactuator_leg(){
-    // Repeat this for both legs that don't have actuators.
-	reflect([1,0,0]) leg_frame(135) children();
-}
 
 module z_axis(){
     // Flexures and struts for motion in the Z direction
@@ -257,7 +189,7 @@ module objective_clip_3(){
 			rotate(45) cube([1,1,999]*z_flexure_x*sqrt(2),center=true);
 		}
 		// carve out the block to form a dovetail
-        translate([0,objective_clip_y,0.5+d]) dovetail_clip_cutout([clip_outer_w,arm_length,999]);
+        translate([0,objective_clip_y,0.5+d]) dovetail_clip_cutout([clip_outer_w,arm_length,999],solid_bottom=0.5,slope_front=2.5);
 		//clearance for top linker bar between flexure arms
 		translate([-999,z_carriage_y-zflex_l-z_link_w-1.5,z_flexure_spacing-2]) cube([999*2,zflex_l+z_link_w+1.5,999]);
 		//clearance for z axis struts passing under the carriage
@@ -270,13 +202,6 @@ module objective_clip_3(){
 		//cut-outs for flexures
 		reflect([1,0,0]) hull() translate([-z_flexure_x-d,0,0]) shear_x()
 			translate([-d,0,-d]) cube([z_flex_w+1.5,z_carriage_y,z_strut_t+1.5]);
-		//TODO: this code is now in dovetail.scad.  Should use it!
-        //sloped bottom to improve quality of the dovetail clip and
-        //allow insertion of the optics from the bottom
-        translate([0,objective_clip_y,0]){
-            rotate([45,0,0]) cube([999,1,1]*sqrt(2)*2.5,center=true); //slope up arms
-            hull() reflect([0,0,1]) translate([0,0,2.5]) rotate([0,45,0]) cube([inner_w/sqrt(2),8,inner_w/sqrt(2)],center=true);
-        }
 	}
 }
 
@@ -343,11 +268,26 @@ module z_anchor_wall_vertex(){
     }
 }
 
+module place_on_wall(){
+    //this is a complicated transformation!  The wall runs from
+    wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
+    wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
+                 +[1,-1,0]*(12+wall_t/2))/sqrt(2);
+    wall_disp = wall_end - wall_start; // vector along the wall base
+    // pivot about the starting corner of the wall so X is along it
+    translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
+    // move out to the surface (the above are centres of cylinders)
+    // and then align y with the vertical axis of the wall
+    translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/zawall_h/sqrt(2)),0,0])
+    // now X and Y are in the plane of the wall, and z=0 is its surface.
+    children();
+}
+
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
-difference(){union(){
+union(){
 
 	//legs
-	each_nonactuator_leg() leg();
+	reflect([1,0,0]) leg_frame(135) leg();
 	each_actuator() actuator();
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
@@ -366,13 +306,14 @@ difference(){union(){
    // this must get built up carefully: we start with the bridges round the edge, then work inwards.
 	difference(){
 		hull() each_leg() translate([0,-zflex_l-d,flex_z2+1+(stage_t-1)/2]) cube([leg_middle_w+2*zflex_l,2*d,stage_t-1],center=true); //body of the stage
-		hull() for(a=[45,-45]) rotate(a) translate([0,0,flex_z2+1]) cube([2*(leg_r+leg_middle_w/2-stage_flex_w-hole_r),2*hole_r,1],center=true); //cut-out from the bottom: start filling in the corners
-		rotate(45) translate([0,0,flex_z2+1]) cube([2*(leg_r+leg_middle_w/2-stage_flex_w-hole_r),2*hole_r,2],center=true);
+//		hull() for(a=[45,-45]) rotate(a) translate([0,0,flex_z2+1]) cube([2*(leg_r+leg_middle_w/2-stage_flex_w-hole_r),2*hole_r,1],center=true); //cut-out from the bottom: start filling in the corners
+//		rotate(45) translate([0,0,flex_z2+1]) cube([2*(leg_r+leg_middle_w/2-stage_flex_w-hole_r),2*hole_r,2],center=true);
 		//central hole, building in gradually 
         //TODO: use hole_from_bottom
-		rotate(45) translate([0,0,flex_z2+2]) assign(f=[4,8,16,32]) for(i=[0:(len(f)-1)]) rotate(180/f[i]) translate([0,0,i*0.5]) cylinder(r=10/cos(180/f[i]),h=1.05,$fn=f[i],center=true);
-		cylinder(r=hole_r,h=9999,$fn=64);
-		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,flex_z2+1.5]) cylinder(r=3/2,h=999);
+//		rotate(45) translate([0,0,flex_z2+2]) assign(f=[4,8,16,32]) for(i=[0:(len(f)-1)]) rotate(180/f[i]) translate([0,0,i*0.5]) cylinder(r=10/cos(180/f[i]),h=1.05,$fn=f[i],center=true);
+//		cylinder(r=hole_r,h=9999,$fn=64);
+        translate([0,0,flex_z2+1]) rotate(45) hole_from_bottom(hole_r,h=999,base_w=2*(leg_r+leg_middle_w/2-stage_flex_w - hole_r));
+		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,flex_z2+1.5]) cylinder(r=3/2*0.95,h=999); //mounting holes
 	}
 	
 	//z axis
@@ -427,11 +368,11 @@ difference(){union(){
                     
 		}
         //////  Things we need to cut out holes for... ///////////
-		each_actuator(){//cut-outs for actuators (XY)
+        // XY actuator cut-outs
+		each_actuator(){
 			actuator_silhouette(xy_actuator_travel+actuator[2]);
 			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 		}
-        
 		//Z actuator cut-out
 		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 
@@ -458,17 +399,11 @@ difference(){union(){
         
         //////////////// logo and version string /////////////////////
         size = big_stage?0.28:0.22;
-        //this is a complicated transformation!  The wall runs from
-        wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
-        wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
-                     +[1,-1,0]*(12+wall_t/2))/sqrt(2);
-        wall_disp = wall_end - wall_start; // vector along the wall base
-        // pivot about the starting corner of the wall so X is along it
-        translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
-        // move out to the surface (the above are centres of cylinders)
-        // and then align y with the vertical axis of the wall
-        translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/zawall_h/sqrt(2)),0,0])
-        translate([8,wall_h-2-15*size,-0.5]) scale([size,size,10]) logo_and_name(version_string);
+        place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
+        scale([size,size,10]) logo_and_name(version_string);
+        
+        mirror([1,0,0]) place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
+        scale([size,size,10]) oshw_logo();
 	} ///////// End of things to chop out of base/walls ///////
     
 	//Actuator housings (screw seats and motor mounts)
@@ -479,11 +414,7 @@ difference(){union(){
         screw_seat(travel=z_actuator_travel, motor_lugs=motor_lugs);
     }
 	////////////// clip for illumination/back foot ///////////////////
-	translate([0,illumination_clip_y,0]) dovetail_clip([16,8,12], slope_front = 3, solid_bottom = 0.5);
-    echo("Clip for illumination at y=",illumination_clip_y);
-}
-
-//translate([0,-99,-1]) cube(999);
+	translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
 }
 
 //%rotate(180) translate([0,2.5,-2]) cube([25,24,2],center=true);
