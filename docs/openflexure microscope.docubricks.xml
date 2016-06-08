@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xml" href="docubricks.xsl"?>
 <!-- 
-     This is a DocuBricks XML file, it can be viewed in a web browser (e.g. Firefox) 
+     This is a DocuBricks XML file, it can be viewed in a web browser (Firefox works best) 
      if the accompanying stylesheet and scripts are in the same directory.  It should
      also be available at http://www.docubricks.com/ in an easily-digestible HTML 
      format.
@@ -40,7 +40,7 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1673661896">
-    <description>M3 Washer, Qty: 6</description>
+    <description>M3 Washer, Qty: 3</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>7118</supplier_part_num>
     <manufacturer_part_num />
@@ -110,7 +110,7 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1798060650">
-    <description>Elastic bands, No. 32, Qty:3</description>
+    <description>Elastic bands, No. 32, Qty:3 (+ 3 spares)</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -389,7 +389,7 @@ The microscope is designed to print without support material.  This is quite imp
 
 If your printer has a standard-sized bed (180mmx180mm should be fine) then it should be possible to print the complete microscope in one go.  I do this if I’m using a machine that is well calibrated and reliable.  However, I find that it’s often more reliable to print in batches (as small parts at the edge of the print bed can detach and cause it to fail).  I would recommend:
 Batch 1: Microscope, illumination and Optics module (main part)
-Batch 2: Feet, gears, camera cover
+Batch 2: Feet, gears, camera cover, camera board gripper, camera lens remover, gear riser
 There is a test file that prints a single leg of the microscope - the Microscope leg test object. It's worth printing this first to check your settings are OK.</description>
         <media>
           <file url="./images/all_printed_parts.jpg" />
@@ -421,6 +421,10 @@ Plastic parts:
 * 3x gear
 * 1x camera cover
 * 2x sample clip (optional)
+Plastic tools (optional but helpful):
+* 1x camera board gripper (for v1 or v2 of the camera board)
+* 1x camera lens remover (for v1 or v2)
+* 1x gear elevator (optional)
 Metal hardware:
 * 3x M3 hexagon head 25mm screws, stainless steel
 * 3x M3 brass nut
@@ -565,17 +569,21 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
     <media />
     <assembly_instruction>
       <step>
-        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module, the tools for removing the camera lens, optionally two M2 screws to secure the camera, and ideally a sharp craft knife and some tape.</description>
+        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module, the tools for removing the camera lens, optionally two M2 screws to secure the camera, and ideally a sharp craft knife and some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).</description>
         <media />
       </step>
       <step>
-        <description>First, we need to remove the lens from the camera module.  This is usually held in with glue - while you can often crack the glue just by twisting the lens, it can be much easier if you first run a scalpel or craft knife around the join between the lens and the square plastic holder.</description>
+        <description>First, we need to remove the lens from the camera module.  This is usually held in with glue - while you can often crack the glue just by twisting the lens, it can be much easier if you first run a scalpel or craft knife around the join between the lens and the square plastic holder.  The camera module v2 seems to have slightly weaker glue so I tend not to need a knife.</description>
         <media>
           <file url="./images/optics_module_parts.jpg" />
         </media>
       </step>
       <step>
-        <description>Next, unscrew the lens from the camera module.  This step must be done with great care, as there is a small ribbon cable connecting the camera to the PCB that is very easy to break.  The printed tools make this much safer: there's a square plastic piece that fits over the camera and PCB ("picamera2_board_gripper.stl"), which stops the camera twisting and damaging the ribbon cable.  There's also a plastic tool to grip the lens module, though miniature combination pliers sometimes do a better job.  Care is needed to avoid marring the plastic lens holder too badly - some cosmetic damage is inevitable but too much can prevent it from sitting flat in the microscope.
+	      <description>Next, unscrew the lens from the camera module.  This step must be done with great care, as there is a small ribbon cable connecting the camera to the PCB that is very easy to break.  The printed tools make this much safer: there's a square plastic piece that fits over the camera and PCB ("picamera2_board_gripper.stl"), which stops the camera twisting and damaging the ribbon cable.  There's also a plastic tool to grip the lens module.  For v2 of the camera module, this is a small circular part with four prongs that fits over the lens.  For v1 it's a miniature pair of plastic pliers, though miniature combination pliers sometimes do a better job.  Care is needed to avoid marring the plastic lens holder - some cosmetic damage is not an issue but too much can prevent it from sitting flat in the microscope.
+
+To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.  You will probably feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage.
+
+NB the removal tool for v2 needs to go on the right way round - the prongs that touch the lugs on the lens should point anticlockwise.
 
 Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</description>
         <media>

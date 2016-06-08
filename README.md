@@ -7,7 +7,7 @@ The trick of making a microscope out of a webcam has been around for a little wh
 This project is open-source and is released under the CERN open hardware license.  You can buy a kit of the microscope from [WaterScope](http://www.waterscope.org/).  Currently, the kits being sold are version 5.15 and if you're looking for the assembly instructions they are in the [version 5.15 release](https://github.com/rwb27/openflexure_microscope/releases/tag/v5.15.1-rc0).
 
 ## Printing it yourself
-To build the microscope, go to h[version 5.15 release](https://github.com/rwb27/openflexure_microscope/releases/tag/v5.15.1-rc0) and
+To build the microscope, go to [version 5.15 release](https://github.com/rwb27/openflexure_microscope/releases/tag/v5.15.1-rc0) and
 download the STL files and instructions.  Don't just print everything from the STL folder,
 as currently it contains some parts that must be printed multiple times, and other parts
 that are redundant.  I plan to implement an automated build system in the future, that will
