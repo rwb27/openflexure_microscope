@@ -37,13 +37,13 @@ module generous_camera_bits(){
 	}
 }
 
-module picam_holder(){
+module picam2_gripper(){
     // this little bit of plastic grips the plastic camera housing
     // and allows you to safely unscrew the lens
     // it protects the (surprisingly delicate) flex that connects the camera to the PCB.
-    outer = pcb+[4,-0.5,camera_housing[2]]; //size of the tool
+    outer = pcb+[4,-5,camera_housing[2]]; //size of the tool
     difference(){
-        translate([0,0,outer[2]/2]) cube(outer, center=true);
+        translate([0,-1,outer[2]/2]) cube(outer, center=true);
         
         //central hole for the camera housing
         translate([0,camera_housing_y,0]) cube(camera_housing + [0,0,999],center=true);
@@ -82,6 +82,6 @@ module hold_gear_10mm_higher(){
 }
 //hold_gear_10mm_higher();
 //translate([pcb[0]/2+15,pcb[1]/2,0]) 
-picam_holder();
+picam2_gripper();
 //picam_lens_pliers();
 //picam_lens_gripper();
