@@ -28,9 +28,9 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = false;
+big_stage = true;
 motor_lugs = false;
-version_numstring = "5.15.1";
+version_numstring = "5.15.2";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -52,7 +52,7 @@ zflex_l = 1.5;    // length of (all) flexible bits
 zflex_t = 0.75;   // thickness of (all) flexible bits
 
 // Compile a sensible version string
-version_string = str("v",version_numstring, big_stage?"-LS":"", motor_lugs?"-M":"");
+version_string = str("v",version_numstring, big_stage?str("-LS",sample_z):"", motor_lugs?"-M":"");
 echo("Compiling OpenFlexure Microscope ",version_string);
 
 stage_t=5; //thickness of the XY stage (at thickest point, most is 1mm less)

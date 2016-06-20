@@ -293,7 +293,7 @@ union(){
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
         w=stage_flex_w;
         translate([leg_middle_w/2-w,0,0.5]) hull()
-			repeat([zflex_l,-zflex_l,0],2) cube([w,d,zflex_t]);
+			repeat([1,-1,0]*(zflex_l+d),2) cube([w,d,zflex_t]);
     }
 
 	//flexures between legs and stage
@@ -393,6 +393,16 @@ union(){
                 translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
             }
 		}
+        
+        // Little cut-outs to encourage naughty slicing programs to do the lower flexures properly (!)
+        // We cut a little out of the base either side of the flexure, so that it doesn't just cut the
+        // perimeter and make a smooth wall
+        each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
+            w = stage_flex_w;
+            dw = 0.2; // thickness of cut-out; should be unimportant...
+            translate([leg_middle_w/2,0,0.5]) repeat([-w,0,0],2)
+                hull() repeat([1,-1,0]*(zflex_l + 0.5),2) cube([dw,d,zflex_t]);
+        }
 
 		//post mounting holes
 		reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
