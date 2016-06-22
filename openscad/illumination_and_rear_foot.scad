@@ -69,9 +69,15 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
             translate([-w/2+t,back+t,clip_h+hole_h+clip_t-t]) cube([w-2*t,b-2*t,d]);//main shaft starts here
             //translate([0,back+t,clip_h]) rotate([-90,0,0]) cylinder(d=w-2*t,h=b-2*t);
             translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w-2*t,(b-2*t)*sqrt(2),2*d],center=true);//main shaft (top)
-            translate([-3,-8,sample_z+wd+4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.
-            translate([-3,-8,sample_z+wd+4+4]) cube([6,8,10]);
-            translate([0,0,sample_z+wd+4+4]) cylinder(r=3,h=999);
+            translate([-3,-12,sample_z+wd+4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.  This is the end of the channel, at the opening where the LED sits.
+            translate([-3,-12,sample_z+wd+4+4]) cube([6,12,10]);
+            translate([0,0,sample_z+wd+4+4]) cylinder(r=2.5,h=999);
+        }
+        // enlarge the channel a bit next to the LED to allow it to be put in LED-first
+        sequential_hull(){
+            translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w-2*t,(b-2*t)*sqrt(2),2*d],center=true);//main shaft (top) //NB this line should match the similar line above
+            translate([0,-12,sample_z+wd+4+4])  rotate([90,0,0]) cylinder(r=2.5, h=d);
+            translate([-3,-4,sample_z+wd+4+4]) cube([6,d,10]);
         }
         // exit holes for cable (option to leave from front or back)
         difference(){
