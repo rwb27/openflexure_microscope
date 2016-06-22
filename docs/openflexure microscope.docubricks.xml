@@ -383,7 +383,7 @@ This microscope will be available through http://www.waterscope.org/ in Summer 2
     <media />
     <assembly_instruction>
       <step>
-        <description>First, you will need to print or obtain the 3D printed parts.
+        <description>First, you will need to print or obtain the 3D printed parts.  If you bought a kit, skip this step!
 
 The microscope is designed to print without support material.  This is quite important; if you use support material it will require a lot of cleaning up, and you may well damage the mechanism.  I usually print with a layer size of 0.24mm on my Ormerod, which takes 8 hours for the main structure.  “low” quality on an Ultimaker 2 (0.15mm layers) produced similar results in about 5 hours.
 
@@ -393,24 +393,13 @@ Batch 2: Feet, gears, camera cover, camera board gripper, camera lens remover, g
 There is a test file that prints a single leg of the microscope - the Microscope leg test object. It's worth printing this first to check your settings are OK.</description>
         <media>
           <file url="./images/all_printed_parts.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>The files attached to this step will print the whole microscope in one go.  Note that there are two versions, depending on whether you have a pi camera module v1 or v2.</description>
-        <media>
           <file url="./stl/all_parts_picam2.stl" />
-          <file url="./stl/all_parts_picam1.stl" />
-        </media>
-      </step>
-      <step>
-        <description>The files attached to this step will print the whole microscope in two batches, best if your machine has a small bed or is less reliable.  This assumes you're using the pi camera module v2.</description>
-        <media>
           <file url="./stl/bed1_tall_picam2.stl" />
           <file url="./stl/bed2_shallow.stl" />
         </media>
       </step>
       <step>
-        <description>Next, assemble all the necessary parts and tools.  You may want needle nose pliers if you have difficulty removing the camera lens with the plastic tool, a 3mm drill bit (for cleaning out the holes, you can use a screw in a pinch), and the all-important bent paperclip (see the physical part description).  The parts should all be listed in the bill of materials, but for clarity you will need:
+        <description>Make sure you have all the necessary parts and tools.  The parts should all be listed in the bill of materials, but for clarity you will need:
 
 Plastic parts:
 * 1x microscope body
@@ -435,7 +424,12 @@ Electronic parts:
 * White LED, resistor, wire, and 2-way JST header connector (assembled as one cable in the kit)
 * Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)
 * Raspberry Pi (with associated power supply, keyboard, monitor, etc.)
-
+Tools (not supplied in kit):
+* 2.5mm hex key (optional, for attaching sample clips)
+* 1.5mm hex key (optional, for double-securing camera board)
+* tape (electrical tape or PTFE plumbers tape work, though regular sticky tape is also fine)
+* sharp craft knife (for trimming tape)
+* 3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)
 Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).</description>
         <media>
           <file url="./images/all_parts.jpg" />
@@ -454,19 +448,28 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
+        <description>Assemble the illumination: Bend the LED so it's pointing at right angles to the cable, then thread the wire for the LED through the illumination arm and push the LED into its hole.  It's usually easiest to start at the LED end and feed the connector into the mount (it might require a little force).  If you have a pre-made LED wire with a connector on the end, threading it through is all that's needed - if you just have the components you will need to connect them together in series first, and solder or crimp them.  Some of the pre-made LED wires are thicker than expected, so they take some force to pull into the arm - but they will go in with some perseverance!  You can stick a piece of white tape or sticky label over the LED (i.e. between the LED and the stage) to act as a diffuser, this helps to blur out out-of-focus artefacts, such as dirt on the wrong side of your microscope slide.</description>
+        <media>
+          <file url="./images/illumination_led_10.jpg" />
+          <file url="./images/illumination_led_0.jpg" />
+          <file url="./images/illumination_led_1.jpg" />
+          <file url="./images/illumination_led_2.jpg" />
+          <file url="./images/illumination_led_3.jpg" />
+          <file url="./images/illumination_led_4.jpg" />
+          <file url="./images/illumination_led_5.jpg" />
+          <file url="./images/illumination_led_6.jpg" />
+          <file url="./images/illumination_led_7.jpg" />
+          <file url="./images/illumination_led_8.jpg" />
+          <file url="./images/illumination_led_9.jpg" />
+          <file url="./images/illumination_led_10.jpg" />
+        </media>
+      </step>
+      <step>
         <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
         <media>
           <file url="./images/illumination_0.jpg" />
           <file url="./images/illumination_1.jpg" />
           <file url="./images/illumination_2.jpg" />
-          <file url="./images/illumination_3.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Now thread the wire for the LED through the illumination arm.  It's usually easiest to start at the LED end.  If you have a pre-made LED wire with a connector on the end, threading it through is all that's needed - if you just have the components you will need to connect them together in series, and solder or crimp them.</description>
-        <media>
-          <file url="./images/illumination_led_0.jpg" />
-          <file url="!TODO!" />
         </media>
       </step>
       <step>
@@ -478,6 +481,7 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
       <step>
         <description>Slot the optics module onto the dovetail mount, from the bottom.  You may find it easier to fit if you wiggle the module from side to side as it goes in.  It may also help to support the dovetail from the top (through the hole in the stage), as it will flex when you push the objective on to it.  If you push too hard it is possible to break the flexure mechanism that holds the optics module.</description>
         <media>
+          <file url="./images/optics_insertion_2.jpg" />
           <file url="./images/optics_insertion_0.jpg" />
           <file url="./images/optics_insertion_1.jpg" />
           <file url="./images/optics_insertion_2.jpg" />
@@ -494,15 +498,24 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
       <step>
         <description>After this, there are only the sample clips to go – exactly where you place these will depend on the samples you intend to use, but in any case you simply push the M3 screws into the clips, then screw down into the holes on the stage.</description>
         <media>
+          <file url="./images/sample_clip_3.jpg" />
           <file url="./images/sample_clip_0.jpg" />
           <file url="./images/sample_clip_1.jpg" />
+          <file url="./images/sample_clip_2.jpg" />
+          <file url="./images/sample_clip_3.jpg" />
+          <file url="./images/sample_clip_4.jpg" />
+          <file url="./images/sample_clip_5.jpg" />
+          <file url="./images/sample_clip_6.jpg" />
         </media>
       </step>
       <step>
         <description>Your microscope is now complete – happy observing! 
 You might want to consult https://www.raspberrypi.org/documentation/usage/camera/ or https://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md if you need a hand setting up the camera.</description>
         <media>
-          <file url="./images/microscope_complete.jpg" />
+          <file url="./images/microscope_complete_1.jpg" />
+          <file url="./images/microscope_complete_2.jpg" />
+          <file url="./images/microscope_complete_3.jpg" />
+          <file url="./images/microscope_complete_4.jpg" />
         </media>
       </step>
     </assembly_instruction>
@@ -569,29 +582,44 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
     <media />
     <assembly_instruction>
       <step>
-        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module, the tools for removing the camera lens, optionally two M2 screws to secure the camera, and ideally a sharp craft knife and some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).</description>
-        <media />
-      </step>
-      <step>
-        <description>First, we need to remove the lens from the camera module.  This is usually held in with glue - while you can often crack the glue just by twisting the lens, it can be much easier if you first run a scalpel or craft knife around the join between the lens and the square plastic holder.  The camera module v2 seems to have slightly weaker glue so I tend not to need a knife.</description>
+        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, optionally two M2 screws to secure the camera, and ideally a sharp craft knife and some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.</description>
         <media>
           <file url="./images/optics_module_parts.jpg" />
         </media>
       </step>
       <step>
-	      <description>Next, unscrew the lens from the camera module.  This step must be done with great care, as there is a small ribbon cable connecting the camera to the PCB that is very easy to break.  The printed tools make this much safer: there's a square plastic piece that fits over the camera and PCB ("picamera2_board_gripper.stl"), which stops the camera twisting and damaging the ribbon cable.  There's also a plastic tool to grip the lens module.  For v2 of the camera module, this is a small circular part with four prongs that fits over the lens.  For v1 it's a miniature pair of plastic pliers, though miniature combination pliers sometimes do a better job.  Care is needed to avoid marring the plastic lens holder - some cosmetic damage is not an issue but too much can prevent it from sitting flat in the microscope.
-
-To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.  You will probably feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage.
-
-NB the removal tool for v2 needs to go on the right way round - the prongs that touch the lugs on the lens should point anticlockwise.
+	<description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
+        <media>
+          <file url="./images/static_warning.png" />
+        </media>
+      </step>
+      <step>
+        <description>We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.</description>
+        <media>
+          <file url="./images/picam2_lens_removal_0.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Remove the protective film from the camera lens.</description>
+        <media>
+          <file url="./images/picam2_film_removal.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>There is a small ribbon cable connecting the camera to the PCB that is very easy to break.  There is a square plastic jig that fits over the camera and PCB (the "camera board gripper"), which stops the camera twisting and damaging the ribbon cable.  Fit this over the camera as shown.  Note that the part for v2 of the camera board will sort-of fit v1, but you need to be a little more careful as it's not a perfect fit.</description>
+        <media>
+          <file url="./images/picam2_board_gripper_1.jpg" />
+          <file url="./images/picam2_board_gripper_2.jpg" />
+        </media>
+      </step>
+      <step>
+	      <description>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.  It only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You will may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (square plastic housing) to the PCB is still connected - pop it back in by pushing it with a finger if needed.
 
 Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</description>
         <media>
-          <file url="./images/picamera_lens_removal_1.jpg" />
-          <file url="./images/picamera_lens_removal_2.jpg" />
-          <file url="./images/picamera_lens_removal_3.jpg" />
-          <file url="./images/picamera_lens_removal_4.jpg" />
-          <file url="./images/picamera_lens_removal_5.jpg" />
+          <file url="./images/picam2_lens_removal_1.jpg" />
+          <file url="./images/picam2_lens_removal_2.jpg" />
+          <file url="./images/picam2_lens_removal_3.jpg" />
         </media>
       </step>
       <step>
@@ -599,7 +627,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         <media />
       </step>
       <step>
-        <description>Next, put the lens into the holder.  This may take a small amount of force, or may fit very easily and require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If it looks like it will require too much force, you may have a different design of camera module and you should re-print the part slightly larger.  If you wrapped tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.</description>
+        <description>Next, put the lens into the holder.  This may take a small amount of force, or may fit very easily and require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If it looks like it will require too much force, you may have a different design of camera module and you may need to re-print the part slightly larger (or get a replacement if you bought a kit).  If you wrapped tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.</description>
         <media>
           <file url="./images/lens_insertion_0.jpg" />
           <file url="./images/lens_insertion_1.jpg" />
@@ -609,7 +637,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Finally, press the camera module onto the bottom of the optics mount.  This used to require considerable force, so I recommended placing the camera board on a soft surface (e.g. some bubble wrap) and pushing down.  The newer push-fit is much easier to use, and should fit in with a firm press from your thumb.</description>
+        <description>Finally, press the camera module onto the bottom of the optics mount, so the camera board sits flush with the bottom of the mount.  The newer push-fit is much easier to use, and should fit in with a gentle but firm press from your thumb.  It probably won't crack or click into place, but it should be held by the push-fit.  Don't worry if it's not gripped very strongly, the cover will hold it in place.</description>
         <media>
           <file url="./images/optics_assembly_0.jpg" />
           <file url="./images/optics_assembly_1.jpg" />
@@ -619,6 +647,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>Slide the cover over the camera board, starting at the end farthest from the ribbon cable connector.  This will stop the camera falling out, and also protects the PCB from short circuits.</description>
         <media>
+          <file url="./images/camera_cover_2.jpg" />
           <file url="./images/camera_cover_0.jpg" />
           <file url="./images/camera_cover_1.jpg" />
           <file url="./images/camera_cover_2.jpg" />
@@ -665,7 +694,25 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>First, put one of the hex-head screws into the gear as shown, then place a washer over the screw.</description>
+        <description>We need to place a nut inside each actuator: screw a brass nut onto the end of the hex-head screw, and press it in firmly.  The actuator will move – this is normal.  You need to push hard enough that the axis moves to the top of its travel, so you're pushing agains the top of the column.</description>
+        <media>
+          <file url="./images/nut_insertion_4.jpg" />
+          <file url="./images/nut_insertion_0.jpg" />
+          <file url="./images/nut_insertion_1.jpg" />
+          <file url="./images/nut_insertion_2.jpg" />
+          <file url="./images/nut_insertion_3.jpg" />
+          <file url="./images/nut_insertion_4.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>The brass nut should jam into place, so that the screw is able to hang from it.  Make sure the screw is as straight as possible (i.e. if you let go, it should stay in the middle of the hole, rather than leaning against one of the sides).  Gently unscrew the screw, leaving the nut embedded in the plastic.</description>
+        <media>
+          <file url="./images/nut_inserted_0.jpg" />
+          <file url="./images/nut_inserted_1.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Next, put one of the hex-head screws into the gear as shown, then place a washer over the screw.</description>
         <media>
           <file url="./images/thumbscrew_0.jpg" />
           <file url="./images/thumbscrew_1.jpg" />
@@ -675,25 +722,26 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Next, we need to place a nut inside each actuator: screw a brass nut onto the end of the screw, and press it in firmly.  The actuator will move – this is normal.  The brass nut should stick in place, so that the screw is able to hang from it.</description>
+        <description>Screw into the nut from the top of the microscope, gently at first to avoid dislodging the nut, but then do it up tightly.  Make sure the washer is on the screw before screwing it in, to avoid damaging the microscope.  Hold the microscope upside down if the nut didn’t wedge in correctly.  Put the screw in until the gear touches the microscope body, then keep turning - you will feel some resistance as the nut (and the head of the screw) is pulled into the plastic.  When the resistance increases, stop turning and unscrew until the bottom of the actuator sits flush with the bottom of the microscope.  You should see the head of the screw pulled into the gear, so that it sinks below the top surface of the gear.</description>
         <media>
-          <file url="./images/nut_insertion_0.jpg" />
-          <file url="./images/nut_insertion_1.jpg" />
-          <file url="./images/nut_insertion_2.jpg" />
-          <file url="./images/nut_insertion_3.jpg" />
-          <file url="./images/nut_insertion_4.jpg" />
-          <file url="./images/nut_insertion_5.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Gently unscrew the screw, leaving the nut in place.  Then screw into the nut from the top of the microscope, gently at first to avoid dislodging the nut, but then do it up tightly.  Make sure the washer is on the screw before screwing it in, to avoid damaging the microscope.  Hold the microscope upside down if the nut didn’t wedge in correctly.  Put the screw in until the gear touches the microscope body, then keep turning - you will feel some resistance as the nut (and the head of the screw) is pulled into the plastic.  When the resistance increases, stop turning and unscrew until the bottom of the actuator sits flush with the bottom of the microscope.</description>
-        <media>
+          <file url="./images/screw_insertion_2.jpg" />
           <file url="./images/screw_insertion_0.jpg" />
           <file url="./images/screw_insertion_1.jpg" />
+          <file url="./images/screw_insertion_2.jpg" />
+          <file url="./images/screw_insertion_3.jpg" />
+          <file url="./images/screw_insertion_4.jpg" />
+          <file url="./images/screw_insertion_5.jpg" />
         </media>
       </step>
       <step>
-        <description>Now it's time for the elastic band.  Using the bent paperclip, hook the band through the slots on either side of the foot.  Remember that the feet are not all the same - there are two tilted feed for the outer actuators, and one untilted foot for the inner actuator.</description>
+        <description>If you weren't able to jam the nut in, the previous step may be difficult.  In that case, you can use a spare hex-head screw to hold the nut in place while you screw into it from the top.  You should then be able to pull it into the plastic as described above.</description>
+        <media>
+          <file url="./images/screw_insertion_badnut_0.jpg" />
+          <file url="./images/screw_insertion_badnut_1.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Now it's time for the elastic band.  Using the bent paperclip, hook the band through the slots on either side of the foot.  Remember that the feet are not all the same - there are two tilted feed for the outer actuators (the top and bottom of the feet are not parallel), and one untilted foot for the inner actuator.  This means that the microscope sits on the outer two feet and the back foot (part of the illumination column), so it doesn't wobble.</description>
         <media>
           <file url="./images/foot_band_1.jpg" />
           <file url="./images/foot_band_2.jpg" />
@@ -702,14 +750,24 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Now it's time to pull the elastic band into the body of the microscope - this is the tricky part!  First, check you have the right foot (the outer ones are tilted, so the microscope sits on the edge of the foot, the middle one is not tilted and is slightly shorter).  Also, make sure it's round the right way - the notch in the foot should point towards the centre of the microscope so the actuator can protrude below the bottom of the main body.  For each actuator you will need a foot and two elastic bands, as well as the all-important bent paperclip tool!</description>
+        <description>TODO delete some text here Next, we need pull the elastic band into the body of the microscope - this is the tricky part!  First, check you have the right foot (the outer ones are tilted, the middle one is not tilted and is slightly shorter).  Also, make sure it's round the right way - the notch in the foot should point towards the centre of the microscope so the actuator can protrude below the bottom of the main body.  For each actuator you will need a foot and one elastic band, as well as the all-important bent paperclip tool and the U-shaped spacer to raise the gear.</description>
         <media>
           <file url="./images/band_hooking_0.jpg" />
         </media>
       </step>
       <step>
-        <description>Now place the foot underneath the microscope as shown.  Note that the cut-out on the foot goes towards the stage.  Use the hook to pull the elastic band through and over the slots on one side of the actuator.  You can use the printed "elevator" (a U-shaped spacer) to raise the gear up slightly and make it easier to get the hook in.  It's easiest to pull the elastic band through when the actuator is raised a few millimetres, though it's hard when it's raised all the way to the top.</description>
+        <description>Use the U-shaped spacer (the "gear elevator") to raise the gear up (this makes it much easier to hook the elastic bands in).  Unscrew the gear almost all the way, so there is some space between it and the actuator column.  Then pull it up, and insert the spacer.</description>
         <media>
+          <file url="./images/gear_elevator_3.jpg" />
+          <file url="./images/gear_elevator_1.jpg" />
+          <file url="./images/gear_elevator_2.jpg" />
+          <file url="./images/gear_elevator_3.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Now place the foot underneath the microscope as shown.  Note that the cut-out on the foot goes towards the centre of the microscope (check this, it's annoying to fix later).  Use the hook to pull the elastic band through and over the slots on one side of the actuator.  The inner part of the actuator should be a millimetre or two from the top - a slight gap makes it much easier to put the bands in.</description>
+        <media>
+          <file url="./images/band_hooking_1_3.jpg" />
           <file url="./images/band_hooking_1_1.jpg" />
           <file url="./images/band_hooking_1_2.jpg" />
           <file url="./images/band_hooking_1_3.jpg" />
@@ -722,11 +780,20 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
           <file url="./images/band_hooking_2_1.jpg" />
           <file url="./images/band_hooking_2_2.jpg" />
           <file url="./images/band_hooking_2_3.jpg" />
+          <file url="./images/band_hooking_2_4.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Remove the spacer and screw in the gear, so that the axis is in its middle position (i.e. the gear rests on the top of the actuator column).  If you pull down the foot, you should see four bits of elastic band going up vertically from the foot to the microscope, as shown in the picture.  There are lugs on the top of the foot that should click into place on the microscope - though you may need to squeeze the foot and push fairly hard to get it in.  If you break the lugs or can't fit it in don't worry - it won't affect the functioning of the microscope.</description>
+        <media>
+          <file url="./images/band_hooked_0.jpg" />
+          <file url="./images/band_hooked_1.jpg" />
         </media>
       </step>
       <step>
         <description>The elastic band is now in place, but we need to tighten it.  Depending on the precise size and stretchiness of your elastic band, you may need to do this to one or both ends of it.  If you only do this once, you might need to shuffle the band around to transfer some tension from one side to the other.  The basic idea is that you pull the elastic band through the slot on the bottom of the foot, and wrap it around the outside of the foot to take up the slack.</description>
         <media>
+          <file url="./images/band_tightening_1_4.jpg" />
           <file url="./images/band_tightening_1_1.jpg" />
           <file url="./images/band_tightening_1_2.jpg" />
           <file url="./images/band_tightening_1_3.jpg" />
@@ -746,7 +813,11 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       </step>
       <step>
         <description>Congratulations, you've assembled the actuator!  There are three to do, so you may now need to go back and make the next one.</description>
-        <media />
+        <media>
+          <file url="./images/actuators_finished_0.jpg" />
+          <file url="./images/actuators_finished_1.jpg" />
+          <file url="./images/actuators_finished_2.jpg" />
+        </media>
       </step>
     </assembly_instruction>
     <function id="118469770">
