@@ -8,3 +8,6 @@ openscad/*.stl
 
 # Ignore VIM swap files
 *.swp
+
+# Ignore zip files in the documentation dir
+docs/*.zip
