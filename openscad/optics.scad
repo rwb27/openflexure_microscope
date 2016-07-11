@@ -16,11 +16,14 @@ use <utilities.scad>;
 use <cameras/picam_push_fit.scad>;
 use <cameras/picam_2_push_fit.scad>;
 use <cameras/C270_mount.scad>;
+use <cameras/usbcam_push_fit.scad>;
 use <dovetail.scad>;
+include <microscope_parameters.scad>; // important for objective clip position, etc.
 
 //camera = "C270";
 //camera = "picamera";
-camera = "picamera2";
+//camera = "picamera2";
+camera = "usbcam";
 
 bottom = -8; //nominal distance from PCB to microscope bottom
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
@@ -28,42 +31,17 @@ d = 0.05;
 
 // The camera parameters depend on what camera we're using,
 // sorry about the ugly syntax, but I couldn't find a neater way.
-camera_angle = (camera=="picamera"||camera=="picamera2"?45:
+camera_angle = (camera=="picamera"||camera=="picamera2"||camera=="usbcam"?45:
                (camera=="C270"?-45:0));
 camera_h = (camera=="picamera"||camera=="picamera2"?24:
-           (camera=="C270"?53:0));
+           (camera=="C270"?53:
+           (camera=="usbcam"?40:0)));
 camera_shift = (camera=="picamera"||camera=="picamera2"?2.4:
-               (camera=="C270"?(45-53/2):0));
-
-// This is the size of the objective clip, must match the main body.
-// NB the position of the clip is set in the module that draws the
-// optics module
-objective_clip_w = 10;
+               (camera=="C270"?(45-53/2):
+               (camera=="usbcam"?0:0)));
 
 $fn=24;
 
-module lighttrap_cylinder(r1,r2,h,ridge=1.5){
-    //A "cylinder" made up of christmas-tree-like cones
-    //good for trapping light in an optical path
-    //r1 is the outer radius of the bottom
-    //r2 is the inner radius of the top
-    //NB for a straight-sided cylinder, r2==r1-ridge
-    n_cones = floor(h/ridge);
-    cone_h = h/n_cones;
-    
-	for(i = [0 : n_cones - 1]){
-        p = i/(n_cones - 1);
-		translate([0, 0, i * cone_h - d]) 
-			cylinder(r1=(1-p)*r1 + p*(r2+ridge),
-					r2=(1-p)*(r1-ridge) + p*r2,
-					h=cone_h+2*d);
-    }
-}
-module trylinder(r=1, flat=1, h=d, center=false){
-    //Halfway between a cylinder and a triangle.
-    hull() for(a=[0,120,240]) rotate(a)
-        translate([0,flat/sqrt(3),0]) cylinder(r=r, h=h, center=center);
-}
 module camera(){
     //This creates a cut-out for the camera we've selected
     if(camera=="picamera"){
@@ -72,6 +50,8 @@ module camera(){
         picam2_push_fit();
     }else if(camera=="C270"){
         C270(beam_r=5,beam_h=6+d);
+    }else if(camera=="usbcam"){
+        usbcam_push_fit();
     }
 }
 
@@ -85,12 +65,23 @@ module optical_path(lens_aperture_r, lens_z){
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
     }
 }
-
-module camera_mount_body(body_r, body_top, dt_top, objective_clip_y, extra_rz = []){
+module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
+    // This creates a tapering, distorted hollow cylinder suitable for
+    // gripping a small cylindrical (or spherical) object
+    // The gripping occurs lens_h above the base, and it flares out
+    // again both above and below this.
+    trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid);
+}
+module camera_mount_body(
+        body_r, //radius of mount body
+        body_top, //height of the top of the body
+        dt_top, //height of the top of the dovetail
+        extra_rz = [], //extra [r,z] values to extend the mount
+        bottom_r=8 //radius of the bottom of the mount
+    ){
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
     dt_h=dt_top-dt_bottom;
-    bottom_r=8;
     union(){
         difference(){
             // This is the main body of the mount
@@ -100,7 +91,10 @@ module camera_mount_body(body_r, body_top, dt_top, objective_clip_y, extra_rz = 
                 rotate(camera_angle) translate([0,camera_shift,bottom+4]) cube([25-5,camera_h,d],center=true);
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
-                    translate([0,objective_clip_y,0]) cube([objective_clip_w,4,d],center=true);
+                    translate([0,objective_clip_y,0]){
+                        cube([objective_clip_w+4,d,d],center=true);
+                        cube([objective_clip_w,4,d],center=true);
+                    }
                 }
                 translate([0,0,dt_bottom]) cylinder(r=bottom_r,h=d);
                 translate([0,0,body_top]) cylinder(r=body_r,h=d);
@@ -121,29 +115,7 @@ module camera_mount_body(body_r, body_top, dt_top, objective_clip_y, extra_rz = 
         }
         // add the dovetail
         translate([0,objective_clip_y,dt_bottom]){
-            dovetail_m([14,objective_clip_y,dt_h],waist=dt_h-15);
-        }
-    }
-}
-module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
-    // This creates a tapering, distorted hollow cylinder suitable for
-    // gripping a small cylindrical (or spherical) object
-    // The gripping occurs lens_h above the base, and it flares out
-    // again both above and below this.
-    $fn=48;
-    bottom_r=base_r>0?base_r:lens_r+1+t;
-    difference(){
-        sequential_hull(){
-            translate([0,0,0]) cylinder(r=bottom_r,h=d);
-            translate([0,0,lens_h-0.5]) trylinder(r=lens_r-1+t,flat=2.5,h=d);
-            translate([0,0,lens_h+0.5]) trylinder(r=lens_r-1+t,flat=2.5,h=d);
-            translate([0,0,h-d]) trylinder(r=lens_r-0.5+t,flat=3,h=d);
-        }
-        if(solid==false) sequential_hull(){
-            translate([0,0,-d]) cylinder(r=bottom_r-t,h=d);
-            translate([0,0,lens_h-0.5]) trylinder(r=lens_r-1,flat=2.5,h=d);
-            translate([0,0,lens_h+0.5]) trylinder(r=lens_r-1,flat=2.5,h=d);
-            translate([0,0,h]) trylinder(r=lens_r-0.5,flat=3,h=d);
+            dovetail_m([objective_clip_w+4,objective_clip_y,dt_h],waist=dt_h-15);
         }
     }
 }
@@ -188,7 +160,7 @@ module picam_cover(){
 
 
 
-module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal_distance, sample_z){
+module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal_distance){
     // This is the "classic" optics module, using the raspberry pi lens
     // It should be fitted to the smaller microscope body
     
@@ -211,7 +183,7 @@ module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal
         // the bottom part is a camera mount, tapering to a neck
         difference(){
             // camera mount body, with a neck on top via extra_rz
-            camera_mount_body(body_r=8, body_top=dovetail_top, dt_top=dovetail_top, objective_clip_y=6, extra_rz=[[neck_r,neck_z],[neck_r,lens_z+lens_t]]);
+            camera_mount_body(body_r=8, body_top=dovetail_top, dt_top=dovetail_top, extra_rz=[[neck_r,neck_z],[neck_r,lens_z+lens_t]]);
             // hole through the body for the beam
             optical_path(lens_aperture_r, lens_z);
             // cavity for the lens
@@ -221,7 +193,7 @@ module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, sample_z = 60, tube_length=160){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=160){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -231,7 +203,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     //tube_lens_f (argument) is the nominal focal length of the tube lens.
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the correction lens
     pedestal_h = 2; // height of tube lens above bottom of lens assembly
-    //sample_z (argument) // height of the sample above the bottom of the microscope (depends on size of microscope)
+    //sample_z (microscope_parameters.scad) // height of the sample above the bottom of the microscope (depends on size of microscope)
     dovetail_top = min(27, sample_z-objective_parfocal_distance-1); //height of the top of the dovetail
     
     ///////////////// Lens position calculation //////////////////////////
@@ -264,7 +236,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, body_top=lens_assembly_z, dt_top=dovetail_top, objective_clip_y=12);
+            camera_mount_body(body_r=lens_assembly_base_r, body_top=lens_assembly_z, dt_top=dovetail_top);
             // camera cut-out and hole for the beam
             optical_path(tube_lens_aperture, lens_assembly_z);
             // make sure it makes contact with the lens gripper, but
@@ -286,9 +258,46 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         }
     }
 }
+module optics_module_trylinder(
+        lens_r = 14/2, //radius of lens
+        parfocal_distance = 20, //distance from back of lens to sample
+        lens_h = 5.5 //height of lens (will be gripped 1mm below)
+    ){
+    // This optics module grips a single lens at the top.
+    lens_aperture = lens_r - 1.5; // clear aperture of the lens
+    pedestal_h = 2; // extra height on the gripper, to allow it to flex
+    dovetail_top = min(27, sample_z-parfocal_distance+lens_h-1); //height of the top of the dovetail
+    
+    lens_z = sample_z - parfocal_distance; //axial position of lens
+        
+    // having calculated where the lens should go, now make the mount:
+    lens_assembly_z = lens_z - pedestal_h; //height of lens assembly
+    lens_assembly_base_r = lens_r+1; //outer size of the lens grippers
+    lens_assembly_h = lens_h + pedestal_h; //the
+                                            //lens sits parfocal_distance below the sample
+    union(){
+        // The bottom part is just a camera mount with a flat top
+        difference(){
+            // camera mount with a body that's shorter than the dovetail
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=lens_assembly_z);
+            // camera cut-out and hole for the beam
+            optical_path(lens_aperture, lens_assembly_z);
+        }
+        // A lens gripper to hold the objective
+        translate([0,0,lens_assembly_z]){
+            // gripper
+            trylinder_gripper(inner_r=lens_r, grip_h=lens_assembly_h-1.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
+            // pedestal to raise the tube lens up within the gripper
+            difference(){
+                cylinder(r=lens_aperture + 1.0,h=pedestal_h);
+                cylinder(r=lens_aperture,h=999,center=true);
+            }
+        }
+    }
+}
 
 difference(){
-    // Optics module for pi camera lens, with standard stage (i.e. the classic)
+    /*/ Optics module for pi camera lens, with standard stage (i.e. the classic)
     optics_module_single_lens(
         ///picamera lens
         lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
@@ -311,6 +320,12 @@ difference(){
         tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=35,
         sample_z = 65
+    );//*/
+    // Optics module for USB camera's M12 lens
+    optics_module_trylinder(
+        lens_r = 14/2,
+        parfocal_distance = 20,
+        lens_h = 5.5
     );//*/
     //
     //picam_cover();

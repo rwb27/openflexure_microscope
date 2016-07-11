@@ -244,13 +244,68 @@ module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
     base = base_w>0 ? [base_w,2*r,2*dz] : [2*r,2*r,d];
     union(){
         translate([0,0,0]) cube(base,center=true);
-        translate([0,0,base[2]/2]) square_to_circle(r, dz*4, 4, h-dz*5);
+        translate([0,0,base[2]/2-d]) square_to_circle(r, dz*4, 4, h-dz*5+d);
         if(big_bottom) mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     }
 }
 
-hole_from_bottom(3, 10, base_w=12);
+//hole_from_bottom(3, 10, base_w=12);
 
+
+module lighttrap_cylinder(r1,r2,h,ridge=1.5){
+    //A "cylinder" made up of christmas-tree-like cones
+    //good for trapping light in an optical path
+    //r1 is the outer radius of the bottom
+    //r2 is the inner radius of the top
+    //NB for a straight-sided cylinder, r2==r1-ridge
+    n_cones = floor(h/ridge);
+    cone_h = h/n_cones;
+    
+	for(i = [0 : n_cones - 1]){
+        p = i/(n_cones - 1);
+		translate([0, 0, i * cone_h - d]) 
+			cylinder(r1=(1-p)*r1 + p*(r2+ridge),
+					r2=(1-p)*(r1-ridge) + p*r2,
+					h=cone_h+2*d);
+    }
+}
+
+module trylinder(r=1, flat=1, h=d, center=false){
+    //Halfway between a cylinder and a triangle.
+    hull() for(a=[0,120,240]) rotate(a)
+        translate([0,flat/sqrt(3),0]) cylinder(r=r, h=h, center=center);
+}
+module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,flare=0.8,solid=false){
+    // This creates a tapering, distorted hollow cylinder suitable for
+    // gripping a small cylindrical (or spherical) object
+    // The gripping occurs grip_h above the base, and it flares out
+    // again both above and below this.
+    // inner_r: radius of the cylinder we're gripping
+    // h: overall height of the gripper
+    // grip_h: height of the part where the gripper touches the cylinder
+    // base_r: radius of the (cylindrical) bottom
+    // t: thickness of the walls
+    // squeeze: how far the wall must be distorted to fit the cylinder
+    // flare: how much larger the top is than the gripping part
+    // solid: if true, make a solid outline of the gripper
+    $fn=48;
+    bottom_r=base_r>0?base_r:inner_r+1+t;
+    difference(){
+        sequential_hull(){
+            translate([0,0,0]) cylinder(r=bottom_r,h=d);
+            translate([0,0,grip_h-0.5]) trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=d);
+            translate([0,0,grip_h+0.5]) trylinder(r=inner_r-squeeze+t,flat=2.5*squeeze,h=d);
+            translate([0,0,h-d]) trylinder(r=inner_r-squeeze+flare+t,flat=2.5*squeeze,h=d);
+        }
+        if(solid==false) sequential_hull(){
+            translate([0,0,-d]) cylinder(r=bottom_r-t,h=d);
+            translate([0,0,grip_h-0.5]) trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=d);
+            translate([0,0,grip_h+0.5]) trylinder(r=inner_r-squeeze,flat=2.5*squeeze,h=d);
+            translate([0,0,h]) trylinder(r=inner_r-squeeze+flare,flat=2.5*squeeze,h=d);
+        }
+    }
+}
+trylinder_gripper();
 //feather_vertical_edges(fin_r=1){
 //	cylinder(r=12,h=10);
 //}
