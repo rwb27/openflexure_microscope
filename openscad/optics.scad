@@ -118,6 +118,7 @@ module fl_cube(){
     // Filter cube that slots into a suitably-modified optics module
     union(){
         
+    }
 }
 module camera_mount_body(
         body_r, //radius of mount body
