@@ -20,7 +20,7 @@ include <microscope_parameters.scad>;
 
 clip_w = 12; //external width of clip for dovetail
 clip_h = 12; //height of dovetail clip
-bottom = -15; //the foot extends below the bottom of the dovetail
+bottom = -foot_height; //the foot extends below the bottom of the dovetail
   //currently this is also defined in nut_seat_with_flex.scad, should
   //move them both to microscope_parameters really!
 
