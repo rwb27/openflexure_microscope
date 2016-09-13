@@ -57,7 +57,7 @@ module C270(beam_r=5, beam_h=6){
                     translate([0,22.5,0+4]) cube([20.5,28,15],center=true);
                     translate([0,34,0+4]) cube([10,9.5*2,15],center=true);
                 }
-                translate([-4,33.5,-999]) mirror([1,0,0]) cube([999,999,999]);
+                translate([-5,39.5,-999]) mirror([1,0,0]) cube([999,999,999]);
             }
             translate([-6,41.8,-5]) cylinder(r=0.8*1.2,h=999,$fn=12);
         }
