@@ -1,11 +1,20 @@
 /******************************************************************
 *                                                                 *
-* OpenFlexure Microscope: Optics unit (single small lens version) *
+* OpenFlexure Microscope: Optics unit                             *
 *                                                                 *
 * This is part of the OpenFlexure microscope, an open-source      *
 * microscope and 3-axis translation stage.  It gets really good   *
 * precision over a ~10mm range, by using plastic flexure          *
 * mechanisms.                                                     *
+*                                                                 *
+* The optics module holds the camera and whatever lens you are    *
+* using as an objective - current options are either the lens     *
+* from the Raspberry Pi camera module, or an RMS objective lens   *
+* and a second "tube length conversion" lens (usually 40mm).      *
+*                                                                 *
+* See the section at the bottom of the file for different         *
+* versions, to suit different combinations of optics/cameras.     *
+* NB you set the camera in the variable at the top of the file.   *
 *                                                                 *
 * (c) Richard Bowman, January 2016                                *
 * Released under the CERN Open Hardware License                   *
@@ -20,13 +29,17 @@ use <cameras/usbcam_push_fit.scad>;
 use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
-//camera = "C270";
-//camera = "picamera";
-//camera = "picamera2";
-camera = "usbcam";
+//camera = "C270"; // Mid-range Logitech webcam, relatively easy to dissassemble
+//camera = "picamera"; // Raspberry Pi Camera module v1
+camera = "picamera2"; // Raspberry Pi Camera module v2
+//camera = "usbcam"; //A USB camera including LED, that we sourced from China
 
 bottom = -8; //nominal distance from PCB to microscope bottom
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
+fl_cube_bottom = 0; //bottom of the fluorescence filter cube
+fl_cube_w = 12; //width of the fluorescence filter cube
+fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
+fl_cube_top_w = fl_cube_w - 2.7;
 d = 0.05;
 
 // The camera parameters depend on what camera we're using,
@@ -55,6 +68,23 @@ module camera(){
     }
 }
 
+module fl_cube_cutout(taper=true){
+    // A cut-out that enables a filter cube to be inserted.
+    union(){
+        sequential_hull(){
+            translate([-fl_cube_w/2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w,999,fl_cube_w]);
+            translate([-fl_cube_w/2+2,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w+2]); //sloping sides
+            translate([-fl_cube_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]) cube([fl_cube_w-4,fl_cube_w-4,fl_cube_w+2]);
+            if(taper) translate([-d,-d,fl_cube_bottom]) cube([2*d,2*d,fl_cube_w*1.5]); //taper gradually to the diameter of the beam
+        }
+        //a space at the back to allow it to be gripped by the 
+        hull(){
+            translate([-fl_cube_w/2+2,-fl_cube_w/2-1,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w]);
+            translate([-fl_cube_w/2+4,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-8,999,fl_cube_w+2]);
+        }
+            
+    }
+}
 module optical_path(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, consisting of
     // a feathered cylindrical beam path and a camera mount
@@ -65,6 +95,18 @@ module optical_path(lens_aperture_r, lens_z){
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
     }
 }
+module optical_path_fl(lens_aperture_r, lens_z){
+    // The cut-out part of a camera mount, with a space to slot in a filter cube.
+    union(){
+        rotate(camera_angle) translate([0,0,bottom]) camera(); //camera
+        translate([0,0,bottom+6]) lighttrap_sqylinder(r1=5, f1=0,
+                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-bottom-6+d); //beam path to bottom of cube
+        rotate(180) fl_cube_cutout(); //filter cube
+        translate([0,0,fl_cube_top-d]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*d); //beam path
+        translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
+    }
+}
+    
 module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
     // This creates a tapering, distorted hollow cylinder suitable for
     // gripping a small cylindrical (or spherical) object
@@ -72,12 +114,18 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
     // again both above and below this.
     trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid);
 }
+module fl_cube(){
+    // Filter cube that slots into a suitably-modified optics module
+    union(){
+        
+}
 module camera_mount_body(
         body_r, //radius of mount body
         body_top, //height of the top of the body
         dt_top, //height of the top of the dovetail
         extra_rz = [], //extra [r,z] values to extend the mount
-        bottom_r=8 //radius of the bottom of the mount
+        bottom_r=8, //radius of the bottom of the mount
+        fluorescence=false //whether to leave a port for fluorescence beamsplitter etc.
     ){
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
@@ -111,7 +159,6 @@ module camera_mount_body(
             reflect([1,0,0]) translate([3,objective_clip_y-0.5,dt_bottom]){
                 cube(999);
             }
-			
         }
         // add the dovetail
         translate([0,objective_clip_y,dt_bottom]){
@@ -119,6 +166,7 @@ module camera_mount_body(
         }
     }
 }
+
 module rms_mount_and_tube_lens_gripper(){
     // This assembly holds an RMS objective and a correcting
     // "tube" lens.
@@ -193,7 +241,7 @@ module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=160){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=160, fluorescence=false){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -236,9 +284,13 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, body_top=lens_assembly_z, dt_top=dovetail_top);
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence);
             // camera cut-out and hole for the beam
-            optical_path(tube_lens_aperture, lens_assembly_z);
+            if(fluorescence){
+                optical_path_fl(tube_lens_aperture, lens_assembly_z, fluorescence=fluorescence);
+            }else{
+                optical_path(tube_lens_aperture, lens_assembly_z);
+            }
             // make sure it makes contact with the lens gripper, but
             // doesn't foul the inside of it
             translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
@@ -310,8 +362,21 @@ difference(){
         tube_lens_ffd=16.1, 
         tube_lens_f=20, 
         tube_lens_r=16/2+0.2, 
-        objective_parfocal_distance=35,
-        sample_z = 65
+        objective_parfocal_distance=35
+    );//*/
+    /*/ Optics module for RMS objective, using Comar 31.5mm singlet tube lens
+    optics_module_rms(
+        tube_lens_ffd=28.5, 
+        tube_lens_f=31.5, 
+        tube_lens_r=16/2+0.1, 
+        objective_parfocal_distance=45
+    );//*/
+    /*/ Optics module for RMS objective, using Comar 31.5mm, d=10mm singlet tube lens
+    optics_module_rms(
+        tube_lens_ffd=28.5, 
+        tube_lens_f=31.5, 
+        tube_lens_r=10/2+0.2, 
+        objective_parfocal_distance=45
     );//*/
     /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
@@ -319,9 +384,9 @@ difference(){
         tube_lens_f=40, 
         tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=35,
-        sample_z = 65
+        fluorescence=false
     );//*/
-    // Optics module for USB camera's M12 lens
+    /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(
         lens_r = 14/2,
         parfocal_distance = 20,
@@ -329,6 +394,8 @@ difference(){
     );//*/
     //
     //picam_cover();
-
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
+    //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
+    fl_cube();
+    
 }
