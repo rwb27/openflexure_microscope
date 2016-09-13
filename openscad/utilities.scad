@@ -269,6 +269,30 @@ module lighttrap_cylinder(r1,r2,h,ridge=1.5){
 					h=cone_h+2*d);
     }
 }
+module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
+    //A "cylinder" made up of christmas-tree-like cones
+    //good for trapping light in an optical path
+    //r1 is the outer radius of the bottom
+    //f1 is the outer flat length of the bottom (f1=0 makes the bottom circular)
+    //r2 is the inner radius of the top
+    //f2 is the inner flat length of the top (f2=0 makes it circular)
+    //NB for a straight-sided cylinder, r2==r1-ridge
+    //Also, the ridges are made by varying r, not f.  This means there's a minimum r1
+    //which is the value of ridge.
+    n_cones = floor(h/ridge);
+    cone_h = h/n_cones;
+    
+	for(i = [0 : n_cones - 1]){
+        p = i/(n_cones - 1);
+		translate([0, 0, i * cone_h - d]) 
+			minkowski(){
+                cylinder(r1=(1-p)*r1 + p*(r2+ridge),
+					r2=(1-p)*(r1-ridge) + p*r2,
+					h=cone_h);
+                cube([1,1,0]*((1-p)*f1 + p*f2) + [0,0,2*d], center=true);
+            }
+    }
+}
 
 module trylinder(r=1, flat=1, h=d, center=false){
     //Halfway between a cylinder and a triangle.
