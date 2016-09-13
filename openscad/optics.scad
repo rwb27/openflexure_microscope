@@ -77,7 +77,7 @@ module fl_cube_cutout(taper=true){
             translate([-fl_cube_w/2+2,-fl_cube_w/2+2,fl_cube_bottom]) cube([fl_cube_w-4,fl_cube_w-4,fl_cube_w+2]);
             if(taper) translate([-d,-d,fl_cube_bottom]) cube([2*d,2*d,fl_cube_w*1.5]); //taper gradually to the diameter of the beam
         }
-        //a space at the back to allow it to be gripped by the 
+        //a space at the back to allow the grippers for the dichroics to extend back a bit further.
         hull(){
             translate([-fl_cube_w/2+2,-fl_cube_w/2-1,fl_cube_bottom]) cube([fl_cube_w-4,999,fl_cube_w]);
             translate([-fl_cube_w/2+4,-fl_cube_w/2,fl_cube_bottom]) cube([fl_cube_w-8,999,fl_cube_w+2]);
@@ -114,10 +114,62 @@ module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
     // again both above and below this.
     trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid);
 }
+
+module chamfer_bottom_edge(chamfer=0.3, h=0.5){
+    difference(){
+        children();
+        
+        minkowski(){
+            cylinder(r1=2*chamfer, r2=0, h=2*h);
+            linear_extrude(d) difference(){
+                square(9999, center=true);
+                projection(cut=true) translate([0,0,-d]) hull() children();
+            }
+        }
+    }
+}
+        
+        
+
 module fl_cube(){
     // Filter cube that slots into a suitably-modified optics module
-    union(){
+    // This prints with the Y axis vertical - to save rotating all the
+    // cylinders, it's written here as printed.
+    roc = 0.6;
+    w = fl_cube_w;
+    foot = roc*0.7;
+    bottom_t = roc*3;
+    $fn=8;
+    chamfer_bottom_edge() union(){
+        reflect([1,0,0]){
+            // outer "arms" that are responsible for the tight fit
+            sequential_hull(){
+                translate([w/2-2-roc*0.8/sqrt(2), w+2-roc*1.2, 0]) cylinder(r=roc, h=w);
+                translate([w/2-roc, w-roc/sqrt(2), 0]) cylinder(r=roc, h=w);
+                translate([w/2-roc, foot+bottom_t+roc, 0]) cylinder(r=roc, h=w);
+            }
+            translate([w/2-3*roc, foot+bottom_t+roc, 0]) difference(){
+                // the curved bits at the bottom
+                resize([0,(bottom_t+roc)*2,0]) cylinder(r=3*roc, h=w, $fn=24);
+                // cut out the inner radius
+                cylinder(r=roc, h=999, center=true);
+                // restrict it to a quarter-turn
+                mirror([1,0,0]) translate([-roc,0,-99]) cube(999);
+                mirror([1,0,0]) translate([0,-roc,-99]) cube(999);
+            }
+        }
+        // join the two arms together at the bottom
+        translate([0,foot+bottom_t/2, w/2]) cube([w - roc*3*2 + 2*d, bottom_t, w], center=true);
         
+        // feet at the bottom (and also in the middle of the top part)
+        for(p = [[-w/2+roc*3, roc, roc], 
+                 [w/2-roc*3, roc, roc], 
+                 [0, roc, w-roc],
+                 [w/2-2-roc*0.3/sqrt(2), w+2-roc*1.2, w/2],
+                 [-(w/2-2-roc*0.3/sqrt(2)), w+2-roc*1.0, w/2]
+                ]){
+            translate(p) sphere(r=roc,$fn=8);
+        }
     }
 }
 module camera_mount_body(
@@ -385,7 +437,7 @@ difference(){
         tube_lens_f=40, 
         tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=35,
-        fluorescence=false
+        fluorescence=true
     );//*/
     /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(
@@ -397,6 +449,6 @@ difference(){
     //picam_cover();
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
-    fl_cube();
+    translate([0,0,fl_cube_bottom]) rotate([90,0,0]) fl_cube();
     
 }
