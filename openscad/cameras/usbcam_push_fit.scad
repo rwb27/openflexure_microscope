@@ -24,12 +24,12 @@ use <../utilities.scad>;
 // Camera geometry (mostly of the bottom of the lens mount)
 lens_holder_tube_r = 13.5/2; // the tube into which the lens screws
 lens_holder_tube_h = 12.6; // the height of the tube above the PCB
-lens_holder_clearance = 0.3; // extra space around the camera to make sure it fits
+lens_holder_clearance = 0.35; // extra space around the camera to make sure it fits
 lens_holder_box_h = 3.6;
 lens_holder_box = [2,2,0] * lens_holder_tube_r + [0,0,1] * lens_holder_box_h; // box at the bottom of the tube
 lens_holder_mounting_screw_y = 9; // position of the lugs for mounting screws
-lens_holder_mounting_screw_lug_r = 2.1; // size of above.
-camera_component_clearance = 2; // it's easiest to have the PCB slightly below the mount
+lens_holder_mounting_screw_lug_r = 2.2; // size of above.
+camera_component_clearance = 1; // it's easiest to have the PCB slightly below the mount
 
 d=0.05; //small distance!
 $fn=32;
@@ -58,6 +58,13 @@ module usbcam_push_fit( beam_length=5){
         minkowski(){
             usbcam_lens_mount();
             cylinder(r=lens_holder_clearance, h=d, center=true, $fn=8);
+        }
+        minkowski(){ //flare out the bottom to avoid getting a lip
+            intersection(){
+                translate([0,0,camera_component_clearance]) cube([999,999,d],center=true);
+                usbcam_lens_mount();
+            }
+            cylinder(r1=lens_holder_clearance+0.5, r2=lens_holder_clearance, h=0.5, center=false, $fn=8);
         }
         // make sure the corners don't sag too much
         translate([0,0,lens_holder_box_h]) 
@@ -88,24 +95,4 @@ difference(){
     usbcam_push_fit();
 }
 
-module picam2_pcb_bottom(){
-    // This is an approximate model of the pi camera PCB for the purposes of making
-    // a slide-on cover.  NB z=0 is the bottom of the PCB, which is nominally 1mm thick.
-    pcb = [25+0.5,24+0.5,1+0.3];
-    socket = [pcb[0],6.0+0.5,2.7];
-    components = [pcb[0]-1*2, pcb[1]-1-socket[1], 2];
-    translate([0,2.4,0]) union(){ //NB the camera bit isn't centred!
-        translate([0,0,pcb[2]/2]) cube(pcb,center=true); //the PCB
-        translate([-components[0]/2,-pcb[1]/2+socket[1],-components[2]+d]) cube(components); //the little components
-        //the ribbon cable socket
-        translate([-socket[0]/2,-pcb[1]/2,-socket[2]+d]) cube(socket); //the ribbon cable socket
-        translate([-components[0]/2,-pcb[1]/2,-0.5]) cube([components[0],socket[1]+0.5,0.5+d]); //pins protrude slightly further
-        
-        //mounting screws (NB could be extruded in -y so the cover can slide on)
-        reflect([1,0,0]) mirror([0,0,1]) translate([21/2,-2.4,-d]){
-            cylinder(r=2.5,h=10);
-            cylinder(r=1.5,h=15,center=true); //screw might poke through the top...
-        }
-    }
-}
 //translate([0,0,-1]) picam_pcb_bottom();
