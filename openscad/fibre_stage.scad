@@ -10,6 +10,7 @@ one moving stage, rather than separating XY and Z.
 
 */
 use <utilities.scad>;
+use <nut_seat_with_flex.scad>;
 
 stage = [37,20,5]; //dimensions of stage part
 zflex = [6, 1.5, 0.75]; //dimensions of flexure
@@ -31,15 +32,15 @@ d=0.05;
 shelf_z1 = xy_lever * xy_stage_reduction;
 shelf_z2 = shelf_z1 + xy_lever;
 
-pushstick_cross_y = (pushstick[0]+pushstick[1])*sqrt(2); //if the pushsticks were infinitely long, they'd cross here.
+actuator_cross_y = (pushstick[0]+pushstick[1])*sqrt(2); //if the pushsticks were infinitely long, they'd cross here.
 pushstick_anchor_w = 2*(pushstick[1]+pushstick[0] - xy_lever*xy_stage_reduction - xflex[1]/2); //side length of the square anchor point for the XY pushsticks
 z_stage_tip_y = pushstick[0]/sqrt(2) + xy_bottom_travel * sqrt(2); //position of the pointy end of the Z stage
 z_triangle_d = 10; // size of the base of the Z stage
 z_anchor_bottom_y = z_stage_tip_y + z_triangle_d + z_lever + zflex[1]; // lower Z stage end of the fixed base
 
-z_pushstick_z = shelf_z1 - pushstick[0] - 1.5; //height of the Z pushstick
-z_pushstick_l = pushstick_cross_y - z_anchor_bottom_y + zflex[1];// - pushstick[0] - zflex[1]; //length of z pushstick
-z_actuator_x = pushstick_anchor_w/sqrt(2) + 1.5; //x position of the base of the Z actuator
+z_pushstick_z = shelf_z1 - pushstick[0] - 1.5; // height of the Z pushstick
+z_pushstick_l = actuator_cross_y - z_anchor_bottom_y + zflex[1];// - pushstick[0] - zflex[1]; //length of z pushstick, incl. flexures
+za_pivot = [pushstick_anchor_w/sqrt(2) + 1.5, z_anchor_bottom_y + z_pushstick_l - zflex[1], 0]; // position of the fixed end of the Z actuator
 
 module xy_table(){
     // XY table structure (anchors to Z stage)
@@ -109,16 +110,21 @@ module xy_actuator(l=50){
     // flexure.
     w = pushstick[0];
     h = pushstick[2];
-    union(){
-        translate([0,xflex[1]/2,0]) x_flexure();
-        translate([-w/2,xflex[1],0]) cube([w,l-xflex[1]/2+xflex[0]/2,h]);
-        translate([w/2,xflex[1]/2+l,0]) rotate(-90){
+    difference(){
+        union(){
             translate([0,xflex[1]/2,0]) x_flexure();
-            translate([-w/2,xflex[1],0]) cube([w,xy_column_l,h]);
-            translate([-5,xflex[1]+xy_column_l-10,0]) cube([10,10,h]);
+            translate([-w/2,xflex[1],0]) cube([w,l-xflex[1]/2+xflex[0]/2,h]);
+            translate([w/2,xflex[1]/2+l,0]) rotate(-90){
+                translate([0,xflex[1]/2,0]) x_flexure();
+                translate([-w/2,xflex[1],0]) cube([w,xy_column_l,h]);
+                translate([-5,xflex[1]+xy_column_l-10,0]) cube([10,10,h]);
+            }
+        }
+        translate([w/2 + xflex[1]+xy_column_l-7,xflex[1]/2+l,h/2]){
+            rotate([0,180,-90]) nut_y(3, top_access=true); 
+            rotate([0,0,-90]) cylinder_with_45deg_top(r=3/2*1.1, h=2*(xy_column_l - 8), $fn=16, extra_height=0.1);
         }
     }
-    
 }
 module each_pushstick(){
     // Transformation that creates two pushsticks at 45 degrees
@@ -148,7 +154,7 @@ module z_stage(){
         translate([0,0,shelf_z1]) cube([stage[0], stage[1], d],center=true);
         translate([0,0,shelf_z1 + stage[2]/2]) cube(stage,center=true);
     }
-    // Join the block to the anchor with some flexures at the bottom
+    // Join the stage to the anchor with some flexures at the bottom
     reflect([1,0,0]) translate([-z_triangle_d,z_stage_tip_y+z_triangle_d,0]){
         translate([0,-d,0]) cube([zflex[0], z_lever + zflex[1]+2*d, zflex[2]]);
         translate([0,zflex[1],0]) cube([z_triangle_d+d,z_lever - zflex[1], pushstick[2]]);
@@ -165,19 +171,30 @@ module z_stage(){
         cube([pushstick[0], z_pushstick_l - 2*zflex[1], pushstick[2]]);
         translate([0,-zflex[1],0]) cube([pushstick[0], z_pushstick_l + d, zflex[2]]);
     }
-    // The actuating lever pushes/pulls on the above pushstick
-    reflect([1,0,0]) translate([0, pushstick_cross_y - zflex[1], 0]) sequential_hull(){
-        bx = z_actuator_x;
+    // The actuating lever pushes/pulls on the above pushstick via
+    // the bridge structure below
+    reflect([1,0,0]) translate([0, za_pivot[1], 0]) sequential_hull(){
+        bx = za_pivot[0];
         w = pushstick[0];
-        translate([bx, -w, 0]) cube([w, w+zflex[1]+d, zflex[2]]);
-        translate([bx, -w, 0]) cube([w, w, d]);
-        translate([bx, -w, 14]) cube([w, w, d]);
-        translate([bx, -w, z_pushstick_z - pushstick[2]/2]) cube([w, w*2 + zflex[1], pushstick[2]]);
-        translate([-w/2, -w, z_lever * z_reduction]) cube([w,w,d]);
-        translate([-w/2, -w, z_lever * z_reduction]) cube([w,w,pushstick[2]]);
+        top = z_pushstick_z - pushstick[2]/2; //highest bit
+        translate([bx, -zflex[1]-d, 0]) cube([w, w+zflex[1]+d, zflex[2]]);
+        translate([bx, 0, 0]) cube([w, 15, d]);
+        translate([bx, 0, 14+1]) cube([w, w, w/2]);
+        translate([bx - (top - 14-1), 0, top]) cube([w, w, w/2]);
+        translate([-w/2, 0, top]) cube([w, w, pushstick[2]]);
     }
-    translate([0, pushstick_cross_y+pushstick[0]/2, z_pushstick_z]) cube([z_actuator_x * 2 + 2*d, pushstick[0], pushstick[2]], center=true);
-        
+    // This is the actuating lever itself.
+    reflect([1,0,0]) translate([0, za_pivot[1], 0]) sequential_hull(){
+        bx = za_pivot[0];
+        w = pushstick[0];
+        h = pushstick[2];
+        translate([bx, 0, 0]) cube([w, w, h]);
+        translate([bx, 15-w, 0]) cube([w, w/2, h]);
+        translate([-w/2+d, 30-2*w, 0]) cube([w, w/2, h]);
+        translate([-w/2+d, z_lever * z_reduction - 5, 0]) cube([w, d, h]);
+    }
+    // And the column at the end of the actuator...
+    translate([0, za_pivot[1] + z_lever * z_reduction, 0]) nut_seat_with_flex();
 }
 
 module extrude_then_roof(extrude, roof_extrude){
@@ -215,14 +232,14 @@ union(){
     
     extrude_then_roof(8,6){
         // Anchor for the bottom of the Z stage
-        hull(){ // anchor for the bottom part
+        hull(){
             bottom_y = z_anchor_bottom_y;
             bottom_tip_y = (pushstick[0]+pushstick[1]*2)/sqrt(2) - xy_bottom_travel; // Y coordinate of where inside edges of actuators meet
             translate([-z_triangle_d, bottom_y]) square([2*z_triangle_d, bottom_tip_y - bottom_y - z_triangle_d]);
             translate([0,bottom_tip_y]) circle(r=d, $fn=8);
         }
-        // Anchor for the pushsticks/actuators
-        translate([0,pushstick_cross_y]) rotate(45) square(pushstick_anchor_w, center=true);
+        // Anchor for the XY actuators
+        translate([0,actuator_cross_y]) rotate(45) square(pushstick_anchor_w, center=true);
     }
     
     // Anchor for the top of the Z stage
@@ -231,12 +248,22 @@ union(){
             translate([-stage[0]/2,stage[1]/2 + z_lever + zflex[1],shelf_z1]) cube([stage[0], 8, stage[2]]);
             translate([-z_triangle_d, z_anchor_bottom_y, 8]) cube([2*z_triangle_d, 20, d]);
         }
-        // clearance for actuating lever
+        // clearance for Z actuating lever
         translate([-pushstick[0]/2-1.5, z_anchor_bottom_y,0]){
             w = pushstick[0]+3;
             rotate([-asin(flex_a) + 90,0,0]) cube([w, shelf_z1, 999]);
             translate([0,0,shelf_z1 - pushstick[2] - 3]) cube([w, 999, pushstick[2]+3]);
         }
     }
+    
+    // Anchor for Z actuator
+    translate([0, za_pivot[1] - zflex[1],0]) sequential_hull(){
+        w = 2*(pushstick[0] + za_pivot[0]);
+        translate([0,-1,d])cube([w, 2, 2*d], center=true);
+        translate([0,-1,8])cube([w, 2, 2*d], center=true);
+        translate([0,-4,8+6-d])cube([w, 6, 2*d], center=true);
+    }
+    translate([-pushstick_anchor_w/sqrt(2),actuator_cross_y,0]) mirror([0,1,0]) cube([pushstick_anchor_w*sqrt(2), actuator_cross_y - za_pivot[1] + zflex[1] + d, 10]);
+    
 }//*/
     
