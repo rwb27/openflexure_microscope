@@ -189,7 +189,7 @@ module objective_clip_3(){
 			rotate(45) cube([1,1,999]*z_flexure_x*sqrt(2),center=true);
 		}
 		// carve out the block to form a dovetail
-        translate([0,objective_clip_y,0.5+d]) dovetail_clip_cutout([clip_outer_w,arm_length,999],solid_bottom=0.5,slope_front=2.5);
+        translate([0,objective_clip_y,0]) dovetail_clip_cutout([clip_outer_w,arm_length,999],solid_bottom=0.5,slope_front=2.5);
 		//clearance for top linker bar between flexure arms
 		translate([-999,z_carriage_y-zflex_l-z_link_w-1.5,z_flexure_spacing-2]) cube([999*2,zflex_l+z_link_w+1.5,999]);
 		//clearance for z axis struts passing under the carriage
