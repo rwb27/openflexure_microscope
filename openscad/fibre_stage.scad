@@ -23,7 +23,7 @@ xy_reduction = 5; //mechanical reduction from screw to sample
 xy_lever = 10;
 xy_travel = xy_lever * flex_a;
 xy_bottom_travel = xy_travel * xy_stage_reduction;
-xy_column_l = 20; //final part of XY actuators - to allow nut to stay straight
+xy_column_l = 22; //final part of XY actuators - to allow nut to stay straight
 pushstick = [5,35,5]; //cross-section of XY "push stick"
 pw = pushstick[0]; //because this is used in a lot of places...
 z_lever = 10;
@@ -131,7 +131,7 @@ module xy_actuator(l=xy_lever * xy_reduction){
         }
         translate([w/2 + xflex[1]+xy_column_l-7,xflex[1]/2+l,h/2]){
             rotate([0,180,-90]) nut_y(3, top_access=true); 
-            rotate([0,0,-90]) cylinder_with_45deg_top(r=3/2*1.1, h=2*(xy_column_l - 8), $fn=16, extra_height=0.1);
+            rotate([0,0,-90]) translate([0,-xy_column_l + 7 + 0.5, 0]) cylinder_with_45deg_top(r=3/2*1.1, h=2*(xy_column_l - 8), $fn=16, extra_height=0.1);
         }
     }
 }
@@ -255,7 +255,7 @@ union(){
                     translate([-ow/2, yint - l + 1.5]) square([wall_t,l]);
                 }
             }
-            translate([0,0,pushstick[2]/2]) cylinder_with_45deg_top(r=3/2*1.2, h=999,center=true, extra_height=0.1, $fn=16);
+            translate([0,0,pushstick[2]/2]) cylinder_with_45deg_top(r=3/2*1.1, h=999,center=true, extra_height=0.1, $fn=16);
         }
                 
     }
