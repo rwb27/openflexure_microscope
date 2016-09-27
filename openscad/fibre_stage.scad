@@ -213,8 +213,9 @@ module extrude_then_roof(extrude, roof_extrude){
     }
 }
 
+
 // Overall structure
-union(){
+module main_body(){
     difference(){
         union(){
             xy_table();
@@ -337,4 +338,31 @@ union(){
         translate([0,z_nut_y,0]) resize(ss_inner(999)) cylinder(r=10,h=999,$fn=32,center=true);
     }
 }//*/
-    
+
+module front_foot(){
+    // This glues onto the bottom of the microscope to provide two feet at the front, so it sits flat.  The bottom foot is a standard one from the microscope.
+    h1 = 1;
+    h = 15;
+    foot = wall_near_xy_column_pivot + [0,0,h-wall_t/2];
+    hull(){
+        translate(za_pivot + [pw + 1.5, -7, 0]) cube([wall_t, 15, h1]);
+        translate(wall_near_xy_column_pivot) cylinder(d=wall_t, h=h1);
+        translate(foot) sphere(d=wall_t);
+    }
+    l = xy_column_l + xflex[1]; //length of column incl. flexure
+    yface = l + pw/2; //end of column
+    yint = yface + xy_travel * xy_reduction;
+    iw = 10 + 3; //internal width of structure
+    ow = iw + 2*wall_t; //external width
+    hull(){
+        translate(xy_column_pivot) rotate(-45){
+            translate([-iw/2 - 8, yint - l + 1.5, 0]) cube([8,d, h1]);
+            translate([-ow/2, yint - l + 1.5, 0]) cube([wall_t,l, h1]);
+        }
+        translate(foot) sphere(d=wall_t);                
+    }
+    echo("Front feet at",foot[0],foot[1]);
+}
+//main_body();
+front_foot();
+
