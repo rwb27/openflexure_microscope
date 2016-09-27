@@ -364,5 +364,5 @@ module front_foot(){
     echo("Front feet at",foot[0],foot[1]);
 }
 //main_body();
-front_foot();
+reflect([1,0,0]) front_foot();
 
