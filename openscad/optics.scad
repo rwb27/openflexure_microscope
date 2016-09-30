@@ -29,9 +29,9 @@ use <cameras/usbcam_push_fit.scad>;
 use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
-//camera = "C270"; // Mid-range Logitech webcam, relatively easy to dissassemble
+camera = "C270"; // Mid-range Logitech webcam, relatively easy to dissassemble
 //camera = "picamera"; // Raspberry Pi Camera module v1
-camera = "picamera2"; // Raspberry Pi Camera module v2
+//camera = "picamera2"; // Raspberry Pi Camera module v2
 //camera = "usbcam"; //A USB camera including LED, that we sourced from China
 
 bottom = -8; //nominal distance from PCB to microscope bottom
@@ -107,12 +107,12 @@ module optical_path_fl(lens_aperture_r, lens_z){
     }
 }
     
-module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false){
+module lens_gripper(lens_r=10,h=6,lens_h=3.5,base_r=-1,t=0.65,solid=false, flare=0.4){
     // This creates a tapering, distorted hollow cylinder suitable for
     // gripping a small cylindrical (or spherical) object
     // The gripping occurs lens_h above the base, and it flares out
     // again both above and below this.
-    trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid);
+    trylinder_gripper(inner_r=lens_r, h=h, grip_h=lens_h, base_r=base_r, t=t, solid=solid, flare=flare);
 }
 module fl_cube(){
     // Filter cube that slots into a suitably-modified optics module
@@ -379,7 +379,7 @@ difference(){
         tube_lens_r=10/2+0.2, 
         objective_parfocal_distance=45
     );//*/
-    /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
+    // Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         tube_lens_ffd=38, 
         tube_lens_f=40, 
@@ -397,6 +397,6 @@ difference(){
     //picam_cover();
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
-    fl_cube();
+    //fl_cube();
     
 }
