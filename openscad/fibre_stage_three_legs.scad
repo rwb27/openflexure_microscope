@@ -11,6 +11,7 @@ one moving stage, rather than separating XY and Z.
 */
 use <utilities.scad>;
 use <compact_nut_seat.scad>;
+use <dovetail.scad>;
 include <parameters.scad>;
 
 
@@ -174,7 +175,7 @@ module casing_outline(cubic=true){
         difference(){
             translate([-stage[0]/2-s, z_anchor_bottom_y-wall_t, 0])
                 cube(stage + [2*s,s + (-z_anchor_bottom_y-stage[1]/2) + wall_t,shelf_z2]);
-            // cut out for Z actuator
+            // cut out for Z actuator //TODO: make this bigger...
             a = zflex[1] / (flex_a * z_pushstick_z);
             translate([0,z_actuator_pivot_y,0]) hull(){
                 w = z_actuator_pivot_w*(1-a) + a*pw;
@@ -189,9 +190,6 @@ module casing_outline(cubic=true){
             cylinder(r=wall_t, h=d, center=true, $fn=8);
         }
     }
-}
-
-module back_wall(){
 }
 
 
@@ -275,4 +273,62 @@ module main_body(){
 }//*/
 
 
-main_body();
+//main_body();
+
+//static platform;
+standoff = 10;
+module extrude_then_roof(extrude, roof_extrude){
+    union(){
+        linear_extrude(extrude+d) children();
+        translate([0,0,extrude]) linear_extrude(roof_extrude) hull() children();
+    }
+}
+/*
+rotate([-90,0,0])rotate(-45)
+difference(){
+    union(){
+        translate([0,0,-3]) intersection(){
+            extrude_then_roof(3,4) projection() translate([0,0,-shelf_z2 - stage[2] + d]) difference(){
+                casing_outline();
+                mechanism_void();
+            }
+            translate([50,-50,0]) rotate(-45) cube([2*50*sqrt(2)-standoff*2,999,999],center=true);
+        }
+        
+        translate([1,-1,0]*(25/2+standoff)/sqrt(2) + [0,0,2]) rotate(45) cube([16,25,4],center=true);
+        
+         translate([1,-1,0]/sqrt(2)*(standoff)+[0,0,4-d+10]) rotate([-90,0,-135])dovetail_clip([14,10,25],solid_bottom=0.5,slope_front=1.5);
+    }
+}*/
+sep = sqrt(2)*10;
+/*difference(){
+    hull(){
+        cube([sep+8, 8, 17]);
+    }
+    translate([4,4,2]) repeat([sep,0,0],2){
+        cylinder(r=3/2*1.1, h=999,center=true);
+        cylinder(r=3,h=999);
+    }
+}*/
+
+module outline(mech_void=true){
+    projection(cut=true) translate([0,0,-d]) difference(){
+            union(){
+            //minimal wall around the mechanism (will be hollowed out later)
+            casing_outline();
+            
+            //covers and screw seats for the XY actuators
+            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]);
+            //cover and screw seat for the Z actuator
+            translate([0,z_actuator_pivot_y,0]) actuator_shroud(z_pushstick_z+pushstick[2], z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=wall_t/2);
+        }
+        // make it a wall not a block - clearance for the mechanism
+        if(mech_void) mechanism_void();
+        // clearance for the XY pushsticks
+        each_pushstick() translate([-(pw+3)/2,0,-d]) cube(pushstick + [3,0,xy_travel+3]);
+    }
+}
+//translate([0,0,6.5]) mirror([0,0,1]) extrude_then_roof(6,0.5)
+//outline();
+linear_extrude(6) outline();
+linear_extrude(0.5) outline(false);
