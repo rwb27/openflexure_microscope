@@ -191,7 +191,37 @@ module casing_outline(cubic=true){
         }
     }
 }
-
+module casing(mechanism_void=true){
+    // This is the cuboidal casing and actuator housings.  It's the
+    // main structural component.
+    difference(){
+        union(){
+            //minimal wall around the mechanism (will be hollowed out later)
+            casing_outline();
+            
+            //mounts for XY actuators
+            each_pushstick() hull(){
+                translate([0, pushstick[1]-zflex[1], shelf_z1])
+                        cube([xy_actuator_pivot_w + 4, d, 2], center=true);
+                translate([-13/2, 0, shelf_z1-1-pushstick[1]])
+                        cube([13, d, pushstick[1]+3]);
+            }
+            //covers and screw seats for the XY actuators
+            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]);
+            //cover and screw seat for the Z actuator
+            translate([0,z_actuator_pivot_y,0]) actuator_shroud(z_pushstick_z+pushstick[2], z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=wall_t/2);
+        }
+        // limit the wall in Z
+        translate([0,0,shelf_z2 + stage[2] - z_travel]) cylinder(r=999,h=999,$fn=8);
+        translate([0,0,-99]) cylinder(r=999,h=99,$fn=8);
+        // make it a wall not a block - clearance for the mechanism
+        if(mechanism_void) mechanism_void();
+        // clearance for the XY pushsticks
+        each_pushstick() translate([-(pw+3)/2,0,-d]) cube(pushstick + [3,0,xy_travel+3]);
+        // clearance for the Z pushstick
+        translate([-(pw+3)/2, 0, z_pushstick_z-3]) cube([pw+3,z_actuator_pivot_y + z_pushstick_z*flex_a,pushstick[2]+5]);
+    }
+}
 
 // Overall structure
 module main_body(){
@@ -241,33 +271,7 @@ module main_body(){
     }
     
     // Casing (also provides a lot of the structural integrity)
-    difference(){
-        union(){
-            //minimal wall around the mechanism (will be hollowed out later)
-            casing_outline();
-            
-            //mounts for XY actuators
-            each_pushstick() hull(){
-                translate([0, pushstick[1]-zflex[1], shelf_z1])
-                        cube([xy_actuator_pivot_w + 4, d, 2], center=true);
-                translate([-13/2, 0, shelf_z1-1-pushstick[1]])
-                        cube([13, d, pushstick[1]+3]);
-            }
-            //covers and screw seats for the XY actuators
-            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]);
-            //cover and screw seat for the Z actuator
-            translate([0,z_actuator_pivot_y,0]) actuator_shroud(z_pushstick_z+pushstick[2], z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=wall_t/2);
-        }
-        // limit the wall in Z
-        translate([0,0,shelf_z2 + stage[2] - z_travel]) cylinder(r=999,h=999,$fn=8);
-        translate([0,0,-99]) cylinder(r=999,h=99,$fn=8);
-        // make it a wall not a block - clearance for the mechanism
-        mechanism_void();
-        // clearance for the XY pushsticks
-        each_pushstick() translate([-(pw+3)/2,0,-d]) cube(pushstick + [3,0,xy_travel+3]);
-        // clearance for the Z pushstick
-        translate([-(pw+3)/2, 0, z_pushstick_z-3]) cube([pw+3,z_actuator_pivot_y + z_pushstick_z*flex_a,pushstick[2]+5]);
-    }
+    casing();
         
     
 }//*/
@@ -291,17 +295,20 @@ module optics_module_adapter(standoff = 10){
                     casing_outline();
                     mechanism_void();
                 }
+                // cut it off on a diagonal
                 translate([50,-50,0]) rotate(-45) cube([2*50*sqrt(2)-standoff*2,999,999],center=true);
             }
             
+            // add in a rectangular platform
             translate([1,-1,0]*(25/2+standoff)/sqrt(2) + [0,0,2]) rotate(45) cube([16,25,4],center=true);
             
-             translate([1,-1,0]/sqrt(2)*(standoff)+[0,0,4-d+10]) rotate([-90,0,-135])dovetail_clip([14,10,25],solid_bottom=0.5,slope_front=1.5);
+            //and a dovetail to hold the optics module
+            translate([1,-1,0]/sqrt(2)*(standoff)+[0,0,4-d+10]) rotate([-90,0,-135])dovetail_clip([14,10,25],solid_bottom=0.5,slope_front=1.5);
         }
     }
 }
 
-rotate([-90,0,0])rotate(-45)optics_module_adapter();
+//rotate([-90,0,0])rotate(-45)optics_module_adapter();
 
 module slide_support(){
     // This piece screws diagonally onto the moving part to 
@@ -320,21 +327,7 @@ module slide_support(){
 
 module outline(mech_void=true){
     // The bottom of the casing (for making the lower part)
-    projection(cut=true) translate([0,0,-d]) difference(){
-            union(){
-            //minimal wall around the mechanism (will be hollowed out later)
-            casing_outline();
-            
-            //covers and screw seats for the XY actuators
-            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]);
-            //cover and screw seat for the Z actuator
-            translate([0,z_actuator_pivot_y,0]) actuator_shroud(z_pushstick_z+pushstick[2], z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=wall_t/2);
-        }
-        // make it a wall not a block - clearance for the mechanism
-        if(mech_void) mechanism_void();
-        // clearance for the XY pushsticks
-        each_pushstick() translate([-(pw+3)/2,0,-d]) cube(pushstick + [3,0,xy_travel+3]);
-    }
+    projection(cut=true) translate([0,0,-d]) casing();
 }
 
 module basic_base(){
@@ -342,3 +335,4 @@ module basic_base(){
     linear_extrude(6) outline();
     linear_extrude(0.5) outline(false);
 }
+basic_base();
