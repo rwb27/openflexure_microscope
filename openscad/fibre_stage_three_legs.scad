@@ -273,45 +273,53 @@ module main_body(){
 }//*/
 
 
-//main_body();
+main_body();
 
 //static platform;
-standoff = 10;
 module extrude_then_roof(extrude, roof_extrude){
     union(){
         linear_extrude(extrude+d) children();
         translate([0,0,extrude]) linear_extrude(roof_extrude) hull() children();
     }
 }
-/*
-rotate([-90,0,0])rotate(-45)
-difference(){
-    union(){
-        translate([0,0,-3]) intersection(){
-            extrude_then_roof(3,4) projection() translate([0,0,-shelf_z2 - stage[2] + d]) difference(){
-                casing_outline();
-                mechanism_void();
+
+module optics_module_adapter(standoff = 10){
+    difference(){
+        union(){
+            translate([0,0,-3]) intersection(){
+                extrude_then_roof(3,4) projection() translate([0,0,-shelf_z2 - stage[2] + d]) difference(){
+                    casing_outline();
+                    mechanism_void();
+                }
+                translate([50,-50,0]) rotate(-45) cube([2*50*sqrt(2)-standoff*2,999,999],center=true);
             }
-            translate([50,-50,0]) rotate(-45) cube([2*50*sqrt(2)-standoff*2,999,999],center=true);
+            
+            translate([1,-1,0]*(25/2+standoff)/sqrt(2) + [0,0,2]) rotate(45) cube([16,25,4],center=true);
+            
+             translate([1,-1,0]/sqrt(2)*(standoff)+[0,0,4-d+10]) rotate([-90,0,-135])dovetail_clip([14,10,25],solid_bottom=0.5,slope_front=1.5);
         }
-        
-        translate([1,-1,0]*(25/2+standoff)/sqrt(2) + [0,0,2]) rotate(45) cube([16,25,4],center=true);
-        
-         translate([1,-1,0]/sqrt(2)*(standoff)+[0,0,4-d+10]) rotate([-90,0,-135])dovetail_clip([14,10,25],solid_bottom=0.5,slope_front=1.5);
     }
-}*/
-sep = sqrt(2)*10;
-/*difference(){
-    hull(){
-        cube([sep+8, 8, 17]);
+}
+
+rotate([-90,0,0])rotate(-45)optics_module_adapter();
+
+module slide_support(){
+    // This piece screws diagonally onto the moving part to 
+    // support a vertical microscope slide for tracking experiments
+    sep = sqrt(2)*10;
+    difference(){
+        hull(){
+            cube([sep+8, 8, 17]);
+        }
+        translate([4,4,2]) repeat([sep,0,0],2){
+            cylinder(r=3/2*1.1, h=999,center=true);
+            cylinder(r=3,h=999);
+        }
     }
-    translate([4,4,2]) repeat([sep,0,0],2){
-        cylinder(r=3/2*1.1, h=999,center=true);
-        cylinder(r=3,h=999);
-    }
-}*/
+}
 
 module outline(mech_void=true){
+    // The bottom of the casing (for making the lower part)
     projection(cut=true) translate([0,0,-d]) difference(){
             union(){
             //minimal wall around the mechanism (will be hollowed out later)
@@ -328,7 +336,9 @@ module outline(mech_void=true){
         each_pushstick() translate([-(pw+3)/2,0,-d]) cube(pushstick + [3,0,xy_travel+3]);
     }
 }
-//translate([0,0,6.5]) mirror([0,0,1]) extrude_then_roof(6,0.5)
-//outline();
-linear_extrude(6) outline();
-linear_extrude(0.5) outline(false);
+
+module basic_base(){
+    // This isn't beautiful, but lifts the mechanism off the floor. Needs somehwere for the elastic bands though.
+    linear_extrude(6) outline();
+    linear_extrude(0.5) outline(false);
+}
