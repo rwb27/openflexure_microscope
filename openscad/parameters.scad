@@ -41,4 +41,12 @@ z_stage_base_w = stage[0] + 2*zflex[1] - 2*xy_bottom_travel - 2; //width of the 
 z_anchor_bottom_y = z_stage_base_y - z_lever - zflex[1]; // lower Z stage end of the fixed base
 z_actuator_pivot_y = stage[1]/2 + zflex[1] + zflex[0] + xy_bottom_travel + wall_t;
 z_actuator_pivot_w = 20; //width of the hinge for the Z actuator lever
-z_pushstick_z = shelf_z1 - pw - 1.5; // height of the Z pushstick
+z_pushstick_z = shelf_z1 - pw - 2.5; // height of the Z pushstick
+
+// Mounting stuff
+mounting_bolts = [[-1,0,0],[0,-1,0],[1,0,0]]*25*1*1.41; //bolt to the bench
+platform_z = shelf_z2 + stage[2] + 7;
+fixed_platform_standoff = 10;
+fixed_platform = [50,30,4];
+platform_gap = xy_travel + 1;
+casing_top = shelf_z2 + stage[2] - z_travel; //top of the wall
