@@ -47,6 +47,6 @@ z_pushstick_z = shelf_z1 - pw - 2.5; // height of the Z pushstick
 mounting_bolts = [[-1,0,0],[0,-1,0],[1,0,0]]*25*1*1.41; //bolt to the bench
 platform_z = shelf_z2 + stage[2] + 7;
 fixed_platform_standoff = 10;
-fixed_platform = [50,30,4];
+fixed_platform = [50,40,4];
 platform_gap = xy_travel + 1;
 casing_top = shelf_z2 + stage[2] - z_travel; //top of the wall

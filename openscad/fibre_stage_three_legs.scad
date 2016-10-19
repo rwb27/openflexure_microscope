@@ -209,20 +209,28 @@ module fixed_platform(){
             // to avoid messing up the bridge
             rotate(-135) translate([0,so+5,platform_z]) 
                 repeat([40,0,0],2,center=true)
-                repeat([0,10,0],3) cylinder(r=3/2*0.9,h=20,center=true);
+                repeat([0,10,0],10) cylinder(r=3/2*0.9,h=20,center=true);
             translate([0,0,0.5]) mechanism_void();
         }
     }
 }
-fixed_platform();
+//fixed_platform();
 
 module moving_platform(){
     // extension to the stage to make it bigger and match fixed platform
-    z = shelf_z2;
-    translate([-d,-d,z+2*dz]) cube(stage/2+[0,0,stage[2]/2-2*dz]);
-    translate([-d, stage[1]/2-zflex[0], z+dz]) cube([stage[0]/2+zflex[1]+2*d, zflex[0], zflex[2]]);
+    // (not finished)
+    shelf_bottom = shelf_z2+2*dz;
+    h = platform_z - shelf_bottom;
+    intersection(){
+        hull(){
+            translate([0,0,shelf_bottom+d]) cube([stage[0],stage[1],2*d],center=true); //the bottom of the stage
+            translate([0,0,platform_z-d]) cube([stage[0],stage[1]+2*h,2*d],center=true); //the bottom of the stage
+        }
+    }
+            
+        
 }
-moving_platform();
+//moving_platform();
 
 module casing(mechanism_void=true){
     // This is the cuboidal casing and actuator housings.  It's the
@@ -320,12 +328,13 @@ module main_body(){
     
     // Casing (also provides a lot of the structural integrity)
     casing();
+    fixed_platform();
         
     
 }//*/
 
 difference(){
-    //main_body();
+    main_body();
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }
 
