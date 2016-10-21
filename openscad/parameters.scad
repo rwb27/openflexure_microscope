@@ -8,10 +8,13 @@ stage = [37,20,5]; //dimensions of stage part
 xy_lever = 10;
 z_lever = 10;
 
-//mechanical reduction settings
+// Mechanical reduction settings
 xy_stage_reduction = 3; //ratio of sample motion to lower shelf motion
 xy_reduction = 5; //mechanical reduction from screw to sample
 z_reduction = 5; //mechanical reduction for Z
+
+// Motor lugs
+motor_lugs = true;
 
 // Flexure dimensions - good for PLA and ~0.5mm nozzle
 zflex = [6, 1.5, 0.75]; //dimensions of flexure

@@ -11,7 +11,7 @@ include <parameters.scad>;
 
 d = 0.05;
 nut_size = 3;
-nut_slot = [nut_size*2*sin(60)*1.15, (nut_size*1.15+0.5)*2, nut_size+0.7];
+nut_slot = [nut_size*2*sin(60)*1.15, (nut_size*1.15+1.0)*2, nut_size+0.7];
 shaft_r = nut_size/2 * 1.2; //radius of hole to cut for screw
 actuator_column_h = 26; //default height of actuator columns
 column_base_r = shaft_r + 2;
@@ -54,21 +54,29 @@ module nut_and_band_tool(nut_slot=nut_slot){
     //This tool assists with inserting both the nuts and elastic bands.
     //At some point I'll make one for springs, if needed...?
     w = nut_slot[0]-0.5;
-    l = 2*actuator_column_h;
+    l = actuator_column_h+36;
     h = nut_slot[2]-0.7;
     n = nut_size;
-    nut_y = nut_slot[1]/2-0.2;
+    nut_y = nut_slot[1]/2-0.7;
+    hook_w = 3.5;
     difference(){
-        translate([-w/2, 0,0]) cube([w,l,h]);
+        sequential_hull(){
+            translate([-w/2, 0,0]) cube([w,d,h]);
+            translate([-w/2, 20,0]) cube([w,d,h]);
+            union(){
+                translate([-hook_w/2-1, l-12,0]) cube([hook_w+2,12,h]);
+                translate([-hook_w/2-2, l-12,h-1]) cube([hook_w+4,12,1]);
+            }
+        }
         
         // hold the nut here
         translate([0,nut_y,0.5]) rotate(30) cylinder(r=n*1.15, h=999, $fn=6);
-        // slot for the screw shaft
-        hull() reflect([0,1,0]) translate([0,nut_y,0]) cylinder(r=n*1.05/2, h=999, center=true, $fn=16);
+        // slot for the screw shaft (or not - might be unnecessary)
+        //hull() reflect([0,1,0]) translate([0,nut_y,0]) cylinder(r=n*1.05/2, h=999, center=true, $fn=16);
         // slope the front for ease of insertion
         translate([-99,-2*nut_y,0]) rotate([atan(h/(3*nut_y)),0,0]) cube(999);
         // slot at the other end for band insertion
-        translate([0,l,0]) cube([2.5,14,999],center=true);
+        translate([0,l,0]) cube([3.5,18,999],center=true);
         // V shaped end to grip elastic bands
         translate([-99,l-1.5,0])hull(){
             translate([0,0,0.75]) cube([999,999,0.5]);
@@ -144,9 +152,34 @@ module screw_seat_shell(h=1, tilt=0){
         }
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //ground
         // hole through which we can insert the nut
-        //rotate([tilt,0,0]) translate([-99,column_core[1]/3, h-16]) cube(999);
+        //rotate([tilt,0,0]) translate([-99,column_core[1]/3, h-16]) cube(999); //this gets added later
     }
 }
+
+module motor_lugs(h=20, tilt=0){
+    // lugs to mount a micro geared stepper motor 
+    motor_shaft_pos=[0,-20,h+2]; //see height of screw_seat_shell above
+    motor_screw_pos=[35/2,motor_shaft_pos[1]+7.8,motor_shaft_pos[2]+10];
+    screw_r = sqrt(pow(motor_screw_pos[0],2)+pow(motor_screw_pos[1],2));
+    rotate([tilt,0,0]) reflect([1,0,0]) difference(){
+        union(){
+            hull(){
+                translate(motor_screw_pos-[0,0,8]) cylinder(r=4,h=8);
+                translate([0,0,motor_screw_pos[2]-screw_r-8]) cylinder(r=5,h=screw_r-5);
+            }
+        }
+        //space for gears
+        translate([0,0,h]) cylinder(r1=8,r2=17,h=2+d);
+        translate([0,0,h+2]) cylinder(h=999,r=17);
+        //hollow inside of the structure
+        nut_seat_void(h=h, tilt=tilt);
+        //mounting screws
+        translate(motor_screw_pos) cylinder(r=1.9,h=20,center=true);
+    }
+}
+
+//screw_seat_shell(30);
+//motor_lugs(30);
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_column_h, base_w = column_base_r*2){
     // A lever with its pivot wide and high, actuated by the above actuator
@@ -229,6 +262,9 @@ module actuator_void(h, w1, w2, lever, tilted=false, extend_back=d){
 
 module flexure_anchor_cutout(h=999,w=999){
     // A flexure anchor that is 999 wide and deep (for subtraction)
+    // If we subtract this from an actuator_void, it leaves a good
+    // solid chunk inside the actuator shroud for the actuator to
+    // pivot around.
     intersection(){
         mirror([0,1,0]) hull() reflect([1,0,0]){
             translate([0,0,zflex[2]]) rotate([-asin(flex_a)-2,0,0]) cube(999);
@@ -239,7 +275,7 @@ module flexure_anchor_cutout(h=999,w=999){
     }
 }
 
-module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_column_h){
+module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_column_h, motor_lugs=motor_lugs){
     // A cover for an actuator as defined above.
     ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
     nut_y = zflex[1] + (tilted ? sqrt(lever*lever - h*h) : lever);
@@ -253,6 +289,8 @@ module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h
                 cylinder(r=wall_t,$fn=16,h=0.8);
             }
             translate([0,nut_y,0]) screw_seat_shell(ns_h, tilt);
+            translate([0,nut_y,0]) motor_lugs(ns_h, tilt);
+            
         }
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //don't extend below ground
         translate([0,-extend_back,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8); //cut off at the end, so we don't go past the back and close it off
@@ -288,17 +326,6 @@ module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actua
     }
 }
     
-
-//translate([0,20,0]) untilted_actuator(25, 25, 50);
-//reflect([1,0,0]) rotate(45) translate([0,20,0]) tilted_actuator(25, 25, 50);
-//intersection(){
-//    tilted_actuator(30, 25, 50);
-//    translate([0,50,0]) cube([20,30,999],center=true);
-//}
-//difference(){
-//    screw_seat_shell(25, tilt=-40);
-//    nut_seat_void(25, tilt=-40);
-//}
 actuator_shroud(30, 25, pw, 50, extend_back=20);
 untilted_actuator(30,25,50);
 

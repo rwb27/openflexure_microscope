@@ -333,43 +333,6 @@ module main_body(){
     
 }//*/
 
-difference(){
-    main_body();
-    //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
-}
-
-module extrude_then_roof(extrude, roof_extrude){
-    //Extrude a shape, then add a roof (convex hull) on top.
-    union(){
-        linear_extrude(extrude+d) children();
-        translate([0,0,extrude]) linear_extrude(roof_extrude) hull() children();
-    }
-}
-
-module optics_module_adapter(standoff = 10){
-    difference(){
-        union(){
-            translate([0,0,-3]) intersection(){
-                extrude_then_roof(3,4) projection() translate([0,0,-shelf_z2 - stage[2] + d]) difference(){
-                    casing_outline();
-                    mechanism_void();
-                }
-                // cut it off on a diagonal
-                translate([50,-50,0]) rotate(-45) cube([2*50*sqrt(2)-standoff*2,999,999],center=true);
-            }
-            
-            // add in a rectangular platform
-            translate([1,-1,0]*(25/2+standoff)/sqrt(2) + [0,0,2]) rotate(45) cube([16,25,4],center=true);
-            
-            //and a dovetail to hold the optics module
-            translate([1,-1,0]/sqrt(2)*(standoff)+[0,0,4-d+10]) rotate([-90,0,-135])dovetail_clip([14,10,25],solid_bottom=0.5,slope_front=1.5);
-        }
-    }
-}
-
-//rotate([-90,0,0])rotate(-45)optics_module_adapter();
-
-
 module slide_support(){
     // This piece screws diagonally onto the moving part to 
     // support a vertical microscope slide for tracking experiments
@@ -385,48 +348,94 @@ module slide_support(){
     }
 }
 
-module outline(mech_void=true){
-    // The bottom of the casing (for making the lower part)
-    projection(cut=true) translate([0,0,-d]) casing(mech_void);
+module actuator_core_bottom(h=4, expand=0, center=false){
+    core = column_core_size();
+    resize(core+[expand, expand, h]) cylinder(r=core[0]/2,h=4,$fn=32, center=center);
 }
 
-module actuator_core_bottom(h=4, expand=0){
-    core = column_core_size();
-    resize(core+[expand, expand, h]) cylinder(r=core[0]/2,h=4,$fn=32);
+module thick_section(h, z=0, center=false){
+    linear_extrude(h, center=center) #projection(cut=true){
+        translate([0,0,-z]) children();
+    }
+} 
+module band_attachment_ladder(length, N=4){
+    // a cutout from the bottom of an object to allow elastic bands to be
+    // hooked in, to set the tension
+    w = pw+3; //outer width
+    l = length; //overall length
+    h = 3; //height
+    period = l/N;
+    
+    difference(){
+        translate([-w/2,0,-d]) cube([w,l,h+d]); //overall size
+        
+        repeat([0,period,0], ceil(length/period))hull(){
+            translate([-w/2+1.5,2,-2*d]) cube([w-3,2,d]);
+            translate([-w/2+2.5,3,h]) cube([w-5,2,d]);
+            translate([-w/2+3,period,-2*d]) cube([w-6,d,d]);
+            translate([-w/2+2.5,period,h]) cube([w-5,d,d]);
+        }
+    }
 }
-module basic_base(){
+
+module base(){
     // This isn't beautiful, but lifts the mechanism off the floor. Needs somehwere for the elastic bands though.
     t=max(xy_travel*xy_reduction, z_travel*z_reduction);
     tilt = -asin(xy_stage_reduction/xy_reduction);
     xy_nut_y = pushstick[1]+xy_lever*xy_reduction*cos(tilt);
     z_nut_y = z_actuator_pivot_y+zflex[1]+z_lever*z_reduction;
     core = column_core_size();
+    h = t + 4;
     band = [11, 4, 2.5*2];
     difference(){
         union(){
-            linear_extrude(4+t) outline();
-            linear_extrude(0.5) outline(mech_void=false);
-            each_pushstick() translate([0,xy_nut_y,0]) actuator_core_bottom(4,d);
-            translate([0,z_nut_y,0]) actuator_core_bottom(4,d);
-                  //cylinder(r=min(z_actuator_pivot_y+z_lever*z_reduction,pushstick[1]+xy_lever*xy_reduction*cos(xy_stage_reduction/xy_reduction)) - 10, h=999, center=true, $fn=32); //take the intersection of the base with this to open up the bottoms of the actuators.
+            
+            thick_section(h, z=d) casing();
+            thick_section(h-t, z=d) casing(mechanism_void=false);   
+            
+            //properly tilted actuator columns
+            each_pushstick() translate([0,xy_nut_y,h]) intersection(){
+                mirror([0,0,1]) cylinder(r=999,h=h,$fn=8);
+                rotate([tilt,0,0]) actuator_core_bottom(999, expand=wall_t*2, center=true);
+            }
+                
         }
+        // remove the unnecessary thick floor from the box
+        translate([0,0,0.75]) thick_section(999) mechanism_void();
         // hooks for bands/springs
         
-            each_pushstick() translate([0,xy_nut_y,0]) union(){
-                difference(){
-                    translate([0,0,-d]) actuator_core_bottom(10,0);
-                    cube([10,999,999],center=true);
-                }
-                translate([0,t*sin(tilt),0]) cube(band,center=true);
+        each_pushstick() translate([0,xy_nut_y+h*tan(tilt),0]) union(){
+            difference(){
+                rotate([tilt,0,0]) actuator_core_bottom(999,center=true);
+                cube([pw+3,999,(h-t)*2],center=true);
             }
-            translate([0,z_nut_y,0]) union(){
-                difference(){
-                    translate([0,0,-d]) actuator_core_bottom(10,0);
-                    cube([10,999,999],center=true);
-                }
-                cube(band,center=true);
+            hull(){//elastic band slot
+                cube([pw+5,3,2*d],center=true);
+                translate([0,0,h-t-1-d]) cube([pw+5,5,2*d],center=true);
             }
+            translate([0,-39,0]) band_attachment_ladder(35);
+            // remember to cut the inside wall so the colum can
+            // move downwards:
+            translate([0,-10,h]) cube([7+3,20,2*t-d],center=true);
+        }
+        translate([0,z_nut_y,0]) union(){
+            difference(){
+                translate([0,0,h]) actuator_core_bottom(999,center=true);
+                cube([pw+3,999,(h-t)*2],center=true);
+            }
+            hull(){//elastic band slot
+                cube([pw+5,3,2*d],center=true);
+                translate([0,0,h-t-1-d]) cube([pw+5,5,2*d] ,center=true);
+            }
+            translate([0,-42,0]) band_attachment_ladder(38);
+        }
     }
         
 }
-//basic_base();
+
+difference(){
+    main_body();
+//    rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
+}
+
+//base();
