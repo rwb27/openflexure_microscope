@@ -362,6 +362,7 @@ module band_attachment_ladder(length, N=4){
     // a cutout from the bottom of an object to allow elastic bands to be
     // hooked in, to set the tension
     w = pw+3; //outer width
+    iw = w-7;
     l = length; //overall length
     h = 3; //height
     period = l/N;
@@ -370,10 +371,10 @@ module band_attachment_ladder(length, N=4){
         translate([-w/2,0,-d]) cube([w,l,h+d]); //overall size
         
         repeat([0,period,0], ceil(length/period))hull(){
-            translate([-w/2+1.5,2,-2*d]) cube([w-3,2,d]);
-            translate([-w/2+2.5,3,h]) cube([w-5,2,d]);
-            translate([-w/2+3,period,-2*d]) cube([w-6,d,d]);
-            translate([-w/2+2.5,period,h]) cube([w-5,d,d]);
+            translate([-iw/2-1,2,-2*d]) cube([iw+2,2,d]);
+            translate([-iw/2,3,h]) cube([iw,2,d]);
+            translate([-iw/2-0.5,period+d,-2*d]) cube([iw+1,d,d]);
+            translate([-iw/2,period+d,h]) cube([iw,d,d]);
         }
     }
 }
@@ -402,8 +403,7 @@ module base(){
         }
         // remove the unnecessary thick floor from the box
         translate([0,0,0.75]) thick_section(999) mechanism_void();
-        // hooks for bands/springs
-        
+        // cut-outs for elastic bands/springs
         each_pushstick() translate([0,xy_nut_y+h*tan(tilt),0]) union(){
             difference(){
                 rotate([tilt,0,0]) actuator_core_bottom(999,center=true);
@@ -417,6 +417,14 @@ module base(){
             // remember to cut the inside wall so the colum can
             // move downwards:
             translate([0,-10,h]) cube([7+3,20,2*t-d],center=true);
+            
+            // cut the outside of the base to remove the excess material
+            // from the outer edge of the column (will have been extruded
+            // vertically)
+            rotate([tilt,0,0]) difference(){
+                translate([-99,0,-99]) cube(999);
+                actuator_core_bottom(999,expand=2*wall_t+d,center=true);
+            }
         }
         translate([0,z_nut_y,0]) union(){
             difference(){
@@ -434,8 +442,8 @@ module base(){
 }
 
 difference(){
-    main_body();
+//    main_body();
 //    rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }
 
-//base();
+base();
