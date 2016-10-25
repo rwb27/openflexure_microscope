@@ -13,6 +13,7 @@
 ******************************************************************/
 
 use <./utilities.scad>;
+include <./microscope_parameters.scad>;
 
 ns_flex = [2.5,1,0.75];
 ns_outer_r = 7;
@@ -296,51 +297,16 @@ module nut_seat_with_flex(){
         translate([0,outer_r,3/2+0.5]) cube([4,3,3],center=true);
     }
 }
-module back_foot(h=15,tilt=7){
-
-	assign(inner=[0.8,1.1,1]*6*2)
-	assign(outer=[0.8,1.1,1]*8*2)
-	intersection(){
-		translate([-1,-1,0]*999) cube([1,1,1]*999*2); //make sure there's nothing below the XY plane
-
-		translate([0,outer[1]/2,0]) rotate([-tilt,0,0]) translate([0,-outer[1]/2,0]) union(){ //tip over from one corner to make foot
-			difference(){
-				union(){
-					translate([0,0,-10]) resize([outer[0],outer[1],h+10]) cylinder(r=outer[1]); //body (with some below zero to allow spare when we tilt over
-					translate([0,0,-10]) resize([inner[0],inner[1],h+5+10]) cylinder(r=inner[1]); //extension at the top
-				}
-				sequential_hull(){
-					translate([0,0,-20]) resize([inner[0]-d,inner[1],d]) cylinder(r=inner[1]); //cutout for nut seat
-					translate([0,0,h-4]) resize([inner[0]-d,inner[1],d]) cylinder(r=inner[1]); //cutout for nut seat
-					translate([0,0,h-1]) resize([inner[0]-3,inner[1]-2,d]) cylinder(r=inner[1]-1);
-					translate([0,0,h-1]) resize([inner[0]-3,inner[1]-2,999]) cylinder(r=inner[1]-1);
-				}
-				//cable hole
-				translate([-1.5,0,h/2]) cube([3,999,999]);
-			}
-			intersection(){ //grips for hole in microscope
-				difference(){ //hollow extruded ellipse
-					translate([0,0,-10]) resize([inner[0],inner[1],h+5+10]) cylinder(r=inner[1]);
-					translate([0,0,-20]) resize([inner[0]-3,inner[1]-1,999]) cylinder(r=inner[1]-1);
-				}
-				hull(){ //just the bits at either side
-					translate([0,0,-10]) cube([999,10,d],center=true);
-					translate([0,0,h+5]) cube([999,6,d],center=true);
-				}
-			}
-			//grips for indents
-			reflect([1,0,0]) translate([inner[0]/2,0,h+3]) scale([0.5,1,1]) sphere(r=1);
-		}
-	}
-}
 
 
 //intersection(){
-  screw_seat(motor_lugs=true);
+//  screw_seat(motor_lugs=true);
 //    translate([0,0,21]) cylinder(r=999,h=999,$fn=8);
 //}
-nut_seat_with_flex();
+//nut_seat_with_flex();
 //motor_lugs(); // merged into screw_seat, because it crashes STL export otherwise!! I suspect it's due to the large number of almost-duplicated vertices messing up tesselation...
 //screw_seat_silhouette();
-//elastic_band_base(tilt=0);
-//back_foot();
+elastic_band_base(h=foot_height, tilt=7);
+translate([ss_outer(5)[0]*1
++2,0,0]) elastic_band_base(h=foot_height, tilt=7);
+translate([ss_outer(5)[0]*2+4,0,0]) elastic_band_base(h=foot_height, tilt=0);
