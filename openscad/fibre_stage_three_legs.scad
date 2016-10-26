@@ -152,8 +152,9 @@ module mechanism_void(){
         }
         
         // take a chunk out to allow for Z actuator reinforcement
-        translate([0,z_actuator_pivot_y, 0]) mirror([0,1,0]) hull(){
-            w = z_actuator_pivot_w;
+       translate([0,z_actuator_pivot_y, 0]) mirror([0,1,0]) hull(){
+            w = 2*(z_actuator_pivot_y - pushstick[0]/sqrt(2) - xy_bottom_travel*sqrt(2)) - 1;
+            //w = z_actuator_pivot_w;
             translate([-w/2,0,-d]) cube([w, wall_t, shelf_z2]);
             translate([-w/2 + 6,0,-d]) cube([w-6*2, wall_t+6, shelf_z2]);
         }
@@ -242,9 +243,9 @@ module casing(mechanism_void=true){
             
             //NB the arguments here are repeated below
             //covers and screw seats for the XY actuators
-            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud_shell(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]);
+            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud_shell(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]-10);
             //cover and screw seat for the Z actuator
-            translate([0,z_actuator_pivot_y,0]) actuator_shroud_shell(z_pushstick_z+pushstick[2]+1, z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=wall_t/2);
+            translate([0,z_actuator_pivot_y,0]) actuator_shroud_shell(z_pushstick_z+pushstick[2]+1, z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=wall_t);
             
             //Mounting bolts
             for(bolt_pos=mounting_bolts){
@@ -271,11 +272,17 @@ module casing(mechanism_void=true){
         if(mechanism_void){
             mechanism_void();
         
-            //covers and screw seats for the XY actuators
-            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud_core(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1], anchor=true);
+            //inside of covers and screw seats for the XY actuators
+            each_pushstick() translate([0,pushstick[1]-zflex[1],0]) actuator_shroud_core(shelf_z1, pw, xy_actuator_pivot_w, xy_lever*xy_reduction, tilted=true, extend_back=pushstick[1]-10, anchor=true);
             //cover and screw seat for the Z actuator
-            translate([0,z_actuator_pivot_y,0]) actuator_shroud_core(z_pushstick_z+pushstick[2]+1, z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=z_actuator_pivot_y, anchor=true);
-        }
+            translate([0,z_actuator_pivot_y,0]) actuator_shroud_core(z_pushstick_z+pushstick[2]+1, z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=flex_a*(z_pushstick_z+pushstick[2]+1)+0.5, anchor=true);
+            //clearance for the Z pushstick
+            translate([-pw/2-1.5,0,z_pushstick_z-3]) cube([pw+3,z_actuator_pivot_y+d, pushstick[2]+3]);
+            }
+        
+        // cut outs to clear "spaghetti" from inside of stage
+        translate([0,0,shelf_z2-2]) cube([999,10,3],center=true);
+        translate([0,0,shelf_z2-2]) cube([10,999,3],center=true);
     }
 }
 
@@ -307,7 +314,10 @@ module main_body(){
         // mounting holes on top
         repeat([10,0,0],4,center=true)
             repeat([0,10,0],2,center=true)
-            translate([0,0,shelf_z2 + 1]) cylinder(d=3*0.95,h=999);
+            translate([0,0,shelf_z2 + 1.5]) cylinder(d=3*0.95,h=999);
+            // NB the z position must clear the bottom of the stage
+            // (which is 1mm above shelf_z2) or we get errors on the
+            // bridge.
     }
     // XY pushsticks and actuators
     each_pushstick(){
@@ -442,8 +452,8 @@ module base(){
 }
 
 difference(){
-//    main_body();
-//    rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
+    main_body();
+    //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }
 
-base();
+//base();

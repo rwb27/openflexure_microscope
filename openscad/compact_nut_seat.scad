@@ -260,15 +260,15 @@ module actuator_void(h, w1, w2, lever, tilted=false, extend_back=d){
     }
 }
 
-module flexure_anchor_cutout(h=999,w=999){
+module flexure_anchor_cutout(h=999,w=999, extend_back=999){
     // A flexure anchor that is 999 wide and deep (for subtraction)
     // If we subtract this from an actuator_void, it leaves a good
     // solid chunk inside the actuator shroud for the actuator to
     // pivot around.
     intersection(){
         mirror([0,1,0]) hull() reflect([1,0,0]){
-            translate([0,0,zflex[2]]) rotate([-asin(flex_a)-2,0,0]) cube(999);
-            mirror([0,0,1]) cube(999);
+            translate([0,extend_back,h/2]) cube([999,d,d]);
+            translate([0,0,zflex[2]]) mirror([0,0,1]) cube(999);
         }
         
         cube([999,w,h],center=true);
@@ -306,9 +306,9 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=
     difference(){
         actuator_void(h, w1, w2, lever, tilted, extend_back); //cut out so it's hollow
         if(tilted){ //make the void smaller so we get an anchor
-            translate([0,0,h+zflex[2]]) mirror([0,0,1]) flexure_anchor_cutout(h=2*(h-pushstick_h));
+            translate([0,0,h+zflex[2]]) mirror([0,0,1]) flexure_anchor_cutout(h=2*(h-pushstick_h), extend_back=extend_back);
         }else{
-            flexure_anchor_cutout(h=2*(h-pushstick_h));
+            flexure_anchor_cutout(h=2*(h-pushstick_h), extend_back=extend_back);
         }
     }
                 
