@@ -223,40 +223,40 @@ module fl_led_mount(){
     roc = 0.6;
     w = fl_cube_w - 1; //nominal width of the mount (is the width between the outsides of the dovetail clip points)
     dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
-    h = 10;
+    h = fl_cube_w;
+    led_z = fl_cube_w/2+2;
     filter = [10,14,1.5];
     beamsplit = [0, 0, w/2+2]; //NB different to fl_cube because we're printing with z=z here.
     $fn=8;
-    led_y = beamsplit[2] - bottom; //place LED and camera in conjugate planes (nb this is the *camera* bottom, not fl_cube's redefinition)
-    front_t = 6;
-    front_y = led_y + front_t;
+    front_t = 2;
     back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
-    union() translate([0,0,beamsplit[2]-h/2]){
+    led_y = back_y+3; //don't worry about precise imaging (is this OK?)
+    front_y = led_y + front_t;
+    led_d = 5;
+    
+    union() translate([0,0,0]){
         difference(){
             union(){
-                translate([0, back_y, 0]) mirror([0,1,0]) dovetail_m([w, led_y - back_y - roc, h], t=2*roc);
-                hull() reflect([1,0,0]) translate([w/2-3*roc, led_y - roc, 0]) resize([0,2*front_t,0]) 
-                                                                cylinder(r=3*roc, h=h, $fn=16);
+                translate([0, back_y, 0]) mirror([0,1,0]) dovetail_m([w, 1, h], t=2*roc);
+                hull(){
+                    translate([-w/2,back_y,0]) cube([w,d,h]);
+                    reflect([1,0,0]) translate([w/2-3*roc, front_y - 3*roc, 0]) cylinder(r=3*roc, h=h, $fn=16);
+                }
+                hull(){
+                    l=3.5;
+                    translate([-w/2+2.5,back_y-1.5+d,led_z-led_d/2-2-l]) cube([w-5,d,led_d+4+l]);
+                    translate([-w/2+2.5,back_y-1.5+d-l,led_z-led_d/2-2]) cube([w-5,d,led_d+4]);
+                }
             }
             
-            // cut out the middle of the dovetail so it's compressible
-            cube([dovetail_pinch - 3, 2*(led_y-roc), 999], center=true); //cut out the centre to create arms
-            translate([-w/2+2*roc, back_y+1.5, 0.5]) cube([w-4*roc, led_y-roc - back_y - 1.5, 999]);
-            hull() reflect([1,0,0]) translate([w/2-3*roc, led_y - roc, 0.5]) cylinder(r=roc, h=999, $fn=16);
-            
             // add a hole for the LED
-            translate([0,led_y,h/2]){
-                cylinder_with_45deg_top(h=999, r=3/2*1.05, $fn=16, extra_height=0, center=true); //LED
-                translate([0,3,0]) cylinder_with_45deg_top(h=999, r=4/2*1.05, $fn=16, extra_height=0);
+            translate([0,led_y,led_z]){
+                cylinder_with_45deg_top(h=999, r=led_d/2*1.05, $fn=16, extra_height=0, center=true); //LED
+                cylinder_with_45deg_top(h=999, r=(led_d+1)/2*1.05, $fn=16, extra_height=0);
             }
         }
         
-        difference(){
-            translate([-(dovetail_pinch - 5)/2, back_y, 0]) cube([dovetail_pinch - 5, led_y - back_y + d, h]);
-            translate([0,led_y,h/2]){
-                translate([0,3,0]) cylinder_with_45deg_top(h=999, r=3.5/2*1.05, $fn=16, extra_height=0, center=true); //beam
-            }
-        }
+
     }
 }
 
