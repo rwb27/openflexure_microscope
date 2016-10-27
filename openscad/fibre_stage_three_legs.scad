@@ -277,7 +277,7 @@ module casing(mechanism_void=true){
             //cover and screw seat for the Z actuator
             translate([0,z_actuator_pivot_y,0]) actuator_shroud_core(z_pushstick_z+pushstick[2]+1, z_actuator_pivot_w, pw, z_lever*z_reduction, tilted=false, extend_back=flex_a*(z_pushstick_z+pushstick[2]+1)+0.5, anchor=true);
             //clearance for the Z pushstick
-            translate([-pw/2-1.5,0,z_pushstick_z-3]) cube([pw+3,z_actuator_pivot_y+d, pushstick[2]+3]);
+            translate([-pw/2-1.5,0,z_pushstick_z-3]) cube([pw+3,z_actuator_pivot_y+d, pushstick[2]+3+3]);
             }
         
         // cut outs to clear "spaghetti" from inside of stage
