@@ -20,6 +20,7 @@ column_core = nut_slot + 2*[1.5+7+1, 1.5+1.5, -nut_slot[2]/2];// NB leave z=0 he
 shroud_t = [1,1,0.75];
 
 function column_core_size() = column_core;
+function nut_slot_size() = nut_slot;
 
 module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     // A cut-out that will hold a nut.  The nut slots in horizontally
@@ -72,7 +73,7 @@ module nut_and_band_tool(nut_slot=nut_slot){
         // hold the nut here
         translate([0,nut_y,0.5]) rotate(30) cylinder(r=n*1.15, h=999, $fn=6);
         // slot for the screw shaft (or not - might be unnecessary)
-        //hull() reflect([0,1,0]) translate([0,nut_y,0]) cylinder(r=n*1.05/2, h=999, center=true, $fn=16);
+        hull() reflect([0,1,0]) translate([0,nut_y,0]) cylinder(r=n*1.05/2, h=999, center=true, $fn=16);
         // slope the front for ease of insertion
         translate([-99,-2*nut_y,0]) rotate([atan(h/(3*nut_y)),0,0]) cube(999);
         // slot at the other end for band insertion
@@ -85,7 +86,7 @@ module nut_and_band_tool(nut_slot=nut_slot){
     }
 }
         
-//nut_and_band_tool();
+nut_and_band_tool();
 
 module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false){
     r1 = column_base_r; //size of the bottom part
@@ -326,10 +327,10 @@ module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actua
     }
 }
     
-actuator_shroud(30, 25, pw, 50, extend_back=20);
-untilted_actuator(30,25,50);
+//actuator_shroud(30, 25, pw, 50, extend_back=20);
+//untilted_actuator(30,25,50);
 
 translate([40,0,0]){
-    actuator_shroud(25, 10, 25, 50, tilted=true, extend_back=20);
-    tilted_actuator(25,25,50, base_w=6);
+//    actuator_shroud(25, 10, 25, 50, tilted=true, extend_back=20);
+//    tilted_actuator(25,25,50, base_w=6);
 }
