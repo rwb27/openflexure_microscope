@@ -223,10 +223,10 @@ module fl_led_mount(){
     roc = 0.6;
     w = fl_cube_w - 1; //nominal width of the mount (is the width between the outsides of the dovetail clip points)
     dovetail_pinch = fl_cube_w - 4*roc - 1 - 3; //width between the pinch-points of the dovetail
-    h = fl_cube_w;
-    led_z = fl_cube_w/2+2;
+    h = fl_cube_w - 1; //should probably be fl_cube_w
+    led_z = fl_cube_w/2;//+2;
     filter = [10,14,1.5];
-    beamsplit = [0, 0, w/2+2]; //NB different to fl_cube because we're printing with z=z here.
+    beamsplit = [0, 0, w/2]; //NB different to fl_cube because we're printing with z=z here.
     $fn=8;
     front_t = 2;
     back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
