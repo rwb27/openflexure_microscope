@@ -100,6 +100,7 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
 
 difference(){
     // standard size
+    echo("clip_y",illumination_clip_y,"sample_z",sample_z);
     rotate([90,0,0]) 
     back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z);
     // large stage version
