@@ -24,12 +24,12 @@ bottom = -foot_height; //the foot extends below the bottom of the dovetail
   //currently this is also defined in nut_seat_with_flex.scad, should
   //move them both to microscope_parameters really!
 
-led_r = 3/2*1.1; //change to 5/2*1.1 if you want a bigger LED
-led_angle = 20; //cone angle for LED beam
+led_d = 5; // LED diameter in mm if you want a bigger LED
+led_angle = 22; //cone angle for LED beam
 working_distance = clip_h; //wd should be >= clip_h so it fits on nicely...
                 //working_distance is the distance from condenser to stage
 
-module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
+module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65){
     // Arm that clips on to the microscope, providing the back foot
     // and illumination mount
     w = clip_w; //width (size in x direction)
@@ -90,8 +90,8 @@ module back_foot_and_illumination(clip_y=-35,stage_clearance=6,sample_z=40){
         
         // Holes for LED and beam
         translate([0,0,sample_z+10+8.5]){
-            cylinder(r=3*1.1/2,h=999,center=true,$fn=24);
-            cylinder(r=4*1.2/2,h=999,$fn=24);
+            cylinder(r=led_d*1.1/2,h=999,center=true,$fn=24);
+            cylinder(r=(led_d+1)*1.2/2,h=999,$fn=24);
         }
         translate([0,0,sample_z]) cylinder(h=wd+4,r1=(wd+4)*tan(led_angle/2)+3/2,r2=3/2);
     }
