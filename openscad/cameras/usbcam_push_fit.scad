@@ -90,9 +90,45 @@ module usbcam_push_fit( beam_length=5){
 	}
 }
 
-difference(){
-   translate([-12.5,-12+2.4,0]); cube([25,24,15]);
-    usbcam_push_fit();
+//difference(){
+//   translate([-12.5,-12+2.4,0]); cube([25,24,15]);
+//    usbcam_push_fit();
+//}
+
+function camera_mount_height()=4;
+
+module camera_mount(){
+    h = camera_mount_height();
+    sy = lens_holder_mounting_screw_y;
+    sr = lens_holder_mounting_screw_lug_r+0.5;
+    box_w = 13.2 + 1; //make it slightly fatter so it grips the bed more
+    sensor_w = 10 + 0.8; //reasonably tight fit around sensor
+    solder_w = (box_w-1.2*2); //the solder terminals need some give
+    translate([0,0,-h]) difference(){
+        linear_extrude(h+d) difference(){
+            union(){
+                square(box_w, center=true);
+                hull() reflect([0,1]) translate([0,sy]) circle(r=sr, $fn=16);
+            }
+            //screws
+            reflect([0,1]) translate([0,sy]) circle(d=1.5, $fn=16);
+            //sensor
+            //square(sensor_w, center=true);
+        }
+        //chamfer the screw holes
+        reflect([0,1,0]) translate([0,sy,0]) cylinder(r1=2.5, r2=0,h=3, center=true);
+        // enlarge the cut out for the sensor
+        // NB the solder terminals will distort the thin bottom, this
+        // is intentional, to help with bed adhesion
+        cube([sensor_w, sensor_w, 2],center=true);
+        sequential_hull(){
+            translate([0,0,0.7]) cube([solder_w,solder_w,d],center=true);
+            translate([0,0,0.7+(solder_w-sensor_w)/2]) cube([sensor_w, sensor_w, d],center=true);
+            translate([0,0,2]) cube([sensor_w, sensor_w, d],center=true);
+            translate([0,0,h+d]) cylinder(r=5,h=d);
+        }
+    }
 }
+camera_mount();
 
 //translate([0,0,-1]) picam_pcb_bottom();

@@ -22,51 +22,23 @@
 ******************************************************************/
 
 use <utilities.scad>;
-use <cameras/picam_push_fit.scad>;
-use <cameras/picam_2_push_fit.scad>;
-use <cameras/C270_mount.scad>;
-use <cameras/usbcam_push_fit.scad>;
 use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
-camera = "C270"; // Mid-range Logitech webcam, relatively easy to dissassemble
-//camera = "picamera"; // Raspberry Pi Camera module v1
-//camera = "picamera2"; // Raspberry Pi Camera module v2
-//camera = "usbcam"; //A USB camera including LED, that we sourced from China
+//use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
+//use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
+//use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
+use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
-bottom = -8; //nominal distance from PCB to microscope bottom
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
+camera_mount_top = dt_bottom - 3;
+bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
 fl_cube_bottom = 0; //bottom of the fluorescence filter cube
 fl_cube_w = 12; //width of the fluorescence filter cube
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
 d = 0.05;
-
-// The camera parameters depend on what camera we're using,
-// sorry about the ugly syntax, but I couldn't find a neater way.
-camera_angle = (camera=="picamera"||camera=="picamera2"||camera=="usbcam"?45:
-               (camera=="C270"?-45:0));
-camera_h = (camera=="picamera"||camera=="picamera2"?24:
-           (camera=="C270"?53:
-           (camera=="usbcam"?40:0)));
-camera_shift = (camera=="picamera"||camera=="picamera2"?2.4:
-               (camera=="C270"?(45-53/2):
-               (camera=="usbcam"?0:0)));
-
 $fn=24;
-
-module camera(){
-    //This creates a cut-out for the camera we've selected
-    if(camera=="picamera"){
-        picam_push_fit();
-    }else if(camera=="picamera2"){
-        picam2_push_fit();
-    }else if(camera=="C270"){
-        C270(beam_r=5,beam_h=6+d);
-    }else if(camera=="usbcam"){
-        usbcam_push_fit();
-    }
-}
 
 module fl_cube_cutout(taper=true){
     // A cut-out that enables a filter cube to be inserted.
@@ -87,20 +59,18 @@ module fl_cube_cutout(taper=true){
 }
 module optical_path(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, consisting of
-    // a feathered cylindrical beam path and a camera mount
+    // a feathered cylindrical beam path.  Camera mount is now cut out
+    // of the camera mount body already.
     union(){
-        rotate(camera_angle) translate([0,0,bottom]) camera();
-        // //camera
-        translate([0,0,bottom+6]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-bottom-6+d); //beam path
+        translate([0,0,camera_mount_top-d]) lighttrap_cylinder(r1=5, r2=lens_aperture_r, h=lens_z-camera_mount_top+2*d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
     }
 }
 module optical_path_fl(lens_aperture_r, lens_z){
     // The cut-out part of a camera mount, with a space to slot in a filter cube.
     union(){
-        rotate(camera_angle) translate([0,0,bottom]) camera(); //camera
-        translate([0,0,bottom+6]) lighttrap_sqylinder(r1=5, f1=0,
-                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-bottom-6+d); //beam path to bottom of cube
+        translate([0,0,camera_mount_top-d]) lighttrap_sqylinder(r1=5, f1=0,
+                r2=0, f2=fl_cube_w-4, h=fl_cube_bottom-camera_mount_top+2*d); //beam path to bottom of cube
         rotate(180) fl_cube_cutout(); //filter cube
         translate([0,0,fl_cube_top-d]) lighttrap_sqylinder(r1=1.5, f1=fl_cube_w-4-3, r2=lens_aperture_r, f2=0, h=lens_z-fl_cube_top+4*d); //beam path
         translate([0,0,lens_z]) cylinder(r=lens_aperture_r,h=2*d); //lens
@@ -120,6 +90,10 @@ module fl_cube(){
         
     }
 }
+module camera_mount_top(){
+    // A thin slice of the top of the camera mount
+    linear_extrude(d) projection(cut=true) camera_mount();
+}
 module camera_mount_body(
         body_r, //radius of mount body
         body_top, //height of the top of the body
@@ -135,9 +109,7 @@ module camera_mount_body(
         difference(){
             // This is the main body of the mount
             sequential_hull(){
-                rotate(camera_angle) translate([0,camera_shift,bottom]) cube([25,camera_h,d],center=true);
-                rotate(camera_angle) translate([0,camera_shift,bottom+1.5]) cube([25,camera_h,d],center=true);
-                rotate(camera_angle) translate([0,camera_shift,bottom+4]) cube([25-5,camera_h,d],center=true);
+                translate([0,0,camera_mount_top]) camera_mount_top();
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
                     translate([0,objective_clip_y,0]){
@@ -165,6 +137,8 @@ module camera_mount_body(
         translate([0,objective_clip_y,dt_bottom]){
             dovetail_m([objective_clip_w+4,objective_clip_y,dt_h],waist=dt_h-15);
         }
+        // add the camera mount
+        translate([0,0,camera_mount_top]) camera_mount();
     }
 }
 
@@ -180,32 +154,6 @@ module rms_mount_and_tube_lens_gripper(){
         }
     }
 }
-
-/////////// Cover for camera board //////////////
-module picam_cover(){
-    // A cover for the camera PCB, slips over the bottom of the camera
-    // mount.  This version should be compatible with v1 and v2 of the board
-    start_y=-12+2.4;//-3.25;
-    l=-start_y+12+2.4; //we start just after the socket and finish at 
-    //the end of the board - this is that distance!
-    difference(){
-        union(){
-            //base
-            translate([-15,start_y,-4.3]) cube([25+5,l,4.3+d]);
-            //grippers
-            reflect([1,0,0]) translate([-15,start_y,0]){
-                cube([2,l,4.5-d]);
-                hull(){
-                    translate([0,0,1.5]) cube([2,l,3]);
-                    translate([0,0,4]) cube([2+2.5,l,0.5]);
-                }
-            }
-        }
-        translate([0,0,-1]) picam2_pcb_bottom();
-        //chamfer the connector edge for ease of access
-        translate([-999,start_y,0]) rotate([-135,0,0]) cube([9999,999,999]);
-    }
-} 
 
 
 
@@ -332,7 +280,7 @@ module optics_module_trylinder(
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=lens_assembly_z);
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=7, body_top=lens_assembly_z, dt_top=lens_assembly_z);
             // camera cut-out and hole for the beam
             optical_path(lens_aperture, lens_assembly_z);
         }
@@ -379,7 +327,7 @@ difference(){
         tube_lens_r=10/2+0.2, 
         objective_parfocal_distance=45
     );//*/
-    // Optics module for RMS objective, using Comar 40mm singlet tube lens
+    /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         tube_lens_ffd=38, 
         tube_lens_f=40, 
@@ -387,10 +335,10 @@ difference(){
         objective_parfocal_distance=35,
         fluorescence=false
     );//*/
-    /*/ Optics module for USB camera's M12 lens
+    // Optics module for USB camera's M12 lens
     optics_module_trylinder(
         lens_r = 14/2,
-        parfocal_distance = 20,
+        parfocal_distance = 21, //22 for high-res lens
         lens_h = 5.5
     );//*/
     //
@@ -398,5 +346,5 @@ difference(){
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     //fl_cube();
-    
+    //C270 lens could be a trylinder gripper, with lens_r=12.0, lens_h=1 and a pedestal that is smaller than the gripper by more than the usual amount (say 1mm space)
 }
