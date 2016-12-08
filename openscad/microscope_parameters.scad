@@ -34,7 +34,7 @@ version_numstring = "5.15.2";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
-leg_r = big_stage?30:25; // radius of innermost part of legs
+leg_r = big_stage?30:25; // radius of innermost part of legs (stage size)
 hole_r = big_stage?15:10; // size of hole in the stage
 xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
 z_lever_ratio = big_stage?2.4:2.6; // as above, for Z axis (must be >1)
