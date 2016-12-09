@@ -102,7 +102,7 @@ difference(){
     // standard size
     echo("clip_y",illumination_clip_y,"sample_z",sample_z);
     rotate([90,0,0]) 
-    back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z);
+    //back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z);
     // large stage version
     //rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);

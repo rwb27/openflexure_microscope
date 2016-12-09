@@ -53,8 +53,8 @@ module slide_riser(){
 module slide_clip(){
     translate([slide[0]/2,slide[1]/2,h+d/2]) rotate(45) hull(){
         // this part clamps the slide
-        cube([3,8,d],center=true);
-        translate([0,0,slide[2]+1-d/2]) cube([3+2+2*slide[2],8,d],center=true);
+        cube([7,8,d],center=true);
+        translate([0,0,slide[2]+1-d/2]) cube([7+2+2*slide[2],8,d],center=true);
     }
     
     difference(){

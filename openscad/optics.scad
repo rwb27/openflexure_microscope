@@ -497,6 +497,42 @@ module optics_module_trylinder(
     }
 }
 
+module condenser(){
+    lens_z = 17;
+    pedestal_h = 3;
+    lens_r = 13/2;
+    aperture_r = lens_r-1.1;
+    lens_t = 1;
+    base_r = lens_r+2;
+    led_r = 5/2;
+    union(){
+        //lens gripper to hold the plastic asphere
+        translate([0,0,lens_z-pedestal_h]){
+            // gripper
+            trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=base_r, flare=0.5);
+            // pedestal to raise the tube lens up within the gripper
+            difference(){
+                cylinder(r=aperture_r+0.8,h=pedestal_h);
+                cylinder(r=aperture_r,h=999,center=true);
+            }
+        }
+        //bottom part
+        difference(){
+            union(){
+                cylinder(r=base_r, h=lens_z-pedestal_h+d);
+                //dovetail
+                translate([0,condenser_clip_y,0]) mirror([0,1,0]) dovetail_m([objective_clip_w+4,4,lens_z-pedestal_h]);
+            }
+            
+            //LED
+            cylinder(r=led_r,h=999,center=true);
+            cylinder(r=led_r+0.6,h=2,center=true);
+            //beam
+            translate([0,0,5]) cylinder(r1=led_r,r2=aperture_r,h=lens_z-5);
+        }
+    }
+}
+
 difference(){
     /*/ Optics module for pi camera lens, with standard stage (i.e. the classic)
     optics_module_single_lens(
@@ -546,5 +582,6 @@ difference(){
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();
-    mirror([0,1,0]) fl_led_mount();
+    //mirror([0,1,0]) fl_led_mount();
 }
+condenser();
