@@ -15,6 +15,7 @@
 use <utilities.scad>;
 use <dovetail.scad>;
 include <microscope_parameters.scad>;
+use <optics.scad>;
 
 // geometry is now defined by microscope_parameters.scad
 
@@ -26,10 +27,10 @@ bottom = -foot_height; //the foot extends below the bottom of the dovetail
 
 led_d = 5; // LED diameter in mm if you want a bigger LED
 led_angle = 22; //cone angle for LED beam
-working_distance = clip_h; //wd should be >= clip_h so it fits on nicely...
+working_distance = clip_h + 0; //wd should be >= clip_h so it fits on nicely...
                 //working_distance is the distance from condenser to stage
 
-module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65){
+module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65, condenser=false){
     // Arm that clips on to the microscope, providing the back foot
     // and illumination mount
     w = clip_w; //width (size in x direction)
@@ -42,6 +43,7 @@ module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65){
     clip_t = 2; //thickness of arms for the dovetail clip
     hole_h = max(stage_clearance, b); //height of cut-out above clip
     dt_taper = 2; //size of sloping part at top/bottom of dovetail
+    condenser_clip_w = objective_clip_w+4;
     difference(){
         $fn=32;
         union(){
@@ -51,10 +53,17 @@ module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65){
                 translate([-w/2,back,clip_h+dt_taper]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
                 translate([-w/2,back,clip_h+hole_h]) cube([w,b,d]); //start of main shaft
                 translate([0,back+b/2,sample_z+wd+b/2]) rotate([45,0,0]) cube([arm_w,b*sqrt(2),d],center=true);//top of main shaft
-                translate([-arm_w/2,-6-4,sample_z+wd+4]) cube([arm_w,d,arm_h]);
-                translate([0,0,sample_z+wd]) cylinder(r=6,h=arm_h+4,$fn=32);
+                if(condenser){
+                    translate([-condenser_clip_w/2,condenser_clip_y-8,sample_z+wd+4]) cube([condenser_clip_w,d,8]);
+                }else{
+                    translate([-arm_w/2,-6-4,sample_z+wd+4]) cube([arm_w,d,arm_h]);
+                }
+                if(!condenser)translate([0,0,sample_z+wd]) cylinder(r=6,h=arm_h+4,$fn=32);
             }
-            translate([0,clip_y,0]) rotate([-90,180,0]) dovetail_clip_y([clip_w,clip_h,2+d],t=clip_t,taper=dt_taper,endstop=true);
+            translate([0,clip_y,0]) rotate([-90,180,0]) dovetail_clip_y([condenser_clip_w,clip_h,2+d],t=clip_t,taper=dt_taper,endstop=true);
+            if(condenser){
+                translate([0,condenser_clip_y,sample_z+wd+4]) rotate([-90,180,0]) dovetail_clip_y([objective_clip_w+4,8,8+d],t=clip_t,taper=0,endstop=false);
+            }
         }
         
         // make the structure hollow, for faster printing and 
@@ -101,9 +110,10 @@ module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65){
 difference(){
     // standard size
     echo("clip_y",illumination_clip_y,"sample_z",sample_z);
-    rotate([90,0,0]) 
-    //back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z);
+    //rotate([90,0,0]) 
+    back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z, condenser=true);
     // large stage version
     //rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }
+//translate([0,0,sample_z+working_distance+20]) mirror([0,0,1]) condenser();
