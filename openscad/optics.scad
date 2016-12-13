@@ -109,7 +109,7 @@ module camera_mount_body(
         difference(){
             // This is the main body of the mount
             sequential_hull(){
-                translate([0,0,camera_mount_top]) camera_mount_top();
+                translate([0,0,camera_mount_top]) rotate(45) camera_mount_top();
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
                     translate([0,objective_clip_y,0]){
@@ -138,7 +138,7 @@ module camera_mount_body(
             dovetail_m([objective_clip_w+4,objective_clip_y,dt_h],waist=dt_h-15);
         }
         // add the camera mount
-        translate([0,0,camera_mount_top]) camera_mount();
+        translate([0,0,camera_mount_top]) rotate(45) camera_mount();
     }
 }
 
@@ -313,21 +313,7 @@ difference(){
         tube_lens_r=16/2+0.2, 
         objective_parfocal_distance=35
     );//*/
-    /*/ Optics module for RMS objective, using Comar 31.5mm singlet tube lens
-    optics_module_rms(
-        tube_lens_ffd=28.5, 
-        tube_lens_f=31.5, 
-        tube_lens_r=16/2+0.1, 
-        objective_parfocal_distance=45
-    );//*/
-    /*/ Optics module for RMS objective, using Comar 31.5mm, d=10mm singlet tube lens
-    optics_module_rms(
-        tube_lens_ffd=28.5, 
-        tube_lens_f=31.5, 
-        tube_lens_r=10/2+0.2, 
-        objective_parfocal_distance=45
-    );//*/
-    /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
+    // Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         tube_lens_ffd=38, 
         tube_lens_f=40, 
@@ -335,7 +321,7 @@ difference(){
         objective_parfocal_distance=35,
         fluorescence=false
     );//*/
-    // Optics module for USB camera's M12 lens
+    /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(
         lens_r = 14/2,
         parfocal_distance = 21, //22 for high-res lens

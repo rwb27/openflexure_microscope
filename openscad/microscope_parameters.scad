@@ -28,7 +28,7 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = false;
+big_stage = true;
 motor_lugs = true;
 version_numstring = "5.15.2";
 
@@ -86,3 +86,4 @@ illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs.
+base_mounting_holes = [[-20,z_nut_y-4,0],[20,z_nut_y-4,0],[-z_flexure_x-4,-8,0],[z_flexure_x+4,-8,0]];
