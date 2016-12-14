@@ -124,7 +124,14 @@ module each_actuator(){
     // Repeat this for both of the actuated legs (the ones with levers)
 	reflect([1,0,0]) leg_frame(45) children();
 }
-
+module condenser_mounting_screws(d=3*0.95, h=16, center=true){
+    // Screws to mount the condenser arm
+    zfx = z_flexure_x;
+    cy = illumination_clip_y;
+    for(p = [[-zfx+3,-3,0],[zfx-3,-3,0],[0,cy+3,0]]){
+        translate(p) cylinder(d=d, h=h,center=center);
+    }
+}
 module z_axis(){
     // Flexures and struts for motion in the Z direction
 	w=z_flex_w;
@@ -303,21 +310,17 @@ union(){
 	}
 
 	//stage
-   // this must get built up carefully: we start with the bridges round the edge, then work inwards.
 	difference(){
-		hull() each_leg() translate([0,-zflex_l-d,flex_z2+1+(stage_t-1)/2]) cube([leg_middle_w+2*zflex_l,2*d,stage_t-1],center=true); //body of the stage
-//		hull() for(a=[45,-45]) rotate(a) translate([0,0,flex_z2+1]) cube([2*(leg_r+leg_middle_w/2-stage_flex_w-hole_r),2*hole_r,1],center=true); //cut-out from the bottom: start filling in the corners
-//		rotate(45) translate([0,0,flex_z2+1]) cube([2*(leg_r+leg_middle_w/2-stage_flex_w-hole_r),2*hole_r,2],center=true);
-		//central hole, building in gradually 
-        //TODO: use hole_from_bottom
-//		rotate(45) translate([0,0,flex_z2+2]) assign(f=[4,8,16,32]) for(i=[0:(len(f)-1)]) rotate(180/f[i]) translate([0,0,i*0.5]) cylinder(r=10/cos(180/f[i]),h=1.05,$fn=f[i],center=true);
-//		cylinder(r=hole_r,h=9999,$fn=64);
-        translate([0,0,flex_z2+1]) rotate(45) hole_from_bottom(hole_r,h=999,base_w=2*(leg_r+leg_middle_w/2-stage_flex_w - hole_r));
+		hull() each_leg() translate([0,-zflex_l-d,flex_z2+1+(stage_t-1)/2]) cube([leg_middle_w+2*zflex_l,2*d,stage_t-1],center=true); //stage
+        translate([0,0,flex_z2+1]) rotate(45) hole_from_bottom(hole_r,h=999,base_w=2*(leg_r+leg_middle_w/2-stage_flex_w - hole_r)); //hole (printable without support)
 		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,flex_z2+1.5]) cylinder(r=3/2*0.95,h=999); //mounting holes
 	}
 	
 	//z axis
-	z_axis();
+	difference(){
+        z_axis(); //some of the condenser mount screws pass the Z axis
+        condenser_mounting_screws(h=18,d=3*0.95,center=true);
+    }
 	z_actuator();
 	objective_clip_3();
 
@@ -369,6 +372,11 @@ union(){
                 translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
                 translate(p) cylinder(r=4*1.1,h=3);
             }
+            //screw supports for adjustment of condenser angle/position
+            // (only useful if screws=true in the illumination arm)
+            condenser_mounting_screws(h=10,d=6,center=false);
+            // clip for illumination/back foot (if not using screws)
+            translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
 		}
         //////  Things we need to cut out holes for... ///////////
         // XY actuator cut-outs
@@ -386,6 +394,7 @@ union(){
                 translate([0,z_nut_y,0]) cube([7,d,h],center=true);
                 translate([0,z_flexure_x+1.5-7/2,0]) cube([7,2*d,h],center=true);
                 translate([0,0,0]) cube([2*(z_flexure_x+0.5),1,h],center=true);
+                translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
                 translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
             }
             // Limit the height so it slopes up gently to allow for
@@ -396,16 +405,9 @@ union(){
                 translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
             }
 		}
-        
-        // Little cut-outs to encourage naughty slicing programs to do the lower flexures properly (!)
-        // We cut a little out of the base either side of the flexure, so that it doesn't just cut the
-        // perimeter and make a smooth wall
-//        each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
-//            w = stage_flex_w;
-//            dw = 0.2; // thickness of cut-out; should be unimportant...
-//            translate([leg_middle_w/2,0,0.5]) repeat([-w,0,0],2)
-//                hull() repeat([1,-1,0]*(zflex_l + 0.5),2) cube([dw,d,zflex_t]);
-//        }
+        // screw holes for adjustment of condenser angle/position
+        // (only useful if screws=true in the illumination arm)
+        condenser_mounting_screws(h=18,d=3*0.95,center=true);
 
 		//post mounting holes
 		for(p=base_mounting_holes) translate(p){
