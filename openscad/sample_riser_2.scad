@@ -68,17 +68,22 @@ module slide_riser(){
 }
 
 module slide_clip(){
-    travel = 2;
+    travel = 3;
     difference(){
         union(){
             //this part contacts the slide
             translate([0,slide[1]/2+1,h]) cylinder(r1=3,r2=5,h=2);
             //this is the arm, incl. spring seat
-            sequential_hull(){
-                translate([0,slide[1]/2+1,h]) cylinder(r=1,h=2);
-                translate(clip_pivot + [0,0,h]) cylinder(r=3.7,h=2);
-                translate(clip_pivot + [10-1,travel+1.5,h]) cylinder(r=1.5,h=2);
-                translate(clip_pivot + [5+1,travel,h-8]) cube([8,3,8+2]);
+            translate([0,0,h]) add_hull_base(2){
+                translate([0,slide[1]/2+1,0]) cylinder(r=2,h=2);
+                translate(clip_pivot + [0,0,0]) cylinder(r=3.7,h=2);
+                translate(clip_pivot + [10-1,travel+1.5,0]) cylinder(r=1.5,h=2);
+                translate(clip_pivot + [5+1,travel,-8]) cube([8,3,8+2]);
+                
+                //this stops it rotating too far
+                translate(clip_pivot) rotate(15){
+                    translate([-5-3,size[1]/2 - clip_pivot[1],-2]) cube([3,3,4]);
+                }
             }
             //this is the pivot
             translate(clip_pivot + [0,0,h-2]) cylinder(r=3.7,h=4);
@@ -91,5 +96,5 @@ module slide_clip(){
 }
 
 //slide_riser();
-rotate([180,0,0]) 
+//rotate([180,0,0]) 
 slide_clip();
