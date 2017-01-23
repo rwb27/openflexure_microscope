@@ -203,10 +203,10 @@ difference(){
     // standard size
     echo("clip_y",illumination_clip_y,"sample_z",sample_z);
     //rotate([90,0,0]) 
-    back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z, condenser=true, shift=[0,0,0], screws=true);
+    //back_foot_and_illumination(clip_y=illumination_clip_y, sample_z=sample_z, condenser=false, shift=[0,0,0], screws=false);
     //adjustable_condenser_arm();
     // large stage version
     //rotate([90,0,0]) back_foot_and_illumination(clip_y=-36.5772, sample_z=65);
     //rotate([0,90,0]) cylinder(r=999,h=999,$fn=8);
 }
-//translate([0,0,sample_z+working_distance+20]) mirror([0,0,1]) condenser();
+translate([0,0,sample_z+working_distance+20]) mirror([0,0,1]) condenser();
