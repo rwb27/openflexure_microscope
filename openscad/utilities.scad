@@ -294,6 +294,32 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
     }
 }
 
+
+module add_hull_base(h=1){
+    // Take the convex hull of some objects, and add it in as a
+    // thin layer at the bottom
+    union(){
+        intersection(){
+            hull() children();
+            cylinder(r=9999,$fn=8,h=h); //make the base thin
+        }
+        children();
+    }
+}
+module add_roof(inner_h){
+    // Take the convex hull of some objects, and add the top
+    // of it as a roof.  NB you must specify the height of
+    // the underside of the roof - finding it automatically
+    // would be too much work...
+    union(){
+        difference(){
+            hull() children();
+            cylinder(r=9999,$fn=8,h=inner_h);
+        }
+        children();
+    }
+}
+
 module trylinder(r=1, flat=1, h=d, center=false){
     //Halfway between a cylinder and a triangle.
     hull() for(a=[0,120,240]) rotate(a)

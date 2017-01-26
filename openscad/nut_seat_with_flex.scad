@@ -96,7 +96,23 @@ module screw_seat(travel=5, motor_lugs=false){
         hull(){
             translate([0,outer[1]/2,1]) cube([6,outer[1],d],center=true);
             translate([0,outer[1]/2,6]) cube([2,outer[1],d],center=true);
+        }
 	}
+}
+
+module screw_seat_cup(h=20){
+	ss=ss_outer(999);
+    t=3;
+	difference(){
+        hull(){
+            resize([ss[0],ss[1],d]) cylinder(r=ss[1], h=1, $fn=32); //body
+            translate([0,0,h]) resize([ss[0]+3,ss[1]+3,2]) cylinder(r=ss[1], h=1, $fn=32); //body
+        }
+        
+        //hole for the foot
+        translate([0,0,h]) resize(ss) cylinder(r=ss[1], h=1, $fn=32); 
+        translate([0,0,0.5]) resize(ss-[3,3,0]) cylinder(r=ss[1], h=1, $fn=32);
+    }
 }
 
 module screw_seat_spring(travel=5, motor_lugs=false){
@@ -152,7 +168,6 @@ module screw_seat_spring(travel=5, motor_lugs=false){
 		//hole for nut at top
 		translate([0,0,inner[2]]) cube([inner[0]-0.7,3.3,1],center=true);
 		translate([0,0,0]) cylinder(r=3.3/2,h=999, $fn=16, center=true);
-        }
 	}
 }
 
@@ -298,15 +313,16 @@ module nut_seat_with_flex(){
     }
 }
 
+screw_seat_cup();
 
 //intersection(){
-//  screw_seat(motor_lugs=true);
+//  screw_seat(motor_lugs=false);
 //    translate([0,0,21]) cylinder(r=999,h=999,$fn=8);
 //}
 //nut_seat_with_flex();
 //motor_lugs(); // merged into screw_seat, because it crashes STL export otherwise!! I suspect it's due to the large number of almost-duplicated vertices messing up tesselation...
 //screw_seat_silhouette();
-elastic_band_base(h=foot_height, tilt=7);
-translate([ss_outer(5)[0]*1
-+2,0,0]) elastic_band_base(h=foot_height, tilt=7);
-translate([ss_outer(5)[0]*2+4,0,0]) elastic_band_base(h=foot_height, tilt=0);
+//elastic_band_base(h=foot_height, tilt=7);
+//translate([ss_outer(5)[0]*1
+//+2,0,0]) elastic_band_base(h=foot_height, tilt=7);
+//translate([ss_outer(5)[0]*2+4,0,0]) elastic_band_base(h=foot_height, tilt=0);
