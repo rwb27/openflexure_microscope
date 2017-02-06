@@ -30,7 +30,7 @@ led_angle = 22; //cone angle for LED beam
 working_distance = clip_h + 0; //wd should be >= clip_h so it fits on nicely...
                 //working_distance is the distance from condenser to stage
 
-module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65, condenser=false, shift=[0,0,0], screws=false){
+module back_foot_and_illumination(clip_y=illumination_clip_y,stage_clearance=6,sample_z=65, condenser=false, shift=[0,0,0], screws=false){
     // Arm that clips on to the microscope, providing the back foot
     // and illumination mount
     w = clip_w; //width (size in x direction)
@@ -108,7 +108,7 @@ module back_foot_and_illumination(clip_y=-24,stage_clearance=6,sample_z=65, cond
         }
         // screw holes for adjustment of condenser angle/position
         // (only useful if screws=true)
-        for(p = [[-z_flexure_x+3,-3,-6],[z_flexure_x-3,-3,-6],[0,clip_y+3,-6]]) translate(p){
+        for(p = illumination_arm_screws) translate(p + [0,0,-6]){
             cylinder(d=3*1.2, h=40,center=true);
             mirror([0,0,1]) cylinder(d=8,h=20);
         }

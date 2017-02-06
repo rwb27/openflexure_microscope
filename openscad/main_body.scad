@@ -125,9 +125,7 @@ module each_actuator(){
 	reflect([1,0,0]) leg_frame(45) children();
 }
 module condenser_mounting_screws(d=3*0.95, h=16, center=true){
-    zfx = z_flexure_x;
-    cy = illumination_clip_y;
-    for(p = [[-zfx+3,-3,0],[zfx-3,-3,0],[0,cy+3,0]]){
+    for(p = illumination_arm_screws){
         translate(p) cylinder(d=d, h=h,center=center);
     }
 }
