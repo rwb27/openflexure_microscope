@@ -51,6 +51,7 @@ foot_height = 15; //height of the feet (distance from bottom of body to table)
 stage_flex_w = 4; // width of XY axis flexures
 zflex_l = 1.5;    // length of (all) flexible bits
 zflex_t = 0.75;   // thickness of (all) flexible bits
+zflex = [stage_flex_w, zflex_l, zflex_t]; // the above in new-style format
 
 // Compile a sensible version string
 version_string = str("v",version_numstring, big_stage?str("-LS",sample_z):"", motor_lugs?"-M":"");
@@ -63,9 +64,10 @@ z_strut_t = 6;  // (z) thickness of struts for Z axis
 z_flex_w = 4;   // width of struts for Z axis
 leg = [4,stage_flex_w,flex_z2+zflex_t]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
+actuator_h = 25; //height of the actuator columns
 
 leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stagef
-actuator = [6,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y
+actuator = [3*1.2+2*2,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y - NB should match the column_base_r in compact_nut_seat.scad
 actuating_nut_r = (flex_z2 - flex_z1)*xy_lever_ratio; // distance from leg_r to the actuating nut/screw for the XY axes
 xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuators
 z_flexure_x = (leg_r-zflex_l-max(5,leg[2]*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis)
@@ -86,7 +88,9 @@ illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs.
-illumination_arm_screws = [[-z_flexure_x+3,-3,0],[z_flexure_x-3,-3,0],[0,clip_y+3,0]];
+illumination_arm_screws = [[-z_flexure_x+3,-3,0],
+                           [z_flexure_x-3,-3,0],
+                           [0,illumination_clip_y+3,0]];
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for condenser assembly

@@ -13,7 +13,7 @@
 ******************************************************************/
 
 use <./utilities.scad>;
-use <./nut_seat_with_flex.scad>;
+use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
@@ -28,45 +28,12 @@ module shear_x(amount=1){
 					 [0,0,1,0],
 					 [0,0,0,1]]) children();
 }
-module leg(){
+module leg(brace=stage_flex_w){
     // The legs support the stage - this is either used directly
     // or via "actuator" to make the legs with levers
-	union() reflect([1,0,0]){
-		//legs (tapered)
-		translate([leg_middle_w/2+zflex_l,0,0]) hull(){
-			cube(leg);
-			cube([leg[0],leg[1]+stage_flex_w,d]);
-		}
-		
-		//middle part and flexure to outer legs
-		intersection(){
-			translate([0,0,flex_z1]) repeat([0,0,flex_z2-flex_z1],2){
-				translate([-d,0,0]) cube([leg_middle_w/2+d,999,stage_t-0.2*leg[1]]);
-				cube([leg_middle_w/2+zflex_l+d,999,zflex_t]);
-			}
-			translate([-999,0,0]) sequential_hull(){ //make it taper from small at the bottom to large at the top.
-				cube([999*2,leg[1]+stage_flex_w,d]);
-				cube([999*2,leg[1],leg[2]]);
-				cube([999*2,leg[1],leg[2]+10]);
-			}
-		}
-		
-		//thin links between legs
-		if(flex_z2-flex_z1 > 2*bridge_dz){
-			n=floor((flex_z2-flex_z1)/bridge_dz);
-			dz=(flex_z2-flex_z1)/n;
-			translate([0,leg[1]/2,flex_z1+dz]) repeat([0,0,dz],n-1) cube([leg_outer_w,2,0.5],center=true);
-		}
-	}
-}
-module actuator(){
-    // A leg that supports the stage, plus a lever to tilt it.
-    // Includes the flexible nut seat actuating column.
-    // TODO: find the code that unifies this with leg()
-	brace=20;
     fw=stage_flex_w;
-    union(){
-		//leg (vertical bit)
+	union(){
+       	//leg
 		reflect([1,0,0]){
 			//vertical legs
 			translate([leg_middle_w/2+zflex_l,0,0]) hull(){
@@ -82,21 +49,37 @@ module actuator(){
 			//flexure to outer part of braces{
 			translate([0,brace,flex_z1]) cube([leg_middle_w/2+zflex_l+d,fw,zflex_t]);
 		}
-		//arm (horizontal bit)
-		sequential_hull(){
-			translate([-leg_middle_w/2,0,0]) cube([leg_middle_w,brace+fw,4]);
-			translate([-actuator[0]/2,0,0]) cube([actuator[0],brace+fw+0,actuator[2]]);
-			translate([-actuator[0]/2,0,0]) cube(actuator-[0,6,0]);
-		}
-		//nut seat
-		translate([0,actuating_nut_r,0]) nut_seat_with_flex(); //cylinder(r=6,h=actuator[2]);
-
+        
 		//thin links between legs
 		if(flex_z2-flex_z1 > 2*bridge_dz){
 			n=floor((flex_z2-flex_z1)/bridge_dz);
 			dz=(flex_z2-flex_z1)/n;
 			translate([0,leg[1]/2,flex_z1+dz]) repeat([0,0,dz],n-1) cube([leg_outer_w,2,0.5],center=true);
 		}
+	}
+}
+module actuator(){
+    // A leg that supports the stage, plus a lever to tilt it.
+    // Includes the flexible nut seat actuating column.
+    // TODO: find the code that unifies this with leg()
+	brace=20;
+    fw=stage_flex_w;
+    union(){
+        leg(brace=brace);
+
+		//arm (horizontal bit)
+		difference(){
+            sequential_hull(){
+                w = actuator[0];
+                translate([-leg_middle_w/2,0,0]) cube([leg_middle_w,brace+fw,4]);
+                translate([-w/2,0,0]) cube([w,brace+fw+0,actuator[2]]);
+                translate([-w/2,0,0]) cube(actuator);
+            }
+            //don't foul the actuator column
+            translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
+        }
+		//nut seat
+		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h); 
 	}
 }
 module actuator_silhouette(h=999){
@@ -154,18 +137,16 @@ module z_axis(){
 }
 module z_actuator(){
 	//Z actuating lever
-	gap=z_carriage[0]*2-2*z_flex_w;
     difference(){
-		union(){
-			translate([-2,z_flexure_x-z_flex_w,0]) cube([4,z_nut_y - (z_flexure_x-z_flex_w)-5, z_strut_t]); //thin part of actuator
-			translate([0,z_flexure_x-2,0]) hull(){
-				translate([-1,0,0])cube([2,2, z_strut_t+4]); //join to raised struts
-				translate([-2,0,0])cube([4,6, z_strut_t]); //taper
-			}
-			translate([0,z_nut_y,0]) nut_seat_with_flex();//cylinder(r=6,h=z_strut_t);
+		sequential_hull(){
+			translate([-2,z_nut_y,0]) cube([4,d, z_strut_t]); //thin part of actuator
+			//translate([-2,z_flexure_x-2,0])cube([4,6, z_strut_t]); //taper
+            translate([-2,z_flexure_x-2,0])cube([4,2, z_strut_t+4]); //join to raised struts
 		}
-		//translate([0,z_nut_y,z_strut_t-3]) mirror([0,0,1]) nut(3,fudge=1.18,shaft=true,h=99);
+        //make sure we don't foul the actuator column
+        translate([0,z_nut_y,0]) actuator_end_cutout(); 
 	}
+	translate([0,z_nut_y,0]) actuator_column(actuator_h);
 }
 module objective_clip_3(){
     // Moving carriage for the objective, incl. dovetail clip
@@ -276,7 +257,7 @@ module place_on_wall(){
     //this is a complicated transformation!  The wall runs from
     wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
     wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
-                 +[1,-1,0]*(12+wall_t/2))/sqrt(2);
+                 +[1,-1,0]*(ss_outer()[0]/2-wall_t/2))/sqrt(2);
     wall_disp = wall_end - wall_start; // vector along the wall base
     // pivot about the starting corner of the wall so X is along it
     translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
@@ -347,7 +328,7 @@ union(){
                     // anchor at the same angle on the actuator
                     // NB the base of the wall is outside the
                     // base of the screw seat
-                    leg_frame(45) translate([-12-wall_t/2,actuating_nut_r,0]){
+                    leg_frame(45) translate([-ss_outer()[0]/2+wall_t/2,actuating_nut_r,0]){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
                     // neatly join to the screw seat (actuator column)
@@ -360,7 +341,7 @@ union(){
                 }
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([12-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
+                    leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
                     translate([0,z_nut_y+10-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
                 }
                 // add a small object to make sure the base is big enough
@@ -420,10 +401,10 @@ union(){
     
 	//Actuator housings (screw seats and motor mounts)
 	each_actuator() translate([0,actuating_nut_r,0]){
-        screw_seat(travel=xy_actuator_travel, motor_lugs=motor_lugs);
+        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs);
     }
 	translate([0,z_nut_y,0]){
-        screw_seat(travel=z_actuator_travel, motor_lugs=motor_lugs);
+        screw_seat(h=actuator_h, travel=z_actuator_travel, motor_lugs=motor_lugs);
     }
 }
 
