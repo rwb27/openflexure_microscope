@@ -139,11 +139,13 @@ module actuator_end_cutout(lever_tip=3-0.5 ){
         translate([-999,-zflex[1]/2-999,zflex[2]+999]) cube([2,2,2]*999);
     }
 }
+/* EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
 difference(){
     translate([-3,-40,0]) cube([6,40,5]);
     actuator_end_cutout();
 }
 actuator_column(25, 0);
+*/
 
 module nut_seat_void(h=1, tilt=0, center=true){
     // Inside of the actuator column housing (should be subtracted
@@ -218,6 +220,48 @@ module screw_seat_outline(h=999,adjustment=0,center=false){
 //screw_seat_shell(30);
 //motor_lugs(30);
 //screw_seat(25, motor_lugs=true);
+
+module foot(travel=5, tilt=0, hover=0, entry_w=2*column_base_r+3, lie_flat=true){
+    w = ss_outer()[0]; //size of the outside of the screw seat column
+    l = ss_outer()[1];
+    cw = column_core[0]; //size of the inside of the screw seat column
+    cl = column_core[1];
+    wall_t = (w-cw)/2; //thickness of the wall
+    h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground
+    translate([0,l/2,lie_flat?0:-h]) rotate([lie_flat?0:-tilt,0,0]) difference(){
+        rotate([tilt,0,0]) translate([0,-l/2,0]) difference(){
+            union(){
+                resize([w,l,2*h]) cylinder(d=w, h=h, center=true); //main part of foot
+                resize([cw-d,cl,2*h+3]) cylinder(d=w, h=h, center=true); //will form the lugs
+            }
+            //hollow out the inside
+            difference(){
+                sequential_hull(){
+                    translate([0,0,-999]) resize([cw,cl,d]) cylinder(d=w,h=d);
+                    translate([0,0,h-4]) resize([cw,cl,d]) cylinder(d=w,h=d);
+                    translate([0,0,h]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
+                    translate([0,0,999]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
+                }
+                cube([entry_w, 999, 2*(h-travel-1)],center=true); //anchor for elastic bands
+            }
+            //cut off the middle of the lip in X so we get lugs either side
+            translate([0,0,h-travel-1]) intersection(){
+                cube([cw-4*2, 999, 999],center=true);
+                resize([cw,cl,999]) cylinder(d=w,h=999);
+            }
+            //cut out the inside to allow the actuator to protrude (and bands to get in)
+            translate([0,-l/2,0]) cube([entry_w, l-7, 999], center=true);
+            //cut out a slot to allow bands to locate nicely, and/or to wrap round the outside
+            hull() repeat([0,0,h-travel-1-4], 2) rotate([-tilt,0,0]) cube([999, 3, 2*d],center=true); 
+        }
+        mirror([0,0,1]) cylinder(r=999,h=999,$fn=4); //cut off anything below the bottom
+        // NB we cut off the bottom after tilting the foot, and if lie_flat is true then
+        // we leave it here (so it prints correctly without rotating it).  Set lie_flat to
+        // false to end up with the part as it will be used, rather than printed.
+    }
+}
+//foot(tilt=15);
+//foot(tilt=0,hover=2);
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_column_h, base_w = column_base_r*2){
     // A lever with its pivot wide and high, actuated by the above actuator
