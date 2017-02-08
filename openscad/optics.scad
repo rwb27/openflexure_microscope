@@ -26,9 +26,9 @@ use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
 //use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
-//use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
+use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
 //use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
-use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
+//use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3;
@@ -420,7 +420,7 @@ module optics_module_trylinder(
     ){
     // This optics module grips a single lens at the top.
     lens_aperture = lens_r - 1.5; // clear aperture of the lens
-    pedestal_h = 2; // extra height on the gripper, to allow it to flex
+    pedestal_h = 4; // extra height on the gripper, to allow it to flex
     dovetail_top = min(27, sample_z-parfocal_distance+lens_h-1); //height of the top of the dovetail
     
     lens_z = sample_z - parfocal_distance; //axial position of lens
@@ -496,11 +496,11 @@ difference(){
         lens_t=3.0, //thickness of lens
         parfocal_distance = 6 //sample to bottom of lens
     );//*/
-    /*/ Optics module for picamera v2 lens, using trylinder
+    //*/ Optics module for picamera v2 lens, using trylinder
     optics_module_trylinder(
         lens_r = 3,
         parfocal_distance = 6,
-        lens_h = 3
+        lens_h = 2.5
     );//*/
     /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
@@ -524,4 +524,4 @@ difference(){
     //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();
     //mirror([0,1,0]) fl_led_mount();
 }
-condenser();
+//condenser();
