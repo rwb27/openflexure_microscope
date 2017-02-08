@@ -234,6 +234,12 @@ module camera_mount_top(){
     // A thin slice of the top of the camera mount
     linear_extrude(d) projection(cut=true) camera_mount();
 }
+module dovetail_mount(shift=0){
+    translate([0,objective_clip_y+shift,0]){
+        cube([objective_clip_w+4,d,d],center=true);
+        cube([objective_clip_w,4,d],center=true);
+    }
+}
 
 module camera_mount_body(
         body_r, //radius of mount body
@@ -253,21 +259,22 @@ module camera_mount_body(
                 translate([0,0,camera_mount_top]) camera_mount_top();
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
-                    translate([0,objective_clip_y,0]){
-                        cube([objective_clip_w+4,d,d],center=true);
-                        cube([objective_clip_w,4,d],center=true);
-                    }
+                    dovetail_mount(shift=0);
                     if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
                 }
-                translate([0,0,dt_bottom])hull(){
+                translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
                     if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
+                    dovetail_mount(shift=-3);
                 }
-                if(fluorescence) translate([0,0,fl_cube_bottom + fl_cube_w]){
-                    cylinder(r=body_r,h=d);
-                    if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
+                union(){
+                    if(fluorescence) translate([0,0,fl_cube_bottom + fl_cube_w]){
+                        cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
+                        cylinder(r=body_r,h=d);
+                    }
+                    translate([0,0,body_top]) cylinder(r=body_r,h=d);
+                    translate([0,0,body_top]) dovetail_mount(shift=-3);
                 }
-                translate([0,0,body_top]) cylinder(r=body_r,h=d);
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
                 // that breaks the sequential_hull, hence the kludge.
@@ -284,7 +291,7 @@ module camera_mount_body(
         }
         // add the dovetail
         translate([0,objective_clip_y,dt_bottom]){
-            dovetail_m([objective_clip_w+4,objective_clip_y,dt_h],waist=dt_h-15);
+            dovetail_m([objective_clip_w+4,3,dt_h],waist=dt_h-15);
         }
         // add the camera mount
         translate([0,0,camera_mount_top]) camera_mount();
@@ -434,7 +441,7 @@ module optics_module_trylinder(
         // A lens gripper to hold the objective
         translate([0,0,lens_assembly_z]){
             // gripper
-            trylinder_gripper(inner_r=lens_r, grip_h=lens_assembly_h-1.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
+            trylinder_gripper(inner_r=lens_r, grip_h=lens_assembly_h-1.5,h=lens_assembly_h, base_r=lens_assembly_base_r, flare=0.4, squeeze=lens_r*0.15);
             // pedestal to raise the tube lens up within the gripper
             difference(){
                 cylinder(r=lens_aperture + 1.0,h=pedestal_h);
@@ -489,26 +496,11 @@ difference(){
         lens_t=3.0, //thickness of lens
         parfocal_distance = 6 //sample to bottom of lens
     );//*/
-    /*/ Optics module for RMS objective, using Comar 20mm singlet tube lens
-    optics_module_rms(
-        tube_lens_ffd=16.1, 
-        tube_lens_f=20, 
-        tube_lens_r=16/2+0.2, 
-        objective_parfocal_distance=35
-    );//*/
-    /*/ Optics module for RMS objective, using Comar 31.5mm singlet tube lens
-    optics_module_rms(
-        tube_lens_ffd=28.5, 
-        tube_lens_f=31.5, 
-        tube_lens_r=16/2+0.1, 
-        objective_parfocal_distance=45
-    );//*/
-    /*/ Optics module for RMS objective, using Comar 31.5mm, d=10mm singlet tube lens
-    optics_module_rms(
-        tube_lens_ffd=28.5, 
-        tube_lens_f=31.5, 
-        tube_lens_r=10/2+0.2, 
-        objective_parfocal_distance=45
+    /*/ Optics module for picamera v2 lens, using trylinder
+    optics_module_trylinder(
+        lens_r = 3,
+        parfocal_distance = 6,
+        lens_h = 3
     );//*/
     /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
@@ -518,7 +510,7 @@ difference(){
         objective_parfocal_distance=35,
         fluorescence=true
     );//*/
-    // Optics module for USB camera's M12 lens
+    /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(
         lens_r = 14/2,
         parfocal_distance = 21, //22 for high-res lens
