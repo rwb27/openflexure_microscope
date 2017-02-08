@@ -21,6 +21,7 @@ column_core = nut_slot + 2*[1.5+7+1, 1.5+1.5, -nut_slot[2]/2];// NB leave z=0 he
 shroud_t = [1,1,0.75];
 wall_t = 1.6;
 
+function column_base_radius() = column_base_r;
 function column_core_size() = column_core;
 function nut_slot_size() = nut_slot;
 function ss_outer(h=-2) = column_core + [wall_t*2,wall_t*2,(h+2)*2];
@@ -225,69 +226,7 @@ module screw_seat_outline(h=999,adjustment=0,center=false){
 //motor_lugs(30);
 //screw_seat(25, motor_lugs=true);
 
-module foot_ground_plane(tilt=0, top=0, bottom=-999){
-    //This represents where the ground would be, given that the
-    //foot is usually printed tilted, pivoting around it's +y edge
-    //As printed, the ground plane is the print bed, i.e. z=0
-    //However, the foot is used in a different orientation, tilted
-    //around the outer edge (so the microscope sits on the outer 
-    //edges of the feet).
-    //NB top and bottom refer to coordinates in the printing frame, so
-    //they will be slightly larger Z shifts in the tilted (model) frame.
-    l = ss_outer()[1];
-    translate([0, l/2, 0]) rotate([-tilt+180,0,0]) translate([0,0,-top]) cylinder(r=999,h=top-bottom,$fn=8);
-}
 
-module foot(travel=5, tilt=0, hover=0, entry_w=2*column_base_r+3, lie_flat=true){
-    w = ss_outer()[0]; //size of the outside of the screw seat column
-    l = ss_outer()[1];
-    cw = column_core[0]; //size of the inside of the screw seat column
-    cl = column_core[1];
-    wall_t = (w-cw)/2; //thickness of the wall
-    h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground
-    rotate([lie_flat?tilt:0,0,0]) //the foot prints tilted, lie_flat
-    translate([0,0,lie_flat?-l/2*tan(tilt):-h]) //makes the bottom z=0
-    difference(){
-        union(){
-            resize([w,l,2*h]) cylinder(d=w, h=h, center=true); //main part of foot
-            resize([cw-d,cl,2*h+3]) cylinder(d=w, h=h, center=true); //will form the lugs
-        }
-        //hollow out the inside
-        difference(){
-            sequential_hull(){
-                translate([0,0,-999]) resize([cw,cl,d]) cylinder(d=w,h=d);
-                translate([0,0,h-4]) resize([cw,cl,d]) cylinder(d=w,h=d);
-                translate([0,0,h]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
-                translate([0,0,999]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
-            }
-            cube([entry_w, 999, 2*(h-travel-1)],center=true); //anchor for elastic bands
-        }
-        //cut off the middle of the lip in X so we get lugs either side
-        translate([0,0,h-travel-1]) intersection(){
-            cube([cw-4*2, 999, 999],center=true);
-            resize([cw,cl,999]) cylinder(d=w,h=999);
-        }
-        
-        //cut out the inside to allow the actuator to protrude (and bands to get in) - leave the very bottom to help bed adhesion.
-        difference(){
-            translate([0,-l/2,0]) cube([entry_w, l-7, 999], center=true);
-            foot_ground_plane(tilt=tilt, top=0.5); //bed adhesion...
-        }
-        
-        //cut out a slot to allow bands to locate nicely, and/or to wrap round the outside
-        intersection(){
-            cube([999, 3, 999],center=true); 
-            foot_ground_plane(tilt=tilt, bottom=0.5, top=(h-travel-4)*cos(tilt) - l/2*sin(tilt)); //bed adhesion...
-        }
-        cube([entry_w+d, 3, 2], center=true); //make a real hole in the
-        //middle - the other adhesion-helping bits will snap easily.
-
-        //cut off the foot below the "ground plane" (i.e. print bed)
-        foot_ground_plane(tilt=tilt);
-    }
-}
-//foot(tilt=15);
-//foot(tilt=0,hover=2);
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = column_base_r*2){
     // A lever with its pivot wide and high, actuated by the above actuator
