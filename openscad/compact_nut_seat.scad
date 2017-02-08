@@ -11,9 +11,10 @@ include <microscope_parameters.scad>;
 
 d = 0.05;
 nut_size = 3;
-nut_slot = [nut_size*2*sin(60)*1.15, (nut_size*1.15)*2, nut_size+0.4];
-shaft_r = nut_size/2 * 1.2; //radius of hole to cut for screw
-actuator_column_h = 26; //default height of actuator columns
+nut_w = 6*1.05;
+nut_h = 2.4;
+nut_slot = [nut_w*sin(60), nut_w*2, nut_h+0.3];
+shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
 column_base_r = shaft_r + 2;
 //column_clearance_w = nut_slot[0] + 2*1.5 + 2*7;
 column_core = nut_slot + 2*[1.5+7+1, 1.5+1.5, -nut_slot[2]/2];// NB leave z=0 here //[column_clearance_w, nut_slot[1]+3+3, 0];
@@ -58,7 +59,7 @@ module nut_and_band_tool(nut_slot=nut_slot){
     //This tool assists with inserting both the nuts and elastic bands.
     //At some point I'll make one for springs, if needed...?
     w = nut_slot[0]-0.5;
-    l = actuator_column_h+36;
+    l = actuator_h+36;
     h = nut_slot[2]-0.7;
     n = nut_size;
     nut_y = 0;
@@ -109,10 +110,13 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false){
             reflect([1,0,0]) translate([top[0]/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
                     translate([-d,-top[1]/2,0]) cube([d,top[1],6.5]);
-                    translate([0,-1,0]) cube([2.5,2,4]);
-                    translate([0,-1,0]) cube([6,2,0.5]);
+                    translate([0,-1.5,0]) cube([3.5,3,4]);
+                    translate([0,-1.5,0]) cube([6,3,0.5]);
                 } 
-                translate([3, 0, 0]) rotate([0,45,0]) cube([2,99,2],center=true);
+                translate([3, 0, 0]) hull(){
+                    cube([3,99,d],center=true);
+                    cube([1,99,2],center=true);
+                }
             }
         }
         
@@ -139,13 +143,13 @@ module actuator_end_cutout(lever_tip=3-0.5 ){
         translate([-999,-zflex[1]/2-999,zflex[2]+999]) cube([2,2,2]*999);
     }
 }
-/* EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
+//* EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
 difference(){
     translate([-3,-40,0]) cube([6,40,5]);
     actuator_end_cutout();
 }
 actuator_column(25, 0);
-*/
+//*/
 
 module nut_seat_void(h=1, tilt=0, center=true){
     // Inside of the actuator column housing (should be subtracted
@@ -263,7 +267,7 @@ module foot(travel=5, tilt=0, hover=0, entry_w=2*column_base_r+3, lie_flat=true)
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
 
-module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_column_h, base_w = column_base_r*2){
+module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = column_base_r*2){
     // A lever with its pivot wide and high, actuated by the above actuator
     pw = pivot_w;
     pz = pivot_z;
@@ -292,7 +296,7 @@ module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_column_h, base
     translate([0, nut_y, 0]) actuator_column(column_h, -asin(pivot_z/lever), flip_nut_slot=true);
 }
 
-module untilted_actuator(pushstick_z, pivot_w, lever, column_h=actuator_column_h, pushstick_w=6){
+module untilted_actuator(pushstick_z, pivot_w, lever, column_h=actuator_h, pushstick_w=6){
     // A lever with its pivot at the bottom, actuated by a column at the end.
     pw = pivot_w;
     pz = pushstick_z;
@@ -357,7 +361,7 @@ module flexure_anchor_cutout(h=999,w=999, extend_back=999){
     }
 }
 
-module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_column_h, motor_lugs=motor_lugs){
+module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, motor_lugs=motor_lugs){
     // A cover for an actuator as defined above.
     ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
     nut_y = zflex[1] + (tilted ? sqrt(lever*lever - h*h) : lever);
@@ -378,7 +382,7 @@ module actuator_shroud_shell(h, w1, w2, lever, tilted=false, extend_back=d, ac_h
         translate([0,-extend_back,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8); //cut off at the end, so we don't go past the back and close it off
     }
 }
-module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_column_h, anchor=true, pushstick_h=pushstick[2]+3){
+module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, anchor=true, pushstick_h=pushstick[2]+3){
     // The inside of a cover for an actuator as defined above.
     // It's split like this for ease of combining them together.
     ns_h = ac_h + lever * flex_a + 1.5; //internal height of nut seat
@@ -401,7 +405,7 @@ module actuator_shroud_core(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=
             translate([-nut_slot[0]/2-0.5,0,ac_h-nut_slot[2]-nut_size-1.5]) 
             cube(nut_slot + [1,999,1]);
 }
-module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_column_h, anchor=true){
+module actuator_shroud(h, w1, w2, lever, tilted=false, extend_back=d, ac_h=actuator_h, anchor=true){
     difference(){
         actuator_shroud_shell(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h);
         actuator_shroud_core(h, w1, w2, lever, tilted=tilted, extend_back=extend_back, ac_h=ac_h, anchor=anchor);
