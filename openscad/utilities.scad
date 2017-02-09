@@ -17,6 +17,7 @@
 
 d=0.05;
 
+function zeroz(size) = [size[0], size[1], 0]; //set the Z component of a 3-vector to 0
 
 module reflect(axis){ //reflects its children about the origin, but keeps the originals
 	children();

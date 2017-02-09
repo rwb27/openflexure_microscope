@@ -11,15 +11,14 @@ include <microscope_parameters.scad>;
 
 d = 0.05;
 nut_size = 3;
-nut_w = 6*1.05;
+nut_w = 6.1; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance)
 nut_h = 2.4;
-nut_slot = [nut_w*sin(60), nut_w*2, nut_h+0.3];
+nut_slot = [nut_w*sin(60), nut_w, nut_h+0.3];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
-column_base_r = shaft_r + 2;
+column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
 //column_clearance_w = nut_slot[0] + 2*1.5 + 2*7;
-column_core = nut_slot + 2*[1.5+7+1, 1.5+1.5, -nut_slot[2]/2];// NB leave z=0 here //[column_clearance_w, nut_slot[1]+3+3, 0];
-shroud_t = [1,1,0.75];
-wall_t = 1.6;
+column_core = zeroz(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here 
+wall_t = 1.6; //thickness of the wall around the column for the screw seat
 
 function column_base_radius() = column_base_r;
 function column_core_size() = column_core;
@@ -32,15 +31,15 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     // nut seat when a screw is inserted.
     hole_r = r*1.15/2;
     trap_h = trap_h<0 ? r : trap_h;
-    w = slot[0]; //width of the nut entry slot (should be r*2*sin(60)*1.15)
-    l = slot[1]; //length/depth of the slot (should be r*2*1.15)
+    w = slot[0]; //width of the nut entry slot (should be slightly larger than the nut)
+    l = slot[1]; //length/depth of the slot (now ignored)
     h = slot[2]; //height of the slot
     r1 = w/2/cos(30); //bottom of nut trap is large
     r2 = r*squeeze; //top of nut trap is very tight
     sequential_hull(){
         translate([-w/2,999,0]) cube([w,d,h]);
         union(){
-            translate([-w/2,l/2-d,0]) cube([w,d,h]);
+            //translate([-w/2,l/2-d,0]) cube([w,d,h]);
             rotate(30) cylinder(d=w/sin(60), h=h, $fn=6);
         }
         a = 1/trap_h;
@@ -224,8 +223,7 @@ module screw_seat_outline(h=999,adjustment=0,center=false){
 }
 //screw_seat_shell(30);
 //motor_lugs(30);
-//screw_seat(25, motor_lugs=true);
-
+screw_seat(25, motor_lugs=true);
 
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = column_base_r*2){
