@@ -87,8 +87,6 @@ module small_gear(){
 }
 
 
-rotate(360/teeth_biggear/2) large_gear();
-//translate([c2c_distance*2,00]) small_gear();
 
 module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
     knobble_length=knobble_r * sin(knobble_angle) * 2;
@@ -107,4 +105,9 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
         translate([0,0,1.5]) nut(3,shaft=true,fudge=1.2,h=999);
     }
 }
+
+//rotate(360/teeth_biggear/2) large_gear();
+//translate([c2c_distance*2,00]) small_gear();
 //thumbwheel();
+
+repeat([0,c2c_distance/(1/ratio + 1)*2 + 4,0],3,center=true) large_gear();
