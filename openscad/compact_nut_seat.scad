@@ -39,7 +39,7 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     sequential_hull(){
         translate([-w/2,999,0]) cube([w,d,h]);
         union(){
-            //translate([-w/2,l/2-d,0]) cube([w,d,h]);
+            translate([-w/2,l/2-d,0]) cube([w,d,h]);
             rotate(30) cylinder(d=w/sin(60), h=h, $fn=6);
         }
         a = 1/trap_h;
@@ -375,11 +375,25 @@ translate([40,0,0]){
 
 //screw_seat_shell(30);
 //motor_lugs(30);
-screw_seat(25, motor_lugs=false);
-// EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
+//screw_seat(25, motor_lugs=false);
+/*/ EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
 difference(){
     translate([-3,-40,0]) cube([6,40,5]);
     actuator_end_cutout();
 }//*/
-actuator_column(25, 0);
+//actuator_column(25, 0);
 //nut_and_band_tool();
+
+// TEST PIECE: different sized nut slots, 3% different in size
+difference(){
+    scales=[0.94, 0.97, 1.0, 1.03, 1.06, 1.09];
+    n = len(scales);
+    nominal_w = 6.3;
+    translate([1,1,0]*(-2-nominal_w/2)) cube([n*(nominal_w+4), nominal_w+4, nut_h+6]);
+    for(i=[0:(n-1)])translate([i*(nominal_w+4),0,2]) {
+        w=nominal_w*scales[i];
+        nut_trap_and_slot(nominal_w/2, [w*sin(60),w,nut_h+0.2]);
+        translate([0,0,d]) cylinder(r=shaft_r,h=999);
+    }
+}
+//*/
