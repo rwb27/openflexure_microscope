@@ -11,7 +11,7 @@ include <microscope_parameters.scad>;
 
 d = 0.05;
 nut_size = 3;
-nut_w = 5.8; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance)
+nut_w = 6.3*0.97; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value)
 nut_h = 2.4;
 nut_slot = [nut_w*sin(60), nut_w, nut_h+0.2];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
@@ -100,8 +100,8 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         rotate([tilt,0,0]) union(){
             sequential_hull(){
                 // main body, starting at bottom of shaft
-                translate([0,0,-99]) cylinder(r=r1, h=d);
-                translate([0,0,h-top[2] - 2*(r2-r1)]) cylinder(r=r1, h=d);
+                translate([0,0,-99]) resize([2*r1, top[1],d]) cylinder(r=r1, h=d);
+                translate([0,0,h-top[2] - 2*(r2-r1)]) resize([2*r1, top[1],d]) cylinder(r=r1, h=d);
                 translate([0,0,h-top[2]/2]) cube(top, center=true);
             }
             // hooks for elastic bands/springs
@@ -119,7 +119,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             // join the column to the casing, for strength during printing...
             translate([0,0,lever_tip+zflex[2]+3]){
                 cube([ss_outer()[0]-wall_t, 1, 0.5], center=true);
-                translate([-1/2,0,-0.25]) cube([1, ss_outer()[1]/2-wall_t/2, 0.5]);
+                //translate([-1/2,0,-0.25]) cube([1, ss_outer()[1]/2-wall_t/2, 0.5]); //this was too short...
             }
         }
         
@@ -128,7 +128,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         
         // shaft for the screw
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
-        rotate([tilt,0,0]) translate([0,0,lever_tip]) cylinder(r=shaft_r, h=999);
+        rotate([tilt,0,0]) translate([0,0,lever_tip+3*shaft_r]) cylinder(r=shaft_r, h=999);
         
         // space for lever and flexure
         translate([-99, -zflex[1]/2, zflex[2]]) sequential_hull(){
@@ -375,11 +375,11 @@ translate([40,0,0]){
 
 //screw_seat_shell(30);
 //motor_lugs(30);
-//screw_seat(25, motor_lugs=true);
-/*/ EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
+screw_seat(25, motor_lugs=false);
+// EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
 difference(){
     translate([-3,-40,0]) cube([6,40,5]);
     actuator_end_cutout();
 }//*/
-//actuator_column(25, 0);
-nut_and_band_tool();
+actuator_column(25, 0);
+//nut_and_band_tool();
