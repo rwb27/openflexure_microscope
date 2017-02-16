@@ -11,7 +11,7 @@ include <microscope_parameters.scad>;
 
 d = 0.05;
 nut_size = 3;
-nut_w = 6.3*0.97; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value)
+nut_w = 6.3*1.03; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)
 nut_h = 2.4;
 nut_slot = [nut_w*sin(60), nut_w, nut_h+0.2];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
@@ -384,16 +384,20 @@ difference(){
 //actuator_column(25, 0);
 //nut_and_band_tool();
 
-// TEST PIECE: different sized nut slots, 3% different in size
+/*/ TEST PIECE: different sized nut slots, 3% different in size
 difference(){
     scales=[0.94, 0.97, 1.0, 1.03, 1.06, 1.09];
     n = len(scales);
     nominal_w = 6.3;
     translate([1,1,0]*(-2-nominal_w/2)) cube([n*(nominal_w+4), nominal_w+4, nut_h+6]);
+    
     for(i=[0:(n-1)])translate([i*(nominal_w+4),0,2]) {
         w=nominal_w*scales[i];
         nut_trap_and_slot(nominal_w/2, [w*sin(60),w,nut_h+0.2]);
         translate([0,0,d]) cylinder(r=shaft_r,h=999);
+        translate([0,-(2+nominal_w/2), 0]) rotate([90,0,0]) linear_extrude(0.6,center=true) text(str((scales[i]-1)*100), size=nut_h+3, halign="center");
     }
+    translate([-(2+nominal_w/2), 0, 2]) rotate([90,0,-90]) linear_extrude(0.6,center=true) text(str(nominal_w), size=(nut_h+3)/2, halign="center");
+    translate([(2+nominal_w/2)*(n*2-1), 0, 2]) rotate([90,0,90]) linear_extrude(0.6,center=true) text("+/-%", size=(nut_h+3)/2, halign="center");
 }
 //*/
