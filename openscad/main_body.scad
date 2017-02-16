@@ -342,7 +342,7 @@ union(){
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
                     leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
-                    translate([0,z_nut_y+10-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
+                    translate([0,z_nut_y+ss_outer()[1]/2-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
                 }
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);
@@ -384,7 +384,7 @@ union(){
 		}
         
 		//post mounting holes
-		reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
+		//reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
         
         // screw holes for adjustment of condenser angle/position
         // (only useful if screws=true in the illumination arm)

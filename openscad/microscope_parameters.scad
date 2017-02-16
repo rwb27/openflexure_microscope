@@ -28,7 +28,7 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = true;
+big_stage = false;
 motor_lugs = false;
 version_numstring = "5.16.7";
 
