@@ -26,8 +26,8 @@ use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
 //use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
-use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
-//use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
+//use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
+use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
 //use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
@@ -235,6 +235,8 @@ module camera_mount_top(){
     linear_extrude(d) projection(cut=true) camera_mount();
 }
 module dovetail_mount(shift=0){
+    // A trapezoidal shape, suitable for mounting the objective's 
+    // dovetail on.
     translate([0,objective_clip_y+shift,0]){
         cube([objective_clip_w+4,d,d],center=true);
         cube([objective_clip_w,4,d],center=true);
@@ -488,19 +490,19 @@ module condenser(){
 }
 
 difference(){
-    /*/ Optics module for pi camera lens, with standard stage (i.e. the classic)
-    optics_module_single_lens(
-        ///picamera lens
-        lens_outer_r=3.04+0.2, //outer radius of lens (plus tape)
-        lens_aperture_r=2.2, //clear aperture of lens
-        lens_t=3.0, //thickness of lens
-        parfocal_distance = 6 //sample to bottom of lens
-    );//*/
-    //*/ Optics module for picamera v2 lens, using trylinder
+    /*// Optics module for picamera v2 lens, using trylinder
+    //NB this should also work for pi camera v1 if the right
+    //camera module is used.
     optics_module_trylinder(
-        lens_r = 3,
+        lens_r = 3, 
         parfocal_distance = 6,
         lens_h = 2.5
+    );//*/
+    //*/ Optics module for logitech C270 lens
+    optics_module_trylinder(
+        lens_r = 6,
+        parfocal_distance = 6,
+        lens_h = 2
     );//*/
     /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(

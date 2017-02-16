@@ -26,6 +26,10 @@ use <utilities.scad>;
 $fn=48;
 d=0.05;
 
+
+function camera_mount_height() = 4.5;
+bottom = camera_mount_height() * -1;
+
 module C270(beam_r=5, beam_h=6){
     //cut-out to fit logitech C270 webcam
     //optical axis at (0,0)
@@ -67,4 +71,15 @@ module C270(beam_r=5, beam_h=6){
     }
 }
 
-C270();
+module camera_mount(){
+    // A mount for the pi camera v2
+    // This should finish at z=0+d, with a surface that can be
+    // hull-ed onto the lens assembly.
+    h = 58;
+    w = 25;
+    rotate(-45) difference(){
+        translate([-w/2, -13, bottom]) cube([w, h, camera_mount_height()]);
+        translate([0,0,bottom]) C270();
+    }
+}
+camera_mount();
