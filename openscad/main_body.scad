@@ -41,13 +41,15 @@ module leg(brace=stage_flex_w){
 				cube([leg[0],fw+brace,d]); //extend it to be a triangle
 			}
 
+            zs = [flex_z1, flex_z2]; //heights of bridges between legs
+            bs = [brace, 0]; //breadths of bridges between legs
 			//middle part and flexure to outer legs
-			translate([0,0,flex_z1]) repeat([0,0,flex_z2-flex_z1],2){
-				translate([-d,0,0]) cube([leg_middle_w/2+d,leg[1],stage_t-0.2*leg[1]]);
-				cube([leg_middle_w/2+zflex_l+d,leg[1],zflex_t]);
+			for(i=[0,1]) translate([0,0,zs[i]]){
+				translate([-d,0,0]) hull() repeat([0,bs[i],0],2) //solid part
+                        cube([leg_middle_w/2+d,leg[1],stage_t-0.2*leg[1]]);
+				translate([-d,0,0]) repeat([0,bs[i],0],2) //flexures
+                        cube([leg_middle_w/2+zflex_l+d,leg[1],zflex_t]);
 			}
-			//flexure to outer part of braces{
-			translate([0,brace,flex_z1]) cube([leg_middle_w/2+zflex_l+d,fw,zflex_t]);
 		}
         
 		//thin links between legs
@@ -85,14 +87,15 @@ module actuator(){
 module actuator_silhouette(h=999){
     // This defines the cut-out from the base structure for the XY
     // actuators.
-	linear_extrude(2*h,center=true){
-		minkowski(){
-			circle(r=zflex_l,$fn=12);
-			projection() union(){
-				actuator();
-			}
-		}
-	}
+    linear_extrude(2*h,center=true) minkowski(){
+        circle(r=zflex_l,$fn=12);
+        projection() difference(){
+            actuator();
+            // cut off the actuator column - this causes problems and
+            // the inside of the screw seat is already chopped out...
+            translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
+        }
+    }
 }
 
 module leg_frame(angle){
@@ -331,8 +334,6 @@ union(){
                     leg_frame(45) translate([-ss_outer()[0]/2+wall_t/2,actuating_nut_r,0]){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
-                    // neatly join to the screw seat (actuator column)
-                    leg_frame(45) translate([0,actuating_nut_r,0]) screw_seat_outline(h=wall_h);
                 }
                 // Link the Z actuator to the wall
                 add_roof(zbwall_h-2) reflect([1,0,0]) hull(){
@@ -401,10 +402,10 @@ union(){
     
 	//Actuator housings (screw seats and motor mounts)
 	each_actuator() translate([0,actuating_nut_r,0]){
-        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs);
+        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2);
     }
 	translate([0,z_nut_y,0]){
-        screw_seat(h=actuator_h, travel=z_actuator_travel, motor_lugs=motor_lugs);
+        screw_seat(h=actuator_h, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
     }
 }
 

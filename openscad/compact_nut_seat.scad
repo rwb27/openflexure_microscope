@@ -193,7 +193,7 @@ module motor_lugs(h=20, tilt=0){
     }
 }
 
-module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=10, motor_lugs=false){
+module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false){
     tilt = 0; //currently, only vertical ones are supported.
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     difference(){
