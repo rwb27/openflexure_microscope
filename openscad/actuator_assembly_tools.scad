@@ -92,8 +92,9 @@ module nut_tool(){
             }
         }
         
-        //nut
-        translate([0,l,-d]) rotate(30) cylinder(r=nut_size()*1.15, h=999, $fn=6);
+        //nut 
+        translate([0,l,-d])rotate(30)cylinder(r=nut_size()*1.15, h=999, $fn=6);
+        translate([0,l-nut_size()*1.15+0.6,-d]) cylinder(r=1,h=999,$fn=12);
     }
 }
 
