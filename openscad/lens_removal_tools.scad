@@ -69,19 +69,7 @@ module picam_lens_gripper(){
     }
 }
 
-module hold_gear_10mm_higher(){
-    union(){
-        difference(){
-            cylinder(r=6,h=10,$fn=24);
-            cylinder(r=3,h=999,center=true,$fn=12);
-            translate([-999,0,-999]) cube([1,1,1]*9999);
-        }
-        reflect([1,0,0]) translate([4.5,0,0]) hull()
-            repeat([0,3,0],2) cylinder(r=1.5,h=10,$fn=12);
-    }
-}
-//hold_gear_10mm_higher();
 //translate([pcb[0]/2+15,pcb[1]/2,0]) 
 picam2_gripper();
 //picam_lens_pliers();
-//picam_lens_gripper();
+translate([24,0,0]) picam_lens_gripper();

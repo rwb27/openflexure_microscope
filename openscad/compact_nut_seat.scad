@@ -20,6 +20,7 @@ column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
 column_core = zeroz(nut_slot) + 2*[1.5+7+1, 1.5+1.5, 0];// NB leave z=0 here 
 wall_t = 1.6; //thickness of the wall around the column for the screw seat
 
+function nut_size() = nut_size;
 function column_base_radius() = column_base_r;
 function column_core_size() = column_core;
 function nut_slot_size() = nut_slot;
