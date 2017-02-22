@@ -54,42 +54,6 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
     }
         
 }
-//nut_trap_and_slot(3, nut_slot);
-
-module nut_and_band_tool(nut_slot=nut_slot){
-    //This tool assists with inserting both the nuts and elastic bands.
-    //At some point I'll make one for springs, if needed...?
-    w = nut_slot[0]-0.5;
-    l = actuator_h+36;
-    h = nut_slot[2]-0.4;
-    n = nut_size;
-    nut_y = 0;
-    hook_w = 3.5;
-    difference(){
-        sequential_hull(){
-            translate([-w/2, 0,0]) cube([w,d,h]);
-            translate([-w/2, 20,0]) cube([w,d,h]);
-            union(){
-                translate([-hook_w/2-2.5/2, l-12,0]) cube([hook_w+2.5,12,h]);
-                translate([-hook_w/2-2.5, l-12,h-1]) cube([hook_w+5,12,1]);
-            }
-        }
-        
-        // hold the nut here
-        translate([0,nut_y,-d]) rotate(30) cylinder(r=n*1.15, h=999, $fn=6);
-        // slot at the other end for band insertion
-        hull(){
-            translate([0,l,h]) rotate([90,0,0]) cylinder(r=2.5,h=18,center=true);
-            translate([0,l,0]) cube([hook_w,18,d],center=true);
-        }
-        // V shaped end to grip elastic bands
-        translate([-99,l,0])hull(){
-            translate([0,-1.5,0.75]) cube([999,999,0.5]);
-            translate([0,0,0.5]) cube([999,999,h-0.75]);
-        }
-    }
-}
-        
 
 module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=false){
     r1 = column_base_r; //size of the bottom part
@@ -129,7 +93,10 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         
         // shaft for the screw
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
-        rotate([tilt,0,0]) translate([0,0,lever_tip+3*shaft_r]) cylinder(r=shaft_r, h=999);
+        rotate([tilt,0,0]) translate([0,0,lever_tip]){
+            cylinder(r=shaft_r, h=999);
+            translate([0,0,-lever_tip+1]) cylinder(r1=0, r=shaft_r, h=lever_tip-1); //pointy bottom (stronger)
+        }
         
         // space for lever and flexure
         translate([-99, -zflex[1]/2, zflex[2]]) sequential_hull(){
