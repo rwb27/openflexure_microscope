@@ -44,43 +44,10 @@ module xz_slice(){
         children();
     }
 }
-module nut_and_band_tool(nut_slot=nut_slot){
-    //This tool assists with inserting both the nuts and elastic bands.
-    //At some point I'll make one for springs, if needed...?
-    w = nut_slot[0]-0.5;
-    l = actuator_h+36;
-    h = nut_slot[2]-0.4;
-    n = nut_size;
-    nut_y = 0;
-    hook_w = 3.5;
-    difference(){
-        sequential_hull(){
-            translate([-w/2, 0,0]) cube([w,d,h]);
-            translate([-w/2, 20,0]) cube([w,d,h]);
-            union(){
-                translate([-hook_w/2-2.5/2, l-12,0]) cube([hook_w+2.5,12,h]);
-                translate([-hook_w/2-2.5, l-12,h-1]) cube([hook_w+5,12,1]);
-            }
-        }
-        
-        // hold the nut here
-        translate([0,nut_y,-d]) rotate(30) cylinder(r=n*1.15, h=999, $fn=6);
-        // slot at the other end for band insertion
-        hull(){
-            translate([0,l,h]) rotate([90,0,0]) cylinder(r=2.5,h=18,center=true);
-            translate([0,l,0]) cube([hook_w,18,d],center=true);
-        }
-        // V shaped end to grip elastic bands
-        translate([-99,l,0])hull(){
-            translate([0,-1.5,0.75]) cube([999,999,0.5]);
-            translate([0,0,0.5]) cube([999,999,h-0.75]);
-        }
-    }
-}
-       
+
 module nut_tool(){
-    w = ns[0]-0.5; //width of tool tip (needs to fit through the slot that's ns[0] wide
-    h = ns[2]-0.4; //height of tool tip (needs to fit through slot)
+    w = ns[0]-0.6; //width of tool tip (needs to fit through the slot that's ns[0] wide
+    h = ns[2]-0.7; //height of tool tip (needs to fit through slot)
     l = 5+sso[1]/2+3;
     difference(){
         union(){
