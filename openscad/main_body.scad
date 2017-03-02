@@ -41,14 +41,18 @@ module leg(brace=stage_flex_w){
 				cube([leg[0],fw+brace,d]); //extend it to be a triangle
 			}
 
+            //flexure bridges between the legs
             zs = [flex_z1, flex_z2]; //heights of bridges between legs
-            bs = [brace, 0]; //breadths of bridges between legs
-			//middle part and flexure to outer legs
+            bs = [brace, 0]; //"brace positions" - a nonzero value here
+                             //widens the leg, and adds another flexure
+                             //at the new position.  bs[i]=fw will double
+                             //the width of the flexure, while a larger 
+                             //value produces two distinct flexures.
 			for(i=[0,1]) translate([0,0,zs[i]]){
 				translate([-d,0,0]) hull() repeat([0,bs[i],0],2) //solid part
                         cube([leg_middle_w/2+d,leg[1],stage_t-0.2*leg[1]]);
 				translate([-d,0,0]) repeat([0,bs[i],0],2) //flexures
-                        cube([leg_middle_w/2+zflex_l+d,leg[1],zflex_t]);
+                        cube([leg_middle_w/2+zflex_l+leg[0],leg[1],zflex_t]);
 			}
 		}
         
