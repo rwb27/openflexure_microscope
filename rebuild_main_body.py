@@ -10,8 +10,8 @@ import subprocess
 print("Initiating build of OpenFlexure Microscope body")
 for suffix, constants in [("SS", ['motor_lugs=false', 'big_stage=false']),
                         ("SS-M", ['motor_lugs=true', 'big_stage=false']),
-                        #("LS65", ['motor_lugs=false', 'big_stage=true', 'sample_z=65']),
-                        #("LS65-M", ['motor_lugs=true', 'big_stage=true', 'sample_z=65']),
+                        ("LS65", ['motor_lugs=false', 'big_stage=true', 'sample_z=65']),
+                        ("LS65-M", ['motor_lugs=true', 'big_stage=true', 'sample_z=65']),
                         ]:
     output_filename = "body_{}.stl".format(suffix)
     options = ' '.join(["-D " + c for c in constants])
