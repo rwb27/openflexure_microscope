@@ -13,7 +13,7 @@ d = 0.05;
 nut_size = 3;
 nut_w = 6.3*1.03; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)
 nut_h = 2.4;
-nut_slot = [nut_w*sin(60), nut_w, nut_h+0.2];
+nut_slot = [nut_w*sin(60), nut_w, nut_h+0.4];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
 column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
 //column_clearance_w = nut_slot[0] + 2*1.5 + 2*7;
@@ -73,12 +73,15 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             reflect([1,0,0]) translate([top[0]/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
                     translate([-d,-top[1]/2,0]) cube([d,top[1],6]);
-                    translate([2,0,0]) cylinder(d=3.5, h=3);
-                    translate([4.5,0,0]) cylinder(r=1, h=0.5);
+                    translate([1,0,0]) cylinder(d=3.5, h=3.5);
+                    translate([2,0,0]) cylinder(d=3.5, h=2.5);
+                    translate([4.5,0,0]) cylinder(r=1, h=1.0);
                 } 
-                translate([3, 0, 0]) hull(){
-                    cube([3,99,d],center=true);
-                    cube([1,99,2],center=true);
+                reflect([0,1,0]) hull(){
+                    translate([1.5,0,0]) cube([3,99,d]);
+                    translate([1.5,0,0]) cube([3,99,d]);
+                    translate([2.5,-d,-0.5]) cube([d,99,d]);
+                    translate([1.5,2,-2]) cube([3,99,d]);
                 }
             }
             // join the column to the casing, for strength during printing...
@@ -340,20 +343,18 @@ translate([40,0,0]){
 //    tilted_actuator(25,25,50, base_w=6);
 }
 
-/*/
+//
 difference(){
     union(){
-//screw_seat_shell(30);
-//motor_lugs(30);
-screw_seat(25, motor_lugs=false);
+        //screw_seat(25, motor_lugs=false);
 
-difference(){ //an example actuator rod
-    translate([-3,-40,0]) cube([6,40,5]);
-    actuator_end_cutout();
-}
-actuator_column(25, 0);
-}
-rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+        difference(){ //an example actuator rod
+            translate([-3,-40,0]) cube([6,40,5]);
+            actuator_end_cutout();
+        }
+        actuator_column(25, 0);
+    }
+    //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size
