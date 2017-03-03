@@ -61,37 +61,43 @@ module nut_tool(){
         
         //nut 
         translate([0,l,-d])rotate(30)cylinder(r=nut_size()*1.15, h=999, $fn=6);
-        translate([0,l-nut_size()*1.15+0.6,-d]) cylinder(r=1,h=999,$fn=12);
+        translate([0,l-nut_size()*1.15+0.4,-d]) cylinder(r=1,h=999,$fn=12);
     }
 }
 
 module band_tool(){
-    w = ns[0]-0.5; //width of tool tip (needs to fit through the slot that's ns[0] wide
-    h = ns[2]-0.4; //height of tool tip (needs to fit through slot)
+    w = ns[0]-0.5; //width of tool tip
+    h = 3.5; //height of tool tip (needs to fit through slot)
     l = sso[2]/2+foot_height+5;
-    hook_w = 3.5;
+    // presently, the hook on the actuator is a 1mm radius cylinder, centred
+    // 3.5mm from the edge of the (elliptical) wall of the screw seat.
     difference(){
         union(){
             translate([0,-handle_l,0]) tool_handle();
             hull(){
                 xz_slice() translate([0,-handle_l,0]) tool_handle();
-                translate([-hook_w/2-2.5/2, l-12,0]) cube([hook_w+2.5,12,h]);
-                translate([-hook_w/2-2.5, l-12,h-1]) cube([hook_w+5,12,1]);
+                translate([-5/2, l-12,0]) cube([5,12,h]);
+                translate([-7/2, l-12,h-1]) cube([7,12,1]);
             }
         }
         // slot at the end for band insertion
         hull(){
-            translate([0,l,h]) rotate([90,0,0]) cylinder(r=2.5,h=18,center=true);
-            translate([0,l,0]) cube([hook_w,18,d],center=true);
+            translate([0,l,2]) rotate([90,0,0]) cylinder(r=1.5,h=18,center=true);
+            translate([0,l,2+3]) rotate([90,0,0]) cylinder(r=2.75,h=18,center=true);
         }
         // V shaped end to grip elastic bands
-        translate([-99,l,0])hull(){
-            translate([0,-1.5,0.75]) cube([999,999,0.5]);
-            translate([0,0,0.5]) cube([999,999,h-0.75]);
+        translate([0,l,0]) hull(){
+            translate([0,0,1.5]) rotate([0,90,0]) cylinder(r=1,h=999,center=true);
+            translate([0,-0.5,h-1.5]) rotate([0,90,0]) cylinder(r=1,h=999,center=true);
+        }
+        translate([-99,l-0.5,h-1.5]) cube(999);
+        // squeeze the sides slightly
+        reflect([1,0,0]){
+            translate([-7/2,l,h/2-0.5]) rotate([90,15,-3]) scale([1.1,1.5,1]) cylinder(r=1,h=999,center=true);
         }
     }
 }
 
 
 band_tool();
-translate([10,0,0]) nut_tool();
+//translate([10,0,0]) nut_tool();

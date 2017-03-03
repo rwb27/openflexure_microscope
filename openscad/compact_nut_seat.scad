@@ -340,17 +340,21 @@ translate([40,0,0]){
 //    tilted_actuator(25,25,50, base_w=6);
 }
 
-
+/*/
+difference(){
+    union(){
 //screw_seat_shell(30);
 //motor_lugs(30);
-//screw_seat(25, motor_lugs=false);
-/*/ EXAMPLE: an actuator column, joined to an actuator rod (coming from -y)
-difference(){
+screw_seat(25, motor_lugs=false);
+
+difference(){ //an example actuator rod
     translate([-3,-40,0]) cube([6,40,5]);
     actuator_end_cutout();
+}
+actuator_column(25, 0);
+}
+rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
-//actuator_column(25, 0);
-//nut_and_band_tool();
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size
 difference(){
