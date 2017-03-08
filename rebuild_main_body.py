@@ -19,7 +19,8 @@ for suffix, constants in [("SS", ['motor_lugs=false', 'big_stage=false']),
     '-o builds/{filename} {options} OpenSCAD/main_body.scad'.format(
             filename=output_filename, options=options)
     
-    print("Generating {}...  ".format(output_filename), end='')
+    print("Generating {}...  ".format(output_filename))
+    print("Command: {}".format(command_string))
     status, output = subprocess.getstatusoutput(command_string)
     if status != 0:
         print("\nerror:")
