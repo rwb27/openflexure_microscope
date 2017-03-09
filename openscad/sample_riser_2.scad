@@ -95,6 +95,6 @@ module slide_clip(){
     }
 }
 
-//slide_riser();
+slide_riser();
 //rotate([180,0,0]) 
-slide_clip();
+//slide_clip();
