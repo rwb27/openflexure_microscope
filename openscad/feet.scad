@@ -62,12 +62,12 @@ module foot(travel=5,
                 translate([0,0,h]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
                 translate([0,0,999]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
             }
-            cube([entry_w, 999, 2*(h-travel-1)],center=true); //anchor for elastic bands
+            cube([2*column_base_radius()+1.5, 999, 2*(h-travel-1)],center=true); //anchor for elastic bands
         }
         //cut out the core again, without tapering, in the middle (to make two lugs,
         //one on either side - rather than a ring around the top.
         translate([0,0,h-travel-1]) intersection(){
-            cube([cw-4*2, 999, 999],center=true);
+            cube([cw-3.3*2, 999, 999],center=true);
             resize([cw,cl,999]) cylinder(d=w,h=999);
         }
         

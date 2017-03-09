@@ -73,16 +73,12 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             reflect([1,0,0]) translate([top[0]/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
                     translate([-d,-top[1]/2,0]) cube([d,top[1],6]);
-                    translate([1,0,0]) cylinder(d=3.5, h=3.5);
-                    translate([2,0,0]) cylinder(d=3.5, h=2.5);
-                    translate([4.5,0,0]) cylinder(r=1, h=1.0);
+                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=4.5);
+                    translate([1.5,0,0.5]) resize([3,4,3]) cylinder(d1=1, d2=4, h=2);
+                    translate([3,0,0.5]) cylinder(d1=1,d2=3.5, h=1.5);
+                    translate([4.5,0,0.5]) resize([2,3,0.5]) cylinder(d=3, h=0.5);
+                    translate([4.5,0,0]) resize([2,3,1]) cylinder(d=3, h=1.0);
                 } 
-                reflect([0,1,0]) hull(){
-                    translate([1.5,0,0]) cube([3,99,d]);
-                    translate([1.5,0,0]) cube([3,99,d]);
-                    translate([2.5,-d,-0.5]) cube([d,99,d]);
-                    translate([1.5,2,-2]) cube([3,99,d]);
-                }
             }
             // join the column to the casing, for strength during printing...
             translate([0,0,lever_tip+zflex[2]+3]){
@@ -346,15 +342,16 @@ translate([40,0,0]){
 //
 difference(){
     union(){
-        //screw_seat(25, motor_lugs=false);
+        screw_seat(25, motor_lugs=false);
 
         difference(){ //an example actuator rod
             translate([-3,-40,0]) cube([6,40,5]);
             actuator_end_cutout();
         }
         actuator_column(25, 0);
+        translate([0,0,1+20.5]) cube([6,14,2],center=true);
     }
-    //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+    translate([0,0,20.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size

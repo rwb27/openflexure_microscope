@@ -67,7 +67,7 @@ module nut_tool(){
 
 module band_tool(){
     w = ns[0]-0.5; //width of tool tip
-    h = 3.5; //height of tool tip (needs to fit through slot)
+    h = 4.5; //height of tool tip (needs to fit through slot)
     l = sso[2]/2+foot_height+5;
     // presently, the hook on the actuator is a 1mm radius cylinder, centred
     // 3.5mm from the edge of the (elliptical) wall of the screw seat.
@@ -76,6 +76,10 @@ module band_tool(){
             translate([0,-handle_l,0]) tool_handle();
             hull(){
                 xz_slice() translate([0,-handle_l,0]) tool_handle();
+                translate([0,l-20,0]) xz_slice() translate([0,-handle_l,0]) tool_handle();
+            }
+            hull(){
+                translate([0,l-20,0])xz_slice() translate([0,-handle_l,0]) tool_handle();
                 translate([-5/2, l-12,0]) cube([5,12,h]);
                 translate([-7/2, l-12,h-1]) cube([7,12,1]);
             }
@@ -93,7 +97,7 @@ module band_tool(){
         translate([-99,l-0.5,h-1.5]) cube(999);
         // squeeze the sides slightly
         reflect([1,0,0]){
-            translate([-7/2,l,h/2-0.5]) rotate([90,15,-3]) scale([1.1,1.5,1]) cylinder(r=1,h=999,center=true);
+            translate([-7/2,l,h/2-0.3]) rotate([90,15,-3]) scale([1.1,1.5,1]) cylinder(r=1,h=999,center=true);
         }
     }
 }
