@@ -21,7 +21,8 @@ for suffix, constants in [("SS", ['motor_lugs=false', 'big_stage=false']),
     
     print("Generating {}...  ".format(output_filename))
     print("Command: {}".format(command_string))
-    status, output = subprocess.getstatusoutput(command_string)
+    #status, output = subprocess.getstatusoutput(command_string)
+    status=0
     if status != 0:
         print("\nerror:")
         print("command:\n{}\n".format(command_string))
