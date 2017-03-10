@@ -176,7 +176,7 @@ module objective_clip_3(){
 					translate([-w2/2,dy-4,z_carriage[2]/2]) cube([w2,4,d]);
 					translate([-w1/2,dy,z_carriage[2]-z_carriage[1]]) cube([w1,z_carriage[1],z_carriage[1]]);
 				}
-				translate([-clip_outer_w/2,objective_clip_y,0]) cube([clip_outer_w,dy-d,z_flexure_spacing+z_strut_t]);
+				translate([-clip_outer_w/2,objective_clip_y,0]) cube([clip_outer_w,dy-d,z_flexure_spacing+z_strut_t]); //this becomes the dovetail clip
 			}
 			rotate(45) cube([1,1,999]*z_flexure_x*sqrt(2),center=true);
 		}
@@ -309,6 +309,12 @@ union(){
     }
     z_actuator();
     objective_clip_3();
+    if(big_stage) translate([0,z_carriage_y-1,14]){
+        //tie the objective clip to the sides during printing.
+        anchor_r = leg_r - zflex[1] - 14*flex_a;
+        w = 2*(anchor_r*sqrt(2) - z_carriage_y-0.25);
+        cube([w, 1.5, 0.5], center=true); 
+    }
 
 	//base
 	difference(){
@@ -396,7 +402,7 @@ union(){
         condenser_mounting_screws(h=18,d=3*0.95,center=true);
         
         //////////////// logo and version string /////////////////////
-        size = big_stage?0.28:0.22;
+        size = big_stage?0.25:0.2;
         place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
         scale([size,size,10]) logo_and_name(version_string);
         

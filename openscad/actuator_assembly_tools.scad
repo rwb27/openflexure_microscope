@@ -104,4 +104,4 @@ module band_tool(){
 
 
 band_tool();
-//translate([10,0,0]) nut_tool();
+translate([10,0,0]) nut_tool();

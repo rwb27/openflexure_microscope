@@ -30,7 +30,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true;
 motor_lugs = false;
-version_numstring = "5.16.9";
+version_numstring = "5.16.10";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -52,6 +52,7 @@ stage_flex_w = 4; // width of XY axis flexures
 zflex_l = 1.5;    // length of (all) flexible bits
 zflex_t = 0.75;   // thickness of (all) flexible bits
 zflex = [stage_flex_w, zflex_l, zflex_t]; // the above in new-style format
+flex_a = 0.15;    // sine of the angle through which flexures can be bent
 
 // Compile a sensible version string
 version_string = str("v",version_numstring, big_stage?"-LS":"-SS", sample_z, motor_lugs?"-M":"");
