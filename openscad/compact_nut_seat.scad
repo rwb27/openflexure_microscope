@@ -73,11 +73,16 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             reflect([1,0,0]) translate([top[0]/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
                     translate([-d,-top[1]/2,0]) cube([d,top[1],6]);
-                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=4.5);
+                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=4);
                     translate([1.5,0,0.5]) resize([3,4,3]) cylinder(d1=1, d2=4, h=2);
-                    translate([3,0,0.5]) cylinder(d1=1,d2=3.5, h=1.5);
-                    translate([4.5,0,0.5]) resize([2,3,0.5]) cylinder(d=3, h=0.5);
-                    translate([4.5,0,0]) resize([2,3,1]) cylinder(d=3, h=1.0);
+                    //translate([3,0,0.5]) cylinder(d1=1,d2=3.5, h=1.5);
+                    translate([3.5,0,0.5]) resize([2.5,3.5,1.5]) cylinder(d1=1,d2=3.5);
+                    union(){
+                        reflect([0,1,0]) translate([4.5,0.5,0]) cylinder(d=1,h=1);
+                        translate([4,0,0]) cylinder(d=1,h=1);
+                    }
+                    //translate([4,0,0.5]) resize([2,3,0.5]) cylinder(d=3, h=0.5);
+                    //translate([4.5,0,0]) resize([1,3,0.5]) cylinder(d=3, h=1.0);
                 } 
             }
             // join the column to the casing, for strength during printing...
@@ -174,7 +179,7 @@ module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, mo
         translate([0,-edge_y,0]) cube([entry_w, edge_y, entry_h*2], center=true);
         
         //entrance slot for nut
-        rotate([tilt,0,0]) translate([0,0,h-nut_size-1.5-nut_slot[2]]) nut_trap_and_slot(nut_size, nut_slot);
+        rotate([tilt,0,0]) translate([0,0,h-nut_size-1.5-nut_slot[2]]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
     }
 }
 
