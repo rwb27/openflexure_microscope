@@ -313,7 +313,7 @@ union(){
         //tie the objective clip to the sides during printing.
         anchor_r = leg_r - zflex[1] - 14*flex_a;
         w = 2*(anchor_r*sqrt(2) - z_carriage_y-0.25);
-        cube([w, 1.5, 0.5], center=true); 
+        cube([w, 1, 0.5], center=true); 
     }
 
 	//base

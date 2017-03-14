@@ -454,6 +454,7 @@ module optics_module_trylinder(
 }
 
 module condenser(){
+    // A simple one-lens condenser, re-imaging the LED onto the sample.
     lens_z = 17;
     pedestal_h = 3;
     lens_r = 13/2;
