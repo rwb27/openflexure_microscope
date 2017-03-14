@@ -26,8 +26,8 @@ use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
 //use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
-//use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
-use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
+use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
+//use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
 //use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
@@ -490,7 +490,7 @@ module condenser(){
 }
 
 difference(){
-    /*// Optics module for picamera v2 lens, using trylinder
+    /// Optics module for picamera v2 lens, using trylinder
     //NB this should also work for pi camera v1 if the right
     //camera module is used.
     optics_module_trylinder(
@@ -498,10 +498,10 @@ difference(){
         parfocal_distance = 6,
         lens_h = 2.5
     );//*/
-    //*/ Optics module for logitech C270 lens
+    /*/ Optics module for logitech C270 lens
     optics_module_trylinder(
         lens_r = 6,
-        parfocal_distance = 6,
+        parfocal_distance = 6, //NB with 6 here the PCB is a bit low
         lens_h = 2
     );//*/
     /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
@@ -510,7 +510,7 @@ difference(){
         tube_lens_f=40, 
         tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=35,
-        fluorescence=true
+        fluorescence=false
     );//*/
     /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(

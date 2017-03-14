@@ -40,7 +40,7 @@ module picam2_push_fit( beam_length=15){
     // but gently.  Just push to insert, and wiggle to remove.  You may find popping 
     // off the brown ribbon cable and removing the PCB first helps when extracting
     // the camera module again.
-    camera = [8.5,8.5,2.3]; //size of camera box
+    camera = [8.5,8.5,2.8]; //size of camera box (NB it's now propped up on foam)
 	cw = camera[0]+1; //side length of camera box at bottom (slightly larger)
 	finger_w = 1.5; //width of flexure "fingers"
 	flex_l = 1; //width of flexible part
@@ -79,15 +79,17 @@ module picam2_push_fit( beam_length=15){
             }
             //there's no finger on the top, so add a dimple on the fourth side
             hull(){
-                translate([-cw/2+1,cw/2,1.5]) cube([cw-2,d,camera[2]-1.5]);
+                translate([-cw/2+1,cw/2,4.3/2]) cube([cw-2,d,camera[2]-1.5]);
                 translate([-cw/2+2,camera[1]/2,camera[2]-0.5]) cube([cw-4,d,0.5]);
+                translate([-21/2,cw/2,camera[2]-1.5]) cube([21,d,camera[2]-1.5]);
+                translate([-21/2,camera[1]/2,camera[2]-0.5]) cube([21,d,0.5]);
             }
 		}
         
 		//ribbon cable at top of camera
         sequential_hull(){
-            translate([0,0,0]) cube([cw-1,d,3],center=true);
-            translate([0,cw/2+1,0]) cube([cw-1,d,3],center=true);
+            translate([0,0,0]) cube([cw-1,d,4.3],center=true);
+            translate([0,cw/2+1,0]) cube([cw-1,d,5],center=true);
             translate([0,9.4-(4.4/1)/2,0]) cube([cw-1,1,5],center=true);
         }
         //flex connector
