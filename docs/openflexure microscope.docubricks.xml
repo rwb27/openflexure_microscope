@@ -186,7 +186,7 @@
     </media>
     <manufacturing_instruction>
       <step>
-        <description>This should be printed without support material.  On smaller/less well calibrated machines, I print this part on its own and then print the rest of the parts in a second print.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.  There are four versions of the body.  The SS version is for "low-res" optics modules using the Raspberry Pi camera lens, or the Logitech C270 lens.  The LS65 version is larger, and works with the RMS optics module or the M12 optics module (for USB webcams).  The two versions ending in -M have lugs for mounting motors.</description>
+        <description>This should be printed without support material.  On smaller/less well calibrated machines, I print this part on its own and then print the rest of the parts in a second print.  Which version of the body you need depends on two things: firstly, whether you want to use a large optics module (versions with LS65 in the name) or a small one (versions with SS), and secondly whether you want attachment lugs for motors (files with -M in the name).  All the files start with `body_`.You need the SS version if you're using a Raspberry Pi camera or a Logitech C270 camera, together with the lens that came on the camera.  If you're using a microscope objective, or the USB camera with M12 lens, you need the LS65 version.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.  </description>
         <media>
           <file url="./images/main_body.jpg" />
         </media>
@@ -339,7 +339,9 @@
     </media>
     <manufacturing_instruction>
       <step>
-        <description>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  If using the non-adjustable version, this prints best with other parts of a similar height, e.g. other illumination arms, the optics module, or the microscope body.  The versions that can take a condenser lens print flat, so they shouldn't be a problem.  The condenser lens optics will also work without one, though the image won't be as bright.</description>
+        <description>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  If using the non-adjustable version, this prints best with other parts of a similar height, e.g. other illumination arms, the optics module, or the microscope body.  The adjustable versions print flat, so they shouldn't be a problem.  The condenser lens optics will also work without a lens, though the image won't be as bright.
+
+The illumination arm is available in 4 versions: they all start with `illumination_and_back_foot_` and then you can choose either adjustable arm with a bare LED, or bare LED plus tape (`adj`) or one that uses a condenser lens (`condenser`).  It's important to match the type of microscope you're using (LS65 or SS).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the LS75 version.</description>
         <media />
       </step>
     </manufacturing_instruction>
