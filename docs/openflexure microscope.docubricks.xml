@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xml" href="docubricks.xsl"?>
-<!-- 
-     This is a DocuBricks XML file, it can be viewed in a web browser (Firefox works best) 
+<!--
+     This is a DocuBricks XML file, it can be viewed in a web browser (Firefox works best)
      if the accompanying stylesheet and scripts are in the same directory.  It should
-     also be available at http://www.docubricks.com/ in an easily-digestible HTML 
+     also be available at http://www.docubricks.com/ in an easily-digestible HTML
      format.
 -->
 <docubricks>
@@ -40,7 +40,7 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1673661896">
-    <description>M3 Washer, Qty: 3</description>
+    <description>M3 Washer, Qty: 3 or 4</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>7118</supplier_part_num>
     <manufacturer_part_num />
@@ -48,10 +48,15 @@
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
-    <manufacturing_instruction />
+    <manufacturing_instruction>
+      <step>
+        <description>The washers fit between the gears and the microscope.  An extra one is required by the adjustable illumination arm.</description>
+        <media />
+      </step>
+    </manufacturing_instruction>
   </physical_part>
   <physical_part id="589229119">
-    <description>8mm M3 screws, Qty: 2</description>
+    <description>8mm M3 screws, Qty: 2 or 3</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>14315</supplier_part_num>
     <manufacturer_part_num />
@@ -59,10 +64,15 @@
     <material_amount />
     <material_unit>NONE</material_unit>
     <media />
-    <manufacturing_instruction />
+    <manufacturing_instruction>
+      <step>
+        <description>These screws attach the sample clips.  A further screw is used in the illumination arm, if you have an adjustable one.</description>
+        <media />
+      </step>
+    </manufacturing_instruction>
   </physical_part>
   <physical_part id="1392832614">
-    <description>White LED, 3mm diameter, 15 degree beam angle</description>
+    <description>White LED, 5mm diameter, 15 degree beam angle</description>
     <supplier>Farnell Element14</supplier>
     <supplier_part_num>1716696</supplier_part_num>
     <manufacturer_part_num>OVL-3321</manufacturer_part_num>
@@ -72,7 +82,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>The white LED is for illumination.  Exact specifications are unimportant, but this is the one I use.  3mm diameter is what I've designed for, but there's no reason you couldn't tweak the illumination arm to use a 5mm LED.</description>
+        <description>The white LED is for illumination.  Exact specifications are unimportant, but this is the one I use.  5mm diameter is what I've designed for, but there's no reason you couldn't tweak the illumination arm to use a 3mm LED.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -110,7 +120,7 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="1798060650">
-    <description>Elastic bands, No. 32, Qty:3 (+ 3 spares)</description>
+    <description>Viton O ring, 30mm inner diameter, 2mm cross section, Qty: 3</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -120,7 +130,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>The elastic bands are important to provide a return force on the nut that is pulled upwards by the screw.  I use number 32 bands, which are about 3mm wide and about 150mm in circumference (i.e. 75mm long when measured as a loop.  It would also be possible to use shorter bands and wrap them round the foot fewer times.  If only thin elastic bands are available, you may need to use multiple bands or fold bands in half to get enough force.</description>
+        <description>The O-rings function as springs, to provide a return force on the nut that is pulled upwards by the screw.  I use Viton O-rings, 30mm ID, as they provide about the right force.  You can substitute for number 32 elastic bands, which are about 3mm wide and about 150mm in circumference (i.e. 75mm long when measured as a loop).  If you use these, you should fold them in half, so you have a band that's effectively 75mm in circumference.  Buying a band that size is a bit difficult, but if you can get one, great!</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -136,16 +146,16 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>Any model will do!  If you buy a kit, it may or may not come with a Pi.  NB if you buy a Pi Zero, only the Zero+ has a camera connector, and even that needs a special lead.</description>
+        <description>Any model will do!  If you buy a kit, it may or may not come with a Pi.  NB if you buy a Pi Zero, only the Zero+ has a camera connector, and even that needs a special lead.  Of course, if you're using a camera that's not the Raspberry Pi camera module, you can use whatever USB-compatible device you like.</description>
         <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="2120462144">
-    <description>Raspberry Pi Camera Module</description>
-    <supplier />
+    <description>Camera Module</description>
+    <supplier>Raspberry Pi</supplier>
     <supplier_part_num />
-    <manufacturer_part_num />
+    <manufacturer_part_num>Camera Module v2</manufacturer_part_num>
     <url />
     <material_amount />
     <material_unit>NONE</material_unit>
@@ -154,7 +164,7 @@
     </media>
     <manufacturing_instruction>
       <step>
-        <description>NB I've pictured v1.3 of the camera board here; the microscope works with v1 or v2, but you need to make sure you print the correct optics module to fit your camera.</description>
+        <description>NB I've pictured v1.3 of the camera board here; the microscope is designed to work with v2 of the board, although older versions of the optics module exist that work with v1.  You can also use a webcam, and there are versions of the optics module available to use the Logitech C270 and a USB webcam supplied by WaterScope.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -169,17 +179,20 @@
     <material_amount>0.1</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./stl/main_body_vanilla.stl" />
+      <file url="./stl/main_body_SS.stl" />
+      <file url="./stl/main_body_SS-M.stl" />
+      <file url="./stl/main_body_LS65.stl" />
+      <file url="./stl/main_body_LS65-M.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>This should be printed without support material.  On smaller/less well calibrated machines, I print this part on its own and then print the rest of the parts in a second print.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.</description>
+        <description>This should be printed without support material.  On smaller/less well calibrated machines, I print this part on its own and then print the rest of the parts in a second print.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.  There are four versions of the body.  The SS version is for "low-res" optics modules using the Raspberry Pi camera lens, or the Logitech C270 lens.  The LS65 version is larger, and works with the RMS optics module or the M12 optics module (for USB webcams).  The two versions ending in -M have lugs for mounting motors.</description>
         <media>
           <file url="./images/main_body.jpg" />
         </media>
       </step>
       <step>
-        <description>After printing, you should run a 3mm drill bit through the 3mm holes in each actuator, to ensure the screws can rotate freely.</description>
+        <description>After printing, you should run a 3mm drill bit through the 3mm holes in each actuator, to ensure the screws can rotate freely.  If you don't have a drill, an M3 screw should do...</description>
         <media>
           <file url="./images/main_body_drill.jpg" />
         </media>
@@ -205,12 +218,11 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/untilted_foot.stl" />
-      <file url="././stl/tilted_foot.stl" />
+      <file url="./stl/feet.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>You need two tilted feet (tilted_foot.stl) and one untilted foot (untilted_foot.stl).</description>
+        <description>You need two tilted feet and one untilted foot, as provided in feet.stl.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -225,16 +237,20 @@
     <material_unit>KG</material_unit>
     <media>
       <file url="./stl/optics_picam2_pilens.stl" />
-      <file url="./stl/optics_picam1_pilens.stl" />
+      <file url="./stl/optics_picam2_rms.stl" />
       <file url="./stl/picam_cover.stl" />
+      <file url="./stl/optics_usbcam_M12.stl" />
+      <file url="./stl/optics_usbcam_rms.stl" />
+      <file url="./stl/optics_c270_ownlens.stl" />
+      <file url="./stl/optics_c270_rms.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>There are two versions of the optics module, for the two versions of the Raspberry Pi camera board.  Make sure you pick the right STL file for your camera module!  The cover is the same for both.</description>
+        <description>There are several versions of the optics module, depending on your camera (Raspberry Pi Camera v2, Logitech C270, or WaterScope USB camera) and on whether you will use the lens from the camera (pilens, M12, ownlens) or an RMS objective and 40mm tube lens.  Make sure you pick the right STL file for your camera module!  There is a cover that fits over the Raspberry Pi camera module, and holds it firmly onto the optics module.</description>
         <media />
       </step>
       <step>
-        <description>   
+        <description>
           The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either print more than one optics module at a time, or print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.  The optics module is best printed in black to cut down on stray light inside the tube - though it will still work in other colours.</description>
         <media />
       </step>
@@ -255,7 +271,7 @@
     </media>
     <manufacturing_instruction>
       <step>
-        <description>These tools make it much easier to remove the lens from a Raspberry Pi camera module.  See the documentation for the Raspberry Pi Camera Mount/Extension Tube for instructions.  These tools are for version 2 of the camera board.  The board gripper for v1 is included for convenience - you'll need a small pair of pliers (I like mini combination pliers) to unscrew the lens if you have v1 of the board.</description>
+        <description>These tools make it much easier to remove the lens from a Raspberry Pi camera module.  See the documentation for the Raspberry Pi Camera Mount/Extension Tube for instructions.  These tools are for version 2 of the camera board.  The board gripper for v1 is included for convenience - you'll need a small pair of pliers (I like mini combination pliers) to unscrew the lens if you have v1 of the board.  v2 of the Raspberry Pi camera module now comes with a lens removal tool, which is better than the printed one - but the board gripper is still useful.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -278,8 +294,8 @@
       </step>
     </manufacturing_instruction>
   </physical_part>
-  <physical_part id="702468006">
-    <description>Paperclip</description>
+  <physical_part id="3907892850">
+    <description>Optics (optional)</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -289,12 +305,24 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>You need a paperclip (or other relatively stiff piece of wire) to pull the elastic bands through the structure.  I find the handle from a foldback clip works well.  The exact shape you use is not important, but it probably needs to have a small (&lt;3mm wide) hook at one end, a straight section in the middle, and some sort of handle at the end.  I have included a photograph of my usual shape.
-
-Typically I use two pairs of pliers to bend this.  This will come as a part of the kit of non-printed parts.</description>
-        <media>
-          <file url="./images/bent_paperclip.jpg" />
-        </media>
+        <description>If you are not simply using the lens that came with your camera, you will need an RMS microscope objective.  The LS65 version of the microscope body is compatible with 25mm parfocal length objectives; if you have a longer 35mm parfocal length objective you'll need to either print a taller LS75 body, or fit a 10mm spacer to raise the sample up higher.  If you are using an RMS objective, you'll also need to use a tube lens; 16mm diameter, 40mm focal length (e.g. <a href="http://www.comaroptics.com/components/lenses/simple-convex-lenses/quality-planoconvex-lenses#row-40_pq_16">Comar 40 PQ 16</a>)</description>
+        <media />
+      </step>
+    </manufacturing_instruction>
+  </physical_part>
+  <physical_part id="96872047293">
+    <description>Condenser Lens (optional)</description>
+    <supplier />
+    <supplier_part_num />
+    <manufacturer_part_num />
+    <url />
+    <material_amount />
+    <material_unit>NONE</material_unit>
+    <media />
+    <manufacturing_instruction>
+      <step>
+        <description>If you want to use a condenser lens, so far I've based the design around a 12mm diameter lens, with a focal length of about 12mm.  WaterScope can supply these, contact them for more details.</description>
+        <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
@@ -311,7 +339,7 @@ Typically I use two pairs of pliers to bend this.  This will come as a part of t
     </media>
     <manufacturing_instruction>
       <step>
-        <description>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  This prints best with other parts of a similar height, e.g. other illumination arms, the optics module, or the microscope body.</description>
+        <description>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  If using the non-adjustable version, this prints best with other parts of a similar height, e.g. other illumination arms, the optics module, or the microscope body.  The versions that can take a condenser lens print flat, so they shouldn't be a problem.  The condenser lens optics will also work without one, though the image won't be as bright.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -352,31 +380,16 @@ Typically I use two pairs of pliers to bend this.  This will come as a part of t
       </step>
     </manufacturing_instruction>
   </physical_part>
-  <physical_part id="72777443">
-    <description>Spacer for actuating gear</description>
-    <supplier />
-    <supplier_part_num />
-    <manufacturer_part_num />
-    <url />
-    <material_amount>0.001</material_amount>
-    <material_unit>KG</material_unit>
-    <media>
-      <file url="./stl/gear_elevator.stl" />
-    </media>
-    <manufacturing_instruction>
-      <step>
-        <description>This part is useful if you want to assemble the elastic bands after putting the gears on; it lifts the gear up and out of the way, so you can reach in with the bent paperclip tool.  However, I reccommend assembling the elastic bands before putting the gear on - this is simpler although it takes slightly longer.</description>
-        <media />
-      </step>
-    </manufacturing_instruction>
-  </physical_part>
   <brick id="993466590">
     <name>OpenFlexure Microscope</name>
     <abstract>A 3D-printed microscope, including a flexure-based XYZ stage with sub-micron precision and 8mm range.</abstract>
-    <long_description>Optomechanics is a crucial part of any microscope; when working at high magnification, it is absolutely crucial to keep the sample steady and to be able to bring it into focus precisely.  Accurate motion control is extremely difficult using printed mechanical parts, as good linear motion typically requires tight tolerances and a smooth surface finish.  This design for a 3D printed microscope stage uses plastic flexures, meaning its motion is free from friction and vibration.  It achieves steps well below 100nm when driven with miniature stepper motors, and is stable to within a few microns over several days.
+    <long_description>
+      The OpenFlexure microscope is a customisable optical microscope, using either very cheap webcam optics or lab quality, RMS standard microscope objectives.  It uses an inverted geometry, and has a high quality mechanical stage which can be motorised using low cost geared stepper motors.
 
-This design aims to minimise both the amount of post-print assembly required, and the number of non-printed parts required - partly to make it as easy as possible to print, and partly to maximise stability; most of the microscope (including all the parts with flexures) prints as a single piece.  The majority of the expense is in the Raspberry Pi and its camera module; the design requires only around 100g of plastic and a few nuts, bolts and other parts.  The optics module (containing the camera and lens) can be easily swapped out or modified, for example to add epifluorescence or change the magnification.</long_description>
-    <notes>This is the second "stable" release of the microscope; ongoing development lives on the Github page https://github.com/rwb27/openflexure_microscope and the accompanying paper is available at http://dx.doi.org/10.1063/1.4941068 (the paper is open-access).
+      Optomechanics is a crucial part of any microscope; when working at high magnification, it is absolutely crucial to keep the sample steady and to be able to bring it into focus precisely.  Accurate motion control is extremely difficult using printed mechanical parts, as good linear motion typically requires tight tolerances and a smooth surface finish.  This design for a 3D printed microscope stage uses plastic flexures, meaning its motion is free from friction and vibration.  It achieves steps well below 100nm when driven with miniature stepper motors, and is stable to within a few microns over several days.
+
+      This design aims to minimise both the amount of post-print assembly required, and the number of non-printed parts required - partly to make it as easy as possible to print, and partly to maximise stability; most of the microscope (including all the parts with flexures) prints as a single piece.  The majority of the expense is in the Raspberry Pi and its camera module; the design requires only around 100g of plastic and a few nuts, bolts and other parts.  The optics module (containing the camera and lens) can be easily swapped out or modified, for example to change the magnification/resolution by using a microscope objective, or adding a filter cube for fluorescence (build instructions not done yet).</long_description>
+    <notes>This is the third "stable" release of the microscope; ongoing development lives on the Github page https://github.com/rwb27/openflexure_microscope and the accompanying paper is available at http://dx.doi.org/10.1063/1.4941068 (the paper is open-access).
 
 This microscope will be available through http://www.waterscope.org/ in Summer 2016, as a kit (with or without printed parts and Raspberry Pi) or fully assembled.</notes>
     <license>CERN Open Hardware License</license>
@@ -509,7 +522,7 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
-        <description>Your microscope is now complete – happy observing! 
+        <description>Your microscope is now complete – happy observing!
 You might want to consult https://www.raspberrypi.org/documentation/usage/camera/ or https://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md if you need a hand setting up the camera.</description>
         <media>
           <file url="./images/microscope_complete_1.jpg" />
