@@ -172,7 +172,8 @@ module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=6
         }
         
         // mounting hole for horizontal arm
-        translate([0,back+b,sample_z+wd+b+3]) cylinder(d=3*0.9, h=10,center=true);
+        translate([0,back+b,sample_z+wd+b+3]) cylinder(d=2.5*sqrt(2), h=10,center=true, $fn=4);
+        translate([0,back+b,sample_z+wd+b+3]) cylinder(d1=2.5*sqrt(2), d2=2.5*sqrt(2)+2, h=2,center=true, $fn=4);
  
         // exit holes for cable (option to leave from front or back)
         difference(){
@@ -219,7 +220,7 @@ module illumination_horizontal_arm(){
         }
         // mounting slot to screw onto vertical arm
         translate([0,back+b,sample_z+wd+b+3]) hull(){
-            repeat([0,4,0], 2, center=true) cylinder(d=3*0.9, h=10,center=true);
+            repeat([0,4,0], 2, center=true) cylinder(d=3*1.25, h=10,center=true);
         }
         
         // enlarge the channel a bit next to the LED to allow it to be put in LED-first
@@ -229,7 +230,7 @@ module illumination_horizontal_arm(){
             translate([-3,-4,sample_z+wd+4+4]) cube([6,d,10]);
         }
         
-        // Holes for LED and beam
+        // Holes for LED and beam (only relevant if condenser=false)
         translate([0,0,sample_z+10+8.5]){
             cylinder(r=led_d*1.1/2,h=999,center=true,$fn=24);
             cylinder(r=(led_d+1)*1.2/2,h=999,$fn=24);

@@ -66,6 +66,7 @@ z_flex_w = 4;   // width of struts for Z axis
 leg = [4,stage_flex_w,flex_z2+zflex_t]; // size of vertical legs
 leg_middle_w = 12; // width of the middle part of each leg
 actuator_h = 25; //height of the actuator columns
+dz = 0.5; //small increment in Z (~ 2 layers)
 
 leg_outer_w = leg_middle_w + 2*zflex_l + 2*leg[0]; // overall width of parallelogram legs that support the stagef
 actuator = [3*1.2+2*2,(flex_z2 - flex_z1)*xy_lever_ratio,6]; // dimensions of the core part of the actuating levers for X and Y - NB should match the column_base_r in compact_nut_seat.scad
