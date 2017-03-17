@@ -107,6 +107,10 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             cube([999,zflex[1],lever_tip]);
             translate([0,-999,999]) cube([999,zflex[1],lever_tip]);
         }
+        
+        // tiny holes, to increase the perimeter of the bottom bit and make it
+        // stronger
+        translate([-d,0,zflex[2]]) cube([2*d, 10, 4]);
         // cut off at the bottom
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
