@@ -26,9 +26,9 @@ use <dovetail.scad>;
 include <microscope_parameters.scad>; // important for objective clip position, etc.
 
 //use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
-use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
+//use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
 //use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
-//use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
+use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3;
@@ -275,7 +275,7 @@ module camera_mount_body(
                         cylinder(r=body_r,h=d);
                     }
                     translate([0,0,body_top]) cylinder(r=body_r,h=d);
-                    translate([0,0,body_top]) dovetail_mount(shift=-3);
+                    translate([0,0,dt_top]) dovetail_mount(shift=-3);
                 }
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
@@ -309,38 +309,6 @@ module rms_mount_and_tube_lens_gripper(){
         difference(){
             cylinder(r=tube_lens_aperture + 1.0,h=2);
             cylinder(r=tube_lens_aperture,h=999,center=true);
-        }
-    }
-}
-
-module optics_module_single_lens(lens_outer_r, lens_aperture_r, lens_t, parfocal_distance){
-    // This is the "classic" optics module, using the raspberry pi lens
-    // It should be fitted to the smaller microscope body
-    
-    // Lens parameters are passed as arguments.
-    ///picamera lens
-    //lens_outer_r=3.04+0.2; //outer radius of lens (plus tape)
-    //lens_aperture_r=2.2; //clear aperture of lens
-    //lens_t=3.0; //thickness of lens
-    //parfocal_distance = 6; //rough guess!
-    
-    // Maybe there should be a way to switch between LS and standard?
-    dovetail_top = 27; //height of the top of the dovetail
-    sample_z = 40; // height of the sample above the bottom of the microscope
-    body_r = 8; // radius of the main part of the mount
-    lens_z = sample_z - parfocal_distance; // position of lens
-    neck_r=max( (body_r+lens_aperture_r)/2, lens_outer_r+1);
-    neck_z = sample_z-5-2; // height of top of neck
-    
-    union(){
-        // the bottom part is a camera mount, tapering to a neck
-        difference(){
-            // camera mount body, with a neck on top via extra_rz
-            camera_mount_body(body_r=8, body_top=dovetail_top, dt_top=dovetail_top, extra_rz=[[neck_r,neck_z],[neck_r,lens_z+lens_t]]);
-            // hole through the body for the beam
-            optical_path(lens_aperture_r, lens_z);
-            // cavity for the lens
-            translate([0,0,lens_z]) cylinder(r=lens_outer_r,h=999);
         }
     }
 }
@@ -436,7 +404,7 @@ module optics_module_trylinder(
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=7, body_top=lens_assembly_z, dt_top=lens_assembly_z);
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=7, body_top=lens_assembly_z, dt_top=min(lens_assembly_z, z_flexure_spacing));
             // camera cut-out and hole for the beam
             optical_path(lens_aperture, lens_assembly_z);
         }
@@ -482,8 +450,10 @@ module condenser(){
             }
             
             //LED
-            cylinder(r=led_r,h=999,center=true);
-            cylinder(r=led_r+0.6,h=2,center=true);
+            deformable_hole_trylinder(led_r,led_r+0.7,h=20, center=true);
+            cylinder(r=led_r+1.0,h=2,center=true);
+            translate([0,0,2-d]) cylinder(r1=led_r+1.0, r2=led_r,h=2,center=true);
+            
             //beam
             translate([0,0,5]) cylinder(r1=led_r,r2=aperture_r,h=lens_z-5);
         }
@@ -493,7 +463,7 @@ module condenser(){
 difference(){
     /// Optics module for picamera v2 lens, using trylinder
     //NB this should also work for pi camera v1 if the right
-    //camera module is used.
+    /*/camera module is used.
     optics_module_trylinder(
         lens_r = 3, 
         parfocal_distance = 6,
@@ -513,7 +483,7 @@ difference(){
         objective_parfocal_distance=35,
         fluorescence=false
     );//*/
-    /*/ Optics module for USB camera's M12 lens
+    // Optics module for USB camera's M12 lens
     optics_module_trylinder(
         lens_r = 14/2,
         parfocal_distance = 21, //22 for high-res lens

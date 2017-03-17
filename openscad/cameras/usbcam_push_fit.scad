@@ -116,7 +116,10 @@ module camera_mount(){
             //square(sensor_w, center=true);
         }
         //chamfer the screw holes
-        reflect([0,1,0]) translate([0,sy,0]) cylinder(r1=2.5, r2=0,h=3, center=true);
+        reflect([0,1,0]) translate([0,sy,0]){
+            cylinder(r1=3, r2=0,h=4, center=true);
+            deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
+        }
         // enlarge the cut out for the sensor
         // NB the solder terminals will distort the thin bottom, this
         // is intentional, to help with bed adhesion
