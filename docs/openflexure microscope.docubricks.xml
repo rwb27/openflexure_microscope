@@ -446,7 +446,7 @@ Tools (not supplied in kit):
 * 3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)
 Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).</description>
         <media>
-          <file url="./images/all_parts.jpg" />
+          <file url="./images/lores_parts_no_optics.jpg" />
         </media>
       </step>
       <step>
@@ -456,38 +456,25 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
+        <description>Depending on which version of the microscope body you have, there may be thin supports linking the mount for the optics module to the frame.  Snap these off with a craft knife, screwdriver, or elastic band tool.</description>
+        <media>
+          <file url="./images/z_axis_support_removal_1.jpg" />
+        </media>
+      </step>
+      <step>
         <description>First, assemble the three actuators, as described in the "<a href="#brick_909106319">anti-backlash flexure actuator</a>" brick - it's the same procedure done three times, once for each actuator.  You might find the central actuator is the best one to start with.  This accounts for most of the time assembling the microscope.  NB the instructions for this are later on in this file; if viewing it in Firefox, click "OpenFlexure Microscope" on the left, then pick it from the list of links that appears.</description>
         <media>
-          <file url="./images/actuator_parts_and_tools.jpg" />
+          <file url="./images/actuator_assembly_screw_in_1.jpg" />
         </media>
       </step>
       <step>
-        <description>Assemble the illumination: Bend the LED so it's pointing at right angles to the cable, then thread the wire for the LED through the illumination arm and push the LED into its hole.  It's usually easiest to start at the LED end and feed the connector into the mount (it might require a little force).  If you have a pre-made LED wire with a connector on the end, threading it through is all that's needed - if you just have the components you will need to connect them together in series first, and solder or crimp them.  Some of the pre-made LED wires are thicker than expected, so they take some force to pull into the arm - but they will go in with some perseverance!  You can stick a piece of white tape or sticky label over the LED (i.e. between the LED and the stage) to act as a diffuser, this helps to blur out out-of-focus artefacts, such as dirt on the wrong side of your microscope slide.</description>
+        <description>Assemble the illumination, according to the illumination arm brick (there are two versions, for fixed LED and adjustable condenser lens).</description>
         <media>
-          <file url="./images/illumination_led_10.jpg" />
-          <file url="./images/illumination_led_0.jpg" />
-          <file url="./images/illumination_led_1.jpg" />
-          <file url="./images/illumination_led_2.jpg" />
-          <file url="./images/illumination_led_3.jpg" />
-          <file url="./images/illumination_led_4.jpg" />
-          <file url="./images/illumination_led_5.jpg" />
-          <file url="./images/illumination_led_6.jpg" />
-          <file url="./images/illumination_led_7.jpg" />
-          <file url="./images/illumination_led_8.jpg" />
-          <file url="./images/illumination_led_9.jpg" />
-          <file url="./images/illumination_led_10.jpg" />
+          <file url="./images/condenser_fitting_1.jpg" />
         </media>
       </step>
       <step>
-        <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
-        <media>
-          <file url="./images/illumination_0.jpg" />
-          <file url="./images/illumination_1.jpg" />
-          <file url="./images/illumination_2.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Assemble the Raspberry Pi lens and camera into the optics module, as described in the "Raspberry Pi Camera Mount/Extension Tube" brick.</description>
+        <description>Assemble the Raspberry Pi lens and camera into the optics module, as described in the optics module brick.</description>
         <media>
           <file url="./images/lens_insertion_0.jpg" />
         </media>
@@ -558,15 +545,6 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
       <designator />
       <quantity>1</quantity>
       <implementation type="physical_part" id="238216425" />
-    </function>
-    <function id="450245988">
-      <description>Illumination</description>
-      <designator />
-      <quantity>1</quantity>
-      <implementation type="physical_part" id="735104653" />
-      <implementation type="physical_part" id="702468006" />
-      <implementation type="physical_part" id="450509554" />
-      <implementation type="physical_part" id="1995350498" />
     </function>
     <function id="1925510102">
       <description>Sample Holder</description>
@@ -824,7 +802,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>We need to place a nut inside each actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the tool.  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.</description>
         <media>
-          <file url="./images/actuator_assembly_nut_insertion.jpg" />
+          <file url="./images/actuator_assembly_nut_insertion_1.jpg" />
         </media>
       </step>
       <step>
@@ -905,6 +883,128 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <implementation type="physical_part" id="72777443" />
     </function>
     <instruction name="" />
+  </brick>
+  <brick id="5739467366">
+    <name>Illumination Arm (fixed)</name>
+    <abstract>A holder for an LED to take images in transmitted light.</abstract>
+    <long_description>The illumination arm holds an LED above the sample, for simple transmission images.  The adjustable version with a condenser lens will get higher resolution and brightness.</long_description>
+    <notes />
+    <license />
+    <media />
+    <assembly_instruction>
+      <step>
+        <description>Assemble the illumination: Bend the LED so it's pointing at right angles to the cable, then thread the wire for the LED through the illumination arm and push the LED into its hole.  It's usually easiest to start at the LED end and feed the connector into the mount (it might require a little force).  If you have a pre-made LED wire with a connector on the end, threading it through is all that's needed - if you just have the components you will need to connect them together in series first, and solder or crimp them.  Some of the pre-made LED wires are thicker than expected, so they take some force to pull into the arm - but they will go in with some perseverance!  You can stick a piece of white tape or sticky label over the LED (i.e. between the LED and the stage) to act as a diffuser, this helps to blur out out-of-focus artefacts, such as dirt on the wrong side of your microscope slide.</description>
+        <media>
+          <file url="./images/illumination_led_10.jpg" />
+          <file url="./images/illumination_led_0.jpg" />
+          <file url="./images/illumination_led_1.jpg" />
+          <file url="./images/illumination_led_2.jpg" />
+          <file url="./images/illumination_led_3.jpg" />
+          <file url="./images/illumination_led_4.jpg" />
+          <file url="./images/illumination_led_5.jpg" />
+          <file url="./images/illumination_led_6.jpg" />
+          <file url="./images/illumination_led_7.jpg" />
+          <file url="./images/illumination_led_8.jpg" />
+          <file url="./images/illumination_led_9.jpg" />
+          <file url="./images/illumination_led_10.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
+        <media>
+          <file url="./images/illumination_1.jpg" />
+          <file url="./images/illumination_0.jpg" />
+          <file url="./images/illumination_1.jpg" />
+          <file url="./images/illumination_2.jpg" />
+        </media>
+      </step>
+    </assembly_instruction>
+    <function id="450245988">
+      <description>Illumination</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="735104653" />
+      <implementation type="physical_part" id="702468006" />
+      <implementation type="physical_part" id="450509554" />
+      <implementation type="physical_part" id="1995350498" />
+    </function>
+  </brick>
+  <brick id="578932085">
+    <name>Illumination Arm with Condenser</name>
+    <abstract>A holder for an LED and lens to take images in transmitted light.</abstract>
+    <long_description>The illumination arm holds an LED above the sample, with a condenser lens.  It will get higher resolution and brightness.  There is a screw holding the two parts together, which goes through a slot to allow simple, slip plate style adjustment of the condenser alignment.</long_description>
+    <notes />
+    <license />
+    <media />
+    <assembly_instruction>
+      <step>
+        <description>To build the condenser, you will need the two parts of the mounting arm, an M3 screw and washer, the cable, LED, and lens, and the condenser housing.  You will also need the printed lens insertion tool to put the lens into the holder.</description>
+        <media>
+          <file url="./images/condenser_parts.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Place the condenser lens on the insertion tool (flat side down), and push the condenser housing down onto it.  Take care to keep it vertical.  You may need to push fairly hard.  As with the tube lens in the optics module, check it's flat and push again if necessary.</description>
+        <media>
+          <file url="./images/condenser_lens_1.jpg" />
+          <file url="./images/condenser_lens_2.jpg" />
+          <file url="./images/condenser_lens_3.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Insert the LED into the condenser housing.  It should push-fit and stay in place.  It can be glued if it doesn't stay in.</description>
+        <media>
+          <file url="./images/condenser_led_1.jpg" />
+          <file url="./images/condenser_led_2.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Assemble the cable for the LED.  If using pre-crimped cables, as supplied with our kit, fit the 2-way header to either end.  Don't worry about polarity, it's easy and harmless to simply rotate the connector 180 degrees if you need to.</description>
+        <media>
+          <file url="./images/condenser_wires_1.jpg" />
+          <file url="./images/condenser_wires_2.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Thread the cable through the mounting arm as shown.  It's much easier to do this before assembling the arm.</description>
+        <media>
+          <file url="./images/condenser_wiring_1.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Screw the horizontal part of the mounting arm onto the vertical part.  The hole should be about the right size for an M3 screw to self-tap.</description>
+        <media>
+          <file url="./images/condenser_assembly_1.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Connect the LED to the cable by pushing the legs into the 2-way housing.</description>
+        <media>
+          <file url="./images/condenser_assembly_2.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Slide the condenser housing onto the dovetail clip at the end of the arm.  Wiggling it from side to side might help if it's stiff.</description>
+        <media>
+          <file url="./images/condenser_assembly_3.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Fit the illumination arm to the microscope by sliding it onto the dovetail from underneath.  The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing..</description>
+        <media>
+          <file url="./images/condenser_fitting_1.jpg" />
+        </media>
+      </step>
+    </assembly_instruction>
+    <function id="450245988">
+      <description>Illumination</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="735104653" />
+      <implementation type="physical_part" id="702468006" />
+      <implementation type="physical_part" id="450509554" />
+      <implementation type="physical_part" id="1995350498" />
+    </function>
   </brick>
   <author id="1747844279">
     <name>Dr. Richard W. Bowman</name>
