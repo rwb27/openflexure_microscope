@@ -33,7 +33,7 @@ module tool_handle(){
         //screw seat (in swung-in position)
         rotate([0,180-swing_a,-90]) translate([0,0,-(gap+sso[2]/2)]) screw_seat_shell(25);
         //screw
-        rotate([-swing_a,0,0]) cylinder(d=shaft_d,h=999,center=true, $fn=16);
+        //rotate([-swing_a,0,0]) cylinder(d=shaft_d,h=999,center=true, $fn=16);
     }
 }
 
@@ -86,8 +86,8 @@ module band_tool(){
         }
         // cut-out to clear the hook
         hull(){
-            translate([0,l,1.5]) scale([1,1,0.66]) rotate([90,0,0]) cylinder(r=1.5,h=18,center=true);
-            translate([0,l,2+3]) rotate([90,0,0]) cylinder(r=2.5,h=18,center=true);
+            translate([0,l,1.5]) scale([1,1,0.66]) rotate([90,0,0]) cylinder(r=1.4,h=18,center=true);
+            translate([0,l,2+3]) rotate([90,0,0]) cylinder(r=2.3,h=18,center=true);
         }
         // V shaped end to grip elastic bands
         translate([0,l,0]) hull(){
@@ -95,9 +95,9 @@ module band_tool(){
             translate([0,-0.5,h-1.5]) rotate([0,90,0]) cylinder(r=1,h=999,center=true);
         }
         translate([-99,l-0.5,h-1.5]) cube(999);
-        // squeeze the sides slightly
+        // squeeze the sides slightly (commented out for strength)
         reflect([1,0,0]){
-            translate([-7/2,l,h/2-0.3]) rotate([90,15,-3]) scale([1.1,1.5,1]) cylinder(r=1,h=999,center=true);
+//            translate([-7/2,l,h/2-0.3]) rotate([90,15,-3]) scale([1.1,1.5,1]) cylinder(r=1,h=999,center=true);
         }
     }
 }
