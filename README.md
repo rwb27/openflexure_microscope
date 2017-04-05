@@ -20,4 +20,12 @@ If you want to print the current development version, you can compile the STL fr
 OpenSCAD files or download the STL files from this repository - but please still consult the DocuBricks
 documentation for quantities and tips on print settings, etc.
 
+## Get Involved!
+This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
 
+* [Raise an issue](https://github.com/rwb27/openflexure_microscope/issues) if you spot something that's wrong, or something that could be improved.  This includes the instructions/documentation.
+* Suggest better text or images for the instructions.
+* Improve the design of parts - even if you don't use OpenSCAD, STL files or descriptions of changes are helpful.
+* Fork it, and make pull requests - again, documentation improvements are every bit as useful as revised OpenSCAD files.
+
+Things in need of attention are currently described in [issues](https://github.com/rwb27/openflexure_microscope/issues) so have a look there if you'd like to work on something but aren't sure what.
