@@ -17,6 +17,7 @@
 
 d=0.05;
 
+function zeroz(size) = [size[0], size[1], 0]; //set the Z component of a 3-vector to 0
 
 module reflect(axis){ //reflects its children about the origin, but keeps the originals
 	children();
@@ -294,8 +295,35 @@ module lighttrap_sqylinder(r1,f1,r2,f2,h,ridge=1.5){
     }
 }
 
+
+module add_hull_base(h=1){
+    // Take the convex hull of some objects, and add it in as a
+    // thin layer at the bottom
+    union(){
+        intersection(){
+            hull() children();
+            cylinder(r=9999,$fn=8,h=h); //make the base thin
+        }
+        children();
+    }
+}
+module add_roof(inner_h){
+    // Take the convex hull of some objects, and add the top
+    // of it as a roof.  NB you must specify the height of
+    // the underside of the roof - finding it automatically
+    // would be too much work...
+    union(){
+        difference(){
+            hull() children();
+            cylinder(r=9999,$fn=8,h=inner_h);
+        }
+        children();
+    }
+}
+
 module trylinder(r=1, flat=1, h=d, center=false){
     //Halfway between a cylinder and a triangle.
+    //NB the largest cylinder that fits inside it has r=r+f/(2*sqrt(3))
     hull() for(a=[0,120,240]) rotate(a)
         translate([0,flat/sqrt(3),0]) cylinder(r=r, h=h, center=center);
 }
@@ -329,7 +357,29 @@ module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,fl
         }
     }
 }
-trylinder_gripper();
+
+module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, dz=0.5, center=false){
+    // A cylinder with feathered edges, to make a hole that is
+    // slightly deformable, in an otherwise rigid structure.
+    // r1: inner radius
+    // r2: outer radius
+    // h, center: as for cylinder
+    // corner_roc: radius of curvature of the trylinder
+    // dz: thickness of layers
+    n = floor(h/(2*dz)); //number of layers in the structure
+    flat_l = 2*sqrt(r2*r2 - r1*r1);
+    corner_roc = corner_roc < 0 ? r1 - flat_l/(2*sqrt(3)) : corner_roc;
+    repeat([0,0,2*dz], n, center=center) union(){
+        cylinder(r=r2, h=dz+d);
+        translate([0,0,center ? -dz : dz]) trylinder(r=corner_roc, flat=flat_l, h=dz+d);
+    }
+}
+difference(){
+    cylinder(r=6, h=5);
+    deformable_hole_trylinder(4.5/2,6.3/2,h=20, center=true);
+}
+
+//trylinder_gripper();
 //feather_vertical_edges(fin_r=1){
 //	cylinder(r=12,h=10);
 //}
