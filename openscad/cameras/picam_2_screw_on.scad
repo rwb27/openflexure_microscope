@@ -44,32 +44,30 @@ module picam2_cutout( beam_length=15){
     // off the brown ribbon cable and removing the PCB first helps when extracting
     // the camera module again.
     cw = 8.5 + 1.0; //size of camera box sides (NB deliberately loose fitting)
-    ch=2.8; //height of camera box
-    camera = [cw,cw,ch]; //size of camera box (NB it's now propped up on foam)
-    hole_r = cw/2-0.9;
+    ch=2.9; //height of camera box (including foam support)
+    camera = [cw,cw,ch]; //size of camera box
+    hole_r = 4.3; //size of camera aperture
 	union(){
-		//cut-out for camera
         hull(){
-            translate([0,0,-d]) cube([cw+0.5,cw+0.5,d],center=true); //hole for camera
-            translate([0,0,0.5]) cube([cw,cw,d],center=true);
+            //cut-out for camera
+            translate([0,0,-d]) cube([cw+0.5,cw+0.5,d],center=true); //wider at bottom
+            translate([0,0,ch/2]) cube([cw,cw,ch],center=true);
+            
+            //camera aperturer=hole_r,h=beam_length, base_w=cw);
+            cylinder(r=hole_r, h=2*camera_mount_height(), center=true);
+            
+            //ribbon cable at top of camera
+            fh=1.5;
+            sequential_hull(){
+                translate([0,cw/2-d,0]) cube([cw,d,2*fh],center=true);
+                translate([0,cw/2+1,0]) cube([cw,d,2*fh],center=true);
+                translate([0,9.4-(4.4/1)/2,0]) cube([cw,1,2*fh],center=true);
+            }
+            //flex connector
+            translate([-1.25,9.4,0]) cube([cw+2.5, 4.4+1, 2*fh],center=true);
         }
-        intersection(){
-            cube([cw,cw,999],center=true);
-            translate([0,0,ch]) 
-                    hole_from_bottom(r=hole_r,h=beam_length, base_w=cw);
-        }
-        
-        
-        
-		//ribbon cable at top of camera
-        fh=camera_mount_height() - 0.75;
-        sequential_hull(){
-            translate([0,cw/2-d,0]) cube([cw,d,2*fh],center=true);
-            translate([0,cw/2+1,0]) cube([cw,d,2*fh],center=true);
-            translate([0,9.4-(4.4/1)/2,0]) cube([cw,1,2*fh],center=true);
-        }
-        //flex connector
-        translate([-1.25,9.4,0]) cube([cw+2.5, 4.4+1, 2*fh],center=true);
+        //beam clearance
+        cylinder(r=hole_r, h=beam_length);
         
         //chamfered screw holes for mounting
         sx = 21/2; //position of screw holes
