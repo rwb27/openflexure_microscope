@@ -27,8 +27,9 @@ include <microscope_parameters.scad>; // important for objective clip position, 
 
 //use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
 //use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
+use <cameras/picam_2_screw_on.scad>; //Raspberry Pi Camera module v2
 //use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
-use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
+//use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3;
@@ -463,7 +464,7 @@ module condenser(){
 difference(){
     /// Optics module for picamera v2 lens, using trylinder
     //NB this should also work for pi camera v1 if the right
-    /*/camera module is used.
+    //camera module is used.
     optics_module_trylinder(
         lens_r = 3, 
         parfocal_distance = 6,
@@ -483,7 +484,7 @@ difference(){
         objective_parfocal_distance=35,
         fluorescence=false
     );//*/
-    // Optics module for USB camera's M12 lens
+    /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(
         lens_r = 14/2,
         parfocal_distance = 21, //22 for high-res lens
