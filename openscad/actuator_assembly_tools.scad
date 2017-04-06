@@ -79,7 +79,7 @@ module band_tool(){
                 translate([0,l-20,0]) xz_slice() translate([0,-handle_l,0]) tool_handle();
             }
             hull(){
-                translate([0,l-20,0])xz_slice() translate([0,-handle_l,0]) tool_handle();
+                translate([0,l-20,0]) xz_slice() translate([0,-handle_l,0]) tool_handle();
                 translate([-3/2, l-12,0]) cube([3,12,h]);
                 translate([-7/2, l-12,h-1]) cube([7,12,1]);
             }
@@ -87,7 +87,7 @@ module band_tool(){
         // cut-out to clear the hook
         hull(){
             translate([0,l,1.5]) scale([1,1,0.66]) rotate([90,0,0]) cylinder(r=1.4,h=18,center=true);
-            translate([0,l,2+3]) rotate([90,0,0]) cylinder(r=2.3,h=18,center=true);
+            translate([0,l,2+3]) rotate([90,0,0]) cylinder(r=2.3,h=40,center=true);
         }
         // V shaped end to grip elastic bands
         translate([0,l,0]) hull(){
