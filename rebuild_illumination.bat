@@ -7,7 +7,7 @@ rem "C:\Program Files\OpenSCAD\openscad.com" -o builds/body_LS65-M.stl -D motor_
 
 rem "We now also generate illumination modules"
 
-"C:\Program Files\OpenSCAD\openscad.com" -o builds/illumination_and_back_foot_adj_SS.stl -D condenser=false -D big_stage=false OpenSCAD/illumination_and_rear_foot.scad
+"C:\Program Files\OpenSCAD\openscad.com" -o builds/illumination_and_back_foot_adj_SS.stl -D condenser=false -D big_stage=false -D sample_z=40 OpenSCAD/illumination_and_rear_foot.scad
 "C:\Program Files\OpenSCAD\openscad.com" -o builds/illumination_and_back_foot_adj_LS65.stl -D condenser=false -D big_stage=true -D sample_z=65 OpenSCAD/illumination_and_rear_foot.scad
 "C:\Program Files\OpenSCAD\openscad.com" -o builds/illumination_and_back_foot_condenser_LS65.stl -D condenser=true -D big_stage=true -D sample_z=65 OpenSCAD/illumination_and_rear_foot.scad
 "C:\Program Files\OpenSCAD\openscad.com" -o builds/illumination_and_back_foot_condenser_LS75.stl -D condenser=true -D big_stage=true -D sample_z=75 OpenSCAD/illumination_and_rear_foot.scad
