@@ -138,7 +138,7 @@ module back_foot_and_illumination(clip_y=illumination_clip_y,stage_clearance=6,s
 }
 
 
-module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=65){
+module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=sample_z){
     // Arm that clips on to the microscope, providing the back foot
     // and illumination mount
     w = clip_w; //width (size in x direction)
