@@ -48,24 +48,29 @@ module picam2_cutout( beam_length=15){
     camera = [cw,cw,ch]; //size of camera box
     hole_r = 4.3; //size of camera aperture
 	union(){
-        hull(){
+        sequential_hull(){
             //cut-out for camera
             translate([0,0,-d]) cube([cw+0.5,cw+0.5,d],center=true); //wider at bottom
+            translate([0,0,0.5]) cube([cw,cw,d],center=true);
             translate([0,0,ch/2]) cube([cw,cw,ch],center=true);
-            
-            //camera aperturer=hole_r,h=beam_length, base_w=cw);
             cylinder(r=hole_r, h=2*camera_mount_height(), center=true);
-            
-            //ribbon cable at top of camera
-            fh=1.5;
-            sequential_hull(){
-                translate([0,cw/2-d,0]) cube([cw,d,2*fh],center=true);
-                translate([0,cw/2+1,0]) cube([cw,d,2*fh],center=true);
-                translate([0,9.4-(4.4/1)/2,0]) cube([cw,1,2*fh],center=true);
-            }
-            //flex connector
-            translate([-1.25,9.4,0]) cube([cw+2.5, 4.4+1, 2*fh],center=true);
         }
+            
+        //ribbon cable at top of camera
+        fh=1.5;
+        mh = camera_mount_height();
+        
+        dz = mh-fh-0.75;
+        rw = cw - 2*dz;
+        hull(){
+            translate([-cw/2,cw/2-2,-d]) cube([cw,7,fh]); //flex
+            translate([-rw/2,cw/2-2,-d]) cube([rw,7,fh+dz]); //flex
+        }
+        hull(){
+            translate([-cw/2-2.5,6.7,-d]) cube([cw+2.5, 5.4, fh]); //connector
+            translate([-rw/2-2.5,6.7,-d]) cube([rw+2.5, 5.4-dz, fh+dz]); //connector
+        }
+        
         //beam clearance
         cylinder(r=hole_r, h=beam_length);
         
@@ -115,7 +120,10 @@ module camera_mount(){
         translate([0,0,bottom]) picam2_cutout();
     }
 }
-camera_mount();
+difference(){
+    camera_mount();
+    //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+}
 
 /////////// Cover for camera board //////////////
 module picam_cover(){
