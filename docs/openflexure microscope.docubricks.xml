@@ -545,12 +545,23 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
     </assembly_instruction>
     <author id="1747844279" />
     <function id="518036698">
-      <description>Optics module</description>
+      <description>Optics module (low res)</description>
       <implementation type="brick" quantity="1" id="107837596" />
+    </function>
+    <function id="518036698">
+      <description>Optics module (high res)</description>
       <implementation type="brick" quantity="1" id="592057643" />
     </function>
-    <function id="1705195835">
-      <description>Fine positioning control</description>
+    <function id="518036698">
+      <description>Illumination (fixed)</description>
+      <implementation type="brick" quantity="1" id="573946736" />
+    </function>
+    <function id="518036698">
+      <description>Illumination (adjustable, condenser)</description>
+      <implementation type="brick" quantity="1" id="578932085" />
+    </function>
+    <function id="518036698">
+      <description>Actuator assembly</description>
       <implementation type="brick" quantity="1" id="909106319" />
     </function>
     <function id="1669983658">
@@ -563,8 +574,7 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
     </function>
     <function id="1925510102">
       <description>Sample Holder</description>
-      <implementation type="part" quantity="1" id="589229119" />
-      <implementation type="part" quantity="1" id="589229119" />
+      <implementation type="part" quantity="2" id="589229119" />
     </function>
     <function id="1158588719">
       <description>Control Computer</description>
@@ -864,7 +874,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <description>Tools for removing the lens</description>
     </function>
   </brick>
-  <brick id="5739467366">
+  <brick id="573946736">
     <name>Illumination Arm (fixed)</name>
     <abstract>A holder for an LED to take images in transmitted light.</abstract>
     <long_description>The illumination arm holds an LED above the sample, for simple transmission images.  The adjustable version with a condenser lens will get higher resolution and brightness.</long_description>

@@ -164,7 +164,7 @@
     <material_amount />
     <material_unit>NONE</material_unit>
     <media>
-      <file url="././images/camera_board_v1.jpg" />
+      <file url="./././images/camera_board_v1.jpg" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -183,28 +183,28 @@
     <material_amount>0.1</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/main_body_SS.stl" />
-      <file url="././stl/main_body_SS-M.stl" />
-      <file url="././stl/main_body_LS65.stl" />
-      <file url="././stl/main_body_LS65-M.stl" />
+      <file url="./././stl/main_body_SS.stl" />
+      <file url="./././stl/main_body_SS-M.stl" />
+      <file url="./././stl/main_body_LS65.stl" />
+      <file url="./././stl/main_body_LS65-M.stl" />
     </media>
     <manufacturing_instruction>
       <step>
         <description>This should be printed without support material.  On smaller/less well calibrated machines, I print this part on its own and then print the rest of the parts in a second print.  Which version of the body you need depends on two things: firstly, whether you want to use a large optics module (versions with LS65 in the name) or a small one (versions with SS), and secondly whether you want attachment lugs for motors (files with -M in the name).  All the files start with `body_`.You need the SS version if you're using a Raspberry Pi camera or a Logitech C270 camera, together with the lens that came on the camera.  If you're using a microscope objective, or the USB camera with M12 lens, you need the LS65 version.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.</description>
         <media>
-          <file url="././images/main_body.jpg" />
+          <file url="./././images/main_body.jpg" />
         </media>
       </step>
       <step>
         <description>After printing, you should run a 3mm drill bit through the 3mm holes in each actuator, to ensure the screws can rotate freely.  If you don't have a drill, an M3 screw should do...</description>
         <media>
-          <file url="././images/main_body_drill.jpg" />
+          <file url="./././images/main_body_drill.jpg" />
         </media>
       </step>
       <step>
         <description>If the bottom layer has oozed out too much, or if you used a brim (not reccommended) you might need to clean up the bottom so it looks like this - it's important that the moving parts aren't stuck to the body with a thin layer of plastic (this most often happens around the struts connecting the objective clip to the rest of the microscope).</description>
         <media>
-          <file url="././images/main_body_bottom.jpg" />
+          <file url="./././images/main_body_bottom.jpg" />
         </media>
       </step>
       <step>
@@ -223,7 +223,7 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/feet.stl" />
+      <file url="./././stl/feet.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -242,13 +242,13 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/optics_picam2_pilens.stl" />
-      <file url="././stl/optics_picam2_rms.stl" />
-      <file url="././stl/picam_cover.stl" />
-      <file url="././stl/optics_usbcam_M12.stl" />
-      <file url="././stl/optics_usbcam_rms.stl" />
-      <file url="././stl/optics_c270_ownlens.stl" />
-      <file url="././stl/optics_c270_rms.stl" />
+      <file url="./././stl/optics_picam2_pilens.stl" />
+      <file url="./././stl/optics_picam2_rms.stl" />
+      <file url="./././stl/picam_cover.stl" />
+      <file url="./././stl/optics_usbcam_M12.stl" />
+      <file url="./././stl/optics_usbcam_rms.stl" />
+      <file url="./././stl/optics_c270_ownlens.stl" />
+      <file url="./././stl/optics_c270_rms.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -271,9 +271,9 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/picam2_lens_remover.stl" />
-      <file url="././stl/picam2_board_gripper.stl" />
-      <file url="././stl/picam1_board_gripper.stl" />
+      <file url="./././stl/picam2_lens_remover.stl" />
+      <file url="./././stl/picam2_board_gripper.stl" />
+      <file url="./././stl/picam1_board_gripper.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -292,7 +292,7 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/large_gear.stl" />
+      <file url="./././stl/large_gear.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -345,7 +345,7 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/illumination_and_rear_foot_standard_stage.stl" />
+      <file url="./././stl/illumination_and_rear_foot_standard_stage.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -366,7 +366,7 @@ The illumination arm is available in 4 versions: they all start with `illuminati
     <material_amount>0.002</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/sample_clip.stl" />
+      <file url="./././stl/sample_clip.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -385,7 +385,7 @@ The illumination arm is available in 4 versions: they all start with `illuminati
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/actuator_assembly_tools.stl" />
+      <file url="./././stl/actuator_assembly_tools.stl" />
     </media>
     <manufacturing_instruction />
   </part>
@@ -399,7 +399,7 @@ The illumination arm is available in 4 versions: they all start with `illuminati
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="././stl/just_leg_test.stl" />
+      <file url="./././stl/just_leg_test.stl" />
     </media>
     <manufacturing_instruction>
       <step>
@@ -469,88 +469,99 @@ Tools (not supplied in kit):
 * 3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)
 Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).</description>
         <media>
-          <file url="././images/lores_parts_no_optics.jpg" />
+          <file url="./././images/lores_parts_no_optics.jpg" />
         </media>
       </step>
       <step>
         <description>If you printed the parts yourself, start by opening out the three holes in the microscope body with a drill as shown.  Make sure to go all the way through.  If you don’t have a drill, you can improvise by screwing in an M3 screw all the way, then forcibly rotating it with a screwdriver.  While you’re at it, do the same for the illumination mount.  Also, remove any loose strings of plastic from the underside of the actuator housings or sample stage, using a pair of pliers. The last step shouldn't be necessary if your machine is calibrated nicely for printing bridges.  If you purchased a kit, this may well have been done for you.</description>
         <media>
-          <file url="././images/main_body_drill.jpg" />
+          <file url="./././images/main_body_drill.jpg" />
         </media>
       </step>
       <step>
         <description>Depending on which version of the microscope body you have, there may be thin supports linking the mount for the optics module to the frame.  Snap these off with a craft knife, screwdriver, or elastic band tool.</description>
         <media>
-          <file url="././images/z_axis_support_removal_1.jpg" />
+          <file url="./././images/z_axis_support_removal_1.jpg" />
         </media>
       </step>
       <step>
         <description>First, assemble the three actuators, as described in the "" brick - it's the same procedure done three times, once for each actuator.  You might find the central actuator is the best one to start with.  This accounts for most of the time assembling the microscope.  NB the instructions for this are later on in this file; if viewing it in Firefox, click "OpenFlexure Microscope" on the left, then pick it from the list of links that appears.</description>
         <media>
-          <file url="././images/actuator_assembly_screw_in_1.jpg" />
+          <file url="./././images/actuator_assembly_screw_in_1.jpg" />
         </media>
       </step>
       <step>
         <description>Assemble the illumination, according to the illumination arm brick (there are two versions, for fixed LED and adjustable condenser lens).</description>
         <media>
-          <file url="././images/condenser_fitting_1.jpg" />
+          <file url="./././images/condenser_fitting_1.jpg" />
         </media>
       </step>
       <step>
         <description>Assemble the Raspberry Pi lens and camera into the optics module, as described in the optics module brick.</description>
         <media>
-          <file url="././images/lens_insertion_0.jpg" />
+          <file url="./././images/lens_insertion_0.jpg" />
         </media>
       </step>
       <step>
         <description>Slot the optics module onto the dovetail mount, from the bottom.  You may find it easier to fit if you wiggle the module from side to side as it goes in.  It may also help to support the dovetail from the top (through the hole in the stage), as it will flex when you push the objective on to it.  If you push too hard it is possible to break the flexure mechanism that holds the optics module.</description>
         <media>
-          <file url="././images/optics_insertion_2.jpg" />
-          <file url="././images/optics_insertion_0.jpg" />
-          <file url="././images/optics_insertion_1.jpg" />
-          <file url="././images/optics_insertion_2.jpg" />
-          <file url="././images/optics_insertion_3.jpg" />
-          <file url="././images/optics_insertion_4.jpg" />
+          <file url="./././images/optics_insertion_2.jpg" />
+          <file url="./././images/optics_insertion_0.jpg" />
+          <file url="./././images/optics_insertion_1.jpg" />
+          <file url="./././images/optics_insertion_2.jpg" />
+          <file url="./././images/optics_insertion_3.jpg" />
+          <file url="./././images/optics_insertion_4.jpg" />
         </media>
       </step>
       <step>
         <description>Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.  Plug in the camera to the camera connector as described in the Raspberry Pi documentation (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).</description>
         <media>
-          <file url="././images/pi_gpio.jpg" />
+          <file url="./././images/pi_gpio.jpg" />
         </media>
       </step>
       <step>
         <description>After this, there are only the sample clips to go – exactly where you place these will depend on the samples you intend to use, but in any case you simply push the M3 screws into the clips, then screw down into the holes on the stage.</description>
         <media>
-          <file url="././images/sample_clip_3.jpg" />
-          <file url="././images/sample_clip_0.jpg" />
-          <file url="././images/sample_clip_1.jpg" />
-          <file url="././images/sample_clip_2.jpg" />
-          <file url="././images/sample_clip_3.jpg" />
-          <file url="././images/sample_clip_4.jpg" />
-          <file url="././images/sample_clip_5.jpg" />
-          <file url="././images/sample_clip_6.jpg" />
+          <file url="./././images/sample_clip_3.jpg" />
+          <file url="./././images/sample_clip_0.jpg" />
+          <file url="./././images/sample_clip_1.jpg" />
+          <file url="./././images/sample_clip_2.jpg" />
+          <file url="./././images/sample_clip_3.jpg" />
+          <file url="./././images/sample_clip_4.jpg" />
+          <file url="./././images/sample_clip_5.jpg" />
+          <file url="./././images/sample_clip_6.jpg" />
         </media>
       </step>
       <step>
         <description>Your microscope is now complete – happy observing!
 You might want to consult https://www.raspberrypi.org/documentation/usage/camera/ or https://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md if you need a hand setting up the camera.</description>
         <media>
-          <file url="././images/microscope_complete_1.jpg" />
-          <file url="././images/microscope_complete_2.jpg" />
-          <file url="././images/microscope_complete_3.jpg" />
-          <file url="././images/microscope_complete_4.jpg" />
+          <file url="./././images/microscope_complete_1.jpg" />
+          <file url="./././images/microscope_complete_2.jpg" />
+          <file url="./././images/microscope_complete_3.jpg" />
+          <file url="./././images/microscope_complete_4.jpg" />
         </media>
       </step>
     </assembly_instruction>
     <author id="1747844279" />
     <function id="518036698">
-      <description>Optics module</description>
+      <description>Optics module (low res)</description>
       <implementation type="brick" quantity="1" id="107837596" />
+    </function>
+    <function id="518036698">
+      <description>Optics module (high res)</description>
       <implementation type="brick" quantity="1" id="592057643" />
     </function>
-    <function id="1705195835">
-      <description>Fine positioning control</description>
+    <function id="518036698">
+      <description>Illumination (fixed)</description>
+      <implementation type="brick" quantity="1" id="573946736" />
+    </function>
+    <function id="518036698">
+      <description>Illumination (adjustable, condenser)</description>
+      <implementation type="brick" quantity="1" id="578932085" />
+    </function>
+    <function id="518036698">
+      <description>Actuator assembly</description>
       <implementation type="brick" quantity="1" id="909106319" />
     </function>
     <function id="1669983658">
@@ -563,8 +574,7 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
     </function>
     <function id="1925510102">
       <description>Sample Holder</description>
-      <implementation type="part" quantity="1" id="589229119" />
-      <implementation type="part" quantity="1" id="589229119" />
+      <implementation type="part" quantity="2" id="589229119" />
     </function>
     <function id="1158588719">
       <description>Control Computer</description>
@@ -586,25 +596,25 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
       <step>
         <description>There are three of these actuators on the microscope: these steps should be followed for each one in turn.  Note the quantities in the parts list are for one actuator, and they don't include the microscope body.  The image for this steps shows everything you will need to assemble the three actuators (NB the illumination arm is not yet needed).</description>
         <media>
-          <file url="././images/lores_parts_no_optics.jpg" />
+          <file url="./././images/lores_parts_no_optics.jpg" />
         </media>
       </step>
       <step>
         <description>We need to place a nut inside each actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the tool.  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.</description>
         <media>
-          <file url="././images/actuator_assembly_nut_insertion_1.jpg" />
+          <file url="./././images/actuator_assembly_nut_insertion_1.jpg" />
         </media>
       </step>
       <step>
         <description>Next, put one of the hex-head screws into the gear, and screw into the nut that is now inside the actuator.  Use a washer between the gear and the microscope body.</description>
         <media>
-          <file url="././images/actuator_assembly_screw_in_1.jpg" />
+          <file url="./././images/actuator_assembly_screw_in_1.jpg" />
         </media>
       </step>
       <step>
         <description>Turn the microscope over and, using the elastic band tool or a craft knife, snap the two thin plastic supports as shown.</description>
         <media>
-          <file url="././images/actuator_assembly_snap_supports_1.jpg" />
+          <file url="./././images/actuator_assembly_snap_supports_1.jpg" />
         </media>
       </step>
       <step>
@@ -614,19 +624,19 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
       <step>
         <description>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  Push in until it clicks into place on the hook.  If you are using #32 rubber bands, you should probably double up the band so it's properly stretched, otherwise it will be too long.  NB the band tool will only work one way round; the flat side should be towards the outside of the foot, the handle points inwards.</description>
         <media>
-          <file url="././images/actuator_assembly_band_insertion_1.jpg" />
+          <file url="./././images/actuator_assembly_band_insertion_1.jpg" />
         </media>
       </step>
       <step>
         <description>Hook the tool through the free end of the band, and stretch it up, before inserting that end of the band into the other side of the actuator.  If possible, lift the band up so it doesn't catch on the foot while you do this - otherwise it's possible to overstretch and tear the band.</description>
         <media>
-          <file url="././images/actuator_assembly_band_insertion_2.jpg" />
+          <file url="./././images/actuator_assembly_band_insertion_2.jpg" />
         </media>
       </step>
       <step>
         <description>You should now have the band pulling both sides of the actuator down as shown.  If you used a long elastic band, you can break the thin layer at the bottom of the foot on either side, to pull the band out and wrap it around the foot to tighten it.  This is not necessary for the Viton bands, or if you're using doubled-over #32 bands.</description>
         <media>
-          <file url="././images/actuator_assembly_band_insertion_3.jpg" />
+          <file url="./././images/actuator_assembly_band_insertion_3.jpg" />
         </media>
       </step>
       <step>
@@ -671,32 +681,32 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
       <step>
         <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, optionally two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.</description>
         <media>
-          <file url="././images/optics_module_parts.jpg" />
+          <file url="./././images/optics_module_parts.jpg" />
         </media>
       </step>
       <step>
         <description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
         <media>
-          <file url="././images/static_warning.png" />
+          <file url="./././images/static_warning.png" />
         </media>
       </step>
       <step>
         <description>We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  SAVE THE SCREWS, as you will need them later!</description>
         <media>
-          <file url="././images/picam2_lens_removal_0.jpg" />
+          <file url="./././images/picam2_lens_removal_0.jpg" />
         </media>
       </step>
       <step>
         <description>Remove the protective film from the camera lens.</description>
         <media>
-          <file url="././images/picam2_film_removal.jpg" />
+          <file url="./././images/picam2_film_removal.jpg" />
         </media>
       </step>
       <step>
         <description>There is a small ribbon cable connecting the camera to the PCB that is very easy to break.  There is a square plastic jig that fits over the camera and PCB (the "camera board gripper"), which stops the camera twisting and damaging the ribbon cable.  Fit this over the camera as shown.  Note that the part for v2 of the camera board will sort-of fit v1, but you need to be a little more careful as it's not a perfect fit.</description>
         <media>
-          <file url="././images/picam2_board_gripper_1.jpg" />
-          <file url="././images/picam2_board_gripper_2.jpg" />
+          <file url="./././images/picam2_board_gripper_1.jpg" />
+          <file url="./././images/picam2_board_gripper_2.jpg" />
         </media>
       </step>
       <step>
@@ -704,9 +714,9 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
 
 Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</description>
         <media>
-          <file url="././images/picam2_lens_removal_1.jpg" />
-          <file url="././images/picam2_lens_removal_2.jpg" />
-          <file url="././images/picam2_lens_removal_3.jpg" />
+          <file url="./././images/picam2_lens_removal_1.jpg" />
+          <file url="./././images/picam2_lens_removal_2.jpg" />
+          <file url="./././images/picam2_lens_removal_3.jpg" />
         </media>
       </step>
       <step>
@@ -716,35 +726,35 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>Next, put the lens into the holder.  This should just push-fit, but may take a small amount of force, or  require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If it looks like it will require too much force, you might have a different design of camera module and you may need to re-print the part slightly larger (or get a replacement if you bought a kit).  If you wrapped tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.</description>
         <media>
-          <file url="././images/lens_insertion_0.jpg" />
-          <file url="././images/lens_insertion_1.jpg" />
-          <file url="././images/lens_insertion_2.jpg" />
-          <file url="././images/lens_insertion_3.jpg" />
-          <file url="././images/lens_insertion_4.jpg" />
+          <file url="./././images/lens_insertion_0.jpg" />
+          <file url="./././images/lens_insertion_1.jpg" />
+          <file url="./././images/lens_insertion_2.jpg" />
+          <file url="./././images/lens_insertion_3.jpg" />
+          <file url="./././images/lens_insertion_4.jpg" />
         </media>
       </step>
       <step>
         <description>Finally, press the camera module onto the bottom of the optics mount, so the camera board sits flush with the bottom of the mount.  The newer push-fit is much easier to use, and should fit in with a gentle but firm press from your thumb.  It probably won't crack or click into place, but it should be held by the push-fit.  Don't worry if it's not gripped very strongly, the cover will hold it in place.</description>
         <media>
-          <file url="././images/optics_assembly_0.jpg" />
-          <file url="././images/optics_assembly_1.jpg" />
-          <file url="././images/optics_assembly_2.jpg" />
+          <file url="./././images/optics_assembly_0.jpg" />
+          <file url="./././images/optics_assembly_1.jpg" />
+          <file url="./././images/optics_assembly_2.jpg" />
         </media>
       </step>
       <step>
         <description>Slide the cover over the camera board, starting at the end farthest from the ribbon cable connector.  This will stop the camera falling out, and also protects the PCB from short circuits.</description>
         <media>
-          <file url="././images/camera_cover_2.jpg" />
-          <file url="././images/camera_cover_0.jpg" />
-          <file url="././images/camera_cover_1.jpg" />
-          <file url="././images/camera_cover_2.jpg" />
-          <file url="././images/camera_cover_3.jpg" />
+          <file url="./././images/camera_cover_2.jpg" />
+          <file url="./././images/camera_cover_0.jpg" />
+          <file url="./././images/camera_cover_1.jpg" />
+          <file url="./././images/camera_cover_2.jpg" />
+          <file url="./././images/camera_cover_3.jpg" />
         </media>
       </step>
       <step>
         <description>Lastly, if you want to make the module more robust, you can insert two M2 screws from the bottom, to lock the cover on and hold the PCB in place.  This is useful if the ribbon cable might be pulled accidentally, for example.</description>
         <media>
-          <file url="././images/camera_screws_1.jpg" />
+          <file url="./././images/camera_screws_1.jpg" />
         </media>
       </step>
     </assembly_instruction>
@@ -771,13 +781,13 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and optionally two M2 screws to secure the camera (if using Pi camera).  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.</description>
         <media>
-          <file url="././images/hires_optics_0.jpg" />
+          <file url="./././images/hires_optics_0.jpg" />
         </media>
       </step>
       <step>
         <description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
         <media>
-          <file url="././images/static_warning.png" />
+          <file url="./././images/static_warning.png" />
         </media>
       </step>
       <step>
@@ -787,26 +797,26 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>First, insert the tube lens into the holder.  Place the lens on the insertion tool, curved side down.  Take the optics module, and line it up with the lens.  Push down, and the lens should pop into place.  Take care to keep the optics module straight as you do this.</description>
         <media>
-          <file url="././images/hires_optics_tubelens_1.jpg" />
+          <file url="./././images/hires_optics_tubelens_1.jpg" />
         </media>
       </step>
       <step>
         <description>If the lens does not sit flat, place the optics module on the insertion tool and push again - it may require some force, and you should hear it click into place.</description>
         <media>
-          <file url="././images/hires_optics_tubelens_2.jpg" />
+          <file url="./././images/hires_optics_tubelens_2.jpg" />
         </media>
       </step>
       <step>
         <description>Remove the protective film from the camera lens.</description>
         <media>
-          <file url="././images/picam2_film_removal.jpg" />
+          <file url="./././images/picam2_film_removal.jpg" />
         </media>
       </step>
       <step>
         <description>There is a small ribbon cable connecting the camera to the PCB that is very easy to break.  There is a square plastic jig that fits over the camera and PCB (the "camera board gripper"), which stops the camera twisting and damaging the ribbon cable.  Fit this over the camera as shown.  Note that the part for v2 of the camera board will sort-of fit v1, but you need to be a little more careful as it's not a perfect fit.  For USB webcams, the lens can simply be unscrewed from the back of the PCB with a small screwdriver.</description>
         <media>
-          <file url="././images/picam2_board_gripper_1.jpg" />
-          <file url="././images/picam2_board_gripper_2.jpg" />
+          <file url="./././images/picam2_board_gripper_1.jpg" />
+          <file url="./././images/picam2_board_gripper_2.jpg" />
         </media>
       </step>
       <step>
@@ -816,39 +826,39 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
 
             Once you've removed the lens, either cover the sensor (without touching it) or fit the camera to the optics module immediately, to avoid dust buildup on the sensor..</description>
         <media>
-          <file url="././images/picam2_lens_removal_1.jpg" />
-          <file url="././images/picam2_lens_removal_2.jpg" />
-          <file url="././images/picam2_lens_removal_3.jpg" />
+          <file url="./././images/picam2_lens_removal_1.jpg" />
+          <file url="./././images/picam2_lens_removal_2.jpg" />
+          <file url="./././images/picam2_lens_removal_3.jpg" />
         </media>
       </step>
       <step>
         <description>Press the camera module onto the bottom of the optics mount, so the camera board sits flush with the bottom of the mount - it should fit in with a gentle but firm press from your thumb.  It probably won't crack or click into place, but it should be held by the push-fit.  Don't worry if it's not gripped very strongly, the cover will hold it in place.  If you're using the USB version, the board simply screws onto the optics module using the screws that held the lens on.</description>
         <media>
-          <file url="././images/hires_optics_camera_1.jpg" />
+          <file url="./././images/hires_optics_camera_1.jpg" />
         </media>
       </step>
       <step>
         <description>Slide the cover over the camera module.  It can help to tilt the cover as you start to fit it on.</description>
         <media>
-          <file url="././images/hires_optics_camera_2.jpg" />
+          <file url="./././images/hires_optics_camera_2.jpg" />
         </media>
       </step>
       <step>
         <description>The cover is a deliberately tight fit.  If it's too tight to fit over the ribbon cable connector, you can ease it over with a craft knife, fingernail, or piece of card.</description>
         <media>
-          <file url="././images/hires_optics_camera_3.jpg" />
+          <file url="./././images/hires_optics_camera_3.jpg" />
         </media>
       </step>
       <step>
         <description>Lastly, if you want to make the module more robust, you can insert two M2 screws from the bottom, to lock the cover on and hold the PCB in place.  This is useful if the ribbon cable might be pulled accidentally, for example.</description>
         <media>
-          <file url="././images/camera_screws_1.jpg" />
+          <file url="./././images/camera_screws_1.jpg" />
         </media>
       </step>
       <step>
         <description>Finally, screw the objective into the tapered opening at the top of the module.  Take care to keep it aligned with the axis of the module - when it is screwed down, you don't want a gap anywhere between the top of the plastic and the bottom of the objective "shoulder".  This may be a tight fit - sometimes clamping the optics module in a vice is helpful.</description>
         <media>
-          <file url="././images/hires_optics_objective_1.jpg" />
+          <file url="./././images/hires_optics_objective_1.jpg" />
         </media>
       </step>
     </assembly_instruction>
@@ -864,7 +874,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <description>Tools for removing the lens</description>
     </function>
   </brick>
-  <brick id="5739467366">
+  <brick id="573946736">
     <name>Illumination Arm (fixed)</name>
     <abstract>A holder for an LED to take images in transmitted light.</abstract>
     <long_description>The illumination arm holds an LED above the sample, for simple transmission images.  The adjustable version with a condenser lens will get higher resolution and brightness.</long_description>
@@ -875,27 +885,27 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>Assemble the illumination: Bend the LED so it's pointing at right angles to the cable, then thread the wire for the LED through the illumination arm and push the LED into its hole.  It's usually easiest to start at the LED end and feed the connector into the mount (it might require a little force).  If you have a pre-made LED wire with a connector on the end, threading it through is all that's needed - if you just have the components you will need to connect them together in series first, and solder or crimp them.  Some of the pre-made LED wires are thicker than expected, so they take some force to pull into the arm - but they will go in with some perseverance!  You can stick a piece of white tape or sticky label over the LED (i.e. between the LED and the stage) to act as a diffuser, this helps to blur out out-of-focus artefacts, such as dirt on the wrong side of your microscope slide.</description>
         <media>
-          <file url="././images/illumination_led_10.jpg" />
-          <file url="././images/illumination_led_0.jpg" />
-          <file url="././images/illumination_led_1.jpg" />
-          <file url="././images/illumination_led_2.jpg" />
-          <file url="././images/illumination_led_3.jpg" />
-          <file url="././images/illumination_led_4.jpg" />
-          <file url="././images/illumination_led_5.jpg" />
-          <file url="././images/illumination_led_6.jpg" />
-          <file url="././images/illumination_led_7.jpg" />
-          <file url="././images/illumination_led_8.jpg" />
-          <file url="././images/illumination_led_9.jpg" />
-          <file url="././images/illumination_led_10.jpg" />
+          <file url="./././images/illumination_led_10.jpg" />
+          <file url="./././images/illumination_led_0.jpg" />
+          <file url="./././images/illumination_led_1.jpg" />
+          <file url="./././images/illumination_led_2.jpg" />
+          <file url="./././images/illumination_led_3.jpg" />
+          <file url="./././images/illumination_led_4.jpg" />
+          <file url="./././images/illumination_led_5.jpg" />
+          <file url="./././images/illumination_led_6.jpg" />
+          <file url="./././images/illumination_led_7.jpg" />
+          <file url="./././images/illumination_led_8.jpg" />
+          <file url="./././images/illumination_led_9.jpg" />
+          <file url="./././images/illumination_led_10.jpg" />
         </media>
       </step>
       <step>
         <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
         <media>
-          <file url="././images/illumination_1.jpg" />
-          <file url="././images/illumination_0.jpg" />
-          <file url="././images/illumination_1.jpg" />
-          <file url="././images/illumination_2.jpg" />
+          <file url="./././images/illumination_1.jpg" />
+          <file url="./././images/illumination_0.jpg" />
+          <file url="./././images/illumination_1.jpg" />
+          <file url="./././images/illumination_2.jpg" />
         </media>
       </step>
     </assembly_instruction>
@@ -917,59 +927,59 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <step>
         <description>To build the condenser, you will need the two parts of the mounting arm, an M3 screw and washer, the cable, LED, and lens, and the condenser housing.  You will also need the printed lens insertion tool to put the lens into the holder.</description>
         <media>
-          <file url="././images/condenser_parts.jpg" />
+          <file url="./././images/condenser_parts.jpg" />
         </media>
       </step>
       <step>
         <description>Place the condenser lens on the insertion tool (flat side down), and push the condenser housing down onto it.  Take care to keep it vertical.  You may need to push fairly hard.  As with the tube lens in the optics module, check it's flat and push again if necessary.</description>
         <media>
-          <file url="././images/condenser_lens_1.jpg" />
-          <file url="././images/condenser_lens_2.jpg" />
-          <file url="././images/condenser_lens_3.jpg" />
+          <file url="./././images/condenser_lens_1.jpg" />
+          <file url="./././images/condenser_lens_2.jpg" />
+          <file url="./././images/condenser_lens_3.jpg" />
         </media>
       </step>
       <step>
         <description>Insert the LED into the condenser housing.  It should push-fit and stay in place.  It can be glued if it doesn't stay in.</description>
         <media>
-          <file url="././images/condenser_led_1.jpg" />
-          <file url="././images/condenser_led_2.jpg" />
+          <file url="./././images/condenser_led_1.jpg" />
+          <file url="./././images/condenser_led_2.jpg" />
         </media>
       </step>
       <step>
         <description>Assemble the cable for the LED.  If using pre-crimped cables, as supplied with our kit, fit the 2-way header to either end.  Don't worry about polarity, it's easy and harmless to simply rotate the connector 180 degrees if you need to.</description>
         <media>
-          <file url="././images/condenser_wires_1.jpg" />
-          <file url="././images/condenser_wires_2.jpg" />
+          <file url="./././images/condenser_wires_1.jpg" />
+          <file url="./././images/condenser_wires_2.jpg" />
         </media>
       </step>
       <step>
         <description>Thread the cable through the mounting arm as shown.  It's much easier to do this before assembling the arm.</description>
         <media>
-          <file url="././images/condenser_wiring_1.jpg" />
+          <file url="./././images/condenser_wiring_1.jpg" />
         </media>
       </step>
       <step>
         <description>Screw the horizontal part of the mounting arm onto the vertical part.  The hole should be about the right size for an M3 screw to self-tap.</description>
         <media>
-          <file url="././images/condenser_assembly_1.jpg" />
+          <file url="./././images/condenser_assembly_1.jpg" />
         </media>
       </step>
       <step>
         <description>Connect the LED to the cable by pushing the legs into the 2-way housing.</description>
         <media>
-          <file url="././images/condenser_assembly_2.jpg" />
+          <file url="./././images/condenser_assembly_2.jpg" />
         </media>
       </step>
       <step>
         <description>Slide the condenser housing onto the dovetail clip at the end of the arm.  Wiggling it from side to side might help if it's stiff.</description>
         <media>
-          <file url="././images/condenser_assembly_3.jpg" />
+          <file url="./././images/condenser_assembly_3.jpg" />
         </media>
       </step>
       <step>
         <description>Fit the illumination arm to the microscope by sliding it onto the dovetail from underneath.  The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing..</description>
         <media>
-          <file url="././images/condenser_fitting_1.jpg" />
+          <file url="./././images/condenser_fitting_1.jpg" />
         </media>
       </step>
     </assembly_instruction>
