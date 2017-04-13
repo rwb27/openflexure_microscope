@@ -76,9 +76,11 @@ module picam2_cutout( beam_length=15){
         
         //chamfered screw holes for mounting
         sx = 21/2; //position of screw holes
-        reflect([1,0,0]) translate([sx,0,0]){
-            cylinder(r1=3, r2=0,h=4, center=true); //chamfered bottom
-            deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
+        reflect([1,0,0]) translate([sx,0,0]) rotate(60){
+            //cylinder(r1=3, r2=0,h=4, center=true); //chamfered bottom
+            //deformable_hole_trylinder(1.5/2,2.1/2,h=12, center=true);
+            cylinder(r1=3.1, r2=1.1, h=5, $fn=3, center=true);
+            cylinder(r=1.1, h=20, $fn=3, center=true);
         }
 	}
 }
@@ -114,14 +116,14 @@ module camera_mount(){
     rotate(45) difference(){
         translate([0,2.4,0]) sequential_hull(){
             translate([0,0,bottom]) cube([w,b,d],center=true);
-            translate([0,0,bottom+1.5]) cube([w,b,d],center=true);
+            translate([0,0,-1]) cube([w,b,d],center=true);
             translate([0,0,0]) cube([w-(-1.5-bottom)*2,b,d],center=true);
         }
         translate([0,0,bottom]) picam2_cutout();
     }
 }
 difference(){
-    camera_mount();
+    //camera_mount();
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
 }
 
@@ -129,25 +131,29 @@ difference(){
 module picam_cover(){
     // A cover for the camera PCB, slips over the bottom of the camera
     // mount.  This version should be compatible with v1 and v2 of the board
-    start_y=-12+2.4;//-3.25;
-    l=-start_y+12+2.4; //we start just after the socket and finish at 
-    //the end of the board - this is that distance!
+    b = 24;
+    w = 25;
+    h = 3;
+    t = 1; //wall thickness
+    centre_y=2.4;
     difference(){
         union(){
-            //base
-            translate([-15,start_y,-4.3]) cube([25+5,l,4.3+d]);
-            //grippers
-            reflect([1,0,0]) translate([-15,start_y,0]){
-                cube([2,l,4.5-d]);
-                hull(){
-                    translate([0,0,1.5]) cube([2,l,3]);
-                    translate([0,0,4]) cube([2+2.5,l,0.5]);
-                }
+            //bottom and sides
+            difference(){
+                translate([-w/2,-b/2+centre_y,0]) cube([w, b, h]);
+                // cut out centre to form walls on 3 sides
+                translate([-w/2+t,-b/2+centre_y-t,0.75]) cube([w-2*t, b, h]);
+                //chamfer the connector edge for ease of access
+                translate([-999,-b/2+centre_y,h]) rotate([-135,0,0]) cube([9999,999,999]);
             }
+            //mounting screws
+            reflect([1,0,0]) translate([21/2, 0, 0]) cylinder(r=3, h=h, $fn=16);
         }
-        translate([0,0,-1]) picam2_pcb_bottom();
-        //chamfer the connector edge for ease of access
-        translate([-999,start_y,0]) rotate([-135,0,0]) cube([9999,999,999]);
+        //counterbore the mounting screws
+        reflect([1,0,0]) translate([21/2, 0, h-1]) rotate(90) intersection(){
+           cylinder(r=2, h=999, $fn=16, center=true);
+            hole_from_bottom(r=1.1, h=999, base_w=999);
+        }
     }
 } 
-
+picam_cover();
