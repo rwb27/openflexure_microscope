@@ -72,17 +72,14 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             // hooks for elastic bands/springs
             reflect([1,0,0]) translate([top[0]/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
-                    translate([-d,-top[1]/2,0]) cube([d,top[1],6]);
-                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=4);
-                    translate([1.5,0,0.5]) resize([3,4,3]) cylinder(d1=1, d2=4, h=2);
-                    //translate([3,0,0.5]) cylinder(d1=1,d2=3.5, h=1.5);
-                    translate([3.5,0,0.5]) resize([2.5,3.5,1.5]) cylinder(d1=1,d2=3.5);
+                    translate([-d,-top[1]/2,0]) cube([d,top[1],top[2]]);
+                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=top[2]-2);
+                    translate([1.5,0,0.5]) resize([3,4,3.5]) cylinder(d1=1, d2=4, h=4);
+                    translate([3.5,0,0.5]) resize([2.5,3.0,1.5]) cylinder(d1=1,d2=3.5);
                     union(){
                         reflect([0,1,0]) translate([4.5,0.5,0]) cylinder(d=1,h=1);
                         translate([4,0,0]) cylinder(d=1,h=1);
                     }
-                    //translate([4,0,0.5]) resize([2,3,0.5]) cylinder(d=3, h=0.5);
-                    //translate([4.5,0,0]) resize([1,3,0.5]) cylinder(d=3, h=1.0);
                 } 
             }
             // join the column to the casing, for strength during printing...
@@ -115,6 +112,8 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
 }
+//actuator_column(25);
+
 module actuator_end_cutout(lever_tip=3-0.5 ){
     sequential_hull(){
         translate([-999,-zflex[1]/2,zflex[2]]) cube([2,2,2]*999);
@@ -127,8 +126,10 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // Inside of the actuator column housing (should be subtracted
     // h is the height of the top (excluding nut hole)
     // center=true will cause it to punch through the bottom.
+    r = column_core[1]/2;
+    x = column_core[0]/2 - r;
     rotate([tilt,0,0]) intersection(){
-        resize(column_core + [0,0,999]) cylinder(d=column_core[0], h=999, center=center);
+        hull() reflect([1,0,0]) translate([x,0,0]) cylinder(r=r,h=999,center=center);
         translate([0,0,h]) rotate(90) hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
     }
 }
@@ -136,10 +137,14 @@ module nut_seat_void(h=1, tilt=0, center=true){
 
 module screw_seat_shell(h=1, tilt=0){
     // Outside of the actuator column housing
+    r = ss_outer(h)[1]/2;
+    x = ss_outer(h)[0]/2 - r;
     difference(){
         rotate([tilt,0,0]) resize(ss_outer(h)) hull(){
-            cylinder(d=column_core[0], h=(h+0.5)*2, center=true);
-            cylinder(d=column_core[0] - 6, h=(h+2)*2, center=true);
+            reflect([1,0,0]) translate([x,0,0]){
+                cylinder(r=r,h=(h+0.5)*2,center=true);
+                cylinder(r=max(r-3,3.5),h=(h+2)*2,center=true);
+            }
         }
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //ground
         // hole through which we can insert the nut
@@ -360,7 +365,7 @@ difference(){
         actuator_column(25, 0);
         translate([0,0,1+20.5]) cube([6,14,2],center=true);
     }
-    translate([0,0,20.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
+    translate([0,0,2.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size

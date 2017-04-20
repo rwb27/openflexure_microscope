@@ -77,6 +77,14 @@ module filleted_bridge(gap, roc_xy=2, roc_xz=2){
         }
     }
 }
+module thick_section(h=d, center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object.
+    linear_extrude(h, center=center) projection(cut=true) translate([0,0,shift?-d:0]) children();
+}
+module offset_thick_section(h=d, offset=0, center=false, shift=true){
+    // A 3D object, corresponding to the linearly-extruded projection of another object.
+    linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-d:0]) children();
+}
 
 module foot(travel=5, 
             tilt=0, 
@@ -93,17 +101,17 @@ module foot(travel=5,
     translate([0,0,lie_flat?-l/2*tan(tilt):-h]) //makes the bottom z=0
     difference(){
         union(){
-            resize([w,l,2*h]) cylinder(d=w, h=h, center=true); //main part of foot
-            resize([cw-d,cl,2*h+3]) cylinder(d=w, h=h, center=true); //lugs on top
+            thick_section(2*h, center=true) screw_seat_shell(); //main part of foot
+            thick_section(2*h+3, center=true) nut_seat_void(); //lugs on top
         }
         //hollow out the inside
         difference(){
             //the core tapers at the top to support the lugs
             sequential_hull(){
-                translate([0,0,-999]) resize([cw,cl,d]) cylinder(d=w,h=d);
-                translate([0,0,h-4]) resize([cw,cl,d]) cylinder(d=w,h=d);
-                translate([0,0,h]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
-                translate([0,0,999]) resize([cw-2*wall_t,cl-2*wall_t,d]) cylinder(d=w,h=d);
+                translate([0,0,-999]) thick_section() nut_seat_void();
+                translate([0,0,h-4]) thick_section() nut_seat_void();
+                translate([0,0,h]) offset_thick_section(offset=-wall_t) nut_seat_void();
+                translate([0,0,999]) offset_thick_section(offset=-wall_t) nut_seat_void();
             }
             //we double-subtract the anchor for the bands at the bottom, so that it
             //doesn't protrude outside the part.
@@ -113,7 +121,7 @@ module foot(travel=5,
         //one on either side - rather than a ring around the top.
         translate([0,0,h-travel-1]) intersection(){
             cube([cw-3.3*2, 999, 999],center=true);
-            resize([cw,cl,999]) cylinder(d=w,h=999);
+            thick_section(999) nut_seat_void();
         }
         
         //cut out the shell close to the microscope centre to allow the actuator 
@@ -127,7 +135,7 @@ module foot(travel=5,
         //cut out a slot to allow bands to wrap round the outside (useful if too long)
         //NB this should match the height and width of the filleted_bridge below.
         intersection(){
-            cube([999, 3, 999],center=true); 
+            cube([999, 4, 999],center=true); 
             foot_ground_plane(tilt=tilt, bottom=0.5, top=(h-travel-4) - l/2*tan(tilt)); //set the top/bottom of the slot to be parallel to the print bed, and
                 //leave an 0.5mm layer on the bottom to help adhesion.
         }
@@ -137,7 +145,7 @@ module foot(travel=5,
         //and avoid damaging the bands.  NB width should match the band anchor above,
         //and height/span should match the slot above.
         skew_flat(tilt) translate([0,0,h-travel-4-2]){
-            filleted_bridge([2*column_base_radius()+1.5, 3, 2], roc_xy=4, roc_xz=3);
+            filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
         }
         
         //cut off the foot below the "ground plane" (i.e. print bed)
@@ -147,5 +155,5 @@ module foot(travel=5,
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
 
-reflect([0,1,0]) translate([0,ss_outer()[1]+3, 0]) foot(tilt=15, lie_flat=true);
+reflect([0,1,0]) translate([0,ss_outer()[1]+3.5, 0]) foot(tilt=15, lie_flat=true);
 foot(tilt=0,hover=2, lie_flat=true);
