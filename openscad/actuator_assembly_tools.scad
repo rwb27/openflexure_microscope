@@ -43,10 +43,10 @@ module tool_handle(){
     }
 }
 
-module xz_slice(){
+module xz_slice(y=0){
     //slice out just the part of something that sits in the XZ plane
     intersection(){
-        cube([9999,2*d,9999],center=true);
+        translate([0,y,0]) cube([9999,2*d,9999],center=true);
         children();
     }
 }
@@ -71,6 +71,7 @@ module nut_tool(){
     }
 }
 
+   
 module band_tool(){
     w = ns[0]-0.5; //width of tool tip
     h = 4.5; //height of tool tip (needs to fit through slot)
@@ -80,14 +81,13 @@ module band_tool(){
     difference(){
         union(){
             translate([0,-handle_l,0]) tool_handle();
-            hull(){
+            sequential_hull(){
                 xz_slice() translate([0,-handle_l,0]) tool_handle();
                 translate([0,l-20,0]) xz_slice() translate([0,-handle_l,0]) tool_handle();
-            }
-            hull(){
-                translate([0,l-20,0]) xz_slice() translate([0,-handle_l,0]) tool_handle();
-                translate([-3/2, l-12,0]) cube([3,12,h]);
-                translate([-7/2, l-12,h-1]) cube([7,12,1]);
+                union(){
+                    translate([-3/2, l-12,0]) cube([3,12,h]);
+                    translate([-7/2, l-12,h-1]) cube([7,12,1]);
+                }
             }
         }
         // cut-out to clear the hook
@@ -108,6 +108,39 @@ module band_tool(){
     }
 }
 
+band_tool_l = sso[2]/2+foot_height;
+band_tool_w = ns[0]-0.5;
+band_tool_h = 3;
 
-band_tool();
-translate([10,0,0]) nut_tool();
+module prong_frame(){
+    //Move the prongs out and tilt them slightly
+    smatrix(xz=0.3, xt=2) children();
+}
+
+module band_tool_2(){
+    //forked tool to insert the elastic band
+    band_rest = [0,band_tool_l,band_tool_h-1];
+    blade_anchor = [0,band_tool_l-20,0];
+    union(){
+        reflect([1,0,0]) prong_frame() sequential_hull(){ //sides of the tip
+            translate([0,band_tool_l+1.5,0]) cylinder(d=1,h=d);
+            union(){
+                translate(band_rest) cylinder(d=1,h=d);
+                translate(blade_anchor) cylinder(d=1,h=ns[2]);
+            }
+            translate([0,band_tool_l+1,band_tool_h-d]) cylinder(d=1,h=d);
+        }
+        hull() reflect([1,0,0]) prong_frame(){ //bottom of the tip
+            translate([0,band_tool_l+1.5,0]) cylinder(d=1,h=0.5);
+            translate(blade_anchor) cylinder(d=1,h=0.5);
+        }
+        hull(){ //connect to the handle
+            reflect([1,0,0]) prong_frame() translate(blade_anchor) cylinder(d=1,h=ns[2]);
+            xz_slice() translate([0,-handle_l,0]) tool_handle();
+        }//the handle
+        translate([0,-handle_l,0]) tool_handle();
+    }
+}
+
+band_tool_2();
+//translate([10,0,0]) nut_tool();

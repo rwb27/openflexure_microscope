@@ -56,6 +56,9 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
 }
 
 module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=false){
+    // An "actuator column", a nearly-vertical tower, with a nut trap and hooks
+    // for elastic bands at the top, usually attached to a flexure at the bottom.
+    // There's often one of these inside the casing under an adjustment screw/gear
     r1 = column_base_r; //size of the bottom part
     top = nut_slot + [3,3,nut_size + 1.5]; //size of the top part
     r2 = sqrt(top[0]*top[0]+top[1]*top[1])/2; //outer radius of top
@@ -115,6 +118,8 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
 //actuator_column(25);
 
 module actuator_end_cutout(lever_tip=3-0.5 ){
+    // This shape cuts off the end of an actuator, leaving a thin strip to
+    // connect to the actuator column (the flexure).
     sequential_hull(){
         translate([-999,-zflex[1]/2,zflex[2]]) cube([2,2,2]*999);
         translate([-999,-zflex[1]/2,zflex[2]+lever_tip]) cube([2,2,2]*999);
@@ -126,6 +131,7 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // Inside of the actuator column housing (should be subtracted
     // h is the height of the top (excluding nut hole)
     // center=true will cause it to punch through the bottom.
+    // This ensures enough clearance to let the actuator column move.
     r = column_core[1]/2;
     x = column_core[0]/2 - r;
     rotate([tilt,0,0]) intersection(){
@@ -136,7 +142,9 @@ module nut_seat_void(h=1, tilt=0, center=true){
 //color("red")nut_seat_void(10,tilt=-10);
 
 module screw_seat_shell(h=1, tilt=0){
-    // Outside of the actuator column housing
+    // Outside of the actuator column housing - this is the structure that
+    // the gear sits on top of.  It needs to be hollowed out before use
+    // (see screw_seat)
     r = ss_outer(h)[1]/2;
     x = ss_outer(h)[0]/2 - r;
     difference(){
@@ -153,7 +161,7 @@ module screw_seat_shell(h=1, tilt=0){
 }
 
 module motor_lugs(h=20, tilt=0){
-    // lugs to mount a micro geared stepper motor 
+    // lugs to mount a micro geared stepper motor on a screw_seat.
     motor_shaft_pos=[0,-20,h+2]; //see height of screw_seat_shell above
     motor_screw_pos=[35/2,motor_shaft_pos[1]+7.8,motor_shaft_pos[2]+10];
     screw_r = sqrt(pow(motor_screw_pos[0],2)+pow(motor_screw_pos[1],2));
@@ -175,6 +183,8 @@ module motor_lugs(h=20, tilt=0){
 }
 
 module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false){
+    // This forms a hollow column, usually built around an actuator_column to
+    // support the screw (see screw_seat_shell)
     tilt = 0; //currently, only vertical ones are supported.
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     difference(){
@@ -191,13 +201,14 @@ module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, mo
         rotate([tilt,0,0]) translate([0,0,h-nut_size-1.5-nut_slot[2]]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
     }
 }
-
+/*
 module screw_seat_outline(h=999,adjustment=0,center=false){
+    // The bottom of a screw seat (unused?)
     w = ss_outer()[0];
     l = ss_outer()[1];
     a = adjustment;
 	resize([w+a, l+a, h]) cylinder(r=20, h=h, center=center);
-}
+}*/
 
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = column_base_r*2){
@@ -352,8 +363,8 @@ translate([40,0,0]){
 //    actuator_shroud(25, 10, 25, 50, tilted=true, extend_back=20);
 //    tilted_actuator(25,25,50, base_w=6);
 }
-
-//
+//echo(nut_slot);
+/*/
 difference(){
     union(){
         screw_seat(25, motor_lugs=false);
