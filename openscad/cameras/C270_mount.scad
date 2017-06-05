@@ -29,6 +29,7 @@ d=0.05;
 
 function camera_mount_height() = 4.5;
 bottom = camera_mount_height() * -1;
+function camera_sensor_height() = 0.2; //Height of the sensor above the PCB
 
 module mounting_hole(){
     translate([0,0,-5]) cylinder(r=0.8*1.2,h=999,$fn=12); 

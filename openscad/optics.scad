@@ -315,18 +315,19 @@ module rms_mount_and_tube_lens_gripper(){
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=160, fluorescence=false){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
     rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
     //tube_lens_r (argument) is the radius of the tube lens
-    //tube_lens_ffd (argument) is the front focal distance (from flat side to focus) - measure this.
+    //tube_lens_ffd (argument) is the front focal distance (from flat side to focus) - measure this, or take it from the lens spec. sheet
     //tube_lens_f (argument) is the nominal focal length of the tube lens.
-    tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the correction lens
-    pedestal_h = 2; // height of tube lens above bottom of lens assembly
+    tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
+    pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
     //sample_z (microscope_parameters.scad) // height of the sample above the bottom of the microscope (depends on size of microscope)
-    dovetail_top = min(27, sample_z-objective_parfocal_distance-1); //height of the top of the dovetail
+    dovetail_top = min(27, sample_z-objective_parfocal_distance-1); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
+    //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
     
     ///////////////// Lens position calculation //////////////////////////
     // calculate the position of the tube lens based on a thin-lens
@@ -347,7 +348,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     echo("Distance from tube lens principal plane to sensor:",dts);
     // that's the distance to the nominal "principal plane", in reality
     // we measure the front focal distance, and shift accordingly:
-    tube_lens_z = bottom + dts - (tube_lens_f - tube_lens_ffd);
+    tube_lens_z = bottom + camera_sensor_height() + dts - (tube_lens_f - tube_lens_ffd);
         
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
@@ -464,7 +465,7 @@ module condenser(){
 difference(){
     /// Optics module for picamera v2 lens, using trylinder
     //NB this should also work for pi camera v1 if the right
-    //camera module is used.
+    /*/camera module is used.
     optics_module_trylinder(
         lens_r = 3, 
         parfocal_distance = 6,
@@ -476,13 +477,14 @@ difference(){
         parfocal_distance = 6, //NB with 6 here the PCB is a bit low
         lens_h = 2
     );//*/
-    /*/ Optics module for RMS objective, using Comar 40mm singlet tube lens
+    // Optics module for RMS objective, using Comar 40mm singlet tube lens
     optics_module_rms(
         tube_lens_ffd=38, 
         tube_lens_f=40, 
         tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=35,
-        fluorescence=false
+        fluorescence=false,
+        tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
     );//*/
     /*/ Optics module for USB camera's M12 lens
     optics_module_trylinder(

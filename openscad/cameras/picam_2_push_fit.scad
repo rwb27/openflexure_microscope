@@ -31,6 +31,8 @@
 use <../utilities.scad>;
 
 d=0.05; //small distance!
+function camera_sensor_height() = 2; //Height of the sensor above the PCB
+
 
 module picam2_push_fit( beam_length=15){
     // This module is designed to be subtracted from the bottom of a shape.

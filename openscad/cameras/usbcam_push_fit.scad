@@ -34,6 +34,9 @@ camera_component_clearance = 1; // it's easiest to have the PCB slightly below t
 d=0.05; //small distance!
 $fn=32;
 
+function camera_sensor_height() = 0.5; //Height of the sensor above the PCB
+
+
 module usbcam_lens_mount(){
     union(){
         cylinder(r=lens_holder_tube_r, h=lens_holder_tube_h, $fn=16);

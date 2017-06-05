@@ -55,7 +55,10 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
         
 }
 
-module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=true){
+module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=false){
+    // An "actuator column", a nearly-vertical tower, with a nut trap and hooks
+    // for elastic bands at the top, usually attached to a flexure at the bottom.
+    // There's often one of these inside the casing under an adjustment screw/gear
     r1 = column_base_r; //size of the bottom part
     top = nut_slot + [3,3,nut_size + 1.5]; //size of the top part
     r2 = sqrt(top[0]*top[0]+top[1]*top[1])/2; //outer radius of top
@@ -72,17 +75,14 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
             // hooks for elastic bands/springs
             reflect([1,0,0]) translate([top[0]/2,0,h]) difference(){
                 mirror([0,0,1]) sequential_hull(){
-                    translate([-d,-top[1]/2,0]) cube([d,top[1],6]);
-                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=4);
-                    translate([1.5,0,0.5]) resize([3,4,3]) cylinder(d1=1, d2=4, h=2);
-                    //translate([3,0,0.5]) cylinder(d1=1,d2=3.5, h=1.5);
-                    translate([3.5,0,0.5]) resize([2.5,3.5,1.5]) cylinder(d1=1,d2=3.5);
+                    translate([-d,-top[1]/2,0]) cube([d,top[1],top[2]]);
+                    translate([0,0,0.5]) scale([0.5,1,1]) cylinder(d=4.5, h=top[2]-2);
+                    translate([1.5,0,0.5]) resize([3,4,3.5]) cylinder(d1=1, d2=4, h=4);
+                    translate([3.5,0,0.5]) resize([2.5,3.0,1.5]) cylinder(d1=1,d2=3.5);
                     union(){
                         reflect([0,1,0]) translate([4.5,0.5,0]) cylinder(d=1,h=1);
                         translate([4,0,0]) cylinder(d=1,h=1);
                     }
-                    //translate([4,0,0.5]) resize([2,3,0.5]) cylinder(d=3, h=0.5);
-                    //translate([4.5,0,0]) resize([1,3,0.5]) cylinder(d=3, h=1.0);
                 } 
             }
             // join the column to the casing, for strength during printing...
@@ -115,7 +115,11 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=4);
     }
 }
+//actuator_column(25);
+
 module actuator_end_cutout(lever_tip=3-0.5 ){
+    // This shape cuts off the end of an actuator, leaving a thin strip to
+    // connect to the actuator column (the flexure).
     sequential_hull(){
         translate([-999,-zflex[1]/2,zflex[2]]) cube([2,2,2]*999);
         translate([-999,-zflex[1]/2,zflex[2]+lever_tip]) cube([2,2,2]*999);
@@ -127,19 +131,28 @@ module nut_seat_void(h=1, tilt=0, center=true){
     // Inside of the actuator column housing (should be subtracted
     // h is the height of the top (excluding nut hole)
     // center=true will cause it to punch through the bottom.
+    // This ensures enough clearance to let the actuator column move.
+    r = column_core[1]/2;
+    x = column_core[0]/2 - r;
     rotate([tilt,0,0]) intersection(){
-        resize(column_core + [0,0,999]) cylinder(d=column_core[0], h=999, center=center);
+        hull() reflect([1,0,0]) translate([x,0,0]) cylinder(r=r,h=999,center=center);
         translate([0,0,h]) rotate(90) hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
     }
 }
 //color("red")nut_seat_void(10,tilt=-10);
 
 module screw_seat_shell(h=1, tilt=0){
-    // Outside of the actuator column housing
+    // Outside of the actuator column housing - this is the structure that
+    // the gear sits on top of.  It needs to be hollowed out before use
+    // (see screw_seat)
+    r = ss_outer(h)[1]/2;
+    x = ss_outer(h)[0]/2 - r;
     difference(){
         rotate([tilt,0,0]) resize(ss_outer(h)) hull(){
-            cylinder(d=column_core[0], h=(h+0.5)*2, center=true);
-            cylinder(d=column_core[0] - 6, h=(h+2)*2, center=true);
+            reflect([1,0,0]) translate([x,0,0]){
+                cylinder(r=r,h=(h+0.5)*2,center=true);
+                cylinder(r=max(r-3,3.5),h=(h+2)*2,center=true);
+            }
         }
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //ground
         // hole through which we can insert the nut
@@ -148,7 +161,7 @@ module screw_seat_shell(h=1, tilt=0){
 }
 
 module motor_lugs(h=20, tilt=0){
-    // lugs to mount a micro geared stepper motor 
+    // lugs to mount a micro geared stepper motor on a screw_seat.
     motor_shaft_pos=[0,-20,h+2]; //see height of screw_seat_shell above
     motor_screw_pos=[35/2,motor_shaft_pos[1]+7.8,motor_shaft_pos[2]+10];
     screw_r = sqrt(pow(motor_screw_pos[0],2)+pow(motor_screw_pos[1],2));
@@ -170,6 +183,8 @@ module motor_lugs(h=20, tilt=0){
 }
 
 module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false){
+    // This forms a hollow column, usually built around an actuator_column to
+    // support the screw (see screw_seat_shell)
     tilt = 0; //currently, only vertical ones are supported.
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     difference(){
@@ -186,13 +201,14 @@ module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, mo
         rotate([tilt,0,0]) translate([0,0,h-nut_size-1.5-nut_slot[2]]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
     }
 }
-
+/*
 module screw_seat_outline(h=999,adjustment=0,center=false){
+    // The bottom of a screw seat (unused?)
     w = ss_outer()[0];
     l = ss_outer()[1];
     a = adjustment;
 	resize([w+a, l+a, h]) cylinder(r=20, h=h, center=center);
-}
+}*/
 
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = column_base_r*2){
@@ -347,8 +363,8 @@ translate([40,0,0]){
 //    actuator_shroud(25, 10, 25, 50, tilted=true, extend_back=20);
 //    tilted_actuator(25,25,50, base_w=6);
 }
-
-//
+//echo(nut_slot);
+/*/
 difference(){
     union(){
         screw_seat(25, motor_lugs=false);
@@ -360,7 +376,7 @@ difference(){
         actuator_column(25, 0);
         translate([0,0,1+20.5]) cube([6,14,2],center=true);
     }
-    translate([0,0,20.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
+    translate([0,0,2.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size

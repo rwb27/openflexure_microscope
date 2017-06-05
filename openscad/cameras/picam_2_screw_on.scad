@@ -35,6 +35,8 @@ d=0.05; //small distance!
 function camera_mount_height() = 4.5;
 bottom = camera_mount_height() * -1;
 
+function camera_sensor_height() = 2; //Height of the sensor above the PCB
+
 module picam2_cutout( beam_length=15){
     // This module is designed to be subtracted from the bottom of a shape.
     // The z=0 plane should be the print bed.

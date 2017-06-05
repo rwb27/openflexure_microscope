@@ -144,6 +144,15 @@ module unrotate(rotation){
 	rotate([0,0,-rotation[2]]) rotate([0,-rotation[1],0]) rotate([-rotation[0],0,0]) children();
 }
 
+module smatrix(xx=1,yy=1,zz=1,xy=0,xz=0,yx=0,yz=0,zx=0,zy=0, xt=0, yt=0, zt=0){
+    //apply a matrix transformation, specifying the matrix sparsely
+    //this is useful because most helpful matrices are close to the identity.
+    multmatrix([[xx, xy, xz, xt],
+                [yx, yy, yz, yt],
+                [zx, zy, zz, zt],
+                [0,  0,  0,  1]]) children();
+}
+
 module support(size, height, baseheight=0, rotation=[0,0,0], supportangle=45, outline=false){
 	//generate "support material" in the STL file for selective supporting of things
 	module support_2d(){
