@@ -114,28 +114,31 @@ band_tool_h = 3;
 
 module prong_frame(){
     //Move the prongs out and tilt them slightly
-    smatrix(xz=0.3, xt=2) children();
+    smatrix(xz=0.3, xt=2, yt=band_tool_l) children();
 }
 
 module band_tool_2(){
     //forked tool to insert the elastic band
-    band_rest = [0,band_tool_l,band_tool_h-1];
-    blade_anchor = [0,band_tool_l-20,0];
+    h = band_tool_h; //overall height of the band insertion tool
+    blade_anchor = [0,-20,0];
     union(){
-        reflect([1,0,0]) prong_frame() sequential_hull(){ //sides of the tip
-            translate([0,band_tool_l+1.5,0]) cylinder(d=1,h=d);
+        // the two "blades" that support the band either side of the hook
+        reflect([1,0,0]) prong_frame() translate(blade_anchor) sequential_hull(){
+            repeat([0,21.5,0],2) cylinder(d=1,h=0.5);
+            repeat([0,20,0],2) translate([0,0,h-1]) cylinder(d=1,h=d);
             union(){
-                translate(band_rest) cylinder(d=1,h=d);
-                translate(blade_anchor) cylinder(d=1,h=ns[2]);
+                translate([0,0,h-d]) cylinder(d=1,h=d);
+                translate([0.3,20.5,h-d]) cylinder(d=1.6,h=d);
             }
-            translate([0,band_tool_l+1,band_tool_h-d]) cylinder(d=1,h=d);
         }
+        // the flat bottom that passes between the hook and the outside of the column
         hull() reflect([1,0,0]) prong_frame(){ //bottom of the tip
-            translate([0,band_tool_l+1.5,0]) cylinder(d=1,h=0.5);
+            translate([0,1.5,0]) cylinder(d=1,h=0.5);
             translate(blade_anchor) cylinder(d=1,h=0.5);
         }
-        hull(){ //connect to the handle
-            reflect([1,0,0]) prong_frame() translate(blade_anchor) cylinder(d=1,h=ns[2]);
+        // connect the business end of the tool to the handle
+        hull(){
+            reflect([1,0,0]) prong_frame() translate(blade_anchor) cylinder(d=1,h=h);
             xz_slice() translate([0,-handle_l,0]) tool_handle();
         }//the handle
         translate([0,-handle_l,0]) tool_handle();
