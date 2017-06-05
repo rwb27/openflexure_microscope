@@ -28,6 +28,7 @@ use <../utilities.scad>;
 //outer_r=8.5;   //square side length
 //f=0.5; //feather amount
 d=0.05; //small distance!
+function camera_sensor_height() = 0.5; //Height of the sensor above the PCB
 
 
 module camera_bits(){

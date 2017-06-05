@@ -348,7 +348,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     echo("Distance from tube lens principal plane to sensor:",dts);
     // that's the distance to the nominal "principal plane", in reality
     // we measure the front focal distance, and shift accordingly:
-    tube_lens_z = bottom + dts - (tube_lens_f - tube_lens_ffd);
+    tube_lens_z = bottom + camera_sensor_height() + dts - (tube_lens_f - tube_lens_ffd);
         
     // having calculated where the lens should go, now make the mount:
     lens_assembly_z = tube_lens_z - pedestal_h; //height of lens assembly
