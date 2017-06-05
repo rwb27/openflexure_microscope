@@ -86,7 +86,7 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
                 } 
             }
             // join the column to the casing, for strength during printing...
-            translate([0,0,lever_tip+zflex[2]+3]){
+            if(join_to_casing) translate([0,0,lever_tip+zflex[2]+3]){
                 cube([ss_outer()[0]-wall_t, 1, 0.5], center=true);
                 //translate([-1/2,0,-0.25]) cube([1, ss_outer()[1]/2-wall_t/2, 0.5]); //this was too short...
             }
