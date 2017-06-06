@@ -117,7 +117,7 @@ module prong_frame(){
     smatrix(xz=0.3, xt=2.25, yt=band_tool_l) children();
 }
 
-module band_tool_2(){
+module band_tool_2(handle=true){
     //forked tool to insert the elastic band
     h = band_tool_h; //overall height of the band insertion tool
     blade_anchor = [0,-20,0];
@@ -146,9 +146,22 @@ module band_tool_2(){
             }
         }
         //the handle
-        translate([0,-handle_l,0]) tool_handle();
+        if(handle) translate([0,-handle_l,0]) tool_handle();
     }
 }
 
-band_tool_2();
+module double_ended_band_tool(){
+    middle_w = 2*column_base_radius()+1.5+2*3+0.5; //width of the band anchor on the foot
+    
+    flex_l = 2*3.14/2; //length of the flexible linker
+    
+    // We make two tools, spaced out by a flexible joiner
+    reflect([0,1,0]) translate([0,middle_w/2+flex_l,0]) band_tool_2(handle=false);
+    translate([0,0,0.5/2]) cube([ns[0],middle_w+2*flex_l+2*d,0.5],center=true);
+    hull(){
+        translate([0,0,0.5]) cube([ns[0],middle_w,d],center=true);
+        translate([0,0,2]) cube([ns[0],middle_w+3,d],center=true);
+    }
+}
+double_ended_band_tool();
 //translate([10,0,0]) nut_tool();
