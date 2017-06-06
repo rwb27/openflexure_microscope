@@ -114,7 +114,7 @@ band_tool_h = 3;
 
 module prong_frame(){
     //Move the prongs out and tilt them slightly
-    smatrix(xz=0.3, xt=2, yt=band_tool_l) children();
+    smatrix(xz=0.3, xt=2.25, yt=band_tool_l) children();
 }
 
 module band_tool_2(){
@@ -123,24 +123,27 @@ module band_tool_2(){
     blade_anchor = [0,-20,0];
     union(){
         // the two "blades" that support the band either side of the hook
-        reflect([1,0,0]) prong_frame() translate(blade_anchor) sequential_hull(){
-            repeat([0,21.5,0],2) cylinder(d=1,h=0.5);
-            repeat([0,20,0],2) translate([0,0,h-1]) cylinder(d=1,h=d);
-            union(){
-                translate([0,0,h-d]) cylinder(d=1,h=d);
-                translate([0.3,20.5,h-d]) cylinder(d=1.6,h=d);
-            }
+        reflect([1,0,0]) prong_frame() sequential_hull(){
+            repeat([0,-20,0],2) translate([0,1.5,0]) cylinder(d=1.5,h=0.5);
+            repeat([0,-20,0],2) translate([0,0,h-1]) cylinder(d=1.5,h=d);
+            repeat([0,-20,0],2) translate([0.3,0.5,h-d]) cylinder(d=2.1,h=d);
         }
         // the flat bottom that passes between the hook and the outside of the column
         hull() reflect([1,0,0]) prong_frame(){ //bottom of the tip
-            translate([0,1.5,0]) cylinder(d=1,h=0.5);
-            translate(blade_anchor) cylinder(d=1,h=0.5);
+            translate([0,1.5,0]) cylinder(d=1.5,h=0.5);
+            translate(blade_anchor) cylinder(d=1.5,h=0.5);
         }
         // connect the business end of the tool to the handle
-        hull(){
-            reflect([1,0,0]) prong_frame() translate(blade_anchor) cylinder(d=1,h=h);
-            xz_slice() translate([0,-handle_l,0]) tool_handle();
-        }//the handle
+        difference(){
+            hull(){
+                reflect([1,0,0]) prong_frame() translate(blade_anchor) repeat([0,5,0], 2) cylinder(d=1.5,h=h);
+                xz_slice() translate([0,-handle_l,0]) tool_handle();
+            }
+            hull() reflect([1,0,0]) repeat([0,999,0],2) prong_frame(){
+                translate(blade_anchor + [-2.25,1.5,0.5]) repeat([0,0,99],2) cylinder(r=1.5,h=d);
+            }
+        }
+        //the handle
         translate([0,-handle_l,0]) tool_handle();
     }
 }
