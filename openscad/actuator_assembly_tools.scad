@@ -135,12 +135,14 @@ module band_tool_2(){
         }
         // connect the business end of the tool to the handle
         difference(){
-            hull(){
-                reflect([1,0,0]) prong_frame() translate(blade_anchor) repeat([0,5,0], 2) cylinder(d=1.5,h=h);
+            hull(){ //join the blades and the handle
+                reflect([1,0,0]) prong_frame() translate(blade_anchor) repeat([0,10,0], 2) cylinder(d=1.5,h=h);
                 xz_slice() translate([0,-handle_l,0]) tool_handle();
             }
-            hull() reflect([1,0,0]) repeat([0,999,0],2) prong_frame(){
-                translate(blade_anchor + [-2.25,1.5,0.5]) repeat([0,0,99],2) cylinder(r=1.5,h=d);
+            //cut out to get nice rounded corners at the bottom of the slot for the hook
+            hull() reflect([1,0,0]) prong_frame(){
+                translate(blade_anchor + [-2.25,3,h]) sphere(r=1.5,h=99);
+                translate(blade_anchor + [-1.5,10,0.5]) cube([1.5/2,999,999]);
             }
         }
         //the handle
