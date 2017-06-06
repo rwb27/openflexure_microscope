@@ -146,22 +146,41 @@ module band_tool_2(handle=true){
             }
         }
         //the handle
-        if(handle) translate([0,-handle_l,0]) tool_handle();
+        if(handle){
+            translate([0,-handle_l,0]) tool_handle();
+        }
     }
 }
 
-module double_ended_band_tool(){
-    middle_w = 2*column_base_radius()+1.5+2*3+0.5; //width of the band anchor on the foot
+module double_ended_band_tool(bent=false){
+    roc=2;
+    middle_w = 2*column_base_radius()+1.5+2*(band_tool_h-roc)+0.5; //width of the band anchor on the foot
     
-    flex_l = 2*3.14/2; //length of the flexible linker
+    flex_l = roc*3.14/2; //length of the flexible linkers
     
     // We make two tools, spaced out by a flexible joiner
-    reflect([0,1,0]) translate([0,middle_w/2+flex_l,0]) band_tool_2(handle=false);
-    translate([0,0,0.5/2]) cube([ns[0],middle_w+2*flex_l+2*d,0.5],center=true);
+    reflect([0,1,0]) translate([0,middle_w/2+flex_l,0]) if(bent){
+        translate([0,roc-3,roc]) rotate([90,0,0]) band_tool_2(handle=false);
+    }else{
+        band_tool_2(handle=false);
+    }
+    //flexible links between the two tools and the middle part
+    if(bent){
+        reflect([0,1,0]) translate([0,middle_w/2,roc]) difference(){
+            rotate([0,90,0]) cylinder(r=roc,h=ns[0],center=true);
+            rotate([0,90,0]) cylinder(r=roc-0.5,h=99,center=true);
+            translate([-99,-99,0]) cube(999);
+            translate([-99,-999,-99]) cube(999);
+        }
+        translate([0,0,0.5/2]) cube([ns[0],middle_w+2*d,0.5],center=true);
+    }else{
+        translate([0,0,0.5/2]) cube([ns[0],middle_w+2*flex_l+2*d,0.5],center=true);
+    }
+    //thicker middle part to support the two ends
     hull(){
         translate([0,0,0.5]) cube([ns[0],middle_w,d],center=true);
-        translate([0,0,2]) cube([ns[0],middle_w+3,d],center=true);
+        translate([0,0,roc]) cube([ns[0],middle_w+2*(roc-0.5),d],center=true);
     }
 }
-double_ended_band_tool();
+double_ended_band_tool(bent=false);
 //translate([10,0,0]) nut_tool();
