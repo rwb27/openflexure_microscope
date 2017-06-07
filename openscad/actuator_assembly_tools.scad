@@ -114,36 +114,73 @@ band_tool_h = 3;
 
 module prong_frame(){
     //Move the prongs out and tilt them slightly
-    smatrix(xz=0.3, xt=2, yt=band_tool_l) children();
+    smatrix(xz=0.3, xt=2.25, yt=band_tool_l) children();
 }
 
-module band_tool_2(){
+module band_tool_2(handle=true){
     //forked tool to insert the elastic band
     h = band_tool_h; //overall height of the band insertion tool
     blade_anchor = [0,-20,0];
     union(){
         // the two "blades" that support the band either side of the hook
-        reflect([1,0,0]) prong_frame() translate(blade_anchor) sequential_hull(){
-            repeat([0,21.5,0],2) cylinder(d=1,h=0.5);
-            repeat([0,20,0],2) translate([0,0,h-1]) cylinder(d=1,h=d);
-            union(){
-                translate([0,0,h-d]) cylinder(d=1,h=d);
-                translate([0.3,20.5,h-d]) cylinder(d=1.6,h=d);
-            }
+        reflect([1,0,0]) prong_frame() sequential_hull(){
+            repeat([0,-20,0],2) translate([0,1.5,0]) cylinder(d=1.5,h=0.5);
+            repeat([0,-20,0],2) translate([0,0,h-1]) cylinder(d=1.5,h=d);
+            repeat([0,-20,0],2) translate([0.3,0.5,h-d]) cylinder(d=2.1,h=d);
         }
         // the flat bottom that passes between the hook and the outside of the column
         hull() reflect([1,0,0]) prong_frame(){ //bottom of the tip
-            translate([0,1.5,0]) cylinder(d=1,h=0.5);
-            translate(blade_anchor) cylinder(d=1,h=0.5);
+            translate([0,1.5,0]) cylinder(d=1.5,h=0.5);
+            translate(blade_anchor) cylinder(d=1.5,h=0.5);
         }
         // connect the business end of the tool to the handle
-        hull(){
-            reflect([1,0,0]) prong_frame() translate(blade_anchor) cylinder(d=1,h=h);
-            xz_slice() translate([0,-handle_l,0]) tool_handle();
-        }//the handle
-        translate([0,-handle_l,0]) tool_handle();
+        difference(){
+            hull(){ //join the blades and the handle
+                reflect([1,0,0]) prong_frame() translate(blade_anchor) repeat([0,10,0], 2) cylinder(d=1.5,h=h);
+                xz_slice() translate([0,-handle_l,0]) tool_handle();
+            }
+            //cut out to get nice rounded corners at the bottom of the slot for the hook
+            hull() reflect([1,0,0]) prong_frame(){
+                translate(blade_anchor + [-2.25,3,h]) sphere(r=1.5,h=99);
+                translate(blade_anchor + [-1.5,10,0.5]) cube([1.5/2,999,999]);
+            }
+        }
+        //the handle
+        if(handle){
+            translate([0,-handle_l,0]) tool_handle();
+        }
     }
 }
 
-band_tool_2();
+module double_ended_band_tool(bent=false){
+    roc=2;
+    middle_w = 2*column_base_radius()+1.5+2*(band_tool_h-roc)+0.5; //width of the band anchor on the foot
+    
+    flex_l = roc*3.14/2; //length of the flexible linkers
+    
+    // We make two tools, spaced out by a flexible joiner
+    reflect([0,1,0]) translate([0,middle_w/2+flex_l,0]) if(bent){
+        translate([0,roc-3,roc]) rotate([90,0,0]) band_tool_2(handle=false);
+    }else{
+        band_tool_2(handle=false);
+    }
+    //flexible links between the two tools and the middle part
+    if(bent){
+        reflect([0,1,0]) translate([0,middle_w/2,roc]) difference(){
+            rotate([0,90,0]) cylinder(r=roc,h=ns[0],center=true);
+            rotate([0,90,0]) cylinder(r=roc-0.5,h=99,center=true);
+            translate([-99,-99,0]) cube(999);
+            translate([-99,-999,-99]) cube(999);
+        }
+        translate([0,0,0.5/2]) cube([ns[0],middle_w+2*d,0.5],center=true);
+    }else{
+        translate([0,0,0.5/2]) cube([ns[0],middle_w+2*flex_l+2*d,0.5],center=true);
+    }
+    //thicker middle part to support the two ends
+    hull(){
+        translate([0,0,0.5]) cube([ns[0],middle_w,d],center=true);
+        translate([0,0,roc]) cube([ns[0],middle_w+2*(roc-0.5),d],center=true);
+    }
+}
+double_ended_band_tool(bent=false);
 //translate([10,0,0]) nut_tool();
