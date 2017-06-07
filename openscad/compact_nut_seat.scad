@@ -201,14 +201,15 @@ module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, mo
         rotate([tilt,0,0]) translate([0,0,h-nut_size-1.5-nut_slot[2]]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
     }
 }
-/*
+
 module screw_seat_outline(h=999,adjustment=0,center=false){
-    // The bottom of a screw seat (unused?)
-    w = ss_outer()[0];
-    l = ss_outer()[1];
-    a = adjustment;
-	resize([w+a, l+a, h]) cylinder(r=20, h=h, center=center);
-}*/
+    // The bottom of a screw seat
+    //w = ss_outer()[0];
+    //l = ss_outer()[1];
+    //a = adjustment;
+	//resize([w+a, l+a, h]) cylinder(r=20, h=h, center=center);
+    linear_extrude(h,center=center) offset(adjustment) projection(cut=true) translate([0,0,-1]) screw_seat_shell();
+}
 
 
 module tilted_actuator(pivot_z, pivot_w, lever, column_h=actuator_h, base_w = column_base_r*2){
