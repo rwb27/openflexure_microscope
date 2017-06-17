@@ -147,6 +147,10 @@ module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=s
         union(){
             sequential_hull(){
                 translate([0,back,bottom+clip_t]) rotate([-90,0,0])cylinder(r=clip_t,h=2); //foot
+                union(){ //platform for mounting screw
+                    translate([-w/2,back,-dt_taper]) cube([w,d,dt_taper]);
+                    translate([0,illumination_clip_y+3,-dt_taper]) cylinder(d=w, h=dt_taper);
+                }
                 translate([-w/2,back,-dt_taper]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
                 translate([-w/2,back,clip_h+dt_taper]) cube([w,b+stage_clearance-2,d]); //dovetail mounts here
                 translate([-w/2,back,clip_h+hole_h]) cube([w,b,d]); //start of main shaft
@@ -179,11 +183,27 @@ module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=s
         difference(){
             hull(){
                 translate([0,back+t,-dt_taper]) cube([hw,999,2*d],center=true); //bottom of dovetail mount
-                translate([0,back+t,bottom+clip_t]) rotate([-90,0,0]) cylinder(r=d,h=d); //foot
+                translate([0,back+t,bottom+clip_t]) rotate([-90,0,0]) cylinder(r=d,h=999,center=true); //foot
             }
             translate([0,0,bottom*2/3]) mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
-            translate([-999,illumination_clip_y-1,-999]) cube(999*2); //allow bridge in front of hole
         }
+        // hole mounting screw (if dovetail is wobbly)
+        translate(illumination_arm_screws[0]+[0,0,d]) mirror([0,0,1]){
+            translate([0,0,dt_taper]) hull() repeat([0,99,0],2) cylinder(d=w-2,h=999);
+            cylinder(d=3*1.25, h=999);
+            reflect([0,1,0]) hull(){
+                cylinder(r=d,h=dt_taper+2*d);
+                translate([-hw/2,hw/2,0]) cube([hw,3,dt_taper+2*d]);
+            }
+        }
+        // entry hole for an M3 screw to mount it to a box
+        translate([0,back+t+3/2,clip_h/2]) rotate([90,0,0]) cylinder(d=3.5,h=999, center=true);
+    }
+    // nut trap for mounting to box
+    translate([0,back+t+3/2,clip_h/2]) difference(){
+        cube([8,4,6],center=true);
+        nut_y(3, h=3, extra_height=0, fudge=1.3, top_access=true, center=true);
+        cube([2*3*1.3*cos(30)*0.9,999,3.5],center=true);
     }
 }
 
@@ -204,7 +224,7 @@ module illumination_horizontal_arm(){
                 if(!condenser)translate([0,0,sample_z+wd]) cylinder(r=6,h=arm_h+4,$fn=32);
             }
             if(condenser){
-                translate([0,condenser_clip_y,sample_z+wd+4]+shift) rotate([-90,180,0]) dovetail_clip_y([objective_clip_w+4,8,8+d],t=clip_t,taper=0,endstop=false);
+                translate([0,condenser_clip_y,sample_z+wd+4+8]+shift) rotate(180) mirror([0,0,1]) dovetail_clip([objective_clip_w+4,8,8+d],t=clip_t,slope_front=2,solid_bottom=0.25); //rotate([-90,180,0]) dovetail_clip_y([objective_clip_w+4,8,8+d],t=clip_t,taper=0,endstop=false);
             }
         }
         
@@ -215,8 +235,6 @@ module illumination_horizontal_arm(){
             translate([-arm_w/2-0.5,back,sample_z+wd+3]) cube([arm_w+1,2*b,b]);
             translate([-arm_w/2-0.5,back+2*b,sample_z+wd+3+t]) cube([arm_w+1,d,b-t]);
             translate([-3,-12,sample_z+wd+4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.  This is the end of the channel, at the opening where the LED sits.
-            translate([-3,-12,sample_z+wd+4+4]) cube([6,12,10]);
-            translate([0,0,sample_z+wd+4+4]) cylinder(r=2.5,h=999);
         }
         // mounting slot to screw onto vertical arm
         translate([0,back+b,sample_z+wd+b+3]) hull(){
