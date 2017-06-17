@@ -303,7 +303,7 @@ module camera_mount_body(
 
 module rms_mount_and_tube_lens_gripper(){
     // This assembly holds an RMS objective and a correcting
-    // "tube" lens.
+    // "tube" lens.  I dont think this is used any more...
     union(){
         lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
         lens_gripper(lens_r=tube_lens_r, lens_h=3.5,h=6);
@@ -315,7 +315,7 @@ module rms_mount_and_tube_lens_gripper(){
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=0.65){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -374,9 +374,9 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         // A pair of nested lens grippers to hold the objective
         translate([0,0,lens_assembly_z]){
             // gripper for the objective
-            lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
+            lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r, t=gripper_t);
             // gripper for the tube lens
-            lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5);
+            lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5, t=gripper_t);
             // pedestal to raise the tube lens up within the gripper
             difference(){
                 cylinder(r=tube_lens_aperture + 1.0,h=2);
@@ -484,6 +484,7 @@ difference(){
         tube_lens_r=16/2+0.1, 
         objective_parfocal_distance=35,
         fluorescence=false,
+        gripper_t=0.65,
         tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
     );//*/
     /*/ Optics module for USB camera's M12 lens
@@ -499,5 +500,6 @@ difference(){
     //C270 lens could be a trylinder gripper, with lens_r=12.0, lens_h=1 and a pedestal that is smaller than the gripper by more than the usual amount (say 1mm space)
     //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();
     //mirror([0,1,0]) fl_led_mount();
+    //cylinder(r=999,h=36,center=true);
 }
 //condenser();
