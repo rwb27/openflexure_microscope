@@ -119,70 +119,122 @@ module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=s
 
 module illumination_horizontal_arm(){
     // Arm that joins the illumination/condenser to the vertical arm at the back
-    difference(){
+    translate([0,0,sample_z+wd]) difference(){
         $fn=32;
+        w1 = arm_w+2*t+1; //width of the post end of the arm
+        w2 = condenser ? condenser_clip_w : w1;
         union(){
             sequential_hull(){
-                translate([0,back+b,sample_z+wd+b+3]) resize([arm_w,b*2,t]) cylinder(r=b+1+t,h=1);
-                translate([-arm_w/2-t-0.5,back+b/2,sample_z+wd+3]) cube([arm_w+2*t+1,d,b+t]);
-                translate([-arm_w/2-t-0.5,back+b*2,sample_z+wd+3]) cube([arm_w+2*t+1,d,b+t]);
+                translate([0,back+b-2,b+3]) cylinder(d=w1,h=t);
+                translate([-w1/2,back+b/2,3]) cube([w1,d,b+t]);
+                translate([-w2/2,back+b*2,3]) cube([w2,d,b+t]);
                 if(condenser){
-                    translate([-condenser_clip_w/2,condenser_clip_y-8,sample_z+wd+4]+shift) cube([condenser_clip_w,d,8]);
+                    translate([-condenser_clip_w/2,condenser_clip_y-8,4]+shift) cube([condenser_clip_w,d,8]);
                 }else{
-                    translate([-arm_w/2,-6-4,sample_z+wd+4]) cube([arm_w,d,arm_h]);
+                    translate([-arm_w/2,-6-4,4]) cube([arm_w,d,arm_h]);
                 }
-                if(!condenser)translate([0,0,sample_z+wd]) cylinder(r=6,h=arm_h+4,$fn=32);
+                if(!condenser) cylinder(r=6,h=arm_h+4,$fn=32);
             }
             if(condenser){
-                translate([0,condenser_clip_y,sample_z+wd+4+8]+shift) rotate(180) mirror([0,0,1]) dovetail_clip([objective_clip_w+4,8,8+d],t=clip_t,slope_front=0,solid_bottom=0.2); //rotate([-90,180,0]) dovetail_clip_y([objective_clip_w+4,8,8+d],t=clip_t,taper=0,endstop=false);
+                translate([0,condenser_clip_y,4+8]+shift) rotate(180) mirror([0,0,1]) dovetail_clip([objective_clip_w+4,8,8+d],t=clip_t,slope_front=0,solid_bottom=0.2); //rotate([-90,180,0]) dovetail_clip_y([objective_clip_w+4,8,8+d],t=clip_t,taper=0,endstop=false);
             }
         }
         
         // make the structure hollow, for faster printing and 
         // cable management
         hw = clip_w - 2*clip_t; // width of hole near dovetail clip
+        iw1 = w1 - 2*t; //inner width near post
+        iw2 = w2 - 2*2; //inner width near dovetail
         sequential_hull(){
-            translate([-arm_w/2-0.5,back,sample_z+wd+3]) cube([arm_w+1,2*b,b]);
-            translate([-arm_w/2-0.5,back+2*b,sample_z+wd+3+t]) cube([arm_w+1,d,b-t]);
-            translate([-3,-12,sample_z+wd+4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.  This is the end of the channel, at the opening where the LED sits.
+            translate([-iw1/2,back,3]) cube([iw1,2*b,b]);
+            translate([-iw2/2,back+2*b,3+t]) cube([iw2,d,b-t]);
+            if(condenser){
+                translate([-iw2/2,condenser_clip_y-2,3+t]) cube([iw2,d,b-t]);
+            }else{
+                translate([-3,-12,4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.  This is the end of the channel, at the opening where the LED sits.
+            }
         }
         // mounting slot to screw onto vertical arm
-        translate([0,back+b,sample_z+wd+b+3]) hull(){
+        translate([0,back+b,b+3]) hull(){
             repeat([0,4,0], 2, center=true) cylinder(d=3*1.25, h=10,center=true);
         }
         
         // enlarge the channel a bit next to the LED to allow it to be put in LED-first
         sequential_hull(){
-            translate([-arm_w/2-0.5,back+2*b,sample_z+wd+3+t]) cube([arm_w+1,d,b-t]);
-            translate([0,-12,sample_z+wd+4+4])  rotate([90,0,0]) cylinder(r=2.5, h=d);
-            translate([-3,-4,sample_z+wd+4+4]) cube([6,d,10]);
+            translate([-arm_w/2-0.5,back+2*b,3+t]) cube([arm_w+1,d,b-t]);
+            translate([0,-12,4+4])  rotate([90,0,0]) cylinder(r=2.5, h=d);
+            translate([-3,-4,4+4]) cube([6,d,10]);
         }
         
         // Holes for LED and beam (only relevant if condenser=false)
-        translate([0,0,sample_z+10+8.5]){
+        translate([0,0,-wd+10+8.5]){
             cylinder(r=led_d*1.1/2,h=999,center=true,$fn=24);
             cylinder(r=(led_d+1)*1.2/2,h=999,$fn=24);
         }
-        translate([0,0,sample_z]) cylinder(h=wd+4,r1=(wd+4)*tan(led_angle/2)+3/2,r2=3/2);
+        translate([0,0,-wd]) cylinder(h=wd+4,r1=(wd+4)*tan(led_angle/2)+3/2,r2=3/2);
     }
 }
 
+module illumination_horizontal_arm_condenser(){
+    // Arm that joins the illumination/condenser to the vertical arm at the back
+    translate([0,0,sample_z+wd+b+3+t]) mirror([0,0,1]) difference(){
+        $fn=32;
+        w1 = arm_w+2*t+1; //width of the post end of the arm
+        w2 = condenser_clip_w;
+        cclip_y = condenser_clip_y;
+        h = b+t;
+        union(){
+            sequential_hull(){
+                translate([0,back+b-2,0]) cylinder(d=w1,h=t);
+                translate([-w1/2,back+b-2,0]) cube([w1,d,h]);
+                translate([-w1/2,back+b+2,0]) cube([w1,d,h]);
+                translate([-w2/2,back+b*2,0]) cube([w2,d,h]);
+                translate([-w2/2,cclip_y-8,0]) cube([w2,d,h]);
+            }
+            translate([0,cclip_y,0]) rotate(180) dovetail_clip([w2,8,h],t=clip_t,slope_front=0,solid_bottom=0.2);
+        }
+        
+        // make the structure hollow, for faster printing and 
+        // cable management
+        iw1 = w1 - 2*t; //inner width near post
+        iw2 = w2 - 2*clip_t; //inner width near dovetail
+        ih = h-2*t; //inner height
+        sequential_hull(){
+            translate([-iw1/2,back,t]) cube([iw1,2*b,999]);
+            translate([-iw1/2,back+b+2,t]) cube([iw1,d,ih]);
+            translate([-iw2/2,back+2*b,t]) cube([iw2,d,ih]);
+            translate([-iw2/2,cclip_y-2,t]) cube([iw2,d,ih]);
+        }
+        // mounting slot to screw onto vertical arm
+        translate([0,back+b,0]) hull(){
+            repeat([0,4,0], 2, center=true) cylinder(d=3*1.25, h=10,center=true);
+        }
+        // hole for cable management and to allow more flex of the clip
+        hull() reflect([1,0,0]) translate([-iw2/2+2,0,0]){
+            translate([0,cclip_y-4,0]) cube([4,d,999],center=true);
+            translate([0,max(back+2*b+4+2, cclip_y-11),0]) cylinder(r=2,h=999,center=true); //make the clip arms 11+2=13mm long
+        }
+    }
+}
 module print_ready_parts(){
     // make a nice, compact assembly of all the parts, sitting on z=0
     translate([0,0,-back]) rotate([90,0,0]) back_foot_and_arm();
-    translate([clip_w+3,back,sample_z+wd+b+3+t]) rotate([180,0,0])  illumination_horizontal_arm();
-
     if(condenser){
         translate([clip_w+3,back-3,0]) condenser();
+        translate([clip_w+3,back,sample_z+wd+b+3+t]) rotate([180,0,0])  illumination_horizontal_arm_condenser();
+    }else{
+        translate([clip_w+3,back,sample_z+wd+b+3+t]) rotate([180,0,0])  illumination_horizontal_arm();
     }
 }
 
 module parts_in_situ(){
     // generate all the parts as they would appear in the microscope.
     back_foot_and_arm();
-    illumination_horizontal_arm();
     if(condenser){
+        illumination_horizontal_arm_condenser();
         translate([0,0,sample_z+wd+16]) rotate([0,180,0]) condenser();
+    }else{
+        illumination_horizontal_arm();
     }
 }
 
