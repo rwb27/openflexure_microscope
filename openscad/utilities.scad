@@ -76,7 +76,7 @@ module nut_from_bottom(d,h=-1,fudge=1.2,shaft=true,chamfer_r=0.75,chamfer_h=0.75
 }
 //nut_from_bottom(4,chamfer_h=4,h=7);
 
-module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,top_access=false){ //make a nut, for metric bolt of nominal diameter d
+module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,shaft_length=0,top_access=false){ //make a nut, for metric bolt of nominal diameter d
 	//d: nominal bolt diameter (e.g. 3 for M3)
 	//h: height of nut
 	//center: works as for cylinder
@@ -88,8 +88,9 @@ module nut_y(d,h=-1,center=false,fudge=1.15,extra_height=0.7,shaft=false,top_acc
     union(){
 		rotate([-90,top_access?30:0,0]) cylinder(h=h,center=center,r=r,$fn=6);
 		translate([-r*sin(30),center?-h/2:0,0]) cube([2*r*sin(30),h,r*cos(30)+extra_height]);
-		if(shaft){
-			translate([0,h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=999999,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height); 
+		if(shaft || shaft_length > 0){
+            sl = shaft_length >0 ? shaft_length : 9999;
+			translate([0,h/2,0]) reflect([0,1,0]) cylinder_with_45deg_top(h=sl,r=d/2*1.05*fudge,$fn=16,extra_height=extra_height); 
 			//the reason I reflect rather than use center=true is that the latter 
 			//fails in fast preview mode (I guess because of the lack of points 
 			//inside the nut).
