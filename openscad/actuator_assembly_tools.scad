@@ -114,19 +114,27 @@ band_tool_h = 3;
 
 module prong_frame(){
     //Move the prongs out and tilt them slightly
-    smatrix(xz=0.3, xt=2.25, yt=band_tool_l) children();
+    smatrix(xz=0.3, xt=1.9, yt=band_tool_l) children();
+}
+
+blade_anchor = [0,-12,0]; //position of the bottom of the slot
+
+module blade_point(pos, d1=1.5, d2=1.5, h=d){
+    union(){
+        translate(blade_anchor + [0,0,pos[2]]) cylinder(d=d1, h=h);
+        translate(pos) cylinder(d=d2, h=h);
+    }
 }
 
 module band_tool_2(handle=true){
     //forked tool to insert the elastic band
     h = band_tool_h; //overall height of the band insertion tool
-    blade_anchor = [0,-20,0];
     union(){
         // the two "blades" that support the band either side of the hook
         reflect([1,0,0]) prong_frame() sequential_hull(){
-            repeat([0,-20,0],2) translate([0,1.5,0]) cylinder(d=1.5,h=0.5);
-            repeat([0,-20,0],2) translate([0,0,h-1]) cylinder(d=1.5,h=d);
-            repeat([0,-20,0],2) translate([0.3,0.5,h-d]) cylinder(d=2.1,h=d);
+            blade_point([0,1.5,0], h=0.5);
+            blade_point([0,0,h-1]);
+            blade_point([0.3,0.5,h-d],d2=2.1);
         }
         // the flat bottom that passes between the hook and the outside of the column
         hull() reflect([1,0,0]) prong_frame(){ //bottom of the tip

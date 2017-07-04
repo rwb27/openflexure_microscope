@@ -11,8 +11,8 @@ include <microscope_parameters.scad>;
 
 d = 0.05;
 nut_size = 3;
-nut_w = 6.3*1.03; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)
-nut_h = 2.4;
+nut_w = 6.3*1.1; //nominal width of the nut (vertex-to-vertex, bigger than flat-flat distance - 6.3 is theoretical value and the 1.03 is determined by experiment)
+nut_h = 2.6;
 nut_slot = [nut_w*sin(60), nut_w, nut_h+0.4];
 shaft_r = nut_size/2 * 1.15; //radius of hole to cut for screw
 column_base_r = shaft_r + 2; //radius of the bottom of the actuator column
