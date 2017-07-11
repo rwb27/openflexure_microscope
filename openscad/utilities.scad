@@ -384,9 +384,33 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, dz=0.5, center=fal
         translate([0,0,center ? -dz : dz]) trylinder(r=corner_roc, flat=flat_l, h=dz+d);
     }
 }
+module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, screw=true){
+    // A cylinder with bridges around the edges, aiming to make
+    // a hole with nicely feathered edges.
+    // mean_r is the radius of the thing you're inserting.  The
+    // "hard" edge of the hole will be mean_r + dr/2 and the "soft"
+    // inner edge will be at mean_r - dr/2;
+    // bridge_facets determines the number of bridges used - can be
+    // safely left at the default value.
+    // center has the same meaning as in cylinder.
+    inner_r = mean_r - dr/2;
+    outer_r = mean_r + dr/2;
+    bridge_facets = bridge_facets > 0 ? bridge_facets : floor(180/acos(inner_r/outer_r)); //sensible default for number of bridges
+    difference(){
+        cylinder(r=outer_r, h=h, center=center);
+        
+        repeat([0,0,2*dz], ceil(h/dz/2), center=center) for(i=[1:bridge_facets]){
+            rotate(i*360/bridge_facets) translate([-999,inner_r,screw ? i/bridge_facets*2*dz : 0]) cube([999*2,999,dz]);
+        }
+    }
+}
+
+module threaded_hole(outer_r, inner_r
+            
+        
 difference(){
-    cylinder(r=6, h=5);
-    deformable_hole_trylinder(4.5/2,6.3/2,h=20, center=true);
+    cylinder(r=16, h=5);
+    self_tap_hole(20.4/2, dr=1.2, dz=0.7055/2, h=11, center=true, bridge_facets=5);
 }
 
 //trylinder_gripper();
