@@ -46,7 +46,7 @@ z_strut_l = big_stage?20:15; //length of struts supporting Z carriage
 objective_clip_y = big_stage?12:6; // y position of clip for optics
 objective_clip_w = 10; // width of the dovetail clip for the optics
 foot_height = 15; //height of the feet (distance from bottom of body to table)
-carrier_y = 75-19; //y position of carrier (i.e. beam height - stage thickness
+carrier_y = 75-20.18; //y position of carrier (i.e. beam height - stage thickness
 carrier_w = 64; //width of the stage we're mounting it on
 
 // These variables set the dimensions of flexures

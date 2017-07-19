@@ -365,7 +365,7 @@ union(){
 			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 		}
 
-        //mounting hole for the bolt in the middle of the +y face
+        //mounting holes for the bolt in the middle of the +y face
         translate([0,0,wall_h/2]){
             cylinder_with_45deg_top(r=11/2,h=carrier_y-6);
             cylinder_with_45deg_top(r=7/2,h=999);
@@ -374,6 +374,13 @@ union(){
             mirror([0,1,0]) hull(){
                 cylinder_with_45deg_top(r=11/2,h=6);
                 rotate([6,0,-6]) cylinder_with_45deg_top(r=11/2,h=14);
+            }
+            cylinder_with_45deg_top(r=7/2,h=8, center=true);
+        }
+        reflect([1,0,0]) translate([25,carrier_y-wall_t*2, wall_h/2]){
+            mirror([0,1,0]) hull(){
+                cylinder_with_45deg_top(r=11/2,h=6);
+                rotate([6,0,6]) cylinder_with_45deg_top(r=11/2,h=14);
             }
             cylinder_with_45deg_top(r=7/2,h=8, center=true);
         }
