@@ -66,7 +66,7 @@ module leg(brace=stage_flex_w){
 }
 module actuator(){
     // A leg that supports the stage, plus a lever to tilt it.
-    // Includes the flexible nut seat actuating column.
+    // No longer includes the flexible nut seat actuating column.
     // TODO: find the code that unifies this with leg()
 	brace=20;
     fw=stage_flex_w;
@@ -84,8 +84,6 @@ module actuator(){
             //don't foul the actuator column
             translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
         }
-		//nut seat
-		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h); 
 	}
 }
 module actuator_silhouette(h=999){
@@ -93,12 +91,7 @@ module actuator_silhouette(h=999){
     // actuators.
     linear_extrude(2*h,center=true) minkowski(){
         circle(r=zflex_l,$fn=12);
-        projection() difference(){
-            actuator();
-            // cut off the actuator column - this causes problems and
-            // the inside of the screw seat is already chopped out...
-            translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
-        }
+        projection() actuator();
     }
 }
 
@@ -278,7 +271,10 @@ union(){
 
 	//legs
 	reflect([1,0,0]) leg_frame(135) leg();
-	each_actuator() actuator();
+	each_actuator(){
+        actuator();
+		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h, join_to_casing=true); 
+    }
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
         w=stage_flex_w;
