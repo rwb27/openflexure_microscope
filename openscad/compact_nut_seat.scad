@@ -160,12 +160,12 @@ module screw_seat_shell(h=1, tilt=0){
     }
 }
 
-module motor_lugs(h=20, tilt=0){
+module motor_lugs(h=20, tilt=0, angle=0){
     // lugs to mount a micro geared stepper motor on a screw_seat.
     motor_shaft_pos=[0,-20,h+2]; //see height of screw_seat_shell above
     motor_screw_pos=[35/2,motor_shaft_pos[1]+7.8,motor_shaft_pos[2]+10];
     screw_r = sqrt(pow(motor_screw_pos[0],2)+pow(motor_screw_pos[1],2));
-    rotate([tilt,0,0]) reflect([1,0,0]) difference(){
+    rotate([tilt,0,0]) rotate(angle) reflect([1,0,0]) difference(){
         union(){
             hull(){
                 translate(motor_screw_pos-[0,0,8]) cylinder(r=4,h=8);
@@ -176,13 +176,13 @@ module motor_lugs(h=20, tilt=0){
         translate([0,0,h]) cylinder(r1=8,r2=17,h=2+d);
         translate([0,0,h+2]) cylinder(h=999,r=17);
         //hollow inside of the structure
-        nut_seat_void(h=h, tilt=tilt);
+        rotate(-angle) nut_seat_void(h=h, tilt=tilt);
         //mounting screws
         translate(motor_screw_pos) cylinder(r=1.9,h=20,center=true);
     }
 }
 
-module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false){
+module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false, lug_angle=0){
     // This forms a hollow column, usually built around an actuator_column to
     // support the screw (see screw_seat_shell)
     tilt = 0; //currently, only vertical ones are supported.
@@ -190,7 +190,7 @@ module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, mo
     difference(){
         union(){
             screw_seat_shell(h=h + travel);
-            if(motor_lugs) rotate(180) motor_lugs(h=h + travel);
+            if(motor_lugs) rotate(180) motor_lugs(h=h + travel, angle=lug_angle);
         }
         nut_seat_void(h=h + travel); //hollow out the inside
         

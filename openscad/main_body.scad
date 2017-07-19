@@ -227,9 +227,7 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // (i.e. it's sheared rather than tilted).    These form the
     // stiffening "wall" that runs around the base of 
     // the legs
-    hull() repeat([tan(y_tilt), -tan(x_tilt), 1]*(h-d), 2){
-        cylinder(r=r, h=d, $fn=8);
-    }
+    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
 module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/2){
     // A thin cylinder, close to one of the legs.  It
@@ -301,20 +299,6 @@ union(){
         translate([0,0,flex_z2+1]) rotate(45) hole_from_bottom(hole_r,h=999,base_w=2*(leg_r+leg_middle_w/2-stage_flex_w - hole_r));
 		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,flex_z2+1.5]) cylinder(r=3/2*0.95,h=999); //mounting holes
 	}
-	
-	//z axis
-    difference(){
-        z_axis(); //some of the condenser mount screws pass the Z axis
-        condenser_mounting_screws(h=18,d=3*0.95,center=true);
-    }
-    z_actuator();
-    objective_clip_3();
-    if(big_stage) translate([0,z_carriage_y-1,14]){
-        //tie the objective clip to the sides during printing.
-        anchor_r = leg_r - zflex[1] - 14*flex_a;
-        w = 2*(anchor_r*sqrt(2) - z_carriage_y-0.25);
-        cube([w, 1, 0.5], center=true); 
-    }
 
 	//base
 	difference(){
@@ -345,15 +329,23 @@ union(){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
                 }
-                // Link the Z actuator to the wall
-                add_roof(zbwall_h-2) reflect([1,0,0]) hull(){
-                    translate([-7/2-wall_t/2,z_nut_y,0]) wall_vertex(h=zbwall_h);
+                // Link the +y side of the inner wall to the bottom
+                hull() reflect([1,0,0]){
+                    translate([-6,carrier_y-wall_t/2,0]) wall_vertex();
                     inner_wall_vertex(45, leg_outer_w/2+wall_t/2, zbwall_h);
                 }
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
-                    translate([0,z_nut_y+ss_outer()[1]/2-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
+                    leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,0]) wall_vertex();
+                    translate([-(carrier_w+wall_t)/2,carrier_y-wall_t/2,0]) wall_vertex();
+                    translate([0,carrier_y-wall_t/2,0]) wall_vertex();
+                    translate([0,carrier_y-3*wall_t/2,0]) wall_vertex();
+                }
+                // Reinforce the triangle between the actuators and the stage
+                reflect([1,0,0]) hull(){
+                    leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,0]) wall_vertex(h=wall_h/2);
+                    translate([0,carrier_y-3*wall_t/2,0]) wall_vertex(h=wall_h/2);
+                    translate([0,leg_r*sqrt(2),0]) wall_vertex(h=wall_h/2);
                 }
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);
@@ -372,27 +364,22 @@ union(){
 			actuator_silhouette(xy_actuator_travel+actuator[2]);
 			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 		}
-		//Z actuator cut-out
-		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 
-		// Central cut-out for Z axis, inc. actuator arm
-        intersection(){
-            sequential_hull(){
-                h=999;
-                translate([0,z_nut_y,0]) cube([7,d,h],center=true);
-                translate([0,z_flexure_x+1.5-7/2,0]) cube([7,2*d,h],center=true);
-                translate([0,0,0]) cube([2*(z_flexure_x+0.5),1,h],center=true);
-                translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
-                translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
+        //mounting hole for the bolt in the middle of the +y face
+        translate([0,0,wall_h/2]){
+            cylinder_with_45deg_top(r=11/2,h=carrier_y-6);
+            cylinder_with_45deg_top(r=7/2,h=999);
+        }
+        reflect([1,0,0]) translate([12.5,carrier_y-wall_t*2, wall_h/2]){
+            mirror([0,1,0]) hull(){
+                cylinder_with_45deg_top(r=11/2,h=6);
+                rotate([6,0,-6]) cylinder_with_45deg_top(r=11/2,h=14);
             }
-            // Limit the height so it slopes up gently to allow for
-            // actuator travel, etc.
-            sequential_hull(){
-                translate([0,-999,0]) cube([999,d,z_strut_t+1]*2,center=true);
-                cube([999,d,z_strut_t+1]*2,center=true);
-                translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
-            }
-		}
+            cylinder_with_45deg_top(r=7/2,h=8, center=true);
+        }
+        
+        //through hole for beam
+        cylinder(r=hole_r-d, h=999, center=true, $fn=32);
         
 		//post mounting holes
 		//reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
@@ -412,10 +399,7 @@ union(){
     
 	//Actuator housings (screw seats and motor mounts)
 	each_actuator() translate([0,actuating_nut_r,0]){
-        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2);
-    }
-	translate([0,z_nut_y,0]){
-        screw_seat(h=actuator_h, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
+        screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2, lug_angle=90);
     }
 }
 

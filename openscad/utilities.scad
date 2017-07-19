@@ -383,10 +383,10 @@ module deformable_hole_trylinder(r1, r2, h=99, corner_roc=-1, dz=0.5, center=fal
         translate([0,0,center ? -dz : dz]) trylinder(r=corner_roc, flat=flat_l, h=dz+d);
     }
 }
-difference(){
-    cylinder(r=6, h=5);
-    deformable_hole_trylinder(4.5/2,6.3/2,h=20, center=true);
-}
+//difference(){
+//    cylinder(r=6, h=5);
+//    deformable_hole_trylinder(4.5/2,6.3/2,h=20, center=true);
+//}
 
 //trylinder_gripper();
 //feather_vertical_edges(fin_r=1){

@@ -16,7 +16,10 @@
 * these later...                                                  *
 *                                                                 *
 * (c) Richard Bowman, January 2016                                *
-* Released under the CERN Open Hardware License                   *
+* Released under the CERN Open Hardware License             
+
+* Hacked together for another experiment July 2017
+*
 *                                                                 *
 * http://www.github.com/rwb27/openflexure_microscope              *
 * http://www.docubricks.com/projects/openflexure-microscope       *
@@ -28,9 +31,9 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = true;
-motor_lugs = false;
-version_numstring = "5.16.11";
+big_stage = false;
+motor_lugs = true;
+version_numstring = "5.16.11ams";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -43,6 +46,8 @@ z_strut_l = big_stage?20:15; //length of struts supporting Z carriage
 objective_clip_y = big_stage?12:6; // y position of clip for optics
 objective_clip_w = 10; // width of the dovetail clip for the optics
 foot_height = 15; //height of the feet (distance from bottom of body to table)
+carrier_y = 75-19; //y position of carrier (i.e. beam height - stage thickness
+carrier_w = 64; //width of the stage we're mounting it on
 
 // These variables set the dimensions of flexures
 // You might want to tweak them if your material (or printer)
