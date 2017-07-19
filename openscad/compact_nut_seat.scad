@@ -134,6 +134,16 @@ module actuator_end_cutout(lever_tip=3-0.5 ){
     }
 }
 
+module nut_seat_silhouette(r=ss_outer()[1]/2, dx=ss_outer()[0]-ss_outer()[1], offset=0){
+    // a (2D) shape made from the convex hull of two circles
+    //    hull() reflect([1,0]) translate([x,0]) circle(r=r);
+    // we don't actually build it like that though, as the hull is a slow operation...
+    union(){
+        reflect([1,0]) translate([dx/2,0]) circle(r=r+offset);
+        square([dx,2*(r+offset)], center=true);
+    }
+}
+
 module nut_seat_void(h=1, tilt=0, center=true){
     // Inside of the actuator column housing (should be subtracted
     // h is the height of the top (excluding nut hole)
@@ -142,7 +152,7 @@ module nut_seat_void(h=1, tilt=0, center=true){
     r = column_core[1]/2;
     x = column_core[0]/2 - r;
     rotate([tilt,0,0]) intersection(){
-        hull() reflect([1,0,0]) translate([x,0,0]) cylinder(r=r,h=999,center=center);
+        linear_extrude(999,center=center) nut_seat_silhouette(offset=-wall_t);
         translate([0,0,h]) rotate(90) hole_from_bottom(nut_size*1.1/2, h=999, base_w=999);
     }
 }
@@ -154,12 +164,11 @@ module screw_seat_shell(h=1, tilt=0){
     // (see screw_seat)
     r = ss_outer(h)[1]/2;
     x = ss_outer(h)[0]/2 - r;
+    double_h = ss_outer(h)[2];
     difference(){
-        rotate([tilt,0,0]) resize(ss_outer(h)) hull(){
-            reflect([1,0,0]) translate([x,0,0]){
-                cylinder(r=r,h=(h+0.5)*2,center=true);
-                cylinder(r=max(r-3,3.5),h=(h+2)*2,center=true);
-            }
+        rotate([tilt,0,0]) hull(){
+            linear_extrude(double_h-3, center=true) nut_seat_silhouette();
+            linear_extrude(double_h, center=true) nut_seat_silhouette(offset=-2);
         }
         mirror([0,0,1]) cylinder(r=999,h=999,$fn=8); //ground
         // hole through which we can insert the nut
@@ -215,7 +224,7 @@ module screw_seat_outline(h=999,adjustment=0,center=false){
     //l = ss_outer()[1];
     //a = adjustment;
 	//resize([w+a, l+a, h]) cylinder(r=20, h=h, center=center);
-    linear_extrude(h,center=center) offset(adjustment) projection(cut=true) translate([0,0,-1]) screw_seat_shell();
+    linear_extrude(h,center=center) nut_seat_silhouette(offset=adjustment); //offset(adjustment) projection(cut=true) translate([0,0,-1]) screw_seat_shell();
 }
 
 
@@ -372,10 +381,10 @@ translate([40,0,0]){
 //    tilted_actuator(25,25,50, base_w=6);
 }
 //echo(nut_slot);
-/*/
+//
 difference(){
     union(){
-        screw_seat(25, motor_lugs=false);
+        screw_seat(25, motor_lugs=true);
 
         difference(){ //an example actuator rod
             translate([-3,-40,0]) cube([6,40,5]);
