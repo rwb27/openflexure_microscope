@@ -354,8 +354,6 @@ union(){
             //screw supports for adjustment of condenser angle/position
             // (only useful if screws=true in the illumination arm)
             condenser_mounting_screws(h=10,d=6,center=false);
-            // clip for illumination/back foot (if not using screws)
-            translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
                     
 		}
         //////  Things we need to cut out holes for... ///////////
@@ -370,13 +368,15 @@ union(){
             cylinder_with_45deg_top(r=11/2,h=carrier_y-6);
             cylinder_with_45deg_top(r=7/2,h=999);
         }
-        reflect([1,0,0]) translate([12.5,carrier_y-wall_t*2, wall_h/2]){
-            mirror([0,1,0]) hull(){
-                cylinder_with_45deg_top(r=11/2,h=6);
-                rotate([6,0,-6]) cylinder_with_45deg_top(r=11/2,h=14);
-            }
-            cylinder_with_45deg_top(r=7/2,h=8, center=true);
-        }
+        //mounting holes 25mm apart, with clearance for bolt insertion
+        //reflect([1,0,0]) translate([12.5,carrier_y-wall_t*2, wall_h/2]){
+        //    mirror([0,1,0]) hull(){
+        //        cylinder_with_45deg_top(r=11/2,h=6);
+        //        rotate([6,0,-6]) cylinder_with_45deg_top(r=11/2,h=14);
+        //    }
+        //    cylinder_with_45deg_top(r=7/2,h=8, center=true);
+        //}
+        //similar holes 50mm apart, with differently-tilted bolt insertion
         reflect([1,0,0]) translate([25,carrier_y-wall_t*2, wall_h/2]){
             mirror([0,1,0]) hull(){
                 cylinder_with_45deg_top(r=11/2,h=6);
