@@ -55,10 +55,16 @@ module nut_trap_and_slot(r, slot, squeeze=0.9, trap_h=-1){
         
 }
 
-module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=false){
+module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casing=false, no_voids=false){
     // An "actuator column", a nearly-vertical tower, with a nut trap and hooks
     // for elastic bands at the top, usually attached to a flexure at the bottom.
     // There's often one of these inside the casing under an adjustment screw/gear
+    //h: height of the column
+    //tilt: the column is rotated about the x axis
+    //lever_tip: height of the actuating lever at its end (can taper up at 45 degrees)
+    //flip_nut_slot: if set to true, the nut is inserted from -y
+    //join_to_casing: if set to true, the column is joined to the casing by thin threads
+    //no_voids: don't leave a void for the nut or screw, used for the drilling jig.
     r1 = column_base_r; //size of the bottom part
     top = nut_slot + [3,3,nut_size + 1.5]; //size of the top part
     r2 = sqrt(top[0]*top[0]+top[1]*top[1])/2; //outer radius of top
@@ -93,11 +99,12 @@ module actuator_column(h, tilt=0, lever_tip=3, flip_nut_slot=false, join_to_casi
         }
         
         // nut trap
-        rotate([tilt,0,0]) rotate(slot_angle) translate([0,0,h-top[2]]) nut_trap_and_slot(nut_size, nut_slot);
+        if(!no_voids) rotate([tilt,0,0]) rotate(slot_angle) 
+            translate([0,0,h-top[2]]) nut_trap_and_slot(nut_size, nut_slot);
         
         // shaft for the screw
         // NB this is raised up from the bottom so it stays within the shaft - this may need to change depending on the length of screw we use...
-        rotate([tilt,0,0]) translate([0,0,lever_tip]){
+        if(!no_voids) rotate([tilt,0,0]) translate([0,0,lever_tip]){
             cylinder(r=shaft_r, h=999);
             translate([0,0,-lever_tip+1]) cylinder(r1=0, r=shaft_r, h=lever_tip-1); //pointy bottom (stronger)
         }
