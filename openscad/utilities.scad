@@ -405,7 +405,6 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
     }
 }
 
-module threaded_hole(outer_r, inner_r
             
         
 difference(){
