@@ -30,7 +30,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true;
 motor_lugs = false;
-version_numstring = "5.16.11";
+version_numstring = "5.16.12";
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?75:40; // height of the top of the stage
