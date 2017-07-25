@@ -66,7 +66,7 @@ module leg(brace=stage_flex_w){
 }
 module actuator(){
     // A leg that supports the stage, plus a lever to tilt it.
-    // Includes the flexible nut seat actuating column.
+    // No longer includes the flexible nut seat actuating column.
     // TODO: find the code that unifies this with leg()
 	brace=20;
     fw=stage_flex_w;
@@ -84,8 +84,6 @@ module actuator(){
             //don't foul the actuator column
             translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
         }
-		//nut seat
-		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h); 
 	}
 }
 module actuator_silhouette(h=999){
@@ -93,12 +91,7 @@ module actuator_silhouette(h=999){
     // actuators.
     linear_extrude(2*h,center=true) minkowski(){
         circle(r=zflex_l,$fn=12);
-        projection() difference(){
-            actuator();
-            // cut off the actuator column - this causes problems and
-            // the inside of the screw seat is already chopped out...
-            translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
-        }
+        projection() actuator();
     }
 }
 
@@ -227,9 +220,7 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // (i.e. it's sheared rather than tilted).    These form the
     // stiffening "wall" that runs around the base of 
     // the legs
-    hull() repeat([tan(y_tilt), -tan(x_tilt), 1]*(h-d), 2){
-        cylinder(r=r, h=d, $fn=8);
-    }
+    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
 module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/2){
     // A thin cylinder, close to one of the legs.  It
@@ -278,9 +269,12 @@ module place_on_wall(){
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
 union(){
 
-	//legs
+	//legs (incl. actuators)
 	reflect([1,0,0]) leg_frame(135) leg();
-	each_actuator() actuator();
+	each_actuator(){
+        actuator();
+		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h);
+    }
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
         w=stage_flex_w;
