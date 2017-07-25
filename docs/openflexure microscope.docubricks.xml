@@ -8,7 +8,7 @@
 -->
 <docubricks>
   <physical_part id="152726439">
-    <description>M3 Nuts (preferably brass), Qty: 3</description>
+    <description>M3 Nuts (preferably brass), Qty: 3 or 4</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>11355</supplier_part_num>
     <manufacturer_part_num />
@@ -18,7 +18,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>These nuts form part of the actuator.  Brass ones will have less friction and result in smoother motion, though it's possible they will wear out more quickly.</description>
+        <description>These nuts form part of the actuator.  Brass ones will have less friction and result in smoother motion, though it's possible they will wear out more quickly. An extra one is required by the adjustable illumination arm, which needn't be brass.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -1004,6 +1004,9 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <implementation type="physical_part" id="702468006" />
       <implementation type="physical_part" id="450509554" />
       <implementation type="physical_part" id="1995350498" />
+      <implementation type="physical_part" id="152726439" />
+      <implementation type="physical_part" id="1673661896" />
+      <implementation type="physical_part" id="589229119" />
     </function>
   </brick>
   <author id="1747844279">
