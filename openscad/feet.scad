@@ -155,5 +155,5 @@ module foot(travel=5,
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
 
-reflect([0,1,0]) translate([0,ss_outer()[1]+3.5, 0]) foot(tilt=15, lie_flat=true);
+reflect([0,1,0]) translate([0,ss_outer()[1]+foot_height*sin(15)+0.5, 0]) foot(tilt=15, lie_flat=true);
 foot(tilt=0,hover=2, lie_flat=true);
