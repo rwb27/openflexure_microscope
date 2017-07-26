@@ -346,8 +346,8 @@ union(){
                 }
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
-                    translate([0,z_nut_y+ss_outer()[1]/2-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
+                    leg_frame(45) translate([ss_outer()[0]/2-wall_t/2,actuating_nut_r,0]) wall_vertex();
+                    translate([0,z_nut_y+ss_outer()[1]/2-wall_t/2,0]) wall_vertex();
                 }
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);

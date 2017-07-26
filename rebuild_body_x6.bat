@@ -7,6 +7,6 @@ rem "This batch file recompiles the four standard versions of the microscope."
 "C:\Program Files\OpenSCAD\openscad.com" -o builds/body_LS75.stl -D motor_lugs=false -D big_stage=true -D sample_z=75 OpenSCAD/main_body.scad
 "C:\Program Files\OpenSCAD\openscad.com" -o builds/body_LS75-M.stl -D motor_lugs=true -D big_stage=true -D sample_z=75 OpenSCAD/main_body.scad
 
-rebuild_illumination.bat
-rebuild_accessories.bat
+rem rebuild_illumination.bat
+rem rebuild_accessories.bat
 
