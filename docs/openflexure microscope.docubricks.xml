@@ -305,7 +305,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>If you are not simply using the lens that came with your camera, you will need an RMS microscope objective.  The LS65 version of the microscope body is compatible with 25mm parfocal length objectives; if you have a longer 35mm parfocal length objective you'll need to either print a taller LS75 body, or fit a 10mm spacer to raise the sample up higher.  If you are using an RMS objective, you'll also need to use a tube lens; 16mm diameter, 40mm focal length (e.g. <a href="http://www.comaroptics.com/components/lenses/simple-convex-lenses/quality-planoconvex-lenses#row-40_pq_16">Comar 40 PQ 16</a>)</description>
+        <description>If you are not simply using the lens that came with your camera, you will need an RMS microscope objective.  The LS65 version of the microscope body is compatible with 25mm parfocal length objectives; if you have a longer 35mm parfocal length objective you'll need to either print a taller LS75 body, or fit a 10mm spacer to raise the sample up higher.  If you are using an RMS objective, you'll also need to use a tube lens; 16mm diameter, 40mm focal length (e.g. [Comar 40 PQ 16](http://www.comaroptics.com/components/lenses/simple-convex-lenses/quality-planoconvex-lenses#row-40_pq_16))</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -462,7 +462,7 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
-        <description>First, assemble the three actuators, as described in the "<a href="#brick_909106319">anti-backlash flexure actuator</a>" brick - it's the same procedure done three times, once for each actuator.  You might find the central actuator is the best one to start with.  This accounts for most of the time assembling the microscope.  NB the instructions for this are later on in this file; if viewing it in Firefox, click "OpenFlexure Microscope" on the left, then pick it from the list of links that appears.</description>
+        <description>First, assemble the three actuators, as described in the ["anti-backlash flexure actuator"](#brick_909106319) brick - it's the same procedure done three times, once for each actuator.  You might find the central actuator is the best one to start with.  This accounts for most of the time assembling the microscope.  NB the instructions for this are later on in this file; if viewing it in Firefox, click "OpenFlexure Microscope" on the left, then pick it from the list of links that appears.</description>
         <media>
           <file url="./images/actuator_assembly_screw_in_1.jpg" />
         </media>
@@ -527,6 +527,13 @@ You might want to consult https://www.raspberrypi.org/documentation/usage/camera
       <quantity>1</quantity>
       <implementation type="brick" id="107837596" />
       <implementation type="brick" id="592057643" />
+    </function>
+    <function id="5148576238">
+      <description>Illumination</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="brick" id="5739467366" />
+      <implementation type="brick" id="578932085" />
     </function>
     <function id="1705195835">
       <description>Fine positioning control</description>
@@ -875,13 +882,6 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <quantity>1</quantity>
       <implementation type="physical_part" id="367417014" />
     </function>
-    <function id="1899580337">
-      <description>Tool for pulling elastic bands</description>
-      <designator />
-      <quantity>1</quantity>
-      <implementation type="physical_part" id="702468006" />
-      <implementation type="physical_part" id="72777443" />
-    </function>
     <instruction name="" />
   </brick>
   <brick id="5739467366">
@@ -924,7 +924,6 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <designator />
       <quantity>1</quantity>
       <implementation type="physical_part" id="735104653" />
-      <implementation type="physical_part" id="702468006" />
       <implementation type="physical_part" id="450509554" />
       <implementation type="physical_part" id="1995350498" />
     </function>
@@ -1001,7 +1000,6 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <designator />
       <quantity>1</quantity>
       <implementation type="physical_part" id="735104653" />
-      <implementation type="physical_part" id="702468006" />
       <implementation type="physical_part" id="450509554" />
       <implementation type="physical_part" id="1995350498" />
     </function>
