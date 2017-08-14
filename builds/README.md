@@ -34,7 +34,6 @@ The illumination arm is available in 4 versions: they all start with `illuminati
 
 There are several versions of the optics module, depending on your camera (Raspberry Pi Camera v2, Logitech C270, or WaterScope USB camera) and on whether you will use the lens from the camera (pilens, M12, ownlens) or an RMS objective and 40mm tube lens.  Make sure you pick the right STL file for your camera module!  There is a cover that fits over the Raspberry Pi camera module, and holds it firmly onto the optics module.  The following table shows compatibility:
 
-|---------------|--------------------|----------------------|------|
 | Optics Module | Microscope Version | Illumination Version | Feet |
 |---------------|--------------------|----------------------|------|
 | Raspberry Pi webcam & built-in lens | SS | SS40 | standard |
@@ -42,9 +41,8 @@ There are several versions of the optics module, depending on your camera (Raspb
 | WaterScope USB webcam & built-in lens | LS65 | LS65 | standard |
 | Any camera, 35mm parfocal objective, 40mm tube lens | LS65 | LS65 | standard |
 | Any camera, 45mm parfocal objective, 40mm tube lens | LS75 or LS65 + 10mm riser | LS75 | standard |
-| Any camera, 35mm parfocal objective, 50mm tube lens | LS65 | LS65 | tall|
-| Any camera, 45mm parfocal objective, 50mm tube lens | LS75 or LS65 + 10mm riser | LS75 | tall|
-|---------------|--------------------|----------------------|------|
+| Any camera, 35mm parfocal objective, 50mm tube lens | LS65 | LS65 | tall |
+| Any camera, 45mm parfocal objective, 50mm tube lens | LS75 or LS65 + 10mm riser | LS75 | tall |
 
 The optics module needs to print with some fine detail, so the dovetail meshes nicely with the stage.  A good way to ensure this is to print it at the same time as other parts - either print more than one optics module at a time, or print it at the same time as the microscope body.  This slows down the time for each layer, and means the plastic can cool more completely before the layer on top is deposited, resulting in a higher-quality part.  The optics module is best printed in black to cut down on stray light inside the tube - though it will still work in other colours.
 
