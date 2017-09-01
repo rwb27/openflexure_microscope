@@ -12,11 +12,11 @@ use <../actuator_assembly_tools.scad>;
 include <../microscope_parameters.scad>;
 
 module column_frame(){
-    rotate(135) translate([0,actuating_nut_r+leg_r,0]) children();
+    rotate(45) translate([0,actuating_nut_r+leg_r,0]) children();
 }
 
 difference(){
-    import("../../builds/body_SS.stl", convexity=99);
+    include <main_body.csg>;
 
     // cut away the outside of the actuator housing to show the column
     column_frame() //difference(){
