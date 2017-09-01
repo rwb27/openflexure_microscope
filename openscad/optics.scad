@@ -32,8 +32,8 @@ use <cameras/picam_2_screw_on.scad>; //Raspberry Pi Camera module v2
 //use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
-camera_mount_top = dt_bottom - 3;
-bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
+camera_mount_top = dt_bottom - 3-11;
+bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom (NB -11 is for tall feet only)
 fl_cube_bottom = 0; //bottom of the fluorescence filter cube
 fl_cube_w = 16; //width of the fluorescence filter cube
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
@@ -525,16 +525,16 @@ difference(){
         fluorescence=false,
         tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
     );//*/
-    /*/ Optics module for RMS objective, using ThorLabs 1/2" tube lens (f=50mm)
+    // Optics module for RMS objective, using ThorLabs 1/2" tube lens (f=50mm)
     optics_module_rms(
         tube_lens_ffd=47, 
         tube_lens_f=50, 
         tube_lens_r=12.7/2+0.1, 
-        objective_parfocal_distance=30,
+        objective_parfocal_distance=35,
         fluorescence=false,
         tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
     );//*/
-    // Optics module for RMS objective, using no tube lens
+    /*/ Optics module for RMS objective, using no tube lens
     rms_camera_tube(tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
     );//*/
     /*/ Optics module for USB camera's M12 lens
