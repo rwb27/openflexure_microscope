@@ -109,7 +109,8 @@ module simple_riser(h=10){
         each_leg() translate([0,-zflex_l-4,0]) cylinder(r=3/2*0.95, h=999, center=true);
 	}
 }
-simple_riser();
+//simple_riser();
 //slide_riser();
+rotate([180,0,0]) slide_clip();
 //rotate([180,0,0]) 
 //slide_clip();

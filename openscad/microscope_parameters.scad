@@ -30,10 +30,10 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true;
 motor_lugs = false;
-version_numstring = "5.16.11";
+version_numstring = "5.16.12";
 
 // This sets the basic geometry of the microscope
-sample_z = big_stage?65:40; // height of the top of the stage
+sample_z = big_stage?75:40; // height of the top of the stage
 leg_r = big_stage?30:25; // radius of innermost part of legs (stage size)
 hole_r = big_stage?15:10; // size of hole in the stage
 xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
@@ -90,9 +90,9 @@ illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs.
-illumination_arm_screws = [[-z_flexure_x+3,-3,0],
-                           [z_flexure_x-3,-3,0],
-                           [0,illumination_clip_y+3,0]];
+illumination_arm_screws = [[0,illumination_clip_y+3,0],
+                           [-z_flexure_x+3,-3,0],
+                           [z_flexure_x-3,-3,0]];
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for condenser assembly
