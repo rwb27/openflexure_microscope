@@ -17,7 +17,6 @@ use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
-
 module shear_x(amount=1){
     // Shear transformation: tilt the Y axis towards the X axis
     // e.g. if amount=1, then a straight line in Y will be
@@ -352,6 +351,13 @@ union(){
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);
             }
+            //these are the holes to mount onto the baseplate 
+            for(p=base_mounting_holes) {
+                if(p[1]<0 && p[0]>0) reflect([1,0,0]) hull(){
+                    translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
+                    translate(p) cylinder(r=4*1.1,h=3);
+                }
+            }
             
             //screw supports for adjustment of condenser angle/position
             // (only useful if screws=true in the illumination arm)
@@ -388,6 +394,11 @@ union(){
             }
 		}
         
+        //post mounting holes 
+        for(p=base_mounting_holes) translate(p){ 
+             cylinder(r=3/2*1.1,h=999,center=true); 
+             translate([0,0,3]) cylinder(r=3*1.1, h=999); 
+        } 
 		//post mounting holes
 		//reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
         
