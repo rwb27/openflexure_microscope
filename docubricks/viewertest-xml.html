@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title></title>
+        <link rel="stylesheet" href="css/docubricks.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/css/lightbox.min.css" />
+    </head>
+
+    <body>
+	<div id="docubricks_xml_url">https://raw.githubusercontent.com/rwb27/openflexure_microscope/master/docs/openflexure%20microscope.docubricks.xml</div>
+
+        <div id="example">
+          <h1 id="loading-text">Loading...</h1>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/js/lightbox.min.js"></script>
+
+        <script src="./node_modules/react/dist/react.js"></script>
+        <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+        <script src="./viewerbundle.js"></script>
+
+        <script>
+
+    	    lightbox.option({
+    	      'resizeDuration': 200,
+    	      'fadeDuration': 	200,
+    	      'wrapAround': true
+    	    });
+
+          $(document).ready(function() {
+            $('[data-toggle=offcanvas]').click(function() {
+              $('.row-offcanvas').toggleClass('active');
+            });
+          });
+		      </script>
+    </body>
+</html>
