@@ -14,6 +14,9 @@ that are redundant.  The assembly instructions contain instructions on what part
 
 The previous release is on [DocuBricks](http://docubricks.com/projects/openflexure-microscope), and I will add the latest version once it's been road-tested a bit further. 
 
+## Instructions
+The instructions are in DocuBricks XML format, which is like an open-source version of Instructables (with the advantage that the files live on GitHub so they can be easily version controlled, etc.).  There are instructions in the [docs](./docs/) folder, but it's now also possible to view the [current development documentation](http://rwb27.github.io/openflexure_microscope/docubricks/viewertest-xml.html) online.  Once the instructions have been tidied up for the different versions, these should be available too.
+
 ## Compiling from source
 If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the DocuBricks documentation for quantities and tips on print settings, etc.  You can use GNU Make to generate all the STL files (just run ``make all`` in the root directory of the repository).  More instructions, including hints for Windows users, are available in [COMPILE.md](https://github.com/rwb27/openflexure_microscope/blob/master/COMPILE.md).
 
