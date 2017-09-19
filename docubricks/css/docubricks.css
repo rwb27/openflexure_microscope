@@ -1,0 +1,208 @@
+@import url("http://bootswatch.com/yeti/bootstrap.min.css");
+
+@import url("http://bootswatch.com/paper/bootstrap.min.css");
+
+@import url("http://bootswatch.com/journal/bootstrap.min.css");
+
+@import url("http://bootswatch.com/darkly/bootstrap.min.css");
+
+@import url("http://bootswatch.com/cosmo/bootstrap.min.css");
+
+
+.all{
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:target:before {
+  content:"";
+  display:block;
+  height:51px; /* fixed header height*/
+  margin:-51px 0 0; /* negative fixed header height */
+}
+
+body {
+  padding-top: 51px;
+  word-wrap: break-word;
+}
+
+.text-center {
+  padding-top: 20px;
+}
+
+.col-xs-12 {
+  background-color: #fff;
+}
+
+#sidebar {
+  height: 100%;
+  padding-right: 0;
+  padding-top: 20px;
+}
+#sidebar .nav {
+  width:250px;
+}
+
+/*#submenu1 > ul {
+  min-width: : 400px !important;
+}*/
+#sidebar li {
+  border:0 #f2f2f2 solid;
+  border-bottom-width:1px;
+}
+
+/* collapsed sidebar styles */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -41.6%;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -41.6%;
+  }
+  .row-offcanvas-right.active {
+    right: 41.6%;
+  }
+  .row-offcanvas-left.active {
+    left: 41.6%;
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 41.6%;
+  }
+  #sidebar {
+    padding-top:0;
+    overflow-y: scroll;
+  }
+}
+
+ul {
+  list-style-type: none;
+}
+
+
+#loading-text{
+  text-align: center;
+}
+
+#main-content{
+  /*position: sticky;*/
+  overflow: hidden;
+  padding-top: 51px;
+
+}
+
+.hideclass {
+  display:none;
+}
+
+
+table.bomdiv, th, td {
+	word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+    border-bottom: 1px solid #ddd;
+}
+
+
+tr:hover {
+	background-color: #f5f5f5
+	}
+
+table.bomdiv {
+	width: 800px;
+}
+
+td {
+  padding-right: 10px;
+}
+
+th {
+  padding-right: 10px;
+}
+
+.instr-img {
+
+  max-width:200px;
+  max-height:200px;
+  margin:5px;
+}
+
+
+.instr-img-caption {
+  font-size: 0.4em;
+  text-align: left;
+   padding-left: 5px;
+}
+
+
+.image-col {
+    float: right;
+    width: 40%;
+    margin: 0;
+    margin-left: 20px;
+    padding: 1em;
+    text-align:center;
+    vertical-align: middle;
+}
+/* where the instruction text is */
+.text-col {
+    max-width: 600px;
+    padding: 1em;
+    overflow: hidden;
+}
+
+
+
+@media print {
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+
+    .instr-img {
+
+      max-width:400px;
+      max-height:400px;
+      margin:5px;
+    }
+
+    a[href]:after {
+      content: none !important;
+    }
+
+    #main-content {
+      width: 100%;
+    }
+
+    .brickdiv {
+      page-break-before:avoid;
+      page-break-after:avoid;
+    }
+
+    .step {
+      page-break-inside: avoid;
+    }
+
+}
+
+.accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    padding-right: 10px;
+    float: right;
+}

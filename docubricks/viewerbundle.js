@@ -7426,13 +7426,16 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/**
- * Bill of materials
- */
 
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Deserialisation from XML
+ *
+ * The following methods tidy up the common code required to create objects from their XML representation.
+ */
 const xml2js = __webpack_require__(185); //rwb27: tried adding XML import
 function tagsFromXML(tag, xml, allowEmpty = true) {
+    // Retrieve the contents of the tags with a given name (tag) from the supplied XML
     if (tag == "$") {
         throw (Error("Error: the $ tag is reserved, you can't use it."));
     }
@@ -7447,7 +7450,7 @@ function tagsFromXML(tag, xml, allowEmpty = true) {
     return xml[tag];
 }
 function tagFromXML(tag, xml) {
-    //extract the value of a tag from a parsed XML string
+    //extract the value of a tag from a parsed XML string - there should not be >1 tag present with that name.
     let tags = tagsFromXML(tag, xml);
     if (tags.length > 1) {
         throw Error("Attempted to extract " + tag + " from XML but multiple tags existed");
@@ -7458,6 +7461,7 @@ function tagFromXML(tag, xml) {
     return tags[0];
 }
 function stringFromXML(tag, xml, def = "") {
+    // retrieve the contents of a tag as a string (i.e. the tag shouldn't contain other tags)
     let element = tagFromXML(tag, xml);
     if (element == null) {
         if (def != null) {
@@ -7476,6 +7480,7 @@ function stringFromXML(tag, xml, def = "") {
     }
 }
 function objectFromXML(c, tag, xml, allowEmpty = true) {
+    // restore XML tags to objects, given the constructor of a class that contains the tags.
     let element = tagFromXML(tag, xml);
     if (element == null) {
         if (allowEmpty) {
@@ -7490,7 +7495,7 @@ function objectFromXML(c, tag, xml, allowEmpty = true) {
     return obj;
 }
 function attributeFromXML(key, xml, def = "") {
-    //extract the value of an attribute from a parsed XML element
+    // extract the value of an attribute from a parsed XML element
     let attrs = xml.$;
     try {
         return attrs[key];
@@ -7505,6 +7510,7 @@ function attributeFromXML(key, xml, def = "") {
     }
 }
 function idFromXML(xml) {
+    // convenience property to retrieve the id property of a tag
     return attributeFromXML("id", xml, null);
 }
 function arrayFromXML(c, tag, xml, allowEmpty = true) {
@@ -7542,6 +7548,9 @@ function stringArrayFromXML(tag, xml, allowEmpty = true) {
         console.log("Missing property: " + tag + " error: " + e);
     }
 }
+/**
+ * Bill of materials
+ */
 class Bom {
     constructor() {
         this.bom = new Map(); //part-id
@@ -7825,6 +7834,7 @@ class Project {
         //    public mapBricks:Map<string,Brick>=new Map<string,Brick>();    //discards order. SHOULD use bricks[]
         this.mapParts = new Map();
         this.mapAuthors = new Map();
+        this.base_url = "./project/";
     }
     getBrickByName(id) {
         for (let b of this.bricks)
@@ -8366,10 +8376,7 @@ class Files extends React.Component {
             return (url.toLowerCase().match(/\.(jpeg|jpg|gif|png|svg)$/) != null);
         }
         var projectid = getQueryStringValue("id");
-        var basedir = "./project/";
-        if (projectid != "") {
-            basedir = "./project/" + projectid + "/";
-        }
+        var basedir = proj.base_url;
         //var downloadlink="DownloadZip?id="+projectid;
         //Collect the files and images
         var inodes = [];
@@ -8918,18 +8925,24 @@ const Docubricks = __webpack_require__(70);
 const request = __webpack_require__(72);
 //alert(getQueryStringValue("id")); 
 if (document.getElementById("hiddendata")) {
+    // the XML has been converted to JSON and base64 encoded in the HTML document.
+    // we assume the supporting files are in ./project/ (the default base_url defined in docubricks.ts)
     var s = document.getElementById("hiddendata").textContent;
     document.getElementById("hiddendata").textContent = "";
     var docu = Docubricks.docubricksFromJSON(s);
     ReactDOM.render(React.createElement(docubricksViewer_1.DocubricksProject, { proj: docu }), document.getElementById("example"));
 }
 if (document.getElementById("docubricks_xml_url")) {
-    var f = document.getElementById("docubricks_xml_url").textContent;
+    // We use an HTTP request to retrieve the XML from a URL, which works well for e.g. GitHub.
+    var url = document.getElementById("docubricks_xml_url").textContent;
     document.getElementById("docubricks_xml_url").textContent = "";
-    request(f, function (error, response, body) {
+    var base_url = url.split('/').slice(0, -1).join('/') + '/'; // the DocuBricks root folder
+    // paths for images and other files in the DocuBricks project should be given relative to the docubricks root folder
+    request(url, function (error, response, body) {
         console.log('statusCode retrieving XML file:', response && response.statusCode);
         console.log('error:', error);
         Docubricks.docubricksFromXML(body, function (docu) {
+            docu.base_url = base_url;
             ReactDOM.render(React.createElement(docubricksViewer_1.DocubricksProject, { proj: docu }), document.getElementById("example"));
         });
     });
