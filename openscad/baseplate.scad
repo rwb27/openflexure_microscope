@@ -15,9 +15,8 @@ use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
-
-mount_z = 30; //height for the mounting surfaces
-foot_z = mount_z - foot_height; //height of the bottom of the feet
+foot_z = wall_h; //height of the bottom of the feet
+mount_z = foot_z + foot_height; //height for the mounting surfaces
 ss_outer = ss_outer();
 
 module leg_frame(angle){
