@@ -12,13 +12,12 @@ download the STL files and instructions.  Don't just print everything from the S
 as currently it contains some parts that must be printed multiple times, and other parts
 that are redundant.  The assembly instructions contain instructions on what parts to print - or you can consult the readme file in the [STL folder](https://github.com/rwb27/openflexure_microscope/tree/master/docs/stl).  The top-level STL folder is a bit of a mixed bag of files generated during development; we've left it in the repository because it's helpful to share things with people, but there's no guarantee the files in there are up to date, or compatible with any particular version of the microscope.
 
+If you've built one, let us know - add yourself to the [wiki page of builds](https://github.com/rwb27/openflexure_microscope/wiki/Assembly-Logs) or submit a [build report issue](https://github.com/rwb27/openflexure_microscope/issues/new?labels=build%20report).  This is a really helpful thing to do even if you don't suggest improvements or flag up problems.
+
 The previous release is on [DocuBricks](http://docubricks.com/projects/openflexure-microscope), and I will add the latest version once it's been road-tested a bit further. 
 
 ## Instructions
 The instructions are in DocuBricks XML format, which is like an open-source version of Instructables (with the advantage that the files live on GitHub so they can be easily version controlled, etc.).  There are instructions in the [docs](./docs/) folder, but it's now also possible to view the [current development documentation](http://rwb27.github.io/openflexure_microscope/docubricks/current_master_version.html) online.  You can also view [instructions from a specific commit or branch](http://rwb27.github.io/openflexure_microscope/docubricks/docubricks-viewer-pasteurl.html).
-
-## Compiling from source
-If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the DocuBricks documentation for quantities and tips on print settings, etc.  You can use GNU Make to generate all the STL files (just run ``make all`` in the root directory of the repository).  More instructions, including hints for Windows users, are available in [COMPILE.md](https://github.com/rwb27/openflexure_microscope/blob/master/COMPILE.md).
 
 ## Get Involved!
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
@@ -29,3 +28,6 @@ This project is open so that anyone can get involved, and you don't have to lear
 * Fork it, and make pull requests - again, documentation improvements are every bit as useful as revised OpenSCAD files.
 
 Things in need of attention are currently described in [issues](https://github.com/rwb27/openflexure_microscope/issues) so have a look there if you'd like to work on something but aren't sure what.
+
+## Compiling from source
+If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the DocuBricks documentation for quantities and tips on print settings, etc.  You can use GNU Make to generate all the STL files (just run ``make all`` in the root directory of the repository).  More instructions, including hints for Windows users, are available in [COMPILE.md](https://github.com/rwb27/openflexure_microscope/blob/master/COMPILE.md).
