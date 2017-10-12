@@ -381,7 +381,7 @@ translate([40,0,0]){
 //    tilted_actuator(25,25,50, base_w=6);
 }
 //echo(nut_slot);
-//
+/*/
 difference(){
     union(){
         screw_seat(25, motor_lugs=true);
@@ -395,6 +395,7 @@ difference(){
     }
     translate([0,0,2.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
+nut_seat_void(99, tilt=30, center=true); // space inside the column
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size
 difference(){
