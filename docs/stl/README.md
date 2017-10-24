@@ -5,7 +5,7 @@ This folder contains the printable files you'll need in order to make an
 OpenFlexure microscope.  My intention is that the printing is described in
 the DocuBricks format documentation, but this file is here for convenience.
 
-NB there are three locations in this repository that have STL files; this folder (which is updated least frequently - these files should correspond to the current version of the documentation), the ``builds/`` folder (automatically built files, usually up to date and consistently named), and the ``stl/`` folder (a mixed bag of stuff, some of which is non-standard).  This is the best folder to use if you just want to download and print some files.
+NB there are three locations in this repository that have STL files; this folder (which is updated least frequently - these files should correspond to the current version of the documentation), the [``builds/``](../../builds) folder (automatically built files, usually up to date and consistently named), and the [``stl/``](../../stl) folder (a mixed bag of stuff, some of which is non-standard).  This is the best folder to use if you just want to download and print some files.
 
 These files are all designed to print without support material or adhesion layer.  If you do use an adhesion layer, go for a raft rather than a brim; many of the moving parts will be rendered useless by a brim, and require lots of work with a craft knife to sort them out.  While there's no need for support, there are a few bridges; it might be a good idea to print the "just_leg_test.stl" file first, to make sure your printer can print them.
 
