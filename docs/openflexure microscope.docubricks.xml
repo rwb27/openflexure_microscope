@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xml" href="docubricks.xsl"?>
+<!--<?xml-stylesheet type="text/xml" href="docubricks.xsl"?>-->
 <!--
      This is a DocuBricks XML file, it can be viewed in a web browser (Firefox works best)
      if the accompanying stylesheet and scripts are in the same directory.  It should
@@ -414,37 +414,48 @@ There is a test file that prints a single leg of the microscope - the Microscope
       </step>
       <step>
         <description>Make sure you have all the necessary parts and tools.  The parts should all be listed in the bill of materials, but for clarity you will need:
-
-Plastic parts:
-* 1x microscope body
-* 1x optics module
-* 1x illumination and rear foot
-* 2x tilted foot
-* 1x untilted foot
-* 3x gear
-* 1x camera cover
-* 2x sample clip (optional)
-Plastic tools (optional but helpful):
-* 1x camera board gripper (for v1 or v2 of the camera board)
-* 1x camera lens remover (for v1 or v2)
-* 1x gear elevator (optional)
-Metal hardware:
-* 3x M3 hexagon head 25mm screws, stainless steel
-* 3x M3 brass nut
-* 3x M3 stainless steel washer
-* 2x M3 8mm cap head screw (optional, for sample clips)
-* 2x M2 6mm cap head screw (optional, to secure camera more strongly)
-Electronic parts:
-* White LED, resistor, wire, and 2-way JST header connector (assembled as one cable in the kit)
-* Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)
-* Raspberry Pi (with associated power supply, keyboard, monitor, etc.)
-Tools (not supplied in kit):
-* 2.5mm hex key (optional, for attaching sample clips)
-* 1.5mm hex key (optional, for double-securing camera board)
-* tape (electrical tape or PTFE plumbers tape work, though regular sticky tape is also fine)
-* sharp craft knife (for trimming tape)
-* 3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)
-Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).</description>
+<br/><br/>
+<b>Plastic parts:</b>
+<ul>
+	<li>1x microscope body</li>
+	<li>1x optics module</li>
+	<li>1x illumination and rear foot</li>
+	<li>2x tilted foot</li>
+	<li>1x untilted foot</li>
+	<li>3x gear</li>
+	<li>1x camera cover</li>
+	<li>2x sample clip (optional)</li>
+</ul>
+<b>Plastic tools (optional but helpful):</b>
+<ul>
+	<li>1x camera board gripper (for v1 or v2 of the camera board)</li>
+	<li>1x camera lens remover (for v1 or v2)</li>
+	<li>1x gear elevator (optional)</li>
+</ul>
+<b>Metal hardware:</b>
+<ul>
+	<li>3x M3 hexagon head 25mm screws, stainless steel</li>
+	<li>3x M3 brass nut</li>
+	<li>3x M3 stainless steel washer</li>
+	<li>2x M3 8mm cap head screw (optional, for sample clips)</li>
+	<li>2x M2 6mm cap head screw (optional, to secure camera more strongly)</li>
+</ul>
+<b>Electronic parts:</b>
+<ul>
+	<li>White LED, resistor, wire, and 2-way JST header connector (assembled as one cable in the kit)</li>
+	<li>Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)</li>
+	<li>Raspberry Pi (with associated power supply, keyboard, monitor, etc.)</li>
+</ul>
+<b>Tools (not supplied in kit):</b>
+<ul>
+	<li>2.5mm hex key (optional, for attaching sample clips)</li>
+	<li>1.5mm hex key (optional, for double-securing camera board)</li>
+	<li>tape (electrical tape or PTFE plumbers tape work, though regular sticky tape is also fine)</li>
+	<li>sharp craft knife (for trimming tape)</li>
+	<li>3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)</li>
+</ul>
+Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).
+        </description>
         <media>
           <file url="./images/lores_parts_no_optics.jpg" />
         </media>
@@ -511,7 +522,7 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
       </step>
       <step>
         <description>Your microscope is now complete – happy observing!
-You might want to consult https://www.raspberrypi.org/documentation/usage/camera/ or https://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md if you need a hand setting up the camera.</description>
+You might want to consult the <a href="http://www.raspberrypi.org/documentation/usage/camera/">camera module documentation</a> or <a href="http://www.raspberrypi.org/documentation/usage/camera/raspicam/README.md">raspicam documentation</a> if you need a hand setting up the camera.</description>
         <media>
           <file url="./images/microscope_complete_1.jpg" />
           <file url="./images/microscope_complete_2.jpg" />
