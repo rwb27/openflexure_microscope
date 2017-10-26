@@ -7,7 +7,7 @@
      format.
 -->
 <docubricks>
-  <physical_part id="152726439">
+  <physical_part id="m3_nut">
     <description>M3 Nuts (preferably brass), Qty: 4</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>11355</supplier_part_num>
@@ -23,7 +23,7 @@
       </step>
     </manufacturing_instruction>
   </physical_part>
-  <physical_part id="994401804">
+  <physical_part id="m3_hex_leadscrew">
     <description>25mm M3 Hexagon-head screw, Qty:3</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>6663</supplier_part_num>
@@ -39,7 +39,7 @@
       </step>
     </manufacturing_instruction>
   </physical_part>
-  <physical_part id="1673661896">
+  <physical_part id="m3_washer">
     <description>M3 Washer, Qty: 3 or 4</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>7118</supplier_part_num>
@@ -56,7 +56,7 @@
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="589229119">
-    <description>8mm M3 screws, Qty: 2 or 3</description>
+    <description>8mm M3 screws, Qty: 3</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>14315</supplier_part_num>
     <manufacturer_part_num />
@@ -335,19 +335,25 @@
     <material_amount>0.01</material_amount>
     <material_unit>KG</material_unit>
     <media>
-      <file url="./stl/illumination_and_rear_foot_standard_stage.stl" />
+      <file url="./stl/illumination_and_rear_foot_LS65.stl" />
+      <file url="./stl/illumination_and_rear_foot_LS65_condenser.stl" />
+      <file url="./stl/illumination_and_rear_foot_LS75_condenser.stl" />
+      <file url="./stl/illumination_and_rear_foot_LS75_condenser_tall.stl" />
+      <file url="./stl/illumination_and_rear_foot_SS40.stl" />
     </media>
     <manufacturing_instruction>
       <step>
-        <description>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  If using the non-adjustable version, this prints best with other parts of a similar height, e.g. other illumination arms, the optics module, or the microscope body.  The adjustable versions print flat, so they shouldn't be a problem.  The condenser lens optics will also work without a lens, though the image won't be as bright.
+        <description>
+		  <p>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  The condenser lens version will also work without a lens, though the image won't be as bright.</p>
 
-The illumination arm is available in 4 versions: they all start with `illumination_and_back_foot_` and then you can choose either adjustable arm with a bare LED, or bare LED plus tape (`adj`) or one that uses a condenser lens (`condenser`).  It's important to match the type of microscope you're using (LS65 or SS).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the LS75 version.</description>
+		  <p>The illumination arm is available in several versions: <pre>illumination_and_rear_foot_[version].stl</pre>.  You can choose either adjustable arm with a single LED or one that uses a condenser lens (<pre>_condenser</pre>).  It's important to match the type of microscope you're using (<pre>LS65</pre>, <pre>LS75</pre>, or <pre>SS40</pre>).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the <pre>LS75</pre> version.  If you are using tall feet, you will need the <pre>_tall</pre> version.</p>
+		</description>
         <media />
       </step>
     </manufacturing_instruction>
   </physical_part>
   <physical_part id="640980340">
-    <description>Sample Clip, Qty:2</description>
+    <description>Sample Clips</description>
     <supplier />
     <supplier_part_num />
     <manufacturer_part_num />
@@ -479,7 +485,7 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
-        <description>Assemble the illumination arm. There are different versions - a <a href="#brick_fixed_illumination_arm">fixed one for a single LED<a/> and <a href="#brick_condenser_illumination_arm">an adjustable one which may have a condenser lens</a>.  As with the actuators, the assembly instructions for this are in later sections.</description>
+        <description>Assemble the illumination arm. There are different versions - a <a href="#brick_fixed_illumination_arm">fixed one for a single LED</a> and <a href="#brick_condenser_illumination_arm">an adjustable one which may have a condenser lens</a>.  As with the actuators, the assembly instructions for this are in later sections.</description>
         <media>
           <file url="./images/condenser_fitting_1.jpg" />
         </media>
@@ -550,13 +556,7 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       <description>Fine positioning control</description>
       <designator />
       <quantity>3</quantity>
-      <implementation type="brick" id="actuator_assembly" />
-    </function>
-    <function id="1669983658">
-      <description>Microscope Feet</description>
-      <designator />
-      <quantity>3 in total</quantity>
-      <implementation type="physical_part" id="367417014" />
+      <implementation type="brick" id="actuator_assembly" quantity="3"/>
     </function>
     <function id="2102312477">
       <description>Mechanical stage</description>
@@ -565,11 +565,16 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       <implementation type="physical_part" id="238216425" />
     </function>
     <function id="1925510102">
-      <description>Sample Holder</description>
+      <description>Sample clip attachment screws</description>
       <designator />
       <quantity>2</quantity>
       <implementation type="physical_part" id="589229119" />
-      <implementation type="physical_part" id="589229119" />
+    </function>
+    <function id="1925510102">
+      <description>Sample clips</description>
+      <designator />
+      <quantity>2</quantity>
+      <implementation type="physical_part" id="640980340" />
     </function>
     <function id="1158588719">
       <description>Control Computer</description>
@@ -682,12 +687,12 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <description>Optics and Sensor</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="367417014" />
     </function>
     <function id="996729609">
       <description>Tools for removing the lens</description>
       <designator />
       <quantity>1</quantity>
+      <implementation type="physical_part" id="367417014" />
     </function>
   </brick>
   <brick id="high_res_optics_module">
@@ -795,12 +800,12 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <description>Optics and Sensor</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="367417014" />
     </function>
     <function id="996729609">
       <description>Tools for removing the lens</description>
       <designator />
       <quantity>1</quantity>
+      <implementation type="physical_part" id="367417014" />
     </function>
   </brick>
   <brick id="actuator_assembly">
@@ -867,19 +872,19 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <description>Lead screw</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="994401804" />
+      <implementation type="physical_part" id="m3_hex_leadscrew" />
     </function>
     <function id="118469770">
       <description>Nut for lead screw</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="152726439" />
+      <implementation type="physical_part" id="m3_nut" />
     </function>
     <function id="118469770">
       <description>Washer</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="1673661896" />
+      <implementation type="physical_part" id="m3_washer" />
     </function>
     <function id="1977413028">
       <description>Return spring</description>
@@ -891,7 +896,13 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <description>Actuating gear/thumbwheel</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="367417014" />
+      <implementation type="physical_part" id="735104653" />
+    </function>
+    <function id="1669983658">
+      <description>Microscope Foot/anchor for return spring</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="291392559" />
     </function>
     <instruction name="" />
   </brick>
@@ -931,12 +942,34 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       </step>
     </assembly_instruction>
     <function id="450245988">
-      <description>Illumination</description>
+      <description>Plastic mounting parts</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="735104653" />
-      <implementation type="physical_part" id="450509554" />
       <implementation type="physical_part" id="1995350498" />
+    </function>
+    <function id="7892348569">
+      <description>Wiring</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="450509554" />
+    </function>
+    <function id="45345768534">
+      <description>Attachment screw</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="589229119" />
+    </function>
+    <function id="95790026875">
+      <description>Washer for illumination arm</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="m3_washer" />
+    </function>
+    <function id="9085494798">
+      <description>Nut for illumination</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="m3_nut" />
     </function>
   </brick>
   <brick id="condenser_illumination_arm">
@@ -1007,15 +1040,40 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       </step>
     </assembly_instruction>
     <function id="450245988">
-      <description>Illumination</description>
+      <description>Plastic mounting parts</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="physical_part" id="735104653" />
-      <implementation type="physical_part" id="450509554" />
       <implementation type="physical_part" id="1995350498" />
-      <implementation type="physical_part" id="152726439" />
-      <implementation type="physical_part" id="1673661896" />
+    </function>
+    <function id="7892348569">
+      <description>Wiring</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="450509554" />
+    </function>
+    <function id="45345768534">
+      <description>Attachment screw</description>
+      <designator />
+      <quantity>1</quantity>
       <implementation type="physical_part" id="589229119" />
+    </function>
+    <function id="95790026875">
+      <description>Washer for illumination arm</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="m3_washer" />
+    </function>
+    <function id="9085494798">
+      <description>Nut for illumination</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="m3_nut" />
+    </function>
+    <function id="5789267940768">
+      <description>Condenser lens</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="96872047293" />
     </function>
   </brick>
   <author id="1747844279">
