@@ -373,8 +373,8 @@ class Brick {
         this.id = idFromXML(xml); //do I want to do this??
         this.name = stringFromXML("name", xml);
         this.abstract = stringFromXML("abstract", xml);
-        this.long_description = stringFromXML("long_description", xml);
-        this.notes = stringFromXML("notes", xml);
+        this.long_description = tagFromXML("long_description", xml);
+        this.notes = tagFromXML("notes", xml);
         this.license = stringFromXML("license", xml);
         this.authors = stringArrayFromXML("authors", xml);
         this.functions = arrayFromXML(BrickFunction, "function", xml);
@@ -844,13 +844,13 @@ class Brick extends React.Component {
                     value));
         };
         if (typeof brick.abstract != 'undefined') {
-            addField("Abstract", brick.abstract);
+            addField("Abstract", renderDescription(brick.abstract));
         }
-        addField("Description", brick.long_description);
-        mnodes.push(React.createElement("p", { key: brickkey + "_brickabstract" }, brick.abstract));
+        addField("Description", renderDescription(brick.long_description));
+        mnodes.push(React.createElement("p", { key: brickkey + "_brickabstract" }, renderDescription(brick.abstract)));
         mnodes.push(React.createElement(Files, { key: brickkey + "_files", proj: proj, files: brick.files, basekey: brickkey }));
         addField("License", brick.license);
-        addField("Notes", brick.notes);
+        addField("Notes", renderDescription(brick.notes));
         //Authors
         if (brick.authors.length != 0) {
             var alist = "";
@@ -1031,6 +1031,14 @@ function domNodeToReactElement(domNode) {
         return React.createElement(domNode.nodeName, domNodeChildrenToReactElements(domNode));
     }
 }
+function renderDescription(description) {
+    if (typeof (description) == "string") {
+        return description;
+    }
+    else {
+        return domNodeChildrenToReactElements(description);
+    }
+}
 function domNodeChildrenToReactElements(domNode) {
     let nodes = [];
     for (let i = 0; i < domNode.childNodes.length; i++) {
@@ -1062,22 +1070,12 @@ class InstructionStep extends React.Component {
         let step = this.props.step;
         let stepIndex = this.props.stepIndex;
         let listKey = this.props.listKey;
-        if (typeof (step.description) == "string") {
-            return React.createElement("article", { className: "text-col" },
-                React.createElement("b", null,
-                    "Step ",
-                    stepIndex,
-                    ". "),
-                step.description);
-        }
-        else {
-            return React.createElement("article", { className: "text-col" },
-                React.createElement("b", null,
-                    "Step ",
-                    stepIndex,
-                    ". "),
-                domNodeChildrenToReactElements(step.description));
-        }
+        return React.createElement("article", { className: "text-col" },
+            React.createElement("b", null,
+                "Step ",
+                stepIndex,
+                ". "),
+            renderDescription(step.description));
     }
 }
 exports.InstructionStep = InstructionStep;
