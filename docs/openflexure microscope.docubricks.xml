@@ -8,7 +8,7 @@
 -->
 <docubricks>
   <physical_part id="152726439">
-    <description>M3 Nuts (preferably brass), Qty: 3 or 4</description>
+    <description>M3 Nuts (preferably brass), Qty: 4</description>
     <supplier>Anglian Fasteners Limited</supplier>
     <supplier_part_num>11355</supplier_part_num>
     <manufacturer_part_num />
@@ -18,7 +18,7 @@
     <media />
     <manufacturing_instruction>
       <step>
-        <description>These nuts form part of the actuator.  Brass ones will have less friction and result in smoother motion, though it's possible they will wear out more quickly. An extra one is required by the adjustable illumination arm, which needn't be brass.</description>
+        <description>These nuts form part of the actuator.  Brass ones will have less friction and result in smoother motion. An extra one (doesn't have to be brass, but it's fine if it is) is required by the adjustable illumination arm.</description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -382,7 +382,7 @@ The illumination arm is available in 4 versions: they all start with `illuminati
       </step>
     </manufacturing_instruction>
   </physical_part>
-  <brick id="993466590">
+  <brick id="openflexure_microscope_toplevel">
     <name>OpenFlexure Microscope</name>
     <abstract>A 3D-printed microscope, including a flexure-based XYZ stage with sub-micron precision and 8mm range.</abstract>
     <long_description>
@@ -473,19 +473,19 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
-        <description>First, assemble the three actuators, as described in the ["anti-backlash flexure actuator"](#brick_909106319) brick - it's the same procedure done three times, once for each actuator.  You might find the central actuator is the best one to start with.  This accounts for most of the time assembling the microscope.  NB the instructions for this are later on in this file; if viewing it in Firefox, click "OpenFlexure Microscope" on the left, then pick it from the list of links that appears.</description>
+        <description>First, <a href="#brick_actuator_assembly">assemble the three gears and elastic bands</a> - it's the same procedure done three times, once for each gear.  You might find the central column is the best one to start with.  NB the instructions for this are in the <a href="#brick_actuator_assembly">actuator assembly brick</a></description>
         <media>
           <file url="./images/actuator_assembly_screw_in_1.jpg" />
         </media>
       </step>
       <step>
-        <description>Assemble the illumination, according to the illumination arm brick (there are two versions, for fixed LED and adjustable condenser lens).</description>
+        <description>Assemble the illumination arm. There are different versions - a <a href="#brick_fixed_illumination_arm">fixed one for a single LED<a/> and <a href="#brick_condenser_illumination_arm">an adjustable one which may have a condenser lens</a>.  As with the actuators, the assembly instructions for this are in later sections.</description>
         <media>
           <file url="./images/condenser_fitting_1.jpg" />
         </media>
       </step>
       <step>
-        <description>Assemble the Raspberry Pi lens and camera into the optics module, as described in the optics module brick.</description>
+        <description>Assemble the Raspberry Pi camera into the optics module.  There are two versions of this, a <a href="#brick_high_res_optics_module">high-resolution module</a> using an RMS microscope objective, and the <a href="#brick_basic_optics_module">basic optics module</a> described in later sections.</description>
         <media>
           <file url="./images/lens_insertion_0.jpg" />
         </media>
@@ -536,21 +536,21 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       <description>Optics module</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="brick" id="107837596" />
-      <implementation type="brick" id="592057643" />
+      <implementation type="brick" id="basic_optics_module" />
+      <implementation type="brick" id="high_res_optics_module" />
     </function>
     <function id="5148576238">
       <description>Illumination</description>
       <designator />
       <quantity>1</quantity>
-      <implementation type="brick" id="5739467366" />
-      <implementation type="brick" id="578932085" />
+      <implementation type="brick" id="fixed_illumination_arm" />
+      <implementation type="brick" id="condenser_illumination_arm" />
     </function>
     <function id="1705195835">
       <description>Fine positioning control</description>
       <designator />
       <quantity>3</quantity>
-      <implementation type="brick" id="909106319" />
+      <implementation type="brick" id="actuator_assembly" />
     </function>
     <function id="1669983658">
       <description>Microscope Feet</description>
@@ -584,8 +584,8 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       <implementation type="physical_part" id="86921105" />
     </function>
   </brick>
-  <brick id="107837596">
-    <name>Raspbery Pi Camera Mount/Extension Tube</name>
+  <brick id="basic_optics_module">
+    <name>Basic optics module</name>
     <abstract>This is a push-fit extension tube that turns a Raspberry Pi camera module into a microscope with a field of view about 400um across and a resolution of around 2um (better than 2um in the case of v2 of the camera module).</abstract>
     <long_description>This is the optics module for the OpenFlexure Microscope.  It holds a Raspberry Pi camera module and lens, but the lens is reversed and placed 40mm from the sensor, allowing it to function as a high-magnification microscope with a resolution of around 2um.</long_description>
     <notes />
@@ -690,7 +690,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <quantity>1</quantity>
     </function>
   </brick>
-  <brick id="592057643">
+  <brick id="high_res_optics_module">
     <name>High-resolution Optics Module</name>
     <abstract>This is a simple tube microscope, using an RMS objective lens and a second lens for tube length correction.  It allows the OpenFlexure microscope to take images with higher resolution than those obtained with the webcam lens.</abstract>
     <long_description>This is the optics module for the OpenFlexure Microscope.  It holds a Raspberry Pi camera module and an objective lens.  It's compatible with the LS65 or LS75 version of the stage, depending on whether the objective has a 25mm or 35mm parfocal distance.</long_description>
@@ -803,7 +803,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <quantity>1</quantity>
     </function>
   </brick>
-  <brick id="909106319">
+  <brick id="actuator_assembly">
     <name>Actuator assembly</name>
     <abstract>An actuator, based on an M3 screw, brass nut, and elastic bands, that can precisely and repeatably move a plastic flexure mechanism.</abstract>
     <long_description>This assembly is used to actuate each of the three axes of the OpenFlexure Microscope stage.  It consists of a plastic gear that fits onto an M3 screw, which then pulls up on a brass nut.  Elastic bands pull down on the nut, tensioning the system.  This confers two benefits: firstly, it allows us to actuate the flexure mechanism both up and down - doubling the travel - and secondly, it eliminates much of the backlash from the system.</long_description>
@@ -895,7 +895,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
     </function>
     <instruction name="" />
   </brick>
-  <brick id="5739467366">
+  <brick id="fixed_illumination_arm">
     <name>Illumination Arm (fixed)</name>
     <abstract>A holder for an LED to take images in transmitted light.</abstract>
     <long_description>The illumination arm holds an LED above the sample, for simple transmission images.  The adjustable version with a condenser lens will get higher resolution and brightness.</long_description>
@@ -939,10 +939,10 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <implementation type="physical_part" id="1995350498" />
     </function>
   </brick>
-  <brick id="578932085">
+  <brick id="condenser_illumination_arm">
     <name>Illumination Arm with Condenser</name>
     <abstract>A holder for an LED and lens to take images in transmitted light.</abstract>
-    <long_description>The illumination arm holds an LED above the sample, with a condenser lens.  It will get higher resolution and brightness.  There is a screw holding the two parts together, which goes through a slot to allow simple, slip plate style adjustment of the condenser alignment.</long_description>
+    <long_description>The illumination arm holds an LED above the sample, with a condenser lens.  It will get higher resolution and brightness.  There is a screw holding the two parts together, which goes through a slot to allow simple, slip plate style adjustment of the condenser alignment.  There is also a simpler <a href="#brick_fixed_illumination_arm">fixed arm</a> holding a single LED.</long_description>
     <notes />
     <license />
     <media />
