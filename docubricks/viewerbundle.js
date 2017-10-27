@@ -181,6 +181,8 @@ function tagFromXML(tag, xml) {
         return elist[0];
     }
     else if (elist.length == 0) {
+        console.log("Missing <" + tag + "> in XML element:");
+        console.log(xml);
         throw "There is no <" + tag + "> tag in the XML";
     }
     else {
@@ -311,10 +313,10 @@ class Brick {
     /**
      * Get BOM as only what this particular brick contains
      */
-    getBom(proj, recursive) {
+    getBom(proj, recursive, recursionPrefix = "") {
         var bom = new Bom();
-        console.log("functions");
-        console.log(this.functions);
+        //console.log("functions");
+        //console.log(this.functions);
         for (let func of this.mapFunctions.values()) {
             func.implementations.forEach(function (imp) {
                 if (imp.isPart()) {
@@ -324,7 +326,8 @@ class Brick {
                 }
                 else if (imp.isBrick()) {
                     if (recursive) {
-                        var b = imp.getBrick(proj).getBom(proj, true);
+                        let brick = imp.getBrick(proj);
+                        var b = brick.getBom(proj, true, recursionPrefix + ">" + brick.name);
                         //bom.addBom(b,+func.quantity);                    
                         bom.addBom(b, imp.quantity);
                     }
@@ -334,7 +337,7 @@ class Brick {
                 }
             });
         }
-        console.log("bom");
+        console.log("bom " + recursionPrefix);
         console.log(bom);
         return bom;
     }
@@ -433,7 +436,7 @@ class FunctionImplementation {
         if (this.type == "physical_part") {
             this.type = "part";
         }
-        this.quantity = Number(stringFromXML("quantity", xml));
+        this.quantity = Number(attributeFromXML("quantity", xml, "1"));
     }
 }
 exports.FunctionImplementation = FunctionImplementation;
@@ -1023,14 +1026,6 @@ class InstructionList extends React.Component {
     }
 }
 exports.InstructionList = InstructionList;
-function domNodeToReactElement(domNode) {
-    if (domNode.nodeType == 3) {
-        return domNode.nodeValue;
-    }
-    else if (domNode.nodeType == 1) {
-        return React.createElement(domNode.nodeName, domNodeChildrenToReactElements(domNode));
-    }
-}
 function renderDescription(description) {
     if (typeof (description) == "string") {
         return description;
@@ -1049,7 +1044,7 @@ function domNodeChildrenToReactElements(domNode) {
         }
         else if (childNode.nodeType == 1) {
             //we have an XML Element
-            let allowedTags = ["b", "i", "ul", "ol", "li", "p", "a"];
+            let allowedTags = ["b", "i", "ul", "ol", "li", "p", "a", "pre", "code"];
             if (allowedTags.indexOf(childNode.nodeName) >= 0) {
                 let attributes = {};
                 for (let j = 0; j < childNode.attributes.length; j++) {
@@ -1096,7 +1091,8 @@ class BomList extends React.Component {
                 var stepkey = key + curstep;
                 curstep++;
                 snodes.push(React.createElement("tr", { key: stepkey },
-                    React.createElement("td", null, part.name),
+                    React.createElement("td", null,
+                        React.createElement("a", { href: "#part_" + part.id }, part.name)),
                     React.createElement("td", null, quantity),
                     React.createElement("td", null, part.supplier),
                     React.createElement("td", null, part.supplier_part_num),
