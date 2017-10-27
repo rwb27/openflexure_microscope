@@ -14,4 +14,9 @@ This file is to gather up useful information for editing the XML file of the ins
 in the order above,
 1-8,  9-14,15-18,  19-21,  22-24,25-27,28-32,40
 
-
+### Low res, fixed arm
+1-8,  9-14,  19-21,  22-24,40
+### Low res, adj
+1-8,  9-14,  19-21,  25-27,40
+### High res, condenser
+1-8,  15-18,  19-21,  28-32,40
