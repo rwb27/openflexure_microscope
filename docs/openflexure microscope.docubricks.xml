@@ -346,7 +346,7 @@
         <description>
 		  <p>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  The condenser lens version will also work without a lens, though the image won't be as bright.</p>
 
-		  <p>The illumination arm is available in several versions: <pre>illumination_and_rear_foot_[version].stl</pre>.  You can choose either adjustable arm with a single LED or one that uses a condenser lens (<pre>_condenser</pre>).  It's important to match the type of microscope you're using (<pre>LS65</pre>, <pre>LS75</pre>, or <pre>SS40</pre>).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the <pre>LS75</pre> version.  If you are using tall feet, you will need the <pre>_tall</pre> version.</p>
+		  <p>The illumination arm is available in several versions: <code>illumination_and_rear_foot_[version].stl</code>.  You can choose either adjustable arm with a single LED or one that uses a condenser lens (<code>_condenser</code>).  It's important to match the type of microscope you're using (<code>LS65</code>, <code>LS75</code>, or <code>SS40</code>).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the <code>LS75</code> version.  If you are using tall feet, you will need the <code>_tall</code> version.</p>
 		</description>
         <media />
       </step>
@@ -953,6 +953,12 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <quantity>1</quantity>
       <implementation type="physical_part" id="450509554" />
     </function>
+    <function id="45634158546">
+      <description>LED</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="1392832614" />
+    </function>
     <function id="45345768534">
       <description>Attachment screw</description>
       <designator />
@@ -1050,6 +1056,12 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
       <designator />
       <quantity>1</quantity>
       <implementation type="physical_part" id="450509554" />
+    </function>
+    <function id="45634158546">
+      <description>LED</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="1392832614" />
     </function>
     <function id="45345768534">
       <description>Attachment screw</description>
