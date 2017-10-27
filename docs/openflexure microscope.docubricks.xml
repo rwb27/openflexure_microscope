@@ -550,6 +550,7 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       <designator />
       <quantity>1</quantity>
       <implementation type="brick" id="fixed_illumination_arm" />
+      <implementation type="brick" id="adjustable_illumination_arm" />
       <implementation type="brick" id="condenser_illumination_arm" />
     </function>
     <function id="1705195835">
@@ -653,7 +654,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Finally, press the camera module onto the bottom of the optics mount, so the camera board sits flush with the bottom of the mount.  The newer push-fit is much easier to use, and should fit in with a gentle but firm press from your thumb.  It probably won't crack or click into place, but it should be held by the push-fit.  Don't worry if it's not gripped very strongly, the cover will hold it in place.</description>
+        <description>Finally, press the camera module onto the bottom of the optics mount.  Don't worry if it's not gripped very strongly, the cover will hold it in place.</description>
         <media>
           <file url="./images/optics_assembly_0.jpg" />
           <file url="./images/optics_assembly_1.jpg" />
@@ -661,17 +662,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Slide the cover over the camera board, starting at the end farthest from the ribbon cable connector.  This will stop the camera falling out, and also protects the PCB from short circuits.  </description>
-        <media>
-          <file url="./images/camera_cover_2.jpg" />
-          <file url="./images/camera_cover_0.jpg" />
-          <file url="./images/camera_cover_1.jpg" />
-          <file url="./images/camera_cover_2.jpg" />
-          <file url="./images/camera_cover_3.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Lastly, if you want to make the module more robust, you can insert two M2 screws from the bottom, to lock the cover on and hold the PCB in place.  This is useful if the ribbon cable might be pulled accidentally, for example.</description>
+        <description>Place the cover on top of the camera board, then screw the cover and the camera board onto the optics module, using two M2 screws.</description>
         <media>
           <file url="./images/camera_screws_1.jpg" />
         </media>
@@ -765,19 +756,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Slide the cover over the camera module.  It can help to tilt the cover as you start to fit it on.</description>
-        <media>
-          <file url="./images/hires_optics_camera_2.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>The cover is a deliberately tight fit.  If it's too tight to fit over the ribbon cable connector, you can ease it over with a craft knife, fingernail, or piece of card.</description>
-        <media>
-          <file url="./images/hires_optics_camera_3.jpg" />
-        </media>
-      </step>
-      <step>
-        <description>Lastly, if you want to make the module more robust, you can insert two M2 screws from the bottom, to lock the cover on and hold the PCB in place.  This is useful if the ribbon cable might be pulled accidentally, for example.</description>
+        <description>Place the cover on top of the camera board, then screw the cover and the camera board onto the optics module, using two M2 screws.</description>
         <media>
           <file url="./images/camera_screws_1.jpg" />
         </media>
@@ -817,7 +796,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
     <media />
     <assembly_instruction>
       <step>
-        <description>There are three of these actuators on the microscope: these steps should be followed for each one in turn.  Note the quantities in the parts list are for one actuator, and they don't include the microscope body.  The image for this steps shows everything you will need to assemble the three actuators (NB the illumination arm is not yet needed).</description>
+        <description>There are three of these actuators on the microscope: these steps should be followed for each one in turn.  Note the quantities in the parts list are for one actuator, and they don't include the microscope body.  The image for this steps shows everything you will need to assemble the three actuators (NB the illumination arm is not yet needed, and the band insertion tool is now longer and double-ended).</description>
         <media>
           <file url="./images/lores_parts_no_optics.jpg" />
         </media>
@@ -829,13 +808,13 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Next, put one of the hex-head screws into the gear, and screw into the nut that is now inside the actuator.  Use a washer between the gear and the microscope body.</description>
+        <description>Next, put one of the hex-head screws into the gear, and put a washer on the screw thread underneath the gear.  Put a very small blob of grease (if available) on the screw thread. Insert the screw into the hole at the top of the column, and screw it into the nut that is now inside the actuator.  Use a washer between the gear and the microscope body.</description>
         <media>
           <file url="./images/actuator_assembly_screw_in_1.jpg" />
         </media>
       </step>
       <step>
-        <description>Turn the microscope over and, using the elastic band tool or a craft knife, snap the two thin plastic supports as shown.</description>
+        <description>Turn the microscope over and, using the elastic band tool or a craft knife, snap the two thin plastic supports as shown if they are present.</description>
         <media>
           <file url="./images/actuator_assembly_snap_supports_1.jpg" />
         </media>
@@ -845,21 +824,23 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         <media />
       </step>
       <step>
-        <description>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  Push in until it clicks into place on the hook.  If you are using #32 rubber bands, you should probably double up the band so it's properly stretched, otherwise it will be too long.  NB the band tool will only work one way round; the flat side should be towards the outside of the foot, the handle points inwards.</description>
+        <description>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.</description>
         <media>
-          <file url="./images/actuator_assembly_band_insertion_1.jpg" />
+          <file url="./images/band_insertion_through_foot_1.jpg" />
+          <file url="./images/band_insertion_through_foot_2.jpg" />
         </media>
       </step>
       <step>
-        <description>Hook the tool through the free end of the band, and stretch it up, before inserting that end of the band into the other side of the actuator.  If possible, lift the band up so it doesn't catch on the foot while you do this - otherwise it's possible to overstretch and tear the band.</description>
+        <description>Place the foot on the body, taking care that it's in the right place (the tilted ones are for the outer two actuators, the flat one is for the centre) and the right way round (the open part of the foot points towards the optics module in the centre of the microscope).  Push the insertion tool in until the band clicks into place.  You may find it helps to push on the gear or use the nut insertion tool to hold the actuator in place while you do this.  What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.</description>
         <media>
-          <file url="./images/actuator_assembly_band_insertion_2.jpg" />
+          <file url="./images/band_insertion_body_1.jpg" />
+          <file url="./images/band_insertion_body_2.jpg" />
         </media>
       </step>
       <step>
         <description>You should now have the band pulling both sides of the actuator down as shown.  If you used a long elastic band, you can break the thin layer at the bottom of the foot on either side, to pull the band out and wrap it around the foot to tighten it.  This is not necessary for the Viton bands, or if you're using doubled-over #32 bands.</description>
         <media>
-          <file url="./images/actuator_assembly_band_insertion_3.jpg" />
+          <file url="./images/band_insertion_finished_bottom.jpg" />
         </media>
       </step>
 
@@ -935,9 +916,91 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
         <media>
           <file url="./images/illumination_1.jpg" />
-          <file url="./images/illumination_0.jpg" />
-          <file url="./images/illumination_1.jpg" />
-          <file url="./images/illumination_2.jpg" />
+        </media>
+      </step>
+    </assembly_instruction>
+    <function id="450245988">
+      <description>Plastic mounting parts</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="1995350498" />
+    </function>
+    <function id="7892348569">
+      <description>Wiring</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="450509554" />
+    </function>
+    <function id="45634158546">
+      <description>LED</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="1392832614" />
+    </function>
+    <function id="45345768534">
+      <description>Attachment screw</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="589229119" />
+    </function>
+    <function id="95790026875">
+      <description>Washer for illumination arm</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="m3_washer" />
+    </function>
+    <function id="9085494798">
+      <description>Nut for illumination</description>
+      <designator />
+      <quantity>1</quantity>
+      <implementation type="physical_part" id="m3_nut" />
+    </function>
+  </brick>
+  <brick id="adjustable_illumination_arm">
+    <name>Adjustable Illumination Arm</name>
+    <abstract>A holder for an LED to take images in transmitted light.</abstract>
+    <long_description>The illumination arm holds an LED above the sample.  There is a screw holding the two parts together, which goes through a slot to allow simple, slip plate style alignment of the LED.  You can use some white tape stuck over the LED as a diffuser to improve the microscope's resolution - though you may want to consider using the <a href="#brick_condenser_illumination_arm">condenser lens version</a> if you have an RMS microscope objective.</long_description>
+    <notes />
+    <license />
+    <media />
+    <assembly_instruction>
+      <step>
+        <description>To build the condenser, you will need the two parts of the mounting arm, an M3 screw and washer, the cable, and the LED (ignore the condenser lens shown in the picture).</description>
+        <media>
+          <file url="./images/condenser_parts.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Assemble the cable for the LED.  If using pre-crimped cables, as supplied with our kit, fit the 2-way header to either end.  Don't worry about polarity, it's easy and harmless to simply rotate the connector 180 degrees if you need to.</description>
+        <media>
+          <file url="./images/condenser_wires_1.jpg" />
+          <file url="./images/condenser_wires_2.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Thread the cable through the larger, vertical part of the mounting arm as shown.  The smaller part is different from the one shown in the picture, but the cable should still fit through.</description>
+        <media>
+          <file url="./images/condenser_wiring_1.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Screw the horizontal part of the mounting arm onto the vertical part.  You should be able to put a nut into the top of the vertical part.</description>
+        <media>
+          <file url="./images/condenser_assembly_1.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Connect the LED to the cable by pushing the legs into the 2-way housing.  Bend the lens part of the LED at right angles to the legs, lift it up, and insert it into the hole.</description>
+        <media>
+          <file url="./images/illumination_led_insertion_adj_1.jpg" />
+          <file url="./images/illumination_led_insertion_adj_2.jpg" />
+          <file url="./images/illumination_led_insertion_adj_3.jpg" />
+        </media>
+      </step>
+      <step>
+        <description>Fit the illumination arm to the microscope by sliding it onto the dovetail from underneath.  The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing..</description>
+        <media>
+          <file url="./images/condenser_fitting_1.jpg" />
         </media>
       </step>
     </assembly_instruction>
