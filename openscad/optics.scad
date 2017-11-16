@@ -28,7 +28,7 @@ include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
 use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
-camera_mount_top = dt_bottom - 3;
+camera_mount_top = dt_bottom - 3 - (optics=="rms_f50d13"?11:0); //the 50mm tube lens requires the camera to stick out the bottom.
 bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
 fl_cube_bottom = 0; //bottom of the fluorescence filter cube
 fl_cube_w = 16; //width of the fluorescence filter cube
@@ -246,7 +246,8 @@ module camera_mount_body(
         dt_top, //height of the top of the dovetail
         extra_rz = [], //extra [r,z] values to extend the mount
         bottom_r=8, //radius of the bottom of the mount
-        fluorescence=false //whether to leave a port for fluorescence beamsplitter etc.
+        fluorescence=false, //whether to leave a port for fluorescence beamsplitter etc.
+        dt_waist=true //whether to make the middle of the dovetail looser for easy insertion
     ){
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
@@ -290,7 +291,7 @@ module camera_mount_body(
         }
         // add the dovetail
         translate([0,objective_clip_y,dt_bottom]){
-            dovetail_m([objective_clip_w+4,3,dt_h],waist=dt_h-15);
+            dovetail_m([objective_clip_w+4,3,dt_h],waist=dt_waist?dt_h-15:0);
         }
         // add the camera mount
         translate([0,0,camera_mount_top]) camera_mount();
@@ -339,6 +340,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     // dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b)
     a = tube_lens_f;
     dos = sample_z - objective_parfocal_distance - bottom;
+    echo("Objective to sensor:",dos);
     b = tube_length - dos;
     dts = 1/2 * (sqrt(b) * sqrt(4*a+b) - b);
     echo("Distance from tube lens principal plane to sensor:",dts);
@@ -381,6 +383,43 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         }
     }
 }
+
+
+module rms_camera_tube(tube_length=150){
+    // This optics module takes an RMS objective and a tube length correction lens.
+    // important parameters are below:
+        
+    rms_r = 20/2; //radius of RMS thread, to be gripped by the mount
+    //tube_lens_r (argument) is the radius of the tube lens
+    //tube_lens_ffd (argument) is the front focal distance (from flat side to focus) - measure this, or take it from the lens spec. sheet
+    //tube_lens_f (argument) is the nominal focal length of the tube lens.
+    //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
+    
+    
+    lens_assembly_z = bottom + tube_length - 10; //height of lens assembly
+    lens_assembly_base_r = rms_r+1; //outer size of the lens grippers
+    lens_assembly_h = 10; //the
+        //objective sits parfocal_distance below the sample
+    union(){
+        // The bottom part is just a camera mount with a flat top
+        difference(){
+            // camera mount with a body that's shorter than the dovetail
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=lens_assembly_z+5,fluorescence=false, dt_waist=false);
+            // camera cut-out and hole for the beam
+            optical_path(6, lens_assembly_z);
+            // make sure it makes contact with the lens gripper, but
+            // doesn't foul the inside of it
+            translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
+            
+        }
+        // A pair of nested lens grippers to hold the objective
+        translate([0,0,lens_assembly_z]){
+            // gripper for the objective
+            lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r);
+        }
+    }
+}
+
 module optics_module_trylinder(
         lens_r = 14/2, //radius of lens
         parfocal_distance = 20, //distance from back of lens to sample
@@ -486,6 +525,17 @@ difference(){
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
         if(sample_z < 60 || objective_clip_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
+    }else if(optics=="rms_f50d13"){
+        // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
+        optics_module_rms(
+            tube_lens_ffd=47, 
+            tube_lens_f=50, 
+            tube_lens_r=12.7/2+0.1, 
+            objective_parfocal_distance=35,
+            fluorescence=false,
+            tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+        );
+        if(sample_z < 60 || objective_clip_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
     }else if(optics=="m12_lens"){
         // Optics module for USB camera's M12 lens
         optics_module_trylinder(
@@ -495,6 +545,7 @@ difference(){
         );
         if(objective_clip_y < 10) echo("Warning: M12 lenses won't fit in small frames");
     }
+    
     //picam_cover();
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
