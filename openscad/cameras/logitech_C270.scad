@@ -7,10 +7,9 @@
 * precision over a ~10mm range, by using plastic flexure          *
 * mechanisms.                                                     *
 *                                                                 *
-* This file defines one useful function, C270().  It is           *
-* designed to be subtracted from a solid block, with the bottom   *
-* of the block at z=0.  The screws that are normally used to fix  *
-* the lens on to the PCB are used to mount the PCB onto the part. *
+* This file defines a camera mount (together with functions that  *
+* return the mount height and sensor position) for the Logitech   *
+* C270 webcam.                                                    *
 *                                                                 *
 *                                                                 *
 * (c) Richard Bowman, January 2016                                *
@@ -27,9 +26,9 @@ $fn=48;
 d=0.05;
 
 
-function camera_mount_height() = 4.5;
-bottom = camera_mount_height() * -1;
-function camera_sensor_height() = 0.2; //Height of the sensor above the PCB
+function c270_camera_mount_height() = 4.5;
+bottom = c270_camera_mount_height() * -1;
+function c270_camera_sensor_height() = 0.2; //Height of the sensor above the PCB
 
 module mounting_hole(){
     translate([0,0,-5]) cylinder(r=0.8*1.2,h=999,$fn=12); 
@@ -77,15 +76,15 @@ module C270(beam_r=5, beam_h=6){
     }
 }
 
-module camera_mount(){
+module c270_camera_mount(){
     // A mount for the pi camera v2
     // This should finish at z=0+d, with a surface that can be
     // hull-ed onto the lens assembly.
     h = 58;
     w = 25;
     rotate(-45) difference(){
-        translate([-w/2, -13, bottom]) cube([w, h, camera_mount_height()]);
+        translate([-w/2, -13, bottom]) cube([w, h, c270_camera_mount_height()]);
         translate([0,0,bottom]) C270();
     }
 }
-camera_mount();
+c270_camera_mount();

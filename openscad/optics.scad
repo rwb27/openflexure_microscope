@@ -27,9 +27,10 @@ include <microscope_parameters.scad>; // important for objective clip position, 
 
 //use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
 //use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
-use <cameras/picam_2_screw_on.scad>; //Raspberry Pi Camera module v2
+//use <cameras/picam_2_screw_on.scad>; //Raspberry Pi Camera module v2
 //use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
 //use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
+use <cameras/camera.scad>;
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3;

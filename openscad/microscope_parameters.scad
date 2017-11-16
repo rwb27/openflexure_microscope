@@ -30,7 +30,8 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true;
 motor_lugs = true;
-version_numstring = "5.16.12";
+version_numstring = "5.17.1";
+camera = "picamera_2"; //see cameras/camera.scad for valid values
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
