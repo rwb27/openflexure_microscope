@@ -11,11 +11,13 @@
 ******************************************************************/
 
 use <./utilities.scad>;
-use <./nut_seat_with_flex.scad>;
+use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
-
+foot_z = wall_h; //height of the bottom of the feet
+mount_z = foot_z + foot_height; //height for the mounting surfaces
+ss_outer = ss_outer();
 
 module leg_frame(angle){
     // Transform into the frame of one of the legs of the stage
@@ -132,38 +134,65 @@ union(){
                     // anchor at the same angle on the actuator
                     // NB the base of the wall is outside the
                     // base of the screw seat
-                    leg_frame(45) translate([-12-wall_t/2,actuating_nut_r,0]){
+                    leg_frame(45) translate([-ss_outer[0]/2+wall_t/2,actuating_nut_r,0]){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
                     // neatly join to the screw seat (actuator column)
-                    leg_frame(45) translate([0,actuating_nut_r,0]) screw_seat_outline(h=wall_h);
+                    leg_frame(45) translate([0,actuating_nut_r,0]) screw_seat_outline(h=base_t);
                 }
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([12-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
-                    translate([0,z_nut_y+10-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
+                    leg_frame(45) translate([ss_outer[0]/2-1,actuating_nut_r,-d]) wall_vertex();
+                    for(p=base_mounting_holes) translate(p){  
+                        if(p[0]<0 && p[1]>0) wall_vertex();
+                    }
+                }
+                hull(){
+                    for(p=base_mounting_holes) translate(p){  
+                        if(p[1]>0) wall_vertex();
+                    }
                 }
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);
-            }
-                    
+                
+                //these are the holes to mount onto the baseplate 
+                for(p=base_mounting_holes) translate(p){  
+                    cylinder(r=4, h=mount_z);
+                }
+                reflect([1,0,0]) hull(){
+                    inner_wall_vertex(135, leg_outer_w/2, zawall_h);
+                    z_anchor_wall_vertex(); 
+                    for(p=base_mounting_holes) translate(p){  
+                        if(p[0]<0 && p[1]<0) cylinder(r=4, h=mount_z);
+                    }
+                }
+                //Actuator housings (screw seats and motor mounts)
+                each_actuator() translate([0,actuating_nut_r,0]){
+                    //this makes a "cup" for the microscope feet
+                    sequential_hull(){
+                        translate([0,0,0]) screw_seat_outline(h=1);
+                        translate([0,0,mount_z-foot_height-1.2]) screw_seat_outline(h=1);
+                        translate([0,0,mount_z-foot_height]) screw_seat_outline(h=2,adjustment=1.2);
+                    }
+                }
+            }           
 		}
-        //////  Things we need to cut out holes for... ///////////
- 
-		//post mounting holes
-		reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
+         
+        //////  Things we need to cut out holes for... /////////// 
+        //these are the holes to mount onto the baseplate 
+        for(p=base_mounting_holes) translate(p){  
+           translate([0,0,3]) cylinder(r=2.5*1.1,h=999); 
+        }
+        
+        //Actuator housings (screw seats and motor mounts)
+        each_actuator() translate([0,actuating_nut_r,0]){
+            //this makes a "cup" for the microscope feet
+            translate([0,0,mount_z-foot_height]) screw_seat_outline(h=999,adjustment=0.2);
+            translate([0,0,0.5]) screw_seat_outline(h=999,adjustment=-wall_t);
+        }
         
 	} ///////// End of things to chop out of base/walls ///////
-    
-	//Actuator housings (screw seats and motor mounts)
-	each_actuator() translate([0,actuating_nut_r,0]){
-        screw_seat_cup(h=20);
-    }
-//	translate([0,z_nut_y,0]){
-//        screw_seat(travel=z_actuator_travel, motor_lugs=motor_lugs);
-//    }
-	////////////// clip for illumination/back foot ///////////////////
-	translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
+
 }
 
 //%rotate(180) translate([0,2.5,-2]) cube([25,24,2],center=true);

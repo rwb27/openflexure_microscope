@@ -190,5 +190,6 @@ module double_ended_band_tool(bent=false){
         translate([0,0,roc]) cube([ns[0],middle_w+2*(roc-0.5),d],center=true);
     }
 }
+
 double_ended_band_tool(bent=false);
-//translate([10,0,0]) nut_tool();
+translate([10,0,0]) nut_tool();

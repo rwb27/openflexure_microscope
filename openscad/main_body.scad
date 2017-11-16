@@ -17,7 +17,6 @@ use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
-
 module shear_x(amount=1){
     // Shear transformation: tilt the Y axis towards the X axis
     // e.g. if amount=1, then a straight line in Y will be
@@ -66,7 +65,7 @@ module leg(brace=stage_flex_w){
 }
 module actuator(){
     // A leg that supports the stage, plus a lever to tilt it.
-    // Includes the flexible nut seat actuating column.
+    // No longer includes the flexible nut seat actuating column.
     // TODO: find the code that unifies this with leg()
 	brace=20;
     fw=stage_flex_w;
@@ -84,8 +83,6 @@ module actuator(){
             //don't foul the actuator column
             translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
         }
-		//nut seat
-		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h); 
 	}
 }
 module actuator_silhouette(h=999){
@@ -93,12 +90,7 @@ module actuator_silhouette(h=999){
     // actuators.
     linear_extrude(2*h,center=true) minkowski(){
         circle(r=zflex_l,$fn=12);
-        projection() difference(){
-            actuator();
-            // cut off the actuator column - this causes problems and
-            // the inside of the screw seat is already chopped out...
-            translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
-        }
+        projection() actuator();
     }
 }
 
@@ -227,9 +219,7 @@ module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
     // (i.e. it's sheared rather than tilted).    These form the
     // stiffening "wall" that runs around the base of 
     // the legs
-    hull() repeat([tan(y_tilt), -tan(x_tilt), 1]*(h-d), 2){
-        cylinder(r=r, h=d, $fn=8);
-    }
+    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
 }
 module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/2){
     // A thin cylinder, close to one of the legs.  It
@@ -278,9 +268,12 @@ module place_on_wall(){
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
 union(){
 
-	//legs
+	//legs (incl. actuators)
 	reflect([1,0,0]) leg_frame(135) leg();
-	each_actuator() actuator();
+	each_actuator(){
+        actuator();
+		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h);
+    }
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
         w=stage_flex_w;
@@ -352,11 +345,18 @@ union(){
                 }
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([ss_outer()[0]/2-1,actuating_nut_r,-d]) cylinder(r=1,h=wall_h,$fn=8);
-                    translate([0,z_nut_y+ss_outer()[1]/2-1,-d]) cylinder(r=1,h=wall_h,$fn=8);
+                    leg_frame(45) translate([ss_outer()[0]/2-wall_t/2,actuating_nut_r,0]) wall_vertex();
+                    translate([0,z_nut_y+ss_outer()[1]/2-wall_t/2,0]) wall_vertex();
                 }
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);
+            }
+            //these are the holes to mount onto the baseplate 
+            for(p=base_mounting_holes) {
+                if(p[1]<0 && p[0]>0) reflect([1,0,0]) hull(){
+                    translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
+                    translate(p) cylinder(r=4*1.1,h=3);
+                }
             }
             
             //screw supports for adjustment of condenser angle/position
@@ -394,6 +394,11 @@ union(){
             }
 		}
         
+        //post mounting holes 
+        for(p=base_mounting_holes) translate(p){ 
+             cylinder(r=3/2*1.1,h=999,center=true); 
+             translate([0,0,3]) cylinder(r=3*1.1, h=999); 
+        } 
 		//post mounting holes
 		//reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
         
