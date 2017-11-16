@@ -32,5 +32,13 @@ This project is open so that anyone can get involved, and you don't have to lear
 
 Things in need of attention are currently described in [issues](https://github.com/rwb27/openflexure_microscope/issues) so have a look there if you'd like to work on something but aren't sure what.
 
+## Related Repositories
+Most of the Openflexure Microscope stuff lives on GitHub, under [my account](https://github.com/rwb27/).  Particularly useful ones are:
+* The ["sangaboard" motor controller](https://github.com/rwb27/openflexure_nano_motor_controller/) based on an Arduino Nano + Darlington Pair ICs, developed collaboratively with [STICLab](http://www.sticlab.co.tz)
+* The ["fergboard" motor controller](https://github.com/fr293/motor_board) by Fergus Riche
+* An as-yet-quite-basic set of scripts that should become the [microscope software](https://github.com/rwb27/openflexure_microscope_software/)
+* The higher precision, smaller range [block stage](https://github.com/rwb27/openflexure_block_stage)
+* Some [characterisation scripts for analysing images of the USAF resolution test target](https://github.com/rwb27/usaf_analysis/)
+
 ## Compiling from source
 If you want to print the current development version, you can compile the STL from the OpenSCAD files - but please still consult the DocuBricks documentation for quantities and tips on print settings, etc.  You can use GNU Make to generate all the STL files (just run ``make all`` in the root directory of the repository).  More instructions, including hints for Windows users, are available in [COMPILE.md](https://github.com/rwb27/openflexure_microscope/blob/master/COMPILE.md).
