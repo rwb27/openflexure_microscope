@@ -23,14 +23,9 @@
 
 use <utilities.scad>;
 use <dovetail.scad>;
-include <microscope_parameters.scad>; // important for objective clip position, etc.
+include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
 
-//use <cameras/picam_push_fit.scad>; //Raspberry Pi Camera module v1
-//use <cameras/picam_2_push_fit.scad>; //Raspberry Pi Camera module v2
-//use <cameras/picam_2_screw_on.scad>; //Raspberry Pi Camera module v2
-//use <cameras/C270_mount.scad>;//Mid-range Logitech webcam (C270)
-//use <cameras/usbcam_push_fit.scad>; //USB camera+LED, sourced from China
-use <cameras/camera.scad>;
+use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3;
@@ -464,37 +459,42 @@ module condenser(){
 }
 
 difference(){
-    /// Optics module for picamera v2 lens, using trylinder
-    //NB this should also work for pi camera v1 if the right
-    /*/camera module is used.
-    optics_module_trylinder(
-        lens_r = 3, 
-        parfocal_distance = 6,
-        lens_h = 2.5
-    );//*/
-    /*/ Optics module for logitech C270 lens
-    optics_module_trylinder(
-        lens_r = 6,
-        parfocal_distance = 6, //NB with 6 here the PCB is a bit low
-        lens_h = 2
-    );//*/
-    // Optics module for RMS objective, using Comar 40mm singlet tube lens
-    optics_module_rms(
-        tube_lens_ffd=38, 
-        tube_lens_f=40, 
-        tube_lens_r=16/2+0.1, 
-        objective_parfocal_distance=35,
-        fluorescence=false,
-        gripper_t=0.65,
-        tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
-    );//*/
-    /*/ Optics module for USB camera's M12 lens
-    optics_module_trylinder(
-        lens_r = 14/2,
-        parfocal_distance = 21, //22 for high-res lens
-        lens_h = 5.5
-    );//*/
-    //
+    if(optics=="pilens"){
+        // Optics module for picamera v2 lens, using trylinder
+        optics_module_trylinder(
+            lens_r = 3, 
+            parfocal_distance = 6,
+            lens_h = 2.5
+        );
+        if(sample_z > 40) echo("Warning: using the pi camera lens with a tall stage gives fuzzy images!");
+    }else if(optics=="c270_lens"){
+        // Optics module for logitech C270 lens
+        optics_module_trylinder(
+            lens_r = 6,
+            parfocal_distance = 6, //NB with 6 here the PCB is a bit low
+            lens_h = 2
+        );
+    }else if(optics=="rms_f40d16"){
+        // Optics module for RMS objective, using Comar 40mm singlet tube lens
+        optics_module_rms(
+            tube_lens_ffd=38, 
+            tube_lens_f=40, 
+            tube_lens_r=16/2+0.1, 
+            objective_parfocal_distance=35,
+            fluorescence=false,
+            gripper_t=0.65,
+            tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+        );
+        if(sample_z < 60 || objective_clip_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
+    }else if(optics=="m12_lens"){
+        // Optics module for USB camera's M12 lens
+        optics_module_trylinder(
+            lens_r = 14/2,
+            parfocal_distance = 21, //22 for high-res lens
+            lens_h = 5.5
+        );
+        if(objective_clip_y < 10) echo("Warning: M12 lenses won't fit in small frames");
+    }
     //picam_cover();
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);

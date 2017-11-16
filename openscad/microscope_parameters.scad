@@ -32,6 +32,7 @@ big_stage = true;
 motor_lugs = true;
 version_numstring = "5.17.1";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
+optics = big_stage?"rms_f40d16":"pilens"; //see optics.scad for valid values
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -57,7 +58,7 @@ flex_a = 0.15;    // sine of the angle through which flexures can be bent
 
 // Compile a sensible version string
 version_string = str("v",version_numstring, big_stage?"-LS":"-SS", sample_z, motor_lugs?"-M":"");
-echo("Compiling OpenFlexure Microscope ",version_string);
+echo(str("Compiling OpenFlexure Microscope ",version_string));
 
 stage_t=5; //thickness of the XY stage (at thickest point, most is 1mm less)
 flex_z1 = 0;      // z position of lower flexures for XY axis
