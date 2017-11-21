@@ -14,6 +14,8 @@ lenses = ["pilens", "c270_lens", "m12_lens", "rms_f40d16", "rms_f50d13"]
 optics_versions_SS40 = ["picamera_2_pilens", "logitech_c270_c270_lens"]
 optics_versions_LS65 = [cam + "_" + lens for cam in cameras for lens in lenses if "rms" in lens] + ["m12_m12_lens"]
 optics_versions = [v + "_SS40" for v in optics_versions_SS40] + [v + "_LS65" for v in optics_versions_LS65]
+sample_riser_versions = ['LS10', 'LS5', 'SS5']
+slide_riser_versions = ['LS10']
 
 illumination_versions = [body + condenser + tall for body in body_versions 
                                                  for condenser in ["", "_condenser"] 
@@ -51,13 +53,27 @@ def illumination_parameters(version):
     if "_tall" in version:
         p["foot_height"] = 26
     return p
+    
+def riser_parameters(version):
+    """extract the parameters for sample risers"""
+    m = re.match("(LS|SS)([\d]+)", version)
+    p = {}
+    p["big_stage"] = "LS" == m.group(1)
+    p["h"] = int(m.group(2))
+    return p
 
 def openscad_recipe(**kwargs):
     output = "\t" + "openscad -o $@"
     for name, value in kwargs.iteritems():
+        try:
+            float(value)
+        except ValueError:
+            # numbers and booleans are OK, but strings need to be double-quoted on the command line.
+            if value not in ["true", "false"]:
+                value = '"{}"'.format(value)
         if type(value) == type(True): #need to convert boolean values
             value = "true" if value else "false"
-        output += " -D {name}={value}".format(name=name, value=str(value))
+        output += " -D '{name}={value}'".format(name=name, value=str(value))
     output += " $<\n"
     return output
     
@@ -77,13 +93,17 @@ if __name__ == "__main__":
         M("body_versions = " + " ".join(body_versions))
         M("optics_versions = " + " ".join(optics_versions))
         M("illumination_versions = " + " ".join(illumination_versions))
+        M("sample_riser_versions = " + " ".join(sample_riser_versions))
+        M("slide_riser_versions = " + " ".join(slide_riser_versions))
         M("")
         M("TOOLS := actuator_assembly_tools condenser_lens_tool tube_lens_tool")
-        M("COMMONPARTS := feet feet_tall gears sample_clips")
+        M("TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper")
+        M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) ")
+        M("COMMONPARTS := feet feet_tall gears sample_clips small_gears")
         M("BODIES := $(body_versions:%=main_body_%)")
         M("OPTICS := $(optics_versions:%=optics_%)")
         M("ILLUMINATIONS := $(illumination_versions:%=illumination_and_rear_foot_%)")
-        M("ALLPARTS := $(COMMONPARTS) $(TOOLS) $(BODIES) $(ILLUMINATIONS)")
+        M("ALLPARTS := $(COMMONPARTS) $(TOOLS) $(BODIES) $(ILLUMINATIONS) $(OPTICS) $(ACCESSORIES)")
         M("ALLSTLFILES := $(ALLPARTS:%=$(OUTPUT)/%.stl)")
         M("")
         M("parameters_file := $(SOURCE)/microscope_parameters.scad")
@@ -116,6 +136,21 @@ if __name__ == "__main__":
             M("$(OUTPUT)/optics_" + version + ".stl: $(SOURCE)/optics.scad $(optics_deps)")
             M(openscad_recipe(**optics_module_parameters(version)))
         M("")
+        M("riser_dep_names := main_body")
+        M("riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
+        for version in sample_riser_versions:
+            M("$(OUTPUT)/sample_riser_" + version + ".stl: $(SOURCE)/sample_riser.scad $(riser_deps)")
+            M(openscad_recipe(**riser_parameters(version)))
+        for version in slide_riser_versions:
+            M("$(OUTPUT)/slide_riser_" + version + ".stl: $(SOURCE)/slide_riser.scad $(riser_deps)")
+            M(openscad_recipe(**riser_parameters(version)))
+        M("")
+        M("$(OUTPUT)/picamera_2_%.stl: $(SOURCE)/cameras/picamera_2_%.scad $(all_deps)")
+        M(openscad_recipe(camera="picamera_2"))
+        M("")
+        M("$(OUTPUT)/feet_tall.stl: $(SOURCE)/feet.scad $(all_deps)")
+        M(openscad_recipe(foot_height=26))
+        M("")
         M("$(OUTPUT)/%.stl: $(SOURCE)/%.scad $(all_deps)")
-        M("\t" + "openscad -o $@ $<")
+        M(openscad_recipe())
         M("")

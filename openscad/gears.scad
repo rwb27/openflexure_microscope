@@ -27,6 +27,11 @@ c2c_distance = 20; //see output from motor_lugs
 pitch = c2c_distance * 360 / (teeth_smallgear + teeth_biggear);
 d=0.05;
 
+function gear_c2c_distance() = c2c_distance;
+function gear_ratio() = ratio;
+function small_gear_spacing() = c2c_distance/(ratio + 1)*2 + 4;
+function large_gear_spacing() = c2c_distance/(1/ratio + 1)*2 + 4;
+
 //pitch radius = Nteeth * circular_pitch / 360
 //pitch radius is centre of gear to meshing point
 //outer radius = pitch radius * (1 + 2*pi/Nteeth)
@@ -110,4 +115,4 @@ module thumbwheel(r=10,h=5,knobble_r=1,knobble_angle=45,chamfer=0.5){
 //translate([c2c_distance*2,00]) small_gear();
 //thumbwheel();
 
-repeat([0,c2c_distance/(1/ratio + 1)*2 + 4,0],3,center=true) large_gear();
+repeat([0,large_gear_spacing(),0],3,center=true) large_gear();
