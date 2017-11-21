@@ -87,28 +87,6 @@ module picam2_cutout( beam_length=15){
 	}
 }
 
-module picam2_pcb_bottom(){
-    // This is an approximate model of the pi camera PCB for the purposes of making
-    // a slide-on cover.  NB z=0 is the bottom of the PCB, which is nominally 1mm thick.
-    pcb = [25+0.5,24+0.5,1+0.3];
-    socket = [pcb[0],6.0+0.5,2.7];
-    components = [pcb[0]-1*2, pcb[1]-1-socket[1], 2];
-    translate([0,2.4,0]) union(){ //NB the camera bit isn't centred!
-        translate([0,0,pcb[2]/2]) cube(pcb,center=true); //the PCB
-        translate([-components[0]/2,-pcb[1]/2+socket[1],-components[2]+d]) cube(components); //the little components
-        //the ribbon cable socket
-        translate([-socket[0]/2,-pcb[1]/2,-socket[2]+d]) cube(socket); //the ribbon cable socket
-        translate([-components[0]/2,-pcb[1]/2,-0.5]) cube([components[0],socket[1]+0.5,0.5+d]); //pins protrude slightly further
-        
-        //mounting screws (NB could be extruded in -y so the cover can slide on)
-        reflect([1,0,0]) mirror([0,0,1]) translate([21/2,-2.4,-d]){
-            cylinder(r=2.5,h=10);
-            cylinder(r=1.5,h=15,center=true); //screw might poke through the top...
-        }
-    }
-}
-//translate([0,0,-1]) picam_pcb_bottom();
-
 module picamera_2_camera_mount(){
     // A mount for the pi camera v2
     // This should finish at z=0+d, with a surface that can be
@@ -130,7 +108,7 @@ difference(){
 }
 
 /////////// Cover for camera board //////////////
-module picam_cover(){
+module picamera_2_cover(){
     // A cover for the camera PCB, slips over the bottom of the camera
     // mount.  This version should be compatible with v1 and v2 of the board
     b = 24;
@@ -158,4 +136,57 @@ module picam_cover(){
         }
     }
 } 
-picam_cover();
+//picam_cover();
+
+pcb = [25.4+0.5,24+0.5,2]; //size of the picam PCB (+0.5mm so it fits)
+camera_housing = [9,9,2.5]; //size of the plastic housing
+camera_housing_y = 2.5; //shift of the camera housing from the centre
+lens_unscrew_r = 5.5/2; //size of the bit we unscrew
+    
+module generous_camera_bits(){
+    //The other stuff on the PCB (mostly the ribbon cable)
+    camera = [8.5,8.5,2.3]; //size of camera box
+	cw = camera[0]+1; //side length of camera box at bottom (slightly larger)
+	union(){
+		//ribbon cable at top of camera
+        sequential_hull(){
+            translate([0,0,0]) cube([cw-1,d,4],center=true);
+            translate([0,9.4-(4.4/1)/2,0]) cube([cw-1,1,4],center=true);
+        }
+        //flex connector
+        translate([-1.25,9.4,0]) cube([cw-1+2.5, 4.4+1, 4],center=true);
+        
+	}
+}
+
+module picamera_2_gripper(){
+    // this little bit of plastic grips the plastic camera housing
+    // and allows you to safely unscrew the lens
+    // it protects the (surprisingly delicate) flex that connects the camera to the PCB.
+    outer = pcb+[4,-5,camera_housing[2]]; //size of the tool
+    difference(){
+        translate([0,-1,outer[2]/2]) cube(outer, center=true);
+        
+        //central hole for the camera housing
+        translate([0,camera_housing_y,0]) cube(camera_housing + [0,0,999],center=true);
+        
+        //cut-outs for the other bits (cable etc.)
+        translate([0,camera_housing_y,camera_housing[2]]) rotate([180,0,0]) generous_camera_bits();
+        
+        //indent for PCB
+        translate([0,0,outer[2]]) cube(pcb + [0,0,pcb[2]],center=true);
+    
+    }
+}
+
+module picamera_2_lens_gripper(){
+    //a tool to unscrew the lens from the pi camera
+    inner_r = 4.7/2;
+    union(){
+        difference(){
+            cylinder(r=7,h=2);
+            cylinder(r=5,h=999,center=true);
+        }
+        for(a=[0,90,180,270]) rotate(a) translate([inner_r,0,0]) cube([1.5,5,2]);
+    }
+}
