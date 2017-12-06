@@ -25,7 +25,7 @@ Components:
 * 3 gears: ``gears.stl`` (contains all 3)
 * illumination arm: ``illumination_<stage size><height>[_condenser][_tall].stl``
 * 2 sample clips: ``sample_clips.stl`` (contains both)
-* optics module: ``optics_<camera>_<lens>_<stage size><height>.stl
+* optics module: ``optics_<camera>_<lens>_<stage size><height>.stl``
 * [optional] camera cover: ``picamera_2_cover.stl``
 * [optional] 3 small gears for motors: ``small_gears.stl`` (contains all 3)
 * [optional] riser for the sample: ``sample_riser_<stage size><thickness>.stl``
@@ -34,7 +34,7 @@ Components:
 In the filenames above, where there are multiple versions, parameters are included in angle brackets:
 * ``<stage size>`` will be either ``SS`` for small stage or ``LS`` for large stage
 * ``<height>`` is the height from the bottom of the main body to the top of the stage in mm, usually ``40`` or ``65`` (occasionally ``75`` if you are using a sample riser, or a larger body).
-* Usually the above two parameters occur next to each other, so you will see "SS40" or "LS65".
+* Usually the above two parameters occur next to each other, so you will see ``SS40`` or ``LS65``.
 * ``<camera>`` is the camera you are using, either ``picamera_2`` for the Raspberry Pi camera module v2, ``c270`` for the Logitech C270, or ``m12`` for a camera with a screw-on M12 lens mount.
 * ``<lens>`` is the lens you are using, either ``pilens``, ``c270_lens``, or ``m12_lens`` if you are using the lens that came with your camera.  To use a finite-conjugate objective lens, you should specify ``rms_f40d16`` (to use a Comar tube lens, focal length 40mm, diameter 16mm) or ``rms_f50d13`` (for a 50mm focal length ThorLabs ac127-050-a lens)
 * ``<thickness>`` is the thickness of a stage riser - the amount it adds to the height.  Usually a 10mm riser is used with a 65mm body to allow a taller objective to be used.
