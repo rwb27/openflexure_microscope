@@ -3,7 +3,7 @@ OpenFlexure Microscope
 
 This folder contains the documentation and STL files for the OpenFlexure microscope.  The source (for the moment) lives on GitHub.
 
-Please don't just launch into printing the STL files in the STL folder.  You need different quantities of each one and there are some alternatives where you only need one out of a few different files.  This is described in the documentation, but if you're in a hurry you can also check the README.md file in the [builds folder](https://github.com/rwb27/openflexure_microscope/builds/).
+Please don't just launch into printing the STL files in the STL folder.  You need different quantities of each one and there are some alternatives where you only need one out of a few different files.  This is described in the documentation, but if you're in a hurry you can also check the README.md file in the [builds folder](https://github.com/rwb27/openflexure_microscope/tree/master/builds).
 
 To read the assembly instructions, you need to use the DocuBricks viewer.  The easiest way to do this is online - it's possible to view the view the [current development documentation](http://rwb27.github.io/openflexure_microscope/docubricks/current_master_version.html) online.  You can also view [instructions from a specific commit or branch](http://rwb27.github.io/openflexure_microscope/docubricks/docubricks-viewer-pasteurl.html).
 
