@@ -508,7 +508,10 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
         </media>
       </step>
       <step>
-        <description>Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.  Plug in the camera to the camera connector as described in the Raspberry Pi documentation (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).</description>
+        <description>
+		  <p>Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.</p>
+		  <p>Plug in the camera to the camera connector as described in the <a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Raspberry Pi learning materials</a> (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).</p>
+		</description>
         <media>
           <file url="./images/pi_gpio.jpg" />
         </media>
