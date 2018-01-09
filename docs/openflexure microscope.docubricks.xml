@@ -444,7 +444,7 @@ There is a test file that prints a single leg of the microscope - the Microscope
 	<li>3x M3 brass nut</li>
 	<li>3x M3 stainless steel washer</li>
 	<li>2x M3 8mm cap head screw (optional, for sample clips)</li>
-	<li>2x M2 6mm cap head screw (optional, to secure camera more strongly)</li>
+	<li>2x M2 6mm cap head screws</li>
 </ul>
 <b>Electronic parts:</b>
 <ul>
@@ -455,7 +455,7 @@ There is a test file that prints a single leg of the microscope - the Microscope
 <b>Tools (not supplied in kit):</b>
 <ul>
 	<li>2.5mm hex key (optional, for attaching sample clips)</li>
-	<li>1.5mm hex key (optional, for double-securing camera board)</li>
+	<li>1.5mm hex key (to secure the camera using M2 screws)</li>
 	<li>tape (electrical tape or PTFE plumbers tape work, though regular sticky tape is also fine)</li>
 	<li>sharp craft knife (for trimming tape)</li>
 	<li>3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)</li>
@@ -602,7 +602,7 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
     <media />
     <assembly_instruction>
       <step>
-        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, optionally two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.</description>
+        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.</description>
         <media>
           <file url="./images/optics_module_parts.jpg" />
         </media>
@@ -698,7 +698,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
     <media />
     <assembly_instruction>
       <step>
-        <description>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and optionally two M2 screws to secure the camera (if using Pi camera).  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.</description>
+        <description>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and two M2 screws to secure the camera (if using Pi camera).  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.</description>
         <media>
           <file url="./images/hires_optics_0.jpg" />
         </media>
