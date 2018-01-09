@@ -28,9 +28,9 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = true;
+big_stage = false;
 motor_lugs = true;
-version_numstring = "5.17.1";
+version_numstring = "5.17.2";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = big_stage?"rms_f40d16":"pilens"; //see optics.scad for valid values
 
