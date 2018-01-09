@@ -29,7 +29,7 @@ led_d = 5; // LED diameter in mm if you want a bigger LED
 led_angle = 22; //cone angle for LED beam
 working_distance = clip_h + 0; //wd should be >= clip_h so it fits on nicely...
                 //working_distance is the distance from condenser to stage
-condenser=true;
+condenser=false;
 
 stage_clearance=6;
 shift=[0,0,0];
@@ -151,7 +151,10 @@ module illumination_horizontal_arm(){
             if(condenser){
                 translate([-iw2/2,condenser_clip_y-2,3+t]) cube([iw2,d,b-t]);
             }else{
-                translate([-3,-12,4+4]) cube([6,d,3]); //this hole doesn't use thickness - it's set to fit a 2-way header.  This is the end of the channel, at the opening where the LED sits.
+                translate([-3,-6-4,4+4]) cube([6,d,3]); //this hole is set to fit a 2-way header.  This is the end of the channel, at the opening where the LED sits.
+            }
+            if(!condenser){
+                translate([-3,-6-4,4+4]) cube([6,6+4,999]); //through to LED and to top
             }
         }
         // mounting slot to screw onto vertical arm
