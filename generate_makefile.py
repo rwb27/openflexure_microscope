@@ -16,6 +16,7 @@ optics_versions_LS65 = [cam + "_" + lens for cam in cameras for lens in lenses i
 optics_versions = [v + "_SS40" for v in optics_versions_SS40] + [v + "_LS65" for v in optics_versions_LS65]
 sample_riser_versions = ['LS10', 'LS5', 'SS5']
 slide_riser_versions = ['LS10']
+stand_versions = ['LS20', 'LS160', 'SS20']
 
 illumination_versions = [body + condenser + tall for body in body_versions 
                                                  for condenser in ["", "_condenser"] 
@@ -143,6 +144,12 @@ if __name__ == "__main__":
             M(openscad_recipe(**riser_parameters(version)))
         for version in slide_riser_versions:
             M("$(OUTPUT)/slide_riser_" + version + ".stl: $(SOURCE)/slide_riser.scad $(riser_deps)")
+            M(openscad_recipe(**riser_parameters(version)))
+        M("")
+        M("stand_dep_names := main_body")
+        M("stand_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
+        for version in stand_versions:
+            M("$(OUTPUT)/microscope_stand_" + version + ".stl: $(SOURCE)/microscope_stand.scad $(stand_deps)")
             M(openscad_recipe(**riser_parameters(version)))
         M("")
         M("$(OUTPUT)/picamera_2_%.stl: $(SOURCE)/cameras/picamera_2_%.scad $(all_deps)")

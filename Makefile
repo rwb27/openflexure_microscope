@@ -138,6 +138,18 @@ $(OUTPUT)/slide_riser_LS10.stl: $(SOURCE)/slide_riser.scad $(riser_deps)
 	openscad -o $@ -D 'h=10' -D 'big_stage=true' $<
 
 
+stand_dep_names := main_body
+stand_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)
+$(OUTPUT)/microscope_stand_LS20.stl: $(SOURCE)/microscope_stand.scad $(stand_deps)
+	openscad -o $@ -D 'h=20' -D 'big_stage=true' $<
+
+$(OUTPUT)/microscope_stand_LS160.stl: $(SOURCE)/microscope_stand.scad $(stand_deps)
+	openscad -o $@ -D 'h=160' -D 'big_stage=true' $<
+
+$(OUTPUT)/microscope_stand_SS20.stl: $(SOURCE)/microscope_stand.scad $(stand_deps)
+	openscad -o $@ -D 'h=20' -D 'big_stage=false' $<
+
+
 $(OUTPUT)/picamera_2_%.stl: $(SOURCE)/cameras/picamera_2_%.scad $(all_deps)
 	openscad -o $@ -D 'camera="picamera_2"' $<
 
