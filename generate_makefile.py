@@ -16,7 +16,7 @@ optics_versions_LS65 = [cam + "_" + lens for cam in cameras for lens in lenses i
 optics_versions = [v + "_SS40" for v in optics_versions_SS40] + [v + "_LS65" for v in optics_versions_LS65]
 sample_riser_versions = ['LS10', 'LS5', 'SS5']
 slide_riser_versions = ['LS10']
-stand_versions = ['LS20', 'LS160', 'SS20']
+stand_versions = ['LS65-20', 'LS65-160', 'SS40-20']
 
 illumination_versions = [body + condenser + tall for body in body_versions 
                                                  for condenser in ["", "_condenser"] 
@@ -54,6 +54,12 @@ def illumination_parameters(version):
     if "_tall" in version:
         p["foot_height"] = 26
     return p
+	
+def stand_parameters(version):
+	m = re.match("({body})-([\d]+)$".format(body="|".join(body_versions)), version)
+	p = body_parameters(m.group(1))
+	p["h"] = int(m.group(2))
+	return p
     
 def riser_parameters(version):
     """extract the parameters for sample risers"""
@@ -150,7 +156,7 @@ if __name__ == "__main__":
         M("stand_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in stand_versions:
             M("$(OUTPUT)/microscope_stand_" + version + ".stl: $(SOURCE)/microscope_stand.scad $(stand_deps)")
-            M(openscad_recipe(**riser_parameters(version)))
+            M(openscad_recipe(**stand_parameters(version)))
         M("")
         M("$(OUTPUT)/picamera_2_%.stl: $(SOURCE)/cameras/picamera_2_%.scad $(all_deps)")
         M(openscad_recipe(camera="picamera_2"))
