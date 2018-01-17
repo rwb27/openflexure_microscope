@@ -602,7 +602,11 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
     <media />
     <assembly_instruction>
       <step>
-        <description>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using (v1 or v2 of the Raspberry Pi camera module).  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.</description>
+        <description>
+		  <p>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.</p>
+		  <p>NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  You'll also need to use older STL files, support for v1 of the camera module was removed in v5.17.</p>
+		  <p>Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.  This is a white disc of plastic with a hole in the centre.</p>
+		</description>
         <media>
           <file url="./images/optics_module_parts.jpg" />
         </media>
@@ -614,7 +618,7 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
         </media>
       </step>
       <step>
-        <description>We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  SAVE THE SCREWS, as you will need them later!</description>
+        <description>We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  <b>Save the screws</b>, as you will need them later!</description>
         <media>
           <file url="./images/picam2_lens_removal_0.jpg" />
         </media>
@@ -633,9 +637,11 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
         </media>
       </step>
       <step>
-	      <description>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.  It only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You will may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (square plastic housing) to the PCB is still connected - pop it back in by pushing it with a finger if needed.
-
-Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</description>
+		<description>
+		  <p>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.</p>
+		  <p>The tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.</p>
+		  <p>Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</p>
+		</description>
         <media>
           <file url="./images/picam2_lens_removal_1.jpg" />
           <file url="./images/picam2_lens_removal_2.jpg" />
@@ -657,7 +663,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Finally, press the camera module onto the bottom of the optics mount.  Don't worry if it's not gripped very strongly, the cover will hold it in place.</description>
+        <description>Finally, press the camera module onto the bottom of the optics mount.  It should not be a tight fit, but the cover and two M2 screws will hold it in place in the next step.</description>
         <media>
           <file url="./images/optics_assembly_0.jpg" />
           <file url="./images/optics_assembly_1.jpg" />
@@ -698,7 +704,11 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
     <media />
     <assembly_instruction>
       <step>
-        <description>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and two M2 screws to secure the camera (if using Pi camera).  NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.</description>
+        <description>
+		  <p>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and two M2 screws to secure the camera (if using Pi camera).</p>
+		  <p>NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  You'll also need to use older STL files, support for v1 of the camera module was removed in v5.17.</p>
+		  <p>Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.  This is a white disc of plastic with a hole in the centre.</p>
+		</description>
         <media>
           <file url="./images/hires_optics_0.jpg" />
         </media>
@@ -726,6 +736,12 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
+        <description>We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  <b>Save the screws</b>, as you will need them later!</description>
+        <media>
+          <file url="./images/picam2_lens_removal_0.jpg" />
+        </media>
+      </step>
+      <step>
         <description>Remove the protective film from the camera lens.</description>
         <media>
           <file url="./images/picam2_film_removal.jpg" />
@@ -739,13 +755,12 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-	      <description>
-            Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.  It only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You will may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (square plastic housing) to the PCB is still connected - pop it back in by pushing it with a finger if needed.
-
-            If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  SAVE THE SCREWS, as you will need them later!
-
-            Once you've removed the lens, either cover the sensor (without touching it) or fit the camera to the optics module immediately, to avoid dust buildup on the sensor..
-          </description>
+		<description>
+		  <p>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.</p>
+		  <p>The tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.</p>
+		  <p>Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</p>
+		  <p>If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  <b>Save the screws</b>, as you will need them later!</p>
+		</description>
         <media>
           <file url="./images/picam2_lens_removal_1.jpg" />
           <file url="./images/picam2_lens_removal_2.jpg" />
@@ -753,7 +768,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Press the camera module onto the bottom of the optics mount, so the camera board sits flush with the bottom of the mount - it should fit in with a gentle but firm press from your thumb.  It probably won't crack or click into place, but it should be held by the push-fit.  Don't worry if it's not gripped very strongly, the cover will hold it in place.  If you're using the USB version, the board simply screws onto the optics module using the screws that held the lens on.</description>
+        <description>Finally, press the camera module onto the bottom of the optics mount.  It should not be a tight fit, but the cover and two M2 screws will hold it in place in the next step.  If you're using the USB version, the board simply screws onto the optics module using the screws that held the lens on.</description>
         <media>
           <file url="./images/hires_optics_camera_1.jpg" />
         </media>
@@ -823,18 +838,20 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Fit the foot to the bottom of the microscope.  NB the two tilted feet must go on the outside of the microscope, and the gap in the foot points towards the optics module.</description>
-        <media />
-      </step>
-      <step>
-        <description>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.</description>
+        <description>
+		  <p>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.</p>
+		  <p>You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures.<p>
+		</description>
         <media>
           <file url="./images/band_insertion_through_foot_1.jpg" />
           <file url="./images/band_insertion_through_foot_2.jpg" />
         </media>
       </step>
       <step>
-        <description>Place the foot on the body, taking care that it's in the right place (the tilted ones are for the outer two actuators, the flat one is for the centre) and the right way round (the open part of the foot points towards the optics module in the centre of the microscope).  Push the insertion tool in until the band clicks into place.  You may find it helps to push on the gear or use the nut insertion tool to hold the actuator in place while you do this.  What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.</description>
+        <description>
+		  <p>Place the foot on the body, taking care that it's in the right place (the tilted ones are for the outer two actuators, the flat one is for the centre) and the right way round (the open part of the foot points towards the optics module in the centre of the microscope).</p>
+          <p>Push the insertion tool in until the band clicks into place.  You may find it helps to push on the gear or use the nut insertion tool to hold the actuator in place while you do this.  It should click twice, once for each side.  If you don't manage to hook both sides on, you may need to completely remove the band and try again - a wooden skewer, long awl, or small flat-bladed screwdriver works well to unhook the band without damaging it.</p>
+		  <p>What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.</p></description>
         <media>
           <file url="./images/band_insertion_body_1.jpg" />
           <file url="./images/band_insertion_body_2.jpg" />
@@ -916,7 +933,11 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Slot the illumination arm on to the dovetail mount for it at the back of the microscope.  Wiggling it slightly makes it easier to push on.  It should be pushed on from the bottom, and on version 5.15.1 and later, there should be a stop to prevent it sliding up and off.</description>
+        <description>
+		  <p>Slot the illumination arm on to the dovetail mount for it at the back of the microscope. It should be pushed on from the bottom, and there is a stop to prevent it sliding up and off.</p>
+		  <p>The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing.  Wiggling the illumination arm from side to side makes it easier to push on.  It might help to grip the middle actuator and the edge of the base as you do this, as it sometimes requires a little force.</p>
+		  <p>You can hold it in place more strongly with an additional M3 screw and washer, through the lip that sits underneath the microscope body.</p>
+		</description>
         <media>
           <file url="./images/illumination_1.jpg" />
         </media>
@@ -1001,7 +1022,10 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
         </media>
       </step>
       <step>
-        <description>Fit the illumination arm to the microscope by sliding it onto the dovetail from underneath.  The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing..</description>
+        <description>
+		  <p>Slot the illumination arm on to the dovetail mount for it at the back of the microscope. It should be pushed on from the bottom, and there is a stop to prevent it sliding up and off.</p>
+		  <p>The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing.  Wiggling the illumination arm from side to side makes it easier to push on.  It might help to grip the middle actuator and the edge of the base as you do this, as it sometimes requires a little force.</p>
+		  <p>You can hold it in place more strongly with an additional M3 screw and washer, through the lip that sits underneath the microscope body.</p></description>
         <media>
           <file url="./images/condenser_fitting_1.jpg" />
         </media>
