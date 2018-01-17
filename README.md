@@ -27,6 +27,7 @@ The instructions are in DocuBricks XML format, which is like an open-source vers
 ## Get Involved!
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
 
+* Get involved in [discussions on gitter](https://gitter.im/OpenFlexure-Microscope/Lobby) [![Join the chat at https://gitter.im/OpenFlexure-Microscope/Lobby](https://badges.gitter.im/OpenFlexure-Microscope/Lobby.svg)](https://gitter.im/OpenFlexure-Microscope/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 * [Raise an issue](https://github.com/rwb27/openflexure_microscope/issues) if you spot something that's wrong, or something that could be improved.  This includes the instructions/documentation.
 * Suggest better text or images for the instructions.
 * Improve the design of parts - even if you don't use OpenSCAD, STL files or descriptions of changes are helpful.
