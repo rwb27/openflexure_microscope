@@ -1,4 +1,6 @@
 # OpenFlexure Microscope
+
+[![Join the chat at https://gitter.im/OpenFlexure-Microscope/Lobby](https://badges.gitter.im/OpenFlexure-Microscope/Lobby.svg)](https://gitter.im/OpenFlexure-Microscope/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 The OpenFlexure Microscope is a  3D printable microscope, including a precise mechanical stage to move the sample and focus the optics.  There are many different options for the optics, ranging from a webcam lens to a 100x, oil immersion objective.
 
 ![An OpenFlexure Microscope in an incubator (courtesy Stephanie Reichelt and Dario Bressan at CRUK, Cambridge)](https://rwb27.github.io/openflexure_microscope/images/microscope_in_incubator.jpg)
