@@ -35,9 +35,9 @@
     <manufacturing_instruction>
       <step>
         <description>
-		  <p>These screws are used as the lead screws for the stage; stainless steel is probably best.  The hexagon head fits into a socket on the plastic gears, which is important as the gear needs to rotate the screw.</p>
-		  <p>If hexagon-head screws are not available, a good substitute is to screw a nut tightly against the head of a screw (with whatever head type you can get hold of).  The nut will then take the place of the hexagon head and the screw can still be turned by the thumbwheel or gear.  It's best to use a 30mm screw for the central actuator, and a 25mm screw for each of the two outer actuators if you're going to make that substitution.</p>
-		</description>
+          <p>These screws are used as the lead screws for the stage; stainless steel is probably best.  The hexagon head fits into a socket on the plastic gears, which is important as the gear needs to rotate the screw.</p>
+          <p>If hexagon-head screws are not available, a good substitute is to screw a nut tightly against the head of a screw (with whatever head type you can get hold of).  The nut will then take the place of the hexagon head and the screw can still be turned by the thumbwheel or gear.  It's best to use a 30mm screw for the central actuator, and a 25mm screw for each of the two outer actuators if you're going to make that substitution.</p>
+        </description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -347,10 +347,10 @@
     <manufacturing_instruction>
       <step>
         <description>
-		  <p>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  The condenser lens version will also work without a lens, though the image won't be as bright.</p>
+      <p>The illumination arm fits on to the microscope using a dovetail, and includes the rear foot.  The condenser lens version will also work without a lens, though the image won't be as bright.</p>
 
-		  <p>The illumination arm is available in several versions: <code>illumination_and_rear_foot_[version].stl</code>.  You can choose either adjustable arm with a single LED or one that uses a condenser lens (<code>_condenser</code>).  It's important to match the type of microscope you're using (<code>LS65</code>, <code>LS75</code>, or <code>SS40</code>).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the <code>LS75</code> version.  If you are using tall feet, you will need the <code>_tall</code> version.</p>
-		</description>
+      <p>The illumination arm is available in several versions: <code>illumination_and_rear_foot_[version].stl</code>.  You can choose either adjustable arm with a single LED or one that uses a condenser lens (<code>_condenser</code>).  It's important to match the type of microscope you're using (<code>LS65</code>, <code>LS75</code>, or <code>SS40</code>).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the <code>LS75</code> version.  If you are using tall feet, you will need the <code>_tall</code> version.</p>
+    </description>
         <media />
       </step>
     </manufacturing_instruction>
@@ -396,14 +396,14 @@
     <abstract>A 3D-printed microscope, including a flexure-based XYZ stage with sub-micron precision and 8mm range.</abstract>
     <long_description>
       <p>The OpenFlexure microscope is a customisable optical microscope, using either very cheap webcam optics or lab quality, RMS standard microscope objectives.  It uses an inverted geometry, and has a high quality mechanical stage which can be motorised using low cost geared stepper motors.</p>
-	  <p>Optomechanics is a crucial part of any microscope; when working at high magnification, it is absolutely crucial to keep the sample steady and to be able to bring it into focus precisely.  Accurate motion control is extremely difficult using printed mechanical parts, as good linear motion typically requires tight tolerances and a smooth surface finish.  This design for a 3D printed microscope stage uses plastic flexures, meaning its motion is free from friction and vibration.  It achieves steps well below 100nm when driven with miniature stepper motors, and is stable to within a few microns over several days.</p>
-	  <p>This design aims to minimise both the amount of post-print assembly required, and the number of non-printed parts required - partly to make it as easy as possible to print, and partly to maximise stability; most of the microscope (including all the parts with flexures) prints as a single piece.  The majority of the expense is in the Raspberry Pi and its camera module; the design requires only around 100g of plastic and a few nuts, bolts and other parts.  The optics module (containing the camera and lens) can be easily swapped out or modified, for example to change the magnification/resolution by using a microscope objective, or adding a filter cube for fluorescence (build instructions not done yet).</p>
-	  <p>This design is (c) Richard Bowman 2017, released under the CERN open hardware license.  You can also buy a kit or an assembled microscope from <a href="http://www.waterscope.org/">WaterScope</a>.</p>
+    <p>Optomechanics is a crucial part of any microscope; when working at high magnification, it is absolutely crucial to keep the sample steady and to be able to bring it into focus precisely.  Accurate motion control is extremely difficult using printed mechanical parts, as good linear motion typically requires tight tolerances and a smooth surface finish.  This design for a 3D printed microscope stage uses plastic flexures, meaning its motion is free from friction and vibration.  It achieves steps well below 100nm when driven with miniature stepper motors, and is stable to within a few microns over several days.</p>
+    <p>This design aims to minimise both the amount of post-print assembly required, and the number of non-printed parts required - partly to make it as easy as possible to print, and partly to maximise stability; most of the microscope (including all the parts with flexures) prints as a single piece.  The majority of the expense is in the Raspberry Pi and its camera module; the design requires only around 100g of plastic and a few nuts, bolts and other parts.  The optics module (containing the camera and lens) can be easily swapped out or modified, for example to change the magnification/resolution by using a microscope objective, or adding a filter cube for fluorescence (build instructions not done yet).</p>
+    <p>This design is (c) Richard Bowman 2017, released under the CERN open hardware license.  You can also buy a kit or an assembled microscope from <a href="http://www.waterscope.org/">WaterScope</a>.</p>
     </long_description>
     <notes>
-		<p>This is the development version of the microscope; ongoing development lives on <a href="https://github.com/rwb27/openflexure_microscope">Github</a> and there is an open-access paper in <a href="http://dx.doi.org/10.1063/1.4941068">Review of Scientific Instruments</a>.</p>
-		<p>This microscope is available through <a href="http://www.waterscope.org/">WaterScope</a>, as a kit (with or without printed parts and Raspberry Pi) or fully assembled.</p>
-	</notes>
+    <p>This is the development version of the microscope; ongoing development lives on <a href="https://github.com/rwb27/openflexure_microscope">Github</a> and there is an open-access paper in <a href="http://dx.doi.org/10.1063/1.4941068">Review of Scientific Instruments</a>.</p>
+    <p>This microscope is available through <a href="http://www.waterscope.org/">WaterScope</a>, as a kit (with or without printed parts and Raspberry Pi) or fully assembled.</p>
+  </notes>
     <license>CERN Open Hardware License</license>
     <media />
     <assembly_instruction>
@@ -426,42 +426,42 @@ There is a test file that prints a single leg of the microscope - the Microscope
 <br/><br/>
 <b>Plastic parts:</b>
 <ul>
-	<li>1x microscope body</li>
-	<li>1x optics module</li>
-	<li>1x illumination and rear foot</li>
-	<li>2x tilted foot</li>
-	<li>1x untilted foot</li>
-	<li>3x gear</li>
-	<li>1x camera cover</li>
-	<li>2x sample clip (optional)</li>
+  <li>1x microscope body</li>
+  <li>1x optics module</li>
+  <li>1x illumination and rear foot</li>
+  <li>2x tilted foot</li>
+  <li>1x untilted foot</li>
+  <li>3x gear</li>
+  <li>1x camera cover</li>
+  <li>2x sample clip (optional)</li>
 </ul>
 <b>Plastic tools (optional but helpful):</b>
 <ul>
-	<li>1x camera board gripper (for v1 or v2 of the camera board)</li>
-	<li>1x camera lens remover (for v1 or v2)</li>
-	<li>1x gear elevator (optional)</li>
+  <li>1x camera board gripper (for v1 or v2 of the camera board)</li>
+  <li>1x camera lens remover (for v1 or v2)</li>
+  <li>1x gear elevator (optional)</li>
 </ul>
 <b>Metal hardware:</b>
 <ul>
-	<li>3x M3 hexagon head 25mm screws, stainless steel</li>
-	<li>3x M3 brass nut</li>
-	<li>3x M3 stainless steel washer</li>
-	<li>2x M3 8mm cap head screw (optional, for sample clips)</li>
-	<li>2x M2 6mm cap head screws</li>
+  <li>3x M3 hexagon head 25mm screws, stainless steel</li>
+  <li>3x M3 brass nut</li>
+  <li>3x M3 stainless steel washer</li>
+  <li>2x M3 8mm cap head screw (optional, for sample clips)</li>
+  <li>2x M2 6mm cap head screws</li>
 </ul>
 <b>Electronic parts:</b>
 <ul>
-	<li>White LED, resistor, wire, and 2-way JST header connector (assembled as one cable in the kit)</li>
-	<li>Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)</li>
-	<li>Raspberry Pi (with associated power supply, keyboard, monitor, etc.)</li>
+  <li>White LED, resistor, wire, and 2-way JST header connector (assembled as one cable in the kit)</li>
+  <li>Raspbery Pi camera module (v2, though v1 works if you substitute the relevant STL files)</li>
+  <li>Raspberry Pi (with associated power supply, keyboard, monitor, etc.)</li>
 </ul>
 <b>Tools (not supplied in kit):</b>
 <ul>
-	<li>2.5mm hex key (optional, for attaching sample clips)</li>
-	<li>1.5mm hex key (to secure the camera using M2 screws)</li>
-	<li>tape (electrical tape or PTFE plumbers tape work, though regular sticky tape is also fine)</li>
-	<li>sharp craft knife (for trimming tape)</li>
-	<li>3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)</li>
+  <li>2.5mm hex key (optional, for attaching sample clips)</li>
+  <li>1.5mm hex key (to secure the camera using M2 screws)</li>
+  <li>tape (electrical tape or PTFE plumbers tape work, though regular sticky tape is also fine)</li>
+  <li>sharp craft knife (for trimming tape)</li>
+  <li>3mm drill bit in hand chuck (if you printed the parts yourself and need to open out the holes)</li>
 </ul>
 Don’t forget the raspberry pi, camera module, and associated screen, power supply, SD card, keyboard, mouse, etc. (I have not listed these explicitly, but they're needed to run the Pi).
         </description>
@@ -512,9 +512,9 @@ Don’t forget the raspberry pi, camera module, and associated screen, power sup
       </step>
       <step>
         <description>
-		  <p>Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.</p>
-		  <p>Plug in the camera to the camera connector as described in the <a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Raspberry Pi learning materials</a> (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).</p>
-		</description>
+      <p>Plug the LED cable into the GPIO connector on the Raspberry Pi, to the 0v and 5v lines.  These are the second and third pins from the top of the connector, on the outside edge - pins number 4 and 6.</p>
+      <p>Plug in the camera to the camera connector as described in the <a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Raspberry Pi learning materials</a> (the connector is next to the Ethernet port, and the contacts on the cable face the port, i.e. they face away from the tab on the plug).</p>
+    </description>
         <media>
           <file url="./images/pi_gpio.jpg" />
         </media>
@@ -606,16 +606,16 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
     <assembly_instruction>
       <step>
         <description>
-		  <p>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.</p>
-		  <p>NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  You'll also need to use older STL files, support for v1 of the camera module was removed in v5.17.</p>
-		  <p>Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.  This is a white disc of plastic with a hole in the centre.</p>
-		</description>
+          <p>First, assemble the necessary tools and parts: the optics module plastic parts (the "objective" and camera board cover), the Raspberry Pi camera module (version 2), the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.</p>
+          <p>NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  You'll also need to use older STL files, support for v1 of the camera module was removed in v5.17.</p>
+          <p>Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.  This is a white disc of plastic with a hole in the centre.</p>
+        </description>
         <media>
           <file url="./images/optics_module_parts.jpg" />
         </media>
       </step>
       <step>
-	<description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
+  <description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
         <media>
           <file url="./images/static_warning.png" />
         </media>
@@ -640,11 +640,11 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
         </media>
       </step>
       <step>
-		<description>
-		  <p>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.</p>
-		  <p>The tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.</p>
-		  <p>Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</p>
-		</description>
+        <description>
+          <p>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.</p>
+          <p>The tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.</p>
+          <p>Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</p>
+        </description>
         <media>
           <file url="./images/picam2_lens_removal_1.jpg" />
           <file url="./images/picam2_lens_removal_2.jpg" />
@@ -708,16 +708,16 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
     <assembly_instruction>
       <step>
         <description>
-		  <p>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and two M2 screws to secure the camera (if using Pi camera).</p>
-		  <p>NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  You'll also need to use older STL files, support for v1 of the camera module was removed in v5.17.</p>
-		  <p>Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.  This is a white disc of plastic with a hole in the centre.</p>
-		</description>
+          <p>First, assemble the necessary tools and parts: the optics module plastic part (and camera board cover if you're using a Pi camera), the camera module, the tools for removing the camera lens, the tool for inserting the tube lens, and two M2 screws to secure the camera (if using Pi camera).</p>
+          <p>NB the lens removal tool, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, if you have v1 it's a similar process but the older versions of the instructions give more detail.  You'll also need to use older STL files, support for v1 of the camera module was removed in v5.17.</p>
+          <p>Later production runs of the Raspberry Pi camera module ship with a lens removal tool included, which is better than the printed tool.  This is a white disc of plastic with a hole in the centre.</p>
+        </description>
         <media>
           <file url="./images/hires_optics_0.jpg" />
         </media>
       </step>
       <step>
-	<description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
+  <description>WARNING! The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.</description>
         <media>
           <file url="./images/static_warning.png" />
         </media>
@@ -758,12 +758,12 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
         </media>
       </step>
       <step>
-		<description>
-		  <p>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.</p>
-		  <p>The tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.</p>
-		  <p>Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</p>
-		  <p>If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  <b>Save the screws</b>, as you will need them later!</p>
-		</description>
+        <description>
+          <p>Next, unscrew the lens from the camera module.  Use the plastic tool to grip the lens module.  This is a small circular part with four prongs that fits over the lens of the camera board (version 2 only) as shown.  To remove the lens, push the removal tool onto the lens (just the top part, with the little plastic flanges) and turn anticlockwise to remove it.</p>
+          <p>The tool only works if the prongs are pointing anticlockwise, so make sure it's the right way round.  You may feel a crack as it starts to move - this is normal.  It's important to use the board gripper to hold the camera chip in place and prevent damage to the delicate ribbon cable.  After you've removed the lens, check that the little black ribbon cable connecting the camera module (the black square of plastic from which you unscrewed the lens) to the PCB is still connected - pop it back in by pushing it with a finger if needed.</p>
+          <p>Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is hard to clean.</p>
+          <p>If you are using a USB camera, the lens is held on by two screws from the back, and can be removed by unscrewing these.  <b>Save the screws</b>, as you will need them later!</p>
+        </description>
         <media>
           <file url="./images/picam2_lens_removal_1.jpg" />
           <file url="./images/picam2_lens_removal_2.jpg" />
@@ -842,9 +842,9 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       </step>
       <step>
         <description>
-		  <p>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.</p>
-		  <p>You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures.<p>
-		</description>
+          <p>Hook one of the Viton (or rubber) bands over the elastic band tool, and insert it through the foot.  You should end up with one loop of elastic band passing over each fork-shaped end of the insertion tool.  The flat side of the tool should be on the outside, so that the channels in either end face towards the centre of the foot.</p>
+          <p>You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures.</p>
+        </description>
         <media>
           <file url="./images/band_insertion_through_foot_1.jpg" />
           <file url="./images/band_insertion_through_foot_2.jpg" />
@@ -852,9 +852,10 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       </step>
       <step>
         <description>
-		  <p>Place the foot on the body, taking care that it's in the right place (the tilted ones are for the outer two actuators, the flat one is for the centre) and the right way round (the open part of the foot points towards the optics module in the centre of the microscope).</p>
+          <p>Place the foot on the body, taking care that it's in the right place (the tilted ones are for the outer two actuators, the flat one is for the centre) and the right way round (the open part of the foot points towards the optics module in the centre of the microscope).</p>
           <p>Push the insertion tool in until the band clicks into place.  You may find it helps to push on the gear or use the nut insertion tool to hold the actuator in place while you do this.  It should click twice, once for each side.  If you don't manage to hook both sides on, you may need to completely remove the band and try again - a wooden skewer, long awl, or small flat-bladed screwdriver works well to unhook the band without damaging it.</p>
-		  <p>What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.</p></description>
+          <p>What's happening here is that the elastic band is pushed over little hooks inside the actuator column, near the top, and the click is the band popping into place.  The band pulls down on the actuator, so after it's in place the gear should turn with a little more resistance - this is important for the microscope to work properly.</p>
+        </description>
         <media>
           <file url="./images/band_insertion_body_1.jpg" />
           <file url="./images/band_insertion_body_2.jpg" />
@@ -937,10 +938,10 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       </step>
       <step>
         <description>
-		  <p>Slot the illumination arm on to the dovetail mount for it at the back of the microscope. It should be pushed on from the bottom, and there is a stop to prevent it sliding up and off.</p>
-		  <p>The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing.  Wiggling the illumination arm from side to side makes it easier to push on.  It might help to grip the middle actuator and the edge of the base as you do this, as it sometimes requires a little force.</p>
-		  <p>You can hold it in place more strongly with an additional M3 screw and washer, through the lip that sits underneath the microscope body.</p>
-		</description>
+          <p>Slot the illumination arm on to the dovetail mount for it at the back of the microscope. It should be pushed on from the bottom, and there is a stop to prevent it sliding up and off.</p>
+          <p>The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing.  Wiggling the illumination arm from side to side makes it easier to push on.  It might help to grip the middle actuator and the edge of the base as you do this, as it sometimes requires a little force.</p>
+          <p>You can hold it in place more strongly with an additional M3 screw and washer, through the lip that sits underneath the microscope body.</p>
+        </description>
         <media>
           <file url="./images/illumination_1.jpg" />
         </media>
@@ -1026,9 +1027,10 @@ You might want to consult the <a href="http://www.raspberrypi.org/documentation/
       </step>
       <step>
         <description>
-		  <p>Slot the illumination arm on to the dovetail mount for it at the back of the microscope. It should be pushed on from the bottom, and there is a stop to prevent it sliding up and off.</p>
-		  <p>The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing.  Wiggling the illumination arm from side to side makes it easier to push on.  It might help to grip the middle actuator and the edge of the base as you do this, as it sometimes requires a little force.</p>
-		  <p>You can hold it in place more strongly with an additional M3 screw and washer, through the lip that sits underneath the microscope body.</p></description>
+          <p>Slot the illumination arm on to the dovetail mount for it at the back of the microscope. It should be pushed on from the bottom, and there is a stop to prevent it sliding up and off.</p>
+          <p>The thin linker between the two sides of the clip may snap - this is not a problem, it's there only for support during printing.  Wiggling the illumination arm from side to side makes it easier to push on.  It might help to grip the middle actuator and the edge of the base as you do this, as it sometimes requires a little force.</p>
+          <p>You can hold it in place more strongly with an additional M3 screw and washer, through the lip that sits underneath the microscope body.</p>
+        </description>
         <media>
           <file url="./images/condenser_fitting_1.jpg" />
         </media>
