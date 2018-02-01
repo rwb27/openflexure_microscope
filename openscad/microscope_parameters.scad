@@ -84,7 +84,7 @@ zll = (z_strut_l + zflex[1])*z_lever_ratio; //required actuator lever length
 zfz = z_flexures_z1; // shorthand for the next line only!
 z_nut_y = z_anchor_y - zflex[1]/2 + sqrt(zll*zll - zfz*zfz);
 z_actuator_travel = zll*0.15; // distance moved by the Z actuator
-z_actuator_tilt = asin(z_flexures_z1/zll); //angle of the Z actuator
+z_actuator_tilt = -asin(z_flexures_z1/zll); //angle of the Z actuator
 
 z_flexure_x = (leg_r-zflex_l-max(5,leg[2]*0.1))*sqrt(2); // x position of the outside of the Z-axis static anchors (either side of the XY stage, on the X axis) (no longer used by Z axis but still in use elsewhere.)
 

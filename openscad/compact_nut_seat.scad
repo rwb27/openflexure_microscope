@@ -198,17 +198,17 @@ module motor_lugs(h=20, tilt=0, angle=0){
     }
 }
 
-module screw_seat(h=25, travel=5, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false, lug_angle=0){
+module screw_seat(h=25, travel=5, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false, lug_angle=0){
     // This forms a hollow column, usually built around an actuator_column to
     // support the screw (see screw_seat_shell)
     tilt = 0; //currently, only vertical ones are supported.
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     difference(){
         union(){
-            screw_seat_shell(h=h + travel);
-            if(motor_lugs) rotate(180) motor_lugs(h=h + travel, angle=lug_angle);
+            screw_seat_shell(h=h + travel, tilt=tilt);
+            if(motor_lugs) rotate(180) motor_lugs(h=h + travel, angle=lug_angle, tilt=tilt);
         }
-        nut_seat_void(h=h + travel); //hollow out the inside
+        nut_seat_void(h=h + travel, tilt=tilt); //hollow out the inside
         
         edge_y = ss_outer(h)[1]/2; //allow the actuator to poke in
         translate([0,-edge_y,0]) cube([entry_w, edge_y, entry_h*2], center=true);
