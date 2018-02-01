@@ -16,6 +16,7 @@ use <./utilities.scad>;
 use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
+use <./z_axis.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
 module shear_x(amount=1){
     // Shear transformation: tilt the Y axis towards the X axis
@@ -111,83 +112,7 @@ module condenser_mounting_screws(d=3*0.95, h=16, center=true){
         translate(p) cylinder(d=d, h=h,center=center);
     }
 }
-module z_axis(){
-    // Flexures and struts for motion in the Z direction
-	w=z_flex_w;
-    reflect([1,0,0]) difference(){
-		translate([-z_flexure_x,0,0]) {
-			//flexures and struts
-			shear_x(){
-				repeat([0,0,z_flexure_spacing],2){
-					translate([0,-d,0]) cube([w,z_strut_l+2*d+2*zflex_l,zflex_t]);//flexures
-					translate([0,zflex_l,0]) cube([w,z_strut_l,z_strut_t]); //struts
-				}
-				translate([0,z_strut_l+zflex_l-z_link_w,z_flexure_spacing+0.5]) cube([999,z_link_w,z_strut_t-0.5]); //link the two struts (and the actuator)
-				hull(){
-					translate([0,z_strut_l,zflex_t+3]) cube([1,z_flexure_x-1-z_strut_l,6]);
-					translate([0,z_strut_l-4,z_strut_t-1]) cube([z_flex_w,z_flexure_x-z_flex_w-z_strut_l+4,1]);
-				}
-			}
-			translate([0,-w,0]) cube([w,w,z_carriage[2]]); //static anchors
-		}
-		translate([d,0,-d]) cube([1,1,1]*9999); //stop things crossing the Y axis
-		rotate([0,0,45]) cube([1,1,9999]*17,center=true);
-	}
-}
-module z_actuator(){
-	//Z actuating lever
-    difference(){
-		sequential_hull(){
-			translate([-2,z_nut_y,0]) cube([4,d, z_strut_t]); //thin part of actuator
-			//translate([-2,z_flexure_x-2,0])cube([4,6, z_strut_t]); //taper
-            translate([-2,z_flexure_x-2,0])cube([4,2, z_strut_t+4]); //join to raised struts
-		}
-        //make sure we don't foul the actuator column
-        translate([0,z_nut_y,0]) actuator_end_cutout(); 
-	}
-	translate([0,z_nut_y,0]) actuator_column(actuator_h);
-}
-module objective_clip_3(){
-    // Moving carriage for the objective, incl. dovetail clip
-	arm_length=10;
-	clip_h=z_flexure_spacing-z_strut_t-3;
-    arm_w=2;
-	clip_outer_w=objective_clip_w+2*arm_w;
-    inner_w = clip_outer_w - 2*arm_w;
-	base_y=z_carriage_y-6;
-	difference(){
-		intersection(){
-			union(){
-				w1=z_carriage[0]*2;
-                w2=clip_outer_w;
-                dy=z_carriage_y-objective_clip_y;
-                translate([0,objective_clip_y,0]) sequential_hull(){
-					translate([-w1/2,dy,0]) cube([w1,z_carriage[1],2]);
-					translate([-w2/2,dy,0]) cube([w2,d,10]);
-					translate([-w2/2,0,0]) cube([w2,arm_length+arm_w,z_strut_t]);
-					translate([-w2/2,dy-4,z_carriage[2]/2]) cube([w2,4,d]);
-					translate([-w1/2,dy,z_carriage[2]-z_carriage[1]]) cube([w1,z_carriage[1],z_carriage[1]]);
-				}
-				translate([-clip_outer_w/2,objective_clip_y,0]) cube([clip_outer_w,dy-d,z_flexure_spacing+z_strut_t]); //this becomes the dovetail clip
-			}
-			rotate(45) cube([1,1,999]*z_flexure_x*sqrt(2),center=true);
-		}
-		// carve out the block to form a dovetail
-        translate([0,objective_clip_y,0]) dovetail_clip_cutout([clip_outer_w,arm_length,999],solid_bottom=0.5,slope_front=2.5);
-		//clearance for top linker bar between flexure arms
-		translate([-999,z_carriage_y-zflex_l-z_link_w-1.5,z_flexure_spacing-2]) cube([999*2,zflex_l+z_link_w+1.5,999]);
-		//clearance for z axis struts passing under the carriage
-		reflect([1,0,0]) hull() translate([-z_flexure_x-d,0,0]) shear_x(){
-			translate([0,z_strut_l,zflex_t+1.5]) cube([d,z_flexure_x-1-z_strut_l,12]);
-			translate([0,z_strut_l-4,z_strut_t-1-0.75]) cube([z_flex_w+1.5,z_flexure_x-z_flex_w-z_strut_l+4,1+2]);
-		}
-		//cut-out for actuator
-		translate([0,z_flexure_x-z_flex_w+10-2,0]) cube([7,20,(z_strut_t+3)*2],center=true);
-		//cut-outs for flexures
-		reflect([1,0,0]) hull() translate([-z_flexure_x-d,0,0]) shear_x()
-			translate([-d,0,-d]) cube([z_flex_w+1.5,z_carriage_y,z_strut_t+1.5]);
-	}
-}
+
 
 module add_hull_base(h=1){
     // Take the convex hull of some objects, and add it in as a
@@ -296,18 +221,10 @@ union(){
 	}
 	
 	//z axis
-    difference(){
-        z_axis(); //some of the condenser mount screws pass the Z axis
-        condenser_mounting_screws(h=18,d=3*0.95,center=true);
-    }
-    z_actuator();
-    objective_clip_3();
-    if(big_stage) translate([0,z_carriage_y-1,14]){
-        //tie the objective clip to the sides during printing.
-        anchor_r = leg_r - zflex[1] - 14*flex_a;
-        w = 2*(anchor_r*sqrt(2) - z_carriage_y-0.25);
-        cube([w, 1, 0.5], center=true); 
-    }
+    z_axis_flexures();
+    z_axis_struts();
+    objective_mount();
+    translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt);
 
 	//base
 	difference(){
@@ -375,12 +292,12 @@ union(){
 		//Z actuator cut-out
 		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 
-		// Central cut-out for Z axis, inc. actuator arm
+		// Central cut-out for Z axis & optics
         intersection(){
             sequential_hull(){
                 h=999;
-                translate([0,z_nut_y,0]) cube([7,d,h],center=true);
-                translate([0,z_flexure_x+1.5-7/2,0]) cube([7,2*d,h],center=true);
+                aw = 2*column_base_radius() + 3;
+                translate([0,z_flexure_x+1.5-18/2,0]) cube([18,2*d,h],center=true);
                 translate([0,0,0]) cube([2*(z_flexure_x+0.5),1,h],center=true);
                 translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
                 translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
@@ -393,6 +310,12 @@ union(){
                 translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
             }
 		}
+        // Z actuator and struts
+        for(a=[-6,0,6]) translate([0,z_anchor_y,0]) rotate([a,0,0]) 
+                        translate([0,-z_anchor_y,0]) minkowski(){
+            cylinder(r=1, h=4, center=true, $fn=8);
+            z_axis_struts();
+        }
         
         //post mounting holes 
         for(p=base_mounting_holes) translate(p){ 
@@ -420,7 +343,7 @@ union(){
         screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2);
     }
 	translate([0,z_nut_y,0]){
-        screw_seat(h=actuator_h, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
+        screw_seat(h=actuator_h, tilt=z_actuator_tilt, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
     }
 }
 
