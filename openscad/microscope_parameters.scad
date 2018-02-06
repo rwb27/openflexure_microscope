@@ -30,7 +30,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true;
 motor_lugs = true;
-version_numstring = "5.17.2";
+version_numstring = "5.18.0";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = big_stage?"rms_f40d16":"pilens"; //see optics.scad for valid values
 
@@ -80,6 +80,7 @@ z_flexures_z1 = 8; // height of the lower Z flexure
 z_flexures_z2 = min(sample_z - 12, 35); // " upper "
 objective_mount_back_y = objective_mount_y + 5; //back of objective mount
 z_anchor_y = objective_mount_back_y + z_strut_l + 2*zflex[1]; // fixed end of the flexure-hinged lever that actuates the Z axis
+z_anchor_w = 20; //width of the Z anchor
 zll = (z_strut_l + zflex[1])*z_lever_ratio; //required actuator lever length
 zfz = z_flexures_z1; // shorthand for the next line only!
 z_nut_y = z_anchor_y - zflex[1]/2 + sqrt(zll*zll - zfz*zfz);
@@ -93,7 +94,7 @@ base_t=1; // thickness of the flat base of the structure
 wall_h=15; // height of the stiffening vertical(ish) walls
 wall_t=2; //thickness of the stiffening walls
 zawall_h = z_flexures_z2 - 5; //height of wall near Z anchor
-zbwall_h = z_actuator_travel+z_strut_t+1+2; //height of bridge over Z lever
+zbwall_h = z_flexures_z2 - 10; //height of bridge over Z lever
 illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                        -wall_t/2-1); //position of clip for
                       // illumination/back foot.  This is set to

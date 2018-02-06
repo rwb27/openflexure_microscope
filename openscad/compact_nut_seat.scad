@@ -201,30 +201,30 @@ module motor_lugs(h=20, tilt=0, angle=0){
 module screw_seat(h=25, travel=5, tilt=0, entry_w=2*column_base_r+3, extra_entry_h=7, motor_lugs=false, lug_angle=0){
     // This forms a hollow column, usually built around an actuator_column to
     // support the screw (see screw_seat_shell)
-    tilt = 0; //currently, only vertical ones are supported.
     entry_h = extra_entry_h + travel; //ensure the actuator can move
     difference(){
         union(){
             screw_seat_shell(h=h + travel, tilt=tilt);
-            if(motor_lugs) rotate(180) motor_lugs(h=h + travel, angle=lug_angle, tilt=tilt);
+            if(motor_lugs) rotate(180) motor_lugs(h=h + travel, angle=lug_angle, tilt=-tilt);
         }
         nut_seat_void(h=h + travel, tilt=tilt); //hollow out the inside
         
         edge_y = ss_outer(h)[1]/2; //allow the actuator to poke in
-        translate([0,-edge_y,0]) cube([entry_w, edge_y, entry_h*2], center=true);
+        smatrix(zy=sin(tilt)) translate([0,-edge_y,0]) 
+                    cube([entry_w, edge_y, entry_h*2], center=true);
         
         //entrance slot for nut
         rotate([tilt,0,0]) translate([0,0,h-nut_size-1.5-nut_slot[2]]) nut_trap_and_slot(nut_size, nut_slot + [0,0,0.3]);
     }
 }
 
-module screw_seat_outline(h=999,adjustment=0,center=false){
+module screw_seat_outline(h=999,adjustment=0,center=false,tilt=0){
     // The bottom of a screw seat
     //w = ss_outer()[0];
     //l = ss_outer()[1];
     //a = adjustment;
 	//resize([w+a, l+a, h]) cylinder(r=20, h=h, center=center);
-    linear_extrude(h,center=center) nut_seat_silhouette(offset=adjustment); //offset(adjustment) projection(cut=true) translate([0,0,-1]) screw_seat_shell();
+    rotate([tilt,0,0]) linear_extrude(h,center=center) nut_seat_silhouette(offset=adjustment); //offset(adjustment) projection(cut=true) translate([0,0,-1]) screw_seat_shell();
 }
 
 

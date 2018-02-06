@@ -165,6 +165,12 @@ module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/
     }
 }
 
+module z_bridge_wall_vertex(){
+    // This is the vertex of the "inner wall" nearest the
+    // new (cantilevered) Z axis.
+    inner_wall_vertex(45, leg_outer_w/2+wall_t/2, zbwall_h);
+}
+
 module z_anchor_wall_vertex(){
     // This is the vertex of the supporting wall nearest
     // to the Z anchor - it doesn't make sense to use the
@@ -173,6 +179,13 @@ module z_anchor_wall_vertex(){
     translate([-z_flexure_x-wall_t/2,-wall_t/2,0]){
         wall_vertex(h=zawall_h, y_tilt=atan(wall_t/zawall_h));
     }
+}
+
+module y_actuator_wall_vertex(x=1){
+    // A wall vertex for the y actuator.  x=-1,1 picks the side
+    // of the actuator where the vertex is placed.
+    leg_frame(45) translate([x*(ss_outer()[0]/2-wall_t/2),
+                             actuating_nut_r, 0]) wall_vertex();
 }
 
 module place_on_wall(){
@@ -191,13 +204,14 @@ module place_on_wall(){
 }
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
+difference(){
 union(){
 
 	//legs (incl. actuators)
 	reflect([1,0,0]) leg_frame(135) leg();
 	each_actuator(){
         actuator();
-		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h);
+		translate([0,actuating_nut_r,0]) actuator_column(h=actuator_h, join_to_casing=true);
     }
 	//flexures connecting bottoms of legs to centre
 	each_leg() reflect([1,0,0]) translate([0,0,flex_z1]){
@@ -224,7 +238,7 @@ union(){
     z_axis_flexures();
     z_axis_struts();
     objective_mount();
-    translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt);
+    translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt, join_to_casing=true);
 
 	//base
 	difference(){
@@ -237,7 +251,8 @@ union(){
             // would be bigger than the walls otherwise.
             add_hull_base(base_t) reflect([1,0,0]) sequential_hull(){
                 //inner_wall_vertex(-45, -leg_outer_w/2-wall_t/2, zbwall_h);
-                inner_wall_vertex(45, leg_outer_w/2+wall_t/2, zbwall_h);
+                mirror([1,0,0]) z_bridge_wall_vertex();
+                z_bridge_wall_vertex();
                 inner_wall_vertex(45, -leg_outer_w/2, zawall_h);
                 z_anchor_wall_vertex();
                 inner_wall_vertex(135, leg_outer_w/2, zawall_h);
@@ -255,14 +270,28 @@ union(){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
                 }
-                // Link the Z actuator to the wall
-                add_roof(zbwall_h-2) reflect([1,0,0]) hull(){
-                    translate([-7/2-wall_t/2,z_nut_y,0]) wall_vertex(h=zbwall_h);
-                    inner_wall_vertex(45, leg_outer_w/2+wall_t/2, zbwall_h);
+                // Casing for the Z axis
+                intersection(){
+                    linear_extrude(h=999) minkowski(){
+                        circle(r=wall_t+1);
+                        hull() projection() z_axis_struts();
+                    }
+                    hull(){
+                        reflect([1,0,0]) z_bridge_wall_vertex();
+                        translate([-99,z_anchor_y,0]) cube([999,4,z_flexures_z2+2]);
+                        translate([0,z_nut_y,0]) cylinder(d=10,h=20);
+                    }
                 }
+                // Connect the Z anchor to the XY actuators
+                reflect([1,0,0]) hull(){
+                    translate([-(z_anchor_w/2+wall_t/2+1), z_anchor_y + 1, 0]) 
+                                 wall_vertex();
+                    y_actuator_wall_vertex();
+                }
+                    
                 // Finally, link the actuators together
                 reflect([1,0,0]) hull(){
-                    leg_frame(45) translate([ss_outer()[0]/2-wall_t/2,actuating_nut_r,0]) wall_vertex();
+                    y_actuator_wall_vertex();
                     translate([0,z_nut_y+ss_outer()[1]/2-wall_t/2,0]) wall_vertex();
                 }
                 // add a small object to make sure the base is big enough
@@ -290,9 +319,9 @@ union(){
 			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 		}
 		//Z actuator cut-out
-		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
+		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true, tilt=z_actuator_tilt);
 
-		// Central cut-out for Z axis & optics
+		// Central cut-out for optics
         intersection(){
             sequential_hull(){
                 h=999;
@@ -311,11 +340,10 @@ union(){
             }
 		}
         // Z actuator and struts
-        for(a=[-6,0,6]) translate([0,z_anchor_y,0]) rotate([a,0,0]) 
-                        translate([0,-z_anchor_y,0]) minkowski(){
-            cylinder(r=1, h=4, center=true, $fn=8);
-            z_axis_struts();
-        }
+        z_axis_clearance();
+        // access hole for the objective mounting screw
+        translate([0,objective_mount_back_y, z_flexures_z2/2]) 
+                rotate([-75,0,0]) cylinder(h=999, d=10, $fn=16);
         
         //post mounting holes 
         for(p=base_mounting_holes) translate(p){ 
@@ -342,9 +370,17 @@ union(){
 	each_actuator() translate([0,actuating_nut_r,0]){
         screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2);
     }
-	translate([0,z_nut_y,0]){
-        screw_seat(h=actuator_h, tilt=z_actuator_tilt, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
+    difference(){
+        translate([0,z_nut_y,0]) screw_seat(h=actuator_h, 
+                                            tilt=z_actuator_tilt, 
+                                            travel=z_actuator_travel, 
+                                            motor_lugs=motor_lugs, 
+                                            lug_angle=180);
+        z_axis_clearance(); //make sure the actuator can get in ok!
     }
 }
-
+reflect([1,0,0]) translate([13.5,0,0]) rotate([0,90,0]) cylinder(r=999,h=999,$fn=4);
+rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+translate([0,0,50]) cylinder(r=999,h=999,$fn=4);
+}
 //%rotate(180) translate([0,2.5,-2]) cube([25,24,2],center=true);

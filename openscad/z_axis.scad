@@ -27,15 +27,19 @@ module objective_mount(){
     }
 }
 
-module z_axis_flexures(h=zflex[2]){
+module z_axis_flexure(h=zflex[2], z=0){
     // The parts that bend as the Z axis is moved
     union(){
-        for(z=[z_flexures_z1, z_flexures_z2]){
-            reflect([1,0,0]) hull(){
-                translate([1,objective_mount_back_y-d,z]) cube([zflex[0],d,h]);
-                translate([6,z_anchor_y,z]) cube([zflex[0],d,h]);
-            }
+        reflect([1,0,0]) hull(){
+            translate([-zflex[0]-1,objective_mount_back_y-d,z]) cube([zflex[0],d,h]);
+            translate([-z_anchor_w/2,z_anchor_y,z]) cube([zflex[0],d,h]);
         }
+    }
+}
+module z_axis_flexures(h=zflex[2]){
+    // The parts that bend as the Z axis is moved
+    for(z=[z_flexures_z1, z_flexures_z2]){
+        z_axis_flexure(h=h, z=z);
     }
 }
 
@@ -60,8 +64,35 @@ module z_axis_struts(){
     }
 }
 
+module pivot_z_axis(angle){
+    // Pivot the children around the point where the Z axis pivots
+    // The Y value for the pivot is z_anchor_y
+    // Because the rotation is small we can approximate with
+    // shear; this means the whole axis moves as intended rather
+    // than rotating about a particular height (i.e. both flexures
+    // pivot about the right y value).
+    smatrix(zy=sin(angle), zt=-sin(angle)*z_anchor_y) children();
+}
+
+module z_axis_clearance(){
+    // Clearance for the moving part of the Z axis
+    for(a=[-6,0,6]) pivot_z_axis(a) minkowski(){
+        cylinder(r=1, h=4, center=true, $fn=8);
+        z_axis_struts();
+    }
+}
+
+// "scenery"
+//legs
 for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
+    
+//actuator
+translate([0,z_nut_y,0]){
+    screw_seat(h=actuator_h, tilt=z_actuator_tilt, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
+    actuator_column(actuator_h, tilt=z_actuator_tilt);
+}
 
 objective_mount();
 z_axis_flexures();
 z_axis_struts();
+reflect([1,0,0]) z_axis_anchor();
