@@ -3,6 +3,9 @@
 * OpenFlexure Microscope: Z axis                                  *
 *                                                                 *
 * This is the Z axis for the OpenFlexure Microscope.              *
+* It also contains the fitting for the optics module to attach    *
+* it to the objective mount, as the objective mount is part of    *
+* the Z axis assembly.                                            *
 *                                                                 *
 * (c) Richard Bowman, January 2018                                *
 * Released under the CERN Open Hardware License                   *
@@ -17,15 +20,34 @@ module objective_mount(){
     // The mount for the objective
     h = z_flexures_z2 + 4;
     difference(){
-        translate([0,objective_mount_y,0]) hull(){
-            translate([-3,0,0]) cube([6,d,h]);
-            reflect([1,0,0]) translate([-3-5+sqrt(2), 5+sqrt(2), 0]) 
-                    cylinder(r=2, h=h, $fn=8);
-        }
+        objective_mount_wedge(h=h, center=false);
         translate([0,0,h/2]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
         hull() reflect([1,0,0]) translate([1, d, -4])  z_axis_flexures(h=5+8);
     }
 }
+
+module objective_mount_wedge(h=999, nose_shift=0, center=false){
+    // A trapezoidal wedge, with a screw in the middle, onto
+    // which the objective gets clamped.
+    nw = objective_mount_nose_w; //width of the pointy end
+    translate([0,objective_mount_y,0]) hull(){
+        translate([-nw/2-nose_shift,0,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
+        reflect([1,0,0]) translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]) 
+                cylinder(r=2, h=h, $fn=16, center=center);
+    }
+}
+
+module objective_fitting_base(overlap=4, h=d){
+    // A solid block from which the objective mount wedge can be
+    // subtracted to make a fitting for the objective
+    w = objective_mount_nose_w + 2*overlap; // width of the cut-out
+    r = 1.5; //radius of corners
+    hull() reflect([1,0,0]) translate([0,objective_mount_y,0]){
+        translate([-w/2,overlap-r,0]) cylinder(r=r, h=h, $fn=12);
+        translate([-w/2-r,-r,0]) cube([d,d,h]);
+    }
+}
+        
 
 module z_axis_flexure(h=zflex[2], z=0){
     // The parts that bend as the Z axis is moved
@@ -95,4 +117,4 @@ translate([0,z_nut_y,0]){
 objective_mount();
 z_axis_flexures();
 z_axis_struts();
-reflect([1,0,0]) z_axis_anchor();
+//reflect([1,0,0]) z_axis_anchor();

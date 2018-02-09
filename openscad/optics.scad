@@ -23,6 +23,7 @@
 
 use <utilities.scad>;
 use <dovetail.scad>;
+use <z_axis.scad>;
 include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
 
 use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
@@ -231,14 +232,6 @@ module camera_mount_top(){
     // A thin slice of the top of the camera mount
     linear_extrude(d) projection(cut=true) camera_mount();
 }
-module dovetail_mount(shift=0){
-    // A trapezoidal shape, suitable for mounting the objective's 
-    // dovetail on.
-    translate([0,objective_clip_y+shift,0]){
-        cube([objective_clip_w+4,d,d],center=true);
-        cube([objective_clip_w,4,d],center=true);
-    }
-}
 
 module camera_mount_body(
         body_r, //radius of mount body
@@ -259,13 +252,13 @@ module camera_mount_body(
                 translate([0,0,camera_mount_top]) camera_mount_top();
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
-                    dovetail_mount(shift=0);
+                    objective_fitting_base();
                     if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
                 }
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
                     if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
-                    dovetail_mount(shift=-3);
+                    objective_fitting_base();
                 }
                 union(){
                     if(fluorescence) translate([0,0,fl_cube_bottom + fl_cube_w]){
@@ -273,7 +266,7 @@ module camera_mount_body(
                         cylinder(r=body_r,h=d);
                     }
                     translate([0,0,body_top]) cylinder(r=body_r,h=d);
-                    translate([0,0,dt_top]) dovetail_mount(shift=-3);
+                    translate([0,0,dt_top]) objective_fitting_base();
                 }
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
@@ -284,15 +277,22 @@ module camera_mount_body(
                 if(len(extra_rz) > 3) translate([0,0,extra_rz[3][1]-d]) cylinder(r=extra_rz[3][0],h=d);
             }
             
-            // flatten the cylinder for the dovetail
-            reflect([1,0,0]) translate([3,objective_clip_y-0.5,dt_bottom]){
-                cube(999);
+            // fitting for the objective mount
+            translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=-0.5);
+            // Mount for the nut that holds it on
+            lip=1.3; // thickness of the plastic lip that retains the nut
+            nh=3*1.1; nr=3*1.1;// thickness/radius of the nut
+            translate([0,objective_mount_y-0.5-lip-nh,z_flexures_z2/2+4]){
+                hull() repeat([0,0,-6],2) rotate([-90,30,0])
+                    cylinder(r=nr, h=nh, $fn=6); // nut slot
+                hull() repeat([0,0,-6],2) rotate([-90,30,0])
+                    cylinder(d=nr, h=nh+lip+1, $fn=12); // access for screw
+                hull() repeat([0,0,2],2) rotate([-90,30,0]) 
+                    cylinder(r=nr, h=nh+lip+1, $fn=6);
             }
         }
-        // add the dovetail
-        translate([0,objective_clip_y,dt_bottom]){
-            dovetail_m([objective_clip_w+4,3,dt_h],waist=dt_waist?dt_h-15:0);
-        }
+        // add the nut slot for mounting
+        
         // add the camera mount
         translate([0,0,camera_mount_top]) camera_mount();
     }
@@ -483,7 +483,7 @@ module condenser(){
             union(){
                 cylinder(r=base_r, h=lens_z-pedestal_h+d);
                 //dovetail
-                translate([0,condenser_clip_y,0]) mirror([0,1,0]) dovetail_m([objective_clip_w+4,4,lens_z-pedestal_h]);
+                translate([0,condenser_clip_y,0]) mirror([0,1,0]) dovetail_m([condenser_clip_w,4,lens_z-pedestal_h]);
             }
             
             //LED
@@ -524,7 +524,7 @@ difference(){
             gripper_t=0.65,
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
-        if(sample_z < 60 || objective_clip_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
+        if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
     }else if(optics=="rms_f50d13"){
         // Optics module for RMS objective using ThorLabs ac127-050-a doublet tube lens
         optics_module_rms(
@@ -535,7 +535,7 @@ difference(){
             fluorescence=false,
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
-        if(sample_z < 60 || objective_clip_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
+        if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
     }else if(optics=="m12_lens"){
         // Optics module for USB camera's M12 lens
         optics_module_trylinder(
@@ -543,11 +543,11 @@ difference(){
             parfocal_distance = 21, //22 for high-res lens
             lens_h = 5.5
         );
-        if(objective_clip_y < 10) echo("Warning: M12 lenses won't fit in small frames");
+        if(objective_mount_y < 10) echo("Warning: M12 lenses won't fit in small frames");
     }
     
     //picam_cover();
-    //rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
+    //translate([0,objective_mount_y-7,0]) rotate([90,0,0]) cylinder(r=999,h=999,$fn=8);
     //mirror([0,0,1]) cylinder(r=999,h=999,$fn=8);
     //C270 lens could be a trylinder gripper, with lens_r=12.0, lens_h=1 and a pedestal that is smaller than the gripper by more than the usual amount (say 1mm space)
     //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();

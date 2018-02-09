@@ -43,7 +43,6 @@ t = 1; //thickness of shell
 clip_t = 2; //thickness of arms for the dovetail clip
 hole_h = max(stage_clearance, b); //height of cut-out above clip
 dt_taper = 2; //size of sloping part at top/bottom of dovetail
-condenser_clip_w = objective_clip_w+4;
 
 module back_foot_and_arm(clip_y=illumination_clip_y,stage_clearance=6,sample_z=sample_z){
     // Arm that clips on to the microscope, providing the back foot
@@ -136,7 +135,8 @@ module illumination_horizontal_arm(){
                 if(!condenser) cylinder(r=6,h=arm_h+4,$fn=32);
             }
             if(condenser){
-                translate([0,condenser_clip_y,4+8]+shift) rotate(180) mirror([0,0,1]) dovetail_clip([objective_clip_w+4,8,8+d],t=clip_t,slope_front=0,solid_bottom=0.2); //rotate([-90,180,0]) dovetail_clip_y([objective_clip_w+4,8,8+d],t=clip_t,taper=0,endstop=false);
+                translate([0,condenser_clip_y,4+8]+shift) rotate(180) mirror([0,0,1]) 
+                            dovetail_clip([condenser_clip_w,8,8+d],t=clip_t,slope_front=0,solid_bottom=0.2);
             }
         }
         

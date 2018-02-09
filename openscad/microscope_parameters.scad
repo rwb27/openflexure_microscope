@@ -43,7 +43,8 @@ z_lever_ratio = 1.0; // as above, for Z axis (must be >1)
 // The variables below affect the position of the objective mount
 z_strut_l = big_stage?18:15; //length of struts supporting Z carriage
 objective_mount_y = big_stage?15:9; // y position of clip for optics
-//objective_clip_w = 10; // width of the dovetail clip for the optics
+objective_mount_nose_w = 6; // width of the pointy end of the mount
+condenser_clip_w = 14; // width of the dovetail clip for the condenser
 foot_height = 15; //height of the feet (distance from bottom of body to table)
 
 // These variables set the dimensions of flexures
