@@ -279,7 +279,7 @@ module camera_mount_body(
             
             // fitting for the objective mount
             translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=0.5);
-/*            // Mount for the nut that holds it on
+            // Mount for the nut that holds it on
             lip=0*1.3; // thickness of the plastic lip that retains the nut
             nh=3*1.1; nr=3*1.1;// thickness/radius of the nut
             translate([0,objective_mount_y-0.5-lip,z_flexures_z2/2+10]){
@@ -289,7 +289,7 @@ module camera_mount_body(
                     cylinder(d=nr, h=(lip+1)*2, center=true, $fn=12); // access for screw
                 hull() repeat([0,0,2],2) rotate([90,30,0]) 
                     cylinder(r=nr, h=(lip+1)*2, center=true, $fn=6);
-            }*/
+            }
         }
         // add the nut slot for mounting
         
