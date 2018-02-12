@@ -278,18 +278,18 @@ module camera_mount_body(
             }
             
             // fitting for the objective mount
-            translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=-0.5);
-            // Mount for the nut that holds it on
-            lip=1.3; // thickness of the plastic lip that retains the nut
+            translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=0.5);
+/*            // Mount for the nut that holds it on
+            lip=0*1.3; // thickness of the plastic lip that retains the nut
             nh=3*1.1; nr=3*1.1;// thickness/radius of the nut
-            translate([0,objective_mount_y-0.5-lip-nh,z_flexures_z2/2+4]){
-                hull() repeat([0,0,-6],2) rotate([-90,30,0])
+            translate([0,objective_mount_y-0.5-lip,z_flexures_z2/2+10]){
+                hull() repeat([0,0,-12],2) rotate([90,30,0])
                     cylinder(r=nr, h=nh, $fn=6); // nut slot
-                hull() repeat([0,0,-6],2) rotate([-90,30,0])
-                    cylinder(d=nr, h=nh+lip+1, $fn=12); // access for screw
-                hull() repeat([0,0,2],2) rotate([-90,30,0]) 
-                    cylinder(r=nr, h=nh+lip+1, $fn=6);
-            }
+                hull() repeat([0,0,-12],2) rotate([90,30,0])
+                    cylinder(d=nr, h=(lip+1)*2, center=true, $fn=12); // access for screw
+                hull() repeat([0,0,2],2) rotate([90,30,0]) 
+                    cylinder(r=nr, h=(lip+1)*2, center=true, $fn=6);
+            }*/
         }
         // add the nut slot for mounting
         
@@ -441,7 +441,7 @@ module optics_module_trylinder(
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=7, body_top=lens_assembly_z, dt_top=min(lens_assembly_z, z_flexure_spacing));
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=7, body_top=lens_assembly_z, dt_top=min(lens_assembly_z, z_flexures_z2));
             // camera cut-out and hole for the beam
             optical_path(lens_aperture, lens_assembly_z);
         }

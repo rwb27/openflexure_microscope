@@ -21,7 +21,14 @@ module objective_mount(){
     h = z_flexures_z2 + 4;
     difference(){
         objective_mount_wedge(h=h, center=false);
-        translate([0,0,h/2]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
+        
+        // bolt hole to mount objective
+        hull(){
+            translate([0,0,z_flexures_z1+8]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
+            translate([0,0,z_flexures_z2-8]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
+        }
+        
+        // cut-outs for flexures to attach
         hull() reflect([1,0,0]) translate([1, d, -4])  z_axis_flexures(h=5+8);
     }
 }
@@ -31,7 +38,7 @@ module objective_mount_wedge(h=999, nose_shift=0, center=false){
     // which the objective gets clamped.
     nw = objective_mount_nose_w; //width of the pointy end
     translate([0,objective_mount_y,0]) hull(){
-        translate([-nw/2-nose_shift,0,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
+        translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
         reflect([1,0,0]) translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]) 
                 cylinder(r=2, h=h, $fn=16, center=center);
     }
@@ -106,10 +113,10 @@ module z_axis_clearance(){
 
 // "scenery"
 //legs
-for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
+null() for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
     
 //actuator
-translate([0,z_nut_y,0]){
+null() translate([0,z_nut_y,0]){
     screw_seat(h=actuator_h, tilt=z_actuator_tilt, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
     actuator_column(actuator_h, tilt=z_actuator_tilt);
 }
