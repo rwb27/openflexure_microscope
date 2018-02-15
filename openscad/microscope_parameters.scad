@@ -30,6 +30,7 @@ $fn=32;
 // These are the most useful parameters to change!
 big_stage = true;
 motor_lugs = true;
+endstops = motor_lugs;
 version_numstring = "5.18.0";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = big_stage?"rms_f40d16":"pilens"; //see optics.scad for valid values
@@ -94,7 +95,7 @@ bridge_dz = 10; // spacing between thin links on legs
 base_t=1; // thickness of the flat base of the structure
 wall_h=15; // height of the stiffening vertical(ish) walls
 wall_t=2; //thickness of the stiffening walls
-zawall_h = z_flexures_z2 - 5; //height of wall near Z anchor
+zawall_h = z_flexures_z2 - 10; //height of wall near Z anchor
 zbwall_h = z_flexures_z2 - 10; //height of bridge over Z lever
 illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                        -wall_t/2-1); //position of clip for

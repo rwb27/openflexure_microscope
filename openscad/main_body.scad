@@ -70,19 +70,26 @@ module actuator(){
     // TODO: find the code that unifies this with leg()
 	brace=20;
     fw=stage_flex_w;
+    w = actuator[0];
     union(){
         leg(brace=brace);
 
 		//arm (horizontal bit)
 		difference(){
             sequential_hull(){
-                w = actuator[0];
                 translate([-leg_middle_w/2,0,0]) cube([leg_middle_w,brace+fw,4]);
                 translate([-w/2,0,0]) cube([w,brace+fw+0,actuator[2]]);
                 translate([-w/2,0,0]) cube(actuator);
             }
             //don't foul the actuator column
             translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
+        }
+        
+        //flag (for the end-stop sensor)
+        if(endstops) sequential_hull(){
+            translate([-w/2,0,0]) cube([w,brace,actuator[2]]);
+            translate([0,0,zawall_h]) cube([w/2,6,d]);
+            translate([0,0,zawall_h + 6]) cube([w/2,6,d]);
         }
 	}
 }
@@ -203,6 +210,11 @@ module place_on_wall(){
     children();
 }
 
+module xy_limit_switch_mount(d=3.3*2, h=6){
+    // A mount for the XY limit switch (M3)
+    leg_frame(45) translate([-9, -zflex_l-zawall_h*sin(6)-3.3, zawall_h-6]) cylinder(d=d,h=h);
+}
+
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
 difference(){
 union(){
@@ -258,6 +270,11 @@ union(){
                 inner_wall_vertex(135, leg_outer_w/2, zawall_h);
                 inner_wall_vertex(135, -leg_outer_w/2, wall_h);
                 inner_wall_vertex(-135, leg_outer_w/2, wall_h);
+            }
+            // add mounts for the optical end-stops for X and Y
+            reflect([1,0,0]) hull(){
+                inner_wall_vertex(45, -9, zawall_h);
+                xy_limit_switch_mount();
             }
             add_hull_base(base_t) {
                 // Next, link the XY actuators to the wall
@@ -349,9 +366,12 @@ union(){
         for(p=base_mounting_holes) translate(p){ 
              cylinder(r=3/2*1.1,h=999,center=true); 
              translate([0,0,3]) cylinder(r=3*1.1, h=999); 
-        } 
-		//post mounting holes
-		//reflect([1,0,0]) translate([20,z_nut_y+2,0]) cylinder(r=4/2*1.1,h=999,center=true);
+        }
+        
+        // mount for limit switches
+        if(endstops){
+            reflect([1,0,0]) xy_limit_switch_mount(d=2.9, h=10);
+        }
         
         // screw holes for adjustment of condenser angle/position
         // (only useful if screws=true in the illumination arm)
@@ -379,8 +399,8 @@ union(){
         z_axis_clearance(); //make sure the actuator can get in ok!
     }
 }
-reflect([1,0,0]) translate([13.5,0,0]) rotate([0,90,0]) cylinder(r=999,h=999,$fn=4);
-rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
-translate([0,0,50]) cylinder(r=999,h=999,$fn=4);
+//reflect([1,0,0]) translate([13.5,0,0]) rotate([0,90,0]) cylinder(r=999,h=999,$fn=4);
+//rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+//translate([0,0,50]) cylinder(r=999,h=999,$fn=4);
 }
 //%rotate(180) translate([0,2.5,-2]) cube([25,24,2],center=true);
