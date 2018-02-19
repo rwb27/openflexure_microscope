@@ -6,10 +6,12 @@ include <microscope_parameters.scad>;
 use <compact_nut_seat.scad>;
 use <main_body.scad>;
 
+motor_board = true;
+
 t = 1.5;
 
-raspi_z = 5;
-raspi_board = [85, 58, 19];
+raspi_z = motor_board?1:5;
+raspi_board = [85, 58, 19]; //this is wrong, should be 85, 56, 19
 
 h = raspi_z + raspi_board[2] + 5;
 
@@ -31,11 +33,11 @@ module pi_footprint(){
 module pi_connectors(){
     pi_frame(){
         // USB/network ports
-        translate([raspi_board[0]/2,-1,+1]) cube(raspi_board + [2,2,-1]);
+        translate([raspi_board[0]/2,-1,motor_board?5:1]) cube(raspi_board + [2,2,-1]);
         // micro-USB power
-        translate([10.6-10/2, -99, -2]) cube([10,100,8]);
+        translate([10.6-10/2, -99, motor_board?0:-2]) cube([10,100,8]);
         // HDMI
-        translate([32-25/2, -99, -4]) cube([25,100,14]);
+        translate([32-25/2, -99, motor_board?0:-4]) cube([25,100,14]);
     }
 }
 
@@ -102,6 +104,9 @@ union(){
         
         // side access
         //translate([10,-999+30, 10]) cube(999);
+        
+        // motor cables
+        if(motor_board) translate([0,z_nut_y,h]) cube([20,50,15],center=true);
         
         // holes for the pi go all the way through
         pi_support_frame() cylinder(h=999, d=2.9, center=true);
