@@ -110,7 +110,7 @@ module band_tool(){
 
 band_tool_l = sso[2]/2+foot_height;
 band_tool_w = ns[0]-0.5;
-band_tool_h = 3;
+band_tool_h = 4;
 
 module prong_frame(){
     //Move the prongs out and tilt them slightly
