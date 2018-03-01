@@ -33,6 +33,8 @@ module objective_mount(){
     }
 }
 
+function objective_mount_screw() = [0, objective_mount_back_y, (z_flexures_z2 + 4)/2];
+
 module objective_mount_wedge(h=999, nose_shift=0, center=false){
     // A trapezoidal wedge, with a screw in the middle, onto
     // which the objective gets clamped.
