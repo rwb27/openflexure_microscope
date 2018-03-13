@@ -212,7 +212,7 @@ module place_on_wall(){
 
 module xy_limit_switch_mount(d=3.3*2, h=6){
     // A mount for the XY limit switch (M3)
-    leg_frame(45) translate([-9, -zflex_l-zawall_h*sin(6)-3.3, zawall_h-6]) cylinder(d=d,h=h);
+    leg_frame(45) translate([-9, -zflex_l-zawall_h*sin(6)-3.3+1, zawall_h-6]) cylinder(d=d,h=h);
 }
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
