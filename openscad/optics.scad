@@ -496,7 +496,7 @@ module condenser(){
         }
     }
 }
-
+optics="beamsplitter_led_mount";
 difference(){
     if(optics=="pilens"){
         // Optics module for picamera v2 lens, using trylinder
@@ -520,7 +520,7 @@ difference(){
             tube_lens_f=40, 
             tube_lens_r=16/2+0.1, 
             objective_parfocal_distance=35,
-            fluorescence=false,
+            fluorescence=true,
             gripper_t=0.65,
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
@@ -544,6 +544,10 @@ difference(){
             lens_h = 5.5
         );
         if(objective_mount_y < 10) echo("Warning: M12 lenses won't fit in small frames");
+    }else if(optics=="beamsplitter_cube"){
+        translate([0,0,-fl_cube_w/2]) fl_cube();
+    }else if(optics=="beamsplitter_led_mount"){
+        mirror([0,1,0]) fl_led_mount();
     }
     
     //picam_cover();
