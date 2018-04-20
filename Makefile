@@ -28,7 +28,7 @@ all_deps := $(parameters_file) $(utilities_file) 			#All targets depend on these
 all: $(ALLSTLFILES)
 
 cleanstl:
-	rm $(STLFILES)
+	rm -f $(ALLSTLFILES)
 
 #parameter and utilities files affect everything
 $(OUTPUT)/%.stl: $(all_deps)

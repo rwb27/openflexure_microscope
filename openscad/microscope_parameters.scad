@@ -108,4 +108,8 @@ illumination_arm_screws = [[0,illumination_clip_y+3,0],
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for condenser assembly
-base_mounting_holes = [[-20,z_nut_y-4,0],[20,z_nut_y-4,0],[-z_flexure_x-4,-8,0],[z_flexure_x+4,-8,0]]; // holes to screw the microscope to a baseplate
+base_mounting_holes = [[-20,z_nut_y-4,0],
+                       [20,z_nut_y-4,0],
+                       [-z_flexure_x-4,big_stage?-8:-4,0],
+                       [z_flexure_x+4,big_stage?-8:-4,0]]; 
+                       // holes to screw the microscope to a baseplate
