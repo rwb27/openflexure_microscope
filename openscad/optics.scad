@@ -24,6 +24,7 @@
 use <utilities.scad>;
 use <dovetail.scad>;
 include <microscope_parameters.scad>; // NB this defines "camera" and "optics"
+use <thorlabs_threads.scad>;
 
 use <cameras/camera.scad>; // this will define the 2 functions and 1 module for the camera mount, using the camera defined in the "camera" parameter.
 
@@ -371,8 +372,16 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         }
         // A pair of nested lens grippers to hold the objective
         translate([0,0,lens_assembly_z]){
-            // gripper for the objective
-            lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r, t=gripper_t);
+            // threaded cylinder for the objective
+            radius=25.4*0.8/2; //Originally this was 9.75, is that a fudge factor?;
+            pitch=0.7056;
+            difference(){
+                cylinder(r=lens_assembly_base_r,h=lens_assembly_h,$fn=100);
+                cylinder(r=radius+0.44,h=999,$fn=100, center=true);
+            }
+            translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,threads_per_mm=pitch,thread_base_width = 0.60,thread_length=5);
+            // gripper for the objective (disabled in favour of the thread)
+            //lens_gripper(lens_r=rms_r, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r, t=gripper_t);
             // gripper for the tube lens
             lens_gripper(lens_r=tube_lens_r, lens_h=pedestal_h+1,h=pedestal_h+1+2.5, t=gripper_t);
             // pedestal to raise the tube lens up within the gripper

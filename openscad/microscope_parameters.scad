@@ -28,7 +28,7 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = false;
+big_stage = true;
 motor_lugs = true;
 version_numstring = "5.17.2";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
