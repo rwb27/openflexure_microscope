@@ -11,10 +11,24 @@
 * Released under the CERN Open Hardware License                   *
 *                                                                 *
 ******************************************************************/
+/*
 
-use <utilities.scad>;
-use <compact_nut_seat.scad>;
-include <microscope_parameters.scad>;
+The Z axis assembly is a 4-bar mechanism, kept as short as possible
+to maximise stiffness.  It's constructed in several parts:
+objective_mount() is the wedge-shaped rail to which the optics attach
+z_axis_flexures() makes the thin parts that flex as it is moved
+z_axis_struts() makes the two connections between the objective_mount()
+                and the static part
+
+*/
+
+use <./utilities.scad>;
+use <./compact_nut_seat.scad>;
+use <./main_body_transforms.scad>;
+use <./wall.scad>;
+use <./gears.scad>;
+use <./illumination.scad>;
+include <./microscope_parameters.scad>;
 
 module objective_mount(){
     // The mount for the objective
@@ -75,7 +89,8 @@ module z_axis_flexures(h=zflex[2]){
 }
 
 module z_axis_struts(){
-    // The parts that tilt as the Z axis is moved
+    // The parts that tilt as the Z axis is moved, including the lever that 
+    // connects to the actuator column (but not the column itself).
     intersection(){ // The two horizontal parts
         for(z=[z_flexures_z1, z_flexures_z2]){
             translate([-99,objective_mount_back_y+zflex[1],z+dz]) cube([999,z_strut_l,5]);
@@ -113,17 +128,90 @@ module z_axis_clearance(){
     }
 }
 
-// "scenery"
-//legs
-null() for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
-    
-//actuator
-null() translate([0,z_nut_y,0]){
-    screw_seat(h=actuator_h, tilt=z_actuator_tilt, travel=z_actuator_travel, extra_entry_h=z_strut_t+2, motor_lugs=motor_lugs);
-    actuator_column(actuator_h, tilt=z_actuator_tilt);
+module objective_mounting_screw_access(){
+    // access hole for the objective mounting screw
+    //translate([0,objective_mount_back_y, z_flexures_z2/2]) 
+    //        rotate([-75,0,0]) cylinder(h=999, d=8, $fn=16);
+    translate([0,objective_mount_back_y, z_flexures_z2/2]) 
+            rotate([-90,0,15]) cylinder(h=999, d=8, $fn=16);
 }
 
+module z_motor_clearance(){
+    // clearance for the motor and gears, to be subtracted from the condenser mount
+    translate([0,z_nut_y,0]) rotate([z_actuator_tilt,0,0]) 
+        translate([0,0,actuator_h+z_actuator_travel+2-1]) rotate(180) motor_and_gear_clearance(gear_h=11);
+}
+
+module z_axis_casing(condenser_mount=false){
+    // Casing for the Z axis - needs to have the axis subtracted from it
+    intersection(){
+        linear_extrude(h=999) minkowski(){
+            circle(r=wall_t+1);
+            hull() projection() z_axis_struts();
+        }
+        hull(){
+            reflect([1,0,0]) z_bridge_wall_vertex();
+            translate([-99,z_anchor_y,0]) cube([999,4,z_flexures_z2+2]);
+            translate([0,z_nut_y,0]) cylinder(d=10,h=20);
+        }
+    }
+    if(condenser_mount) hull(){
+        // At the bottom, connect to the top of the housing and the motor lugs
+        translate([-z_anchor_w/2-1.5, z_anchor_y - 1, z_flexures_z2]) cube([z_anchor_w+3, d, d]);
+        translate([0,z_nut_y,0]) rotate(180) 
+                     motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
+        // The top is a flat shape that the illumination arm screws onto.
+        translate([0, (leg_r + leg_outer_w)/sqrt(2) + 4, sample_z - d - 2]) cylinder(r=4, h=d);
+        each_illumination_arm_screw() mirror([0,0,1]) cylinder(r=4,h=d);
+    }
+    
+}
+
+module z_axis_casing_cutouts(){
+    // The Z axis casing is a solid shape, we need to cut out clearance for the moving bits
+    // This module contains all the bits we need to cut out.
+    z_axis_clearance();
+    objective_mounting_screw_access();
+    z_actuator_cutout();
+    z_motor_clearance();
+    each_illumination_arm_screw() cylinder(d=3*0.95, h=16, center=true);
+}
+
+////////////// These modules define the actuator column and housing (where the screw/nut/band go)
+
+module z_actuator_column(){
+    translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt, join_to_casing=true);
+}
+
+module z_actuator_housing(){
+    // This houses the actuator column and provides screw seat/motor lugs
+    translate([0,z_nut_y,0]) screw_seat(h=actuator_h, 
+                                        tilt=z_actuator_tilt, 
+                                        travel=z_actuator_travel, 
+                                        motor_lugs=motor_lugs, 
+                                        lug_angle=180);
+}
+module z_actuator_cutout(){
+    // This chops out a void for the actuator column
+    translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true, tilt=z_actuator_tilt);
+}
+
+
+// "scenery" so we can see how it fits with the rest of the microscope
+//legs
+// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
+
+// These are the moving parts of the axis
 objective_mount();
 z_axis_flexures();
 z_axis_struts();
-//reflect([1,0,0]) z_axis_anchor();
+z_actuator_column();
+
+// The casing needs to have voids subtracted from it to fit the moving bits in
+difference(){
+    z_axis_casing(condenser_mount=true);
+    z_axis_casing_cutouts();
+}
+
+// We add on the actuator housing last, because it's got the clearance subtracted already.
+z_actuator_housing();

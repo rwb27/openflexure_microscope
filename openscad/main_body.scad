@@ -17,17 +17,12 @@ use <./compact_nut_seat.scad>;
 use <./logo.scad>;
 use <./dovetail.scad>;
 use <./z_axis.scad>;
+use <./gears.scad>;
+use <./wall.scad>;
+use <./main_body_transforms.scad>;
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
-module shear_x(amount=1){
-    // Shear transformation: tilt the Y axis towards the X axis
-    // e.g. if amount=1, then a straight line in Y will be
-    // tilted to 45 degrees between X and Y, while X lines are
-    // unchanged.  This is used in the Z axis.
-	multmatrix([[1,amount,0,0],
-					 [0,1,0,0],
-					 [0,0,1,0],
-					 [0,0,0,1]]) children();
-}
+
+
 module leg(brace=stage_flex_w){
     // The legs support the stage - this is either used directly
     // or via "actuator" to make the legs with levers
@@ -102,112 +97,8 @@ module actuator_silhouette(h=999){
     }
 }
 
-module leg_frame(angle){
-    // Transform into the frame of one of the legs of the stage
-	rotate(angle) translate([0,leg_r,]) children();
-}
-module each_leg(){
-    // Repeat for each of the legs of the stage
-	for(angle=[45,135,-135,-45]) leg_frame(angle) children();
-}
-module each_actuator(){
-    // Repeat this for both of the actuated legs (the ones with levers)
-	reflect([1,0,0]) leg_frame(45) children();
-}
-module condenser_mounting_screws(d=3*0.95, h=16, center=true){
-    for(p = illumination_arm_screws){
-        translate(p) cylinder(d=d, h=h,center=center);
-    }
-}
-
-
-module add_hull_base(h=1){
-    // Take the convex hull of some objects, and add it in as a
-    // thin layer at the bottom
-    union(){
-        intersection(){
-            hull() children();
-            cylinder(r=9999,$fn=8,h=h); //make the base thin
-        }
-        children();
-    }
-}
-module add_roof(inner_h){
-    // Take the convex hull of some objects, and add the top
-    // of it as a roof.  NB you must specify the height of
-    // the underside of the roof - finding it automatically
-    // would be too much work...
-    union(){
-        difference(){
-            hull() children();
-            cylinder(r=9999,$fn=8,h=inner_h);
-        }
-        children();
-    }
-}
-module wall_vertex(r=wall_t/2, h=wall_h, x_tilt=0, y_tilt=0){
-    // A cylinder, rotated by the given angles about X and Y,
-    // but with the top and bottom kept in the XY plane
-    // (i.e. it's sheared rather than tilted).    These form the
-    // stiffening "wall" that runs around the base of 
-    // the legs
-    smatrix(xz=tan(y_tilt), yz=-tan(x_tilt)) cylinder(r=r, h=h, $fn=8);
-}
-module inner_wall_vertex(leg_angle, x, h=wall_h, y_tilt=-999, y=-zflex_l-wall_t/2){
-    // A thin cylinder, close to one of the legs.  It
-    // tilts inwards to clear the leg.  These form the
-    // stiffening "wall" that runs around the base of 
-    // the legs
-    
-    // leg_angle specifies the leg, x is the X position
-    // of the vertex in that leg frame.  h is its height,
-    // y and y_tilt override position and angle in y
-    
-    // unless specified, tilt the leg so the wall at the
-    // edge is vertical (i.e. the bit at 45 degrees to
-    // the leg frame)
-    y_tilt = (y_tilt==-999) ? (x>0?6:-6) : y_tilt;
-    leg_frame(leg_angle) translate([x,y,0]){
-            wall_vertex(h=h,x_tilt=6,y_tilt=y_tilt);
-    }
-}
-
-module z_bridge_wall_vertex(){
-    // This is the vertex of the "inner wall" nearest the
-    // new (cantilevered) Z axis.
-    inner_wall_vertex(45, leg_outer_w/2+wall_t/2, zbwall_h);
-}
-
-module z_anchor_wall_vertex(){
-    // This is the vertex of the supporting wall nearest
-    // to the Z anchor - it doesn't make sense to use the
-    // function above as it's got the wrong symmetry.
-    // We also use this in a few places so it's worth saving
-    translate([-z_flexure_x-wall_t/2,-wall_t/2,0]){
-        wall_vertex(h=zawall_h, y_tilt=atan(wall_t/zawall_h));
-    }
-}
-
-module y_actuator_wall_vertex(x=1){
-    // A wall vertex for the y actuator.  x=-1,1 picks the side
-    // of the actuator where the vertex is placed.
-    leg_frame(45) translate([x*(ss_outer()[0]/2-wall_t/2),
-                             actuating_nut_r, 0]) wall_vertex();
-}
-
-module place_on_wall(){
-    //this is a complicated transformation!  The wall runs from
-    wall_start = [z_flexure_x+wall_t/2,-wall_t/2,0]; // to
-    wall_end = ([1,1,0]*(leg_r+actuating_nut_r)
-                 +[1,-1,0]*(ss_outer()[0]/2-wall_t/2))/sqrt(2);
-    wall_disp = wall_end - wall_start; // vector along the wall base
-    // pivot about the starting corner of the wall so X is along it
-    translate(wall_start) rotate(atan(wall_disp[1]/wall_disp[0]))
-    // move out to the surface (the above are centres of cylinders)
-    // and then align y with the vertical axis of the wall
-    translate([0,-wall_t/2,0]) rotate([90-atan(wall_t/zawall_h/sqrt(2)),0,0])
-    // now X and Y are in the plane of the wall, and z=0 is its surface.
-    children();
+module back_foot_mounting_screw(d=3*0.95, h=16, center=true){
+    translate([0,illumination_clip_y+3,0]) cylinder(d=d, h=h,center=center);
 }
 
 module xy_limit_switch_mount(d=3.3*2, h=6){
@@ -250,7 +141,7 @@ union(){
     z_axis_flexures();
     z_axis_struts();
     objective_mount();
-    translate([0,z_nut_y,0]) actuator_column(actuator_h, tilt=z_actuator_tilt, join_to_casing=true);
+    z_actuator_column();
 
 	//base
 	difference(){
@@ -287,18 +178,7 @@ union(){
                         rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
                     }
                 }
-                // Casing for the Z axis
-                intersection(){
-                    linear_extrude(h=999) minkowski(){
-                        circle(r=wall_t+1);
-                        hull() projection() z_axis_struts();
-                    }
-                    hull(){
-                        reflect([1,0,0]) z_bridge_wall_vertex();
-                        translate([-99,z_anchor_y,0]) cube([999,4,z_flexures_z2+2]);
-                        translate([0,z_nut_y,0]) cylinder(d=10,h=20);
-                    }
-                }
+                z_axis_casing(condenser_mount=true); //casing and anchor for the z axis
                 // Connect the Z anchor to the XY actuators
                 reflect([1,0,0]) hull(){
                     translate([-(z_anchor_w/2+wall_t/2+1), z_anchor_y + 1, 0]) 
@@ -324,7 +204,7 @@ union(){
             
             //screw supports for adjustment of condenser angle/position
             // (only useful if screws=true in the illumination arm)
-            condenser_mounting_screws(h=10,d=6,center=false);
+            back_foot_mounting_screw(h=10,d=6,center=false);
             // clip for illumination/back foot (if not using screws)
             translate([0,illumination_clip_y,0]) mirror([0,1,0]) dovetail_m([12,2,12]);
                     
@@ -335,8 +215,8 @@ union(){
 			actuator_silhouette(xy_actuator_travel+actuator[2]);
 			translate([0,actuating_nut_r,0]) screw_seat_outline(h=999,adjustment=-d,center=true);
 		}
-		//Z actuator cut-out
-		translate([0,z_nut_y,0]) screw_seat_outline(h=999,adjustment=-d,center=true, tilt=z_actuator_tilt);
+		// Cut-outs for the Z axis
+		z_axis_casing_cutouts();
 
 		// Central cut-out for optics
         intersection(){
@@ -356,16 +236,11 @@ union(){
                 translate([0,z_nut_y,0]) cube([999,d,z_strut_t+z_actuator_travel+1]*2,center=true);
             }
 		}
-        // Z actuator and struts
-        z_axis_clearance();
-        // access hole for the objective mounting screw
-        translate([0,objective_mount_back_y, z_flexures_z2/2]) 
-                rotate([-75,0,0]) cylinder(h=999, d=10, $fn=16);
         
         //post mounting holes 
         for(p=base_mounting_holes) translate(p){ 
-             cylinder(r=3/2*1.1,h=999,center=true); 
-             translate([0,0,3]) cylinder(r=3*1.1, h=999); 
+             cylinder(r=3/2*1.1,h=50,center=true); 
+             translate([0,0,3]) cylinder(r=3*1.1, h=22); 
         }
         
         // mount for limit switches
@@ -375,7 +250,7 @@ union(){
         
         // screw holes for adjustment of condenser angle/position
         // (only useful if screws=true in the illumination arm)
-        condenser_mounting_screws(h=18,d=3*0.95,center=true);
+        back_foot_mounting_screw(h=18,d=3*0.95,center=true);
         
         //////////////// logo and version string /////////////////////
         size = big_stage?0.25:0.2;
@@ -391,11 +266,7 @@ union(){
         screw_seat(h=actuator_h, travel=xy_actuator_travel, motor_lugs=motor_lugs, extra_entry_h=actuator[2]+2);
     }
     difference(){
-        translate([0,z_nut_y,0]) screw_seat(h=actuator_h, 
-                                            tilt=z_actuator_tilt, 
-                                            travel=z_actuator_travel, 
-                                            motor_lugs=motor_lugs, 
-                                            lug_angle=180);
+        z_actuator_housing();
         z_axis_clearance(); //make sure the actuator can get in ok!
     }
 }
