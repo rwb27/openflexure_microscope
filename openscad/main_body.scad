@@ -107,7 +107,7 @@ module xy_limit_switch_mount(d=3.3*2, h=6){
 }
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
-difference(){
+exterior_brim() difference(){
 union(){
 
 	//legs (incl. actuators)

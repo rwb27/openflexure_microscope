@@ -412,6 +412,17 @@ difference(){
     self_tap_hole(20.4/2, dr=1.2, dz=0.7055/2, h=11, center=true, bridge_facets=5);
 }
 
+module exterior_brim(r=4, h=0.2){
+    // Add a "brim" around the outside of an object *only*, preserving holes in the object
+    children();
+    
+    linear_extrude(h) difference(){
+        offset(r) projection(cut=true) translate([0,0,-d]) children();
+       
+        offset(-r) offset(r) projection(cut=true) translate([0,0,-d]) children();
+    }
+}
+
 //trylinder_gripper();
 //feather_vertical_edges(fin_r=1){
 //	cylinder(r=12,h=10);
