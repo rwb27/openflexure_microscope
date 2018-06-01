@@ -28,7 +28,7 @@ all_deps := $(parameters_file) $(utilities_file) 			#All targets depend on these
 all: $(ALLSTLFILES)
 
 cleanstl:
-	rm -f $(ALLSTLFILES)
+	rm $(STLFILES)
 
 #parameter and utilities files affect everything
 $(OUTPUT)/%.stl: $(all_deps)
@@ -155,6 +155,10 @@ $(OUTPUT)/picamera_2_%.stl: $(SOURCE)/cameras/picamera_2_%.scad $(all_deps)
 
 
 $(OUTPUT)/feet_tall.stl: $(SOURCE)/feet.scad $(all_deps)
+	openscad -o $@ -D 'foot_height=26' $<
+
+
+$(OUTPUT)/actuator_assembly_tools.stl: $(SOURCE)/actuator_assembly_tools.scad $(all_deps)
 	openscad -o $@ -D 'foot_height=26' $<
 
 
