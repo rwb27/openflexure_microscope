@@ -170,5 +170,17 @@ module foot(travel=5,       // how far into the foot the actuator can move down
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
 
-reflect([1,0,0]) translate([ss_outer()[0]+1.5, 0]) foot(bottom_tilt=15, lie_flat=true);
-foot(bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2 + foot_height - 15, lie_flat=true);
+module middle_foot(lie_flat=false){
+    foot(bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2 + foot_height - 15, lie_flat=lie_flat);
+}
+
+module outer_foot(lie_flat=false){
+    foot(bottom_tilt=15, lie_flat=lie_flat);
+}
+
+module feet_for_printing(){
+    reflect([1,0,0]) translate([ss_outer()[0]+1.5, 0]) outer_foot(lie_flat=true);
+    middle_foot(lie_flat=true);
+}
+
+feet_for_printing();
