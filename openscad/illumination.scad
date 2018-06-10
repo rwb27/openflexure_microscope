@@ -13,6 +13,7 @@
 use <./utilities.scad>;
 include <./microscope_parameters.scad>;
 use <./dovetail.scad>;
+use <./z_axis.scad>;
 front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 
@@ -38,8 +39,13 @@ module illumination_arm(){
             translate([-front_dovetail_w/2,front_dovetail_y+2,bottom_z]) cube([front_dovetail_w, 10-2, h]);
             each_illumination_arm_screw() cyl_slot(r=4, h=3, dy=3);
         }
+        
+        // slots for the mounting screws (to allow adjustment of position)
         each_illumination_arm_screw() cyl_slot(r=3/2*1.33, h=999, dy=3, center=true);
         each_illumination_arm_screw() translate([0,0,3]) cyl_slot(r=6, h=999, dy=3);
+        
+        // clearance for the motor
+        translate([0,-2,0]) z_motor_clearance();
     }
 }
 
