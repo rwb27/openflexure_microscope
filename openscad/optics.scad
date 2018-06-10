@@ -376,8 +376,15 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             radius=25.4*0.8/2; //Originally this was 9.75, is that a fudge factor?;
             pitch=0.7056;
             difference(){
-                cylinder(r=lens_assembly_base_r,h=lens_assembly_h,$fn=100);
-                cylinder(r=radius+0.44,h=999,$fn=100, center=true);
+                hull(){
+                    cylinder(r=lens_assembly_base_r,h=d,$fn=50);
+                    translate([0,0,lens_assembly_h-5]) cylinder(r=radius+1.2+0.44, h=5);
+                }
+                sequential_hull(){
+                    cylinder(r=lens_assembly_base_r-1, h=2*d,center=true,$fn=50);
+                    translate([0,0,lens_assembly_h-5]) cylinder(r=radius+0.44,h=d,$fn=100);
+                    translate([0,0,999]) cylinder(r=radius+0.44,h=d,$fn=100);
+                }
             }
             translate([0,0,lens_assembly_h-5]) inner_thread(radius=radius,threads_per_mm=pitch,thread_base_width = 0.60,thread_length=5);
             // gripper for the objective (disabled in favour of the thread)

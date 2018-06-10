@@ -33,7 +33,7 @@ motor_lugs = true;
 endstops = false; //motor_lugs;
 version_numstring = "5.18.0";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
-optics = big_stage?"rms_f40d16":"pilens"; //see optics.scad for valid values
+optics = big_stage?"rms_f50d13":"pilens"; //see optics.scad for valid values
 led_r = 5/2; //size of the LED used for illumination
 
 // This sets the basic geometry of the microscope
