@@ -13,6 +13,8 @@
 use <./utilities.scad>;
 include <./microscope_parameters.scad>;
 use <./dovetail.scad>;
+front_dovetail_y = 35; // position of the main dovetail
+front_dovetail_w = 30; // width of the main dovetail
 
 
 module each_illumination_arm_screw(){
@@ -26,10 +28,8 @@ module cyl_slot(r=1, h=1, dy=2, center=false){
 
 module illumination_arm(){
     // The arm on which we mount the illumination
-    front_dovetail_y = 35; // position of the main dovetail
-    front_dovetail_w = 30; // width of the main dovetail
     bottom_z = illumination_arm_screws[0][2]; // z position where we mount it
-    h = 80;
+    h = 50;
     
     translate([0,front_dovetail_y,bottom_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, h]);
     
@@ -43,4 +43,55 @@ module illumination_arm(){
     }
 }
 
+// parameters of the lens
+pedestal_h = 5.5;
+lens_r = 13/2; // for flanged plastic condenser
+//lens_r = 16/2; // for 16mm plastic condenser
+aperture_r = lens_r-1.1;
+lens_t = 1;
+base_r = lens_r+2;
+
+lens_assembly_z = 30;
+dt_clip = [front_dovetail_w, 16, lens_assembly_z]; //size of the dovetail clip
+arm_end_y = front_dovetail_y-dt_clip[1]-4;
+
+module tall_condenser(){
+    difference(){
+        union(){
+
+            
+            // add a bottom
+            hull() reflect([1,0,0]){
+                translate([0,0,-10]) cylinder(r=base_r, h=lens_assembly_z+d+10);
+                translate([-dt_clip[0]/2, arm_end_y,0]) cube([dt_clip[0], 2, lens_assembly_z]);
+            }
+            
+            // mount for the dovetail clip
+            translate([-dt_clip[0]/2,arm_end_y,0]) cube([dt_clip[0], 4, dt_clip[2]]);
+            
+            // the dovetail clip
+            translate([0,front_dovetail_y, 0]) mirror([0,1,0]) dovetail_clip(dt_clip, slope_front=2, solid_bottom=0.2);
+            
+            
+            translate([0,0,lens_assembly_z]){
+                // the lens holder
+                trylinder_gripper(inner_r=lens_r, grip_h=pedestal_h + lens_t/3,h=pedestal_h+lens_t+1.5, base_r=base_r, flare=0.5);
+                // pedestal to raise the lens up within the gripper
+                cylinder(r=aperture_r+0.8,h=pedestal_h);
+            }
+        }
+        
+        // hole for the beam passing through the lens
+        translate([0,0,9]) lighttrap_cylinder(r1=led_r+1.5, r2=aperture_r,h=lens_assembly_z-9+d);
+        translate([0,0,lens_assembly_z]) cylinder(r=aperture_r,h=999);
+        
+        // hole for the LED
+        //LED
+        deformable_hole_trylinder(led_r,led_r+0.7,h=20, center=true);
+        cylinder(r=led_r+1.0,h=2,center=true);
+        translate([0,0,2-d]) cylinder(r1=led_r+1.0, r2=led_r,h=2,center=true);
+    }
+}
+
 illumination_arm();
+tall_condenser();
