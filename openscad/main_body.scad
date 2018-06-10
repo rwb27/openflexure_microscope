@@ -101,9 +101,70 @@ module back_foot_mounting_screw(d=3*0.95, h=16, center=true){
     translate([0,illumination_clip_y+3,0]) cylinder(d=d, h=h,center=center);
 }
 
+module mounting_hole_lugs(){
+    // lugs either side of the XY table to bolt the microscope down
+    //these are to mount onto the baseplate 
+    for(p=base_mounting_holes) {
+        if(p[1]<0 && p[0]>0) reflect([1,0,0]) hull(){
+            translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
+            translate(p) cylinder(r=4*1.1,h=3);
+        }
+    }
+}
+
 module xy_limit_switch_mount(d=3.3*2, h=6){
     // A mount for the XY limit switch (M3)
     leg_frame(45) translate([-9, -zflex_l-zawall_h*sin(6)-3.3+1, zawall_h-6]) cylinder(d=d,h=h);
+}
+
+
+// The "wall" that forms most of the microscope's structure
+module wall_inside_xy_stage(){
+    // First, go around the inside of the legs, under the stage.
+    // This starts at the Z nut seat.  I've split it into two
+    // blocks, because the shape is not convex so the base
+    // would be bigger than the walls otherwise.
+    reflect([1,0,0]) sequential_hull(){
+        //inner_wall_vertex(-45, -leg_outer_w/2-wall_t/2, zbwall_h);
+        mirror([1,0,0]) z_bridge_wall_vertex();
+        z_bridge_wall_vertex();
+        inner_wall_vertex(45, -leg_outer_w/2, zawall_h);
+        z_anchor_wall_vertex();
+        inner_wall_vertex(135, leg_outer_w/2, zawall_h);
+        inner_wall_vertex(135, -leg_outer_w/2, wall_h);
+        inner_wall_vertex(-135, leg_outer_w/2, wall_h);
+    }
+}
+
+module wall_outside_xy_actuators(){
+    // Add the wall from the XY actuator column to the middle
+    sequential_hull(){
+        z_anchor_wall_vertex(); // join at the Z anchor 
+        // [nb this is no longer actually the z anchor since the new z axis]
+        // anchor at the same angle on the actuator
+        // NB the base of the wall is outside the
+        // base of the screw seat
+        leg_frame(45) translate([-ss_outer()[0]/2+wall_t/2,actuating_nut_r,0]){
+            rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
+        }
+    }
+}
+
+module wall_inside_xy_actuators(){
+    // Connect the Z anchor to the XY actuators
+    hull(){
+        translate([-(z_anchor_w/2+wall_t/2+1), z_anchor_y + 1, 0]) 
+                     wall_vertex();
+        y_actuator_wall_vertex();
+    }
+}
+
+module wall_between_actuators(){
+    // link the actuators together
+    hull(){
+        y_actuator_wall_vertex();
+        translate([0,z_nut_y+ss_outer()[1]/2-wall_t/2,0]) wall_vertex();
+    }
 }
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
@@ -147,21 +208,8 @@ union(){
 	difference(){
 		union(){
             ////////////// Reinforcing wall and base /////////////////
-            // First, go around the inside of the legs, under the stage.
-            // This starts at the Z nut seat.  Add_hull generates the 
-            // flat base of the structure.  I've split it into two
-            // blocks, because the shape is not convex so the base
-            // would be bigger than the walls otherwise.
-            add_hull_base(base_t) reflect([1,0,0]) sequential_hull(){
-                //inner_wall_vertex(-45, -leg_outer_w/2-wall_t/2, zbwall_h);
-                mirror([1,0,0]) z_bridge_wall_vertex();
-                z_bridge_wall_vertex();
-                inner_wall_vertex(45, -leg_outer_w/2, zawall_h);
-                z_anchor_wall_vertex();
-                inner_wall_vertex(135, leg_outer_w/2, zawall_h);
-                inner_wall_vertex(135, -leg_outer_w/2, wall_h);
-                inner_wall_vertex(-135, leg_outer_w/2, wall_h);
-            }
+            //Add_hull_base generates the flat base of the structure.  
+            add_hull_base(base_t) wall_inside_xy_stage();
             // add mounts for the optical end-stops for X and Y
             reflect([1,0,0]) hull(){
                 inner_wall_vertex(45, -9, zawall_h);
@@ -169,38 +217,14 @@ union(){
             }
             add_hull_base(base_t) {
                 // Next, link the XY actuators to the wall
-                reflect([1,0,0]) sequential_hull(){
-                    z_anchor_wall_vertex(); // join at the Z anchor
-                    // anchor at the same angle on the actuator
-                    // NB the base of the wall is outside the
-                    // base of the screw seat
-                    leg_frame(45) translate([-ss_outer()[0]/2+wall_t/2,actuating_nut_r,0]){
-                        rotate(-45) wall_vertex(y_tilt=atan(wall_t/zawall_h));
-                    }
-                }
+                reflect([1,0,0]) wall_inside_xy_actuators();
                 z_axis_casing(condenser_mount=true); //casing and anchor for the z axis
-                // Connect the Z anchor to the XY actuators
-                reflect([1,0,0]) hull(){
-                    translate([-(z_anchor_w/2+wall_t/2+1), z_anchor_y + 1, 0]) 
-                                 wall_vertex();
-                    y_actuator_wall_vertex();
-                }
-                    
-                // Finally, link the actuators together
-                reflect([1,0,0]) hull(){
-                    y_actuator_wall_vertex();
-                    translate([0,z_nut_y+ss_outer()[1]/2-wall_t/2,0]) wall_vertex();
-                }
+                reflect([1,0,0]) wall_outside_xy_actuators();
+                reflect([1,0,0]) wall_between_actuators();
                 // add a small object to make sure the base is big enough
                 wall_vertex(h=base_t);
             }
-            //these are the holes to mount onto the baseplate 
-            for(p=base_mounting_holes) {
-                if(p[1]<0 && p[0]>0) reflect([1,0,0]) hull(){
-                    translate([z_flexure_x,0,0]) rotate(-120) cube([10,d,10]);
-                    translate(p) cylinder(r=4*1.1,h=3);
-                }
-            }
+            mounting_hole_lugs(); //lugs to bolt the microscope down
             
             //screw supports for adjustment of condenser angle/position
             // (only useful if screws=true in the illumination arm)

@@ -4,9 +4,11 @@
 use <utilities.scad>;
 include <microscope_parameters.scad>;
 use <compact_nut_seat.scad>;
+use <main_body_transforms.scad>;
 use <main_body.scad>;
+use <feet.scad>;
 
-motor_board = true;
+motor_board = false;
 
 t = 1.5;
 
@@ -15,9 +17,9 @@ raspi_board = [85, 58, 19]; //this is wrong, should be 85, 56, 19
 
 h = raspi_z + raspi_board[2] + 5;
 
-module foot_footprint(){
+module foot_footprint(tilt=0){
     // the footprint of one foot/actuator column
-    projection(cut=true) translate([0,0,-1]) screw_seat_shell();
+    projection(cut=true) translate([0,0,-1]) screw_seat_shell(tilt=tilt);
 }
 
 module pi_frame(){
@@ -37,7 +39,9 @@ module pi_connectors(){
         // micro-USB power
         translate([10.6-10/2, -99, motor_board?0:-2]) cube([10,100,8]);
         // HDMI
-        translate([32-25/2, -99, motor_board?0:-4]) cube([25,100,14]);
+        translate([32-25/2, -99, motor_board?0:-2]) cube([25,100,18]);
+        // micro-SD card
+        if(!motor_board) translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
     }
 }
 
@@ -58,11 +62,58 @@ module pi_supports(){
     }
 }
 
+module hull_from(){
+    // take the convex hull betwen one object and all subsequent objects
+    for(i=[1:$children-1]) hull(){
+        children(0);
+        children(i);
+    }
+}
+
+module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=true, feet=true, legs=true){
+    hull(){
+        projection(cut=true) translate([0,0,-d]) wall_inside_xy_stage();
+        if(illumination_clip_void){
+            translate([0, illumination_clip_y-14]) square([12, d], center=true);
+        }
+    }
+    hull() reflect([1,0,0]) projection(cut=true) translate([0,0,-d]){
+        wall_outside_xy_actuators();
+        wall_between_actuators();
+    }
+    if(feet){
+        each_actuator() translate([0, actuating_nut_r]) foot_footprint();
+        translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
+    }
+    
+    if(lugs) projection(cut=true) translate([0,0,-d]) mounting_hole_lugs();
+    
+    if(legs) offset(enlarge_legs) microscope_legs();
+}
+
+module microscope_legs(){
+    difference(){
+        each_leg() projection(cut=true) translate([0,0,-d]) leg();
+        translate([-999,0]) square(999*2);
+    }
+}
+
+module feet_in_place(grow_r=1, grow_h=2){
+    each_actuator() translate([0,actuating_nut_r,0]) minkowski(){
+        hull() outer_foot(lie_flat=false);
+        cylinder(r=grow_r, h=grow_h, center=true);
+    }
+    translate([0,z_nut_y,0]) minkowski(){
+        hull() middle_foot(lie_flat=false);
+        cylinder(r=grow_r, h=grow_h, center=true);
+    }
+}
+
 module footprint(){
     hull(){
         translate([-2, illumination_clip_y-14]) square(4);
         each_actuator() translate([0, actuating_nut_r]) foot_footprint();
-        translate([0, z_nut_y]) foot_footprint();
+        translate([0, z_nut_y]) foot_footprint(tilt=z_actuator_tilt);
         offset(t) pi_footprint();
     }
 }
@@ -91,16 +142,48 @@ module basic_shell(){
         }
     }
 }
+module top_casing_shell(os=0, legs=true, lugs=true){
+    // The "bucket" baseplate before holes and supports
+    bottom = os<0?1:0;
+    top_h = os<0?d:2*t;
+    union(){
+        translate([0,0,bottom]) linear_extrude(h+d-bottom) offset(os) footprint();
+        hull_from(){
+            translate([0,0,h]) linear_extrude(2*d) offset(os) footprint(); //top of the box
+            
+            for(a=[0,180]) translate([0,0,h+foot_height]) linear_extrude(top_h) difference(){
+                offset(os*2+t) microscope_bottom(lugs=lugs, feet=false, legs=legs);
+                rotate(a) translate([-999,0]) square(999*2);
+            }
+            //if(legs) translate([0,0,h+foot_height-t]) linear_extrude(t+top_h) offset(os+1.5+t) microscope_legs();
+        }
+        translate([0,0,h+foot_height]) linear_extrude(2*t-2*os) offset(os+t) microscope_bottom(lugs=true);
+    }
+}
+
+module top_shell(){
+    difference(){
+        top_casing_shell(os=0, legs=true);
+        top_casing_shell(os=-t, legs=false, lugs=false);
+        
+        // cut-outs so the feet and legs can protrude downwards
+        translate([0,0,h+foot_height+t]) feet_in_place(grow_r=2*t, grow_h=t*4);
+        translate([0,0,h+foot_height-t]) linear_extrude(999) offset(1.5) microscope_legs();
+        for(p=base_mounting_holes) translate(p+[0,0,h+foot_height]){ 
+             cylinder(r=3/2*1.1,h=20,center=true); 
+        }
+    }
+}
 
 union(){
     difference(){
-        basic_shell();
+        top_shell();
         
         // space for pi connectors
         translate([0,0,raspi_z]) pi_connectors();
         
         // indent the top
-        translate([0,0,h]) linear_extrude(999) footprint();
+        //translate([0,0,h]) linear_extrude(999) footprint();
         
         // side access
         //translate([10,-999+30, 10]) cube(999);
@@ -128,3 +211,8 @@ union(){
     // supports for the pi circuit board
     pi_supports();
 }
+
+
+//top_shell();
+//feet_in_place();
+//footprint();
