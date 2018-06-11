@@ -572,6 +572,6 @@ difference(){
     //C270 lens could be a trylinder gripper, with lens_r=12.0, lens_h=1 and a pedestal that is smaller than the gripper by more than the usual amount (say 1mm space)
     //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();
     //mirror([0,1,0]) fl_led_mount();
-    //cylinder(r=999,h=36,center=true);
+    //cylinder(r=999,h=50,center=true);
 }
 //condenser();
