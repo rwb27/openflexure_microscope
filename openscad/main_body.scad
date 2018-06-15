@@ -168,7 +168,8 @@ module wall_between_actuators(){
 }
 
 ///////////////////// MAIN STRUCTURE STARTS HERE ///////////////
-exterior_brim() difference(){
+exterior_brim(r=2);
+difference(){
 union(){
 
 	//legs (incl. actuators)
