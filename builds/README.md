@@ -5,13 +5,15 @@ This folder contains the printable files you'll need in order to make an
 OpenFlexure microscope.  My intention is that the printing is described in
 the DocuBricks format documentation, but this file is here for convenience.
 
+As of the cantilevered objective mount version (5.19.0-b) the docubricks instructions are out of date, so use this file.
+
 NB there are three locations in this repository that have STL files; the ``docs/stl`` folder (which is updated least frequently - these files should correspond to the current version of the documentation), the ``builds/`` folder (automatically built files, usually up to date and consistently named), and the ``stl/`` folder (a mixed bag of stuff, some of which is non-standard).  This is the best folder to use if you want to make sure your STL files match the documentation.
 
-Use this folder if you want to get the latest version of the microscope.  Currently it contains everything except the optics modules, as these are not yet built automatically.
+Use this folder if you want to get the latest version of the microscope.  
 
-These files are all designed to print without support material or adhesion layer.  If you do use an adhesion layer, go for a raft rather than a brim; many of the moving parts will be rendered useless by a brim, and require lots of work with a craft knife to sort them out.  While there's no need for support, there are a few bridges; it might be a good idea to print the "just_leg_test.stl" file first, to make sure your printer can print them.
+These files are all designed to print without support material or adhesion layer.  If you do use an adhesion layer, go for a raft rather than a brim; many of the moving parts will be rendered useless by a brim, and require lots of work with a craft knife to sort them out.  While there's no need for support, there are a few bridges; it might be a good idea to print the "just_leg_test.stl" file first, to make sure your printer can print them.  There are some versions of the main body that include a baked-in brim in the STL file.  This brim does a better job of not fouling the mechanism than most slicers, and is a good option if it won't stick without a brim.
 
-To build a basic OpenFlexure microscope you need:
+To build an OpenFlexure microscope you need:
 
 Plastic tools:
 * band and nut insertion tools ``actuator_assembly_tools.stl``
@@ -23,7 +25,9 @@ Components:
 * body of the microscope: ``body_<stage size><height>[-M].stl``.
 * 3 feet: ``feet.stl`` or ``feet_tall.stl`` (contains all 3)
 * 3 gears: ``gears.stl`` (contains all 3)
-* illumination arm: ``illumination_<stage size><height>[_condenser][_tall].stl``
+* illumination:
+ - ``illumination_dovetail.stl``
+ - ``condenser.stl``
 * 2 sample clips: ``sample_clips.stl`` (contains both)
 * optics module: ``optics_<camera>_<lens>_<stage size><height>.stl``
 * [optional] camera cover: ``picamera_2_cover.stl``
@@ -43,9 +47,13 @@ Optional bits of filenames are in square brackets above:
 * ``_condenser`` in the illumination name means there is a mount for a plastic condenser lens
 * ``_tall`` on the illumination or the feet means the body sits 26mm off the ground rather than 15mm, to give clearance for larger camera modules.
 
-Which version of the body you need depends on two things: firstly, whether you want to use a large optics module (versions with LS65 or LS75 in the name) or a small one (versions with SS), and secondly whether you want attachment lugs for motors (files with -M in the name).  All the files start with `body_`.You need the SS version if you're using a Raspberry Pi camera or a Logitech C270 camera, together with the lens that came on the camera.  If you're using a microscope objective, or the USB camera with M12 lens, you need the LS65 version.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.  
+## Malaria microscope
+For the malaria imaging version of the microscope, you need all the optional parts above, except the slide holder, we are using ``sample_riser_LS10.stl`` for now.  This goes with the ``main_body_LS65-M.stl``, ``feet.stl``, and ``optics_picamera_rms_f50d13_LS65.stl``.  You also need to use ``microscope_stand.stl`` to raise it above the table, or the camera will hit the table.  You can mount the ``sangaboard`` motor controller in ``microscope_stand_plus_sangaboard.stl``.
 
-The illumination arm is available in 4 versions: they all start with `illumination_and_rear_foot_` and then you can choose either adjustable arm with a bare LED, or bare LED plus tape or one that uses a condenser lens (`_condenser`).  It's important to match the type of microscope you're using (LS65 or SS40).  If you are using a riser to make space for a larger objective (if you've got a 35mm parfocal length objective) you'll need the LS75 version.
+## Versions
+**NB on this branch, only the LS65 body works, and optics will need to be recompiled.**
+
+Which version of the body you need depends on two things: firstly, whether you want to use a large optics module (versions with LS65 or LS75 in the name) or a small one (versions with SS), and secondly whether you want attachment lugs for motors (files with -M in the name).  All the files start with `body_`.You need the SS version if you're using a Raspberry Pi camera or a Logitech C270 camera, together with the lens that came on the camera.  If you're using a microscope objective, or the USB camera with M12 lens, you need the LS65 version.  The microscope body takes around 8 hours on a RepRapPro Ormerod (and many other low-end printers) or about 5 hours on Ultimaker, MakerBot, and the like.  
 
 There are several versions of the optics module, depending on your camera (Raspberry Pi Camera v2, Logitech C270, or WaterScope USB camera) and on whether you will use the lens from the camera (pilens, M12, ownlens) or an RMS objective and 40mm tube lens.  Make sure you pick the right STL file for your camera module!  There is a cover that fits over the Raspberry Pi camera module, and holds it firmly onto the optics module.  The following table shows compatibility:
 
