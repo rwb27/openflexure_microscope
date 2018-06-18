@@ -188,4 +188,4 @@ module feet_for_printing(lie_flat=true){
 
 feet_for_printing(lie_flat=true);
 
-translate([0,30,0]) feet_for_printing(lie_flat=false);
+//translate([0,30,0]) feet_for_printing(lie_flat=false);
