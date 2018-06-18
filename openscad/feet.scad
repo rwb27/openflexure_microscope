@@ -86,7 +86,7 @@ module offset_thick_section(h=d, offset=0, center=false, shift=true){
     linear_extrude(h, center=center) offset(r=offset) projection(cut=true) translate([0,0,shift?-d:0]) children();
 }
 
-module foot_section(foot_angle=0,    //the angle the foot makes with the Z axis when assembled
+module foot_section(foot_angle=0,    //the angle the actuator column makes with the Z axis
                     section_angle=0, //the angle between the section and the XY plane
                     offset=0,        //grow the section by this much
                     h=d,             //thickness
@@ -110,8 +110,11 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     wall_t = (w-cw)/2; //thickness of the wall
     h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
+    // The following transforms will either make the foot "in place" (i.e. the top is z=0) or
+    // printable (i.e. with the bottom on z=0).
+    translate([0,(lie_flat?(l/2*tan(tilt)*sin(actuator_tilt)):h*tan(actuator_tilt)),0])
     rotate([lie_flat?tilt:0,0,0]) //the foot base may be tilted, lie_flat makes this z=0
-    translate([0,lie_flat?l/2*tan(tilt)*sin(actuator_tilt):h*sin(actuator_tilt),lie_flat?-l/2*tan(tilt):-h]) //makes the bottom z=0
+    translate([0,0,lie_flat?-l/2*tan(tilt):-h]) //makes the bottom z=0
     
     difference(){
         union(){
@@ -178,9 +181,11 @@ module outer_foot(lie_flat=false){
     foot(bottom_tilt=15, lie_flat=lie_flat);
 }
 
-module feet_for_printing(){
-    reflect([1,0,0]) translate([ss_outer()[0]+1.5, 0]) outer_foot(lie_flat=true);
-    middle_foot(lie_flat=true);
+module feet_for_printing(lie_flat=true){
+    reflect([1,0,0]) translate([ss_outer()[0]+1.5, 0]) outer_foot(lie_flat=lie_flat);
+    middle_foot(lie_flat=lie_flat);
 }
 
-feet_for_printing();
+feet_for_printing(lie_flat=true);
+
+translate([0,30,0]) feet_for_printing(lie_flat=false);
