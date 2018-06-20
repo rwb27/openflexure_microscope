@@ -56,8 +56,8 @@ For the malaria imaging version of the microscope, you need all the optional par
 * 3 feet: ``feet.stl`` (contains all 3)
 * 3 gears: ``gears.stl`` (contains all 3)
 * illumination:
- - ``illumination_dovetail.stl``
- - ``condenser.stl``
+  - ``illumination_dovetail.stl``
+  - ``condenser.stl``
 * 2 sample clips: ``sample_clips.stl`` (contains both)
 * optics module: ``optics_picamera_rms_f50d13_LS65.stl``
 * camera cover: ``picamera_2_cover.stl``
