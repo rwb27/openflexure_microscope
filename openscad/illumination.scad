@@ -18,9 +18,13 @@ front_dovetail_y = 35; // position of the main dovetail
 front_dovetail_w = 30; // width of the main dovetail
 
 
-module each_illumination_arm_screw(){
+module each_illumination_arm_screw(middle=true){
     // A transform to repeat objects at each mounting point
-    for(p=illumination_arm_screws) translate(p) children();
+    for(p=illumination_arm_screws) if(p[0]!=0 || middle) translate(p) children();
+}
+
+module middle_illumination_arm_screw(){
+    for(p=illumination_arm_screws) if(p[0]==0) translate(p) children();
 }
 
 module cyl_slot(r=1, h=1, dy=2, center=false){
@@ -31,18 +35,25 @@ module illumination_arm(){
     // The arm on which we mount the illumination
     bottom_z = illumination_arm_screws[0][2]; // z position where we mount it
     h = 50;
+    smooth_h = 15;
+    dt_z = bottom_z + smooth_h; // z position and height of the dovetail
+    dt_h = h - smooth_h;
     
-    translate([0,front_dovetail_y,bottom_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, h]);
+    translate([0,front_dovetail_y,dt_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, h-smooth_h]);
     
     difference(){
-        hull(){
-            translate([-front_dovetail_w/2,front_dovetail_y+2,bottom_z]) cube([front_dovetail_w, 10-2, h]);
-            each_illumination_arm_screw() cyl_slot(r=4, h=3, dy=3);
+        sequential_hull(){
+            translate([-front_dovetail_w/2,front_dovetail_y+2,dt_z]) cube([front_dovetail_w, 10-2, dt_h]);
+            hull(){
+                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=3, dy=3);
+                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=3);
+            }
+            translate([-front_dovetail_w/2,front_dovetail_y-2,dt_z]) cube([front_dovetail_w, 5, 1]);
         }
         
         // slots for the mounting screws (to allow adjustment of position)
-        each_illumination_arm_screw() cyl_slot(r=3/2*1.33, h=999, dy=3, center=true);
-        each_illumination_arm_screw() translate([0,0,3]) cyl_slot(r=6, h=999, dy=3);
+        each_illumination_arm_screw(middle=false) cyl_slot(r=3/2*1.33, h=999, dy=3, center=true);
+        each_illumination_arm_screw(middle=false) translate([0,0,3]) cyl_slot(r=6, h=999, dy=3);
         
         // clearance for the motor
         translate([0,-2,0]) z_motor_clearance();

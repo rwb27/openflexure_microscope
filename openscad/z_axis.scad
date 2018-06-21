@@ -161,7 +161,6 @@ module z_axis_casing(condenser_mount=false){
         translate([0,z_nut_y,0]) rotate(180) 
                      motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
         // The top is a flat shape that the illumination arm screws onto.
-        translate([0, (leg_r + leg_outer_w)/sqrt(2) + 4, sample_z - d - 2]) cylinder(r=4, h=d);
         each_illumination_arm_screw() mirror([0,0,1]) cylinder(r=4,h=d);
     }
     
@@ -174,7 +173,7 @@ module z_axis_casing_cutouts(){
     objective_mounting_screw_access();
     z_actuator_cutout();
     z_motor_clearance();
-    each_illumination_arm_screw() cylinder(d=3*0.95, h=16, center=true);
+    each_illumination_arm_screw(middle=false) cylinder(d=3*0.95, h=16, center=true);
 }
 
 ////////////// These modules define the actuator column and housing (where the screw/nut/band go)

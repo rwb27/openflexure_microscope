@@ -103,7 +103,8 @@ illumination_clip_y = (-(leg_r-zflex_l-wall_t/2+leg_outer_w/2)/sqrt(2)
                       // illumination/back foot.  This is set to
                       // coincide with the wall between the back
                       // two legs. TODO: remove this
-illumination_arm_screws = [[20,z_nut_y,sample_z-2],[-20,z_nut_y,sample_z-2]];
+illumination_arm_screws = [[20,z_nut_y,sample_z-2],[-20,z_nut_y,sample_z-2], 
+                           [0,(leg_r + leg_outer_w)/sqrt(2) + 4,sample_z-2]];
                       // positions of screws that mount the adjustable version of the 
                       // illumination arm
 condenser_clip_y = -8; //position of dovetail for old condenser assembly TODO: rename this
