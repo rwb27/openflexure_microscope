@@ -48,7 +48,22 @@ Optional bits of filenames are in square brackets above:
 * ``_tall`` on the illumination or the feet means the body sits 26mm off the ground rather than 15mm, to give clearance for larger camera modules.
 
 ## Malaria microscope
-For the malaria imaging version of the microscope, you need all the optional parts above, except the slide holder, we are using ``sample_riser_LS10.stl`` for now.  This goes with the ``main_body_LS65-M.stl``, ``feet.stl``, and ``optics_picamera_rms_f50d13_LS65.stl``.  You also need to use ``microscope_stand.stl`` to raise it above the table, or the camera will hit the table.  You can mount the ``sangaboard`` motor controller in ``microscope_stand_plus_sangaboard.stl``.
+For the malaria imaging version of the microscope, you need all the optional parts above, except the slide holder, we are using ``sample_riser_LS10.stl`` for now.  This goes with the ``main_body_LS65-M.stl``, ``feet.stl``, and ``optics_picamera_rms_f50d13_LS65.stl``.  You also need to use ``microscope_stand.stl`` to raise it above the table, or the camera will hit the table.  You can mount the ``sangaboard`` motor controller in ``microscope_stand_plus_sangaboard.stl``.  That means you need:
+* band and nut insertion tools ``actuator_assembly_tools.stl``
+* tool to insert the condenser lens: ``condenser_lens_tool.stl`` - this can also be used for the tube lens.
+* [optional] tools to remove the Raspberry Pi camera's lens: ``picamera_2_gripper.stl``, ``picamera_2_lens_gripper.stl``
+* body of the microscope: ``body_LS65-M.stl``.  There are three versions, two of which have built-in brims - the no brim version is best if it sticks reliably, but if you have adhesion issues try using one of the ones with brim.  This brim should be easier to remove than the brim added by most slicing programs.
+* 3 feet: ``feet.stl`` (contains all 3)
+* 3 gears: ``gears.stl`` (contains all 3)
+* illumination:
+  - ``illumination_dovetail.stl``
+  - ``condenser.stl``
+* 2 sample clips: ``sample_clips.stl`` (contains both)
+* optics module: ``optics_picamera_rms_f50d13_LS65.stl``
+* camera cover: ``picamera_2_cover.stl``
+* 3 small gears for motors: ``small_gears.stl`` (contains all 3)
+* riser for the sample: ``sample_riser_LS10.stl``
+
 
 ## Versions
 **NB on this branch, only the LS65 body works, and optics will need to be recompiled.**
