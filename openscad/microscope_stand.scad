@@ -164,13 +164,21 @@ module top_casing_shell(os=0, legs=true, lugs=true){
 module top_shell(){
     difference(){
         top_casing_shell(os=0, legs=true);
-        top_casing_shell(os=-t, legs=false, lugs=false);
+        
+        difference(){
+            top_casing_shell(os=-t, legs=false, lugs=false);
+            for(p=base_mounting_holes) hull(){
+                // double-subtract under the mounting holes to make attachment points
+                translate(p+[0,0,h+foot_height-4]) cylinder(r=4,h=4);
+                translate(p*1.2 + [0,0,h+foot_height-4-norm(p)*0.3]) cylinder(r=4,h=4+norm(p)*0.3);
+            }
+        }
         
         // cut-outs so the feet and legs can protrude downwards
         translate([0,0,h+foot_height+t]) feet_in_place(grow_r=2*t, grow_h=t*4);
         translate([0,0,h+foot_height-t]) linear_extrude(999) offset(1.5) microscope_legs();
         for(p=base_mounting_holes) translate(p+[0,0,h+foot_height]){ 
-             cylinder(r=3/2*1.1,h=20,center=true); 
+             cylinder(r=3/2*1.7,h=20,$fn=3, center=true); //TODO: better self-tapping holes
         }
     }
 }
@@ -192,7 +200,7 @@ union(){
         if(motor_board) translate([0,z_nut_y,h]) cube([20,50,15],center=true);
         
         // holes for the pi go all the way through
-        pi_support_frame() cylinder(h=999, d=2.9, center=true);
+        pi_support_frame() cylinder(h=999, d=2.4, center=true); //these screws are M2.5, not M3
         
         // breadboard mounting
         for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]) translate(p) cylinder(d=6.6,h=999,center=true);
