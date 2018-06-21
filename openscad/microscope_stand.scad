@@ -41,7 +41,10 @@ module pi_connectors(){
         // HDMI
         translate([32-25/2, -99, motor_board?0:-2]) cube([25,100,18]);
         // micro-SD card
-        if(!motor_board) translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
+        if(!motor_board){
+            translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
+            translate([-4,raspi_board[1]/2,0]) cube([16,12,20], center=true);
+        }
     }
 }
 
@@ -200,7 +203,7 @@ union(){
         if(motor_board) translate([0,z_nut_y,h]) cube([20,50,15],center=true);
         
         // holes for the pi go all the way through
-        pi_support_frame() cylinder(h=999, d=2.4, center=true); //these screws are M2.5, not M3
+        pi_support_frame() cylinder(h=999, d=2.5*1.7, center=true, $fn=3); //these screws are M2.5, not M3
         
         // breadboard mounting
         for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]) translate(p) cylinder(d=6.6,h=999,center=true);
