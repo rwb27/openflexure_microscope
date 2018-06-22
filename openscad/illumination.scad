@@ -36,19 +36,23 @@ module illumination_arm(){
     bottom_z = illumination_arm_screws[0][2]; // z position where we mount it
     h = 50;
     smooth_h = 15;
-    dt_z = bottom_z + smooth_h; // z position and height of the dovetail
-    dt_h = h - smooth_h;
+    dt_z = sample_z + 12; // z position and height of the dovetail
+    dt_h = h + bottom_z - dt_z;
     
     translate([0,front_dovetail_y,dt_z]) mirror([0,1,0]) dovetail_m([front_dovetail_w, 10, h-smooth_h]);
     
     difference(){
         sequential_hull(){
-            translate([-front_dovetail_w/2,front_dovetail_y+2,dt_z]) cube([front_dovetail_w, 10-2, dt_h]);
             hull(){
-                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=3, dy=3);
-                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=3);
+                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=d, dy=3);
+                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
             }
-            translate([-front_dovetail_w/2,front_dovetail_y-2,dt_z]) cube([front_dovetail_w, 5, 1]);
+            translate([0,0,dt_z-bottom_z-4]) hull(){
+                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=d, dy=3);
+                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
+            }
+            translate([-front_dovetail_w/2,front_dovetail_y-2,dt_z]) cube([front_dovetail_w, 15+2, 1]);
+            translate([-front_dovetail_w/2,front_dovetail_y+2,dt_z]) cube([front_dovetail_w, 10-2, dt_h]);
         }
         
         // slots for the mounting screws (to allow adjustment of position)

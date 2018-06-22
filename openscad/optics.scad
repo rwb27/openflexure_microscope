@@ -313,7 +313,7 @@ module rms_mount_and_tube_lens_gripper(){
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=0.65){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=1){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -370,7 +370,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
             
         }
-        // A pair of nested lens grippers to hold the objective
+        // A threaded hole for the objective with a lens gripper for the tube lens
         translate([0,0,lens_assembly_z]){
             // threaded cylinder for the objective
             radius=25.4*0.8/2-0.25; //Originally this was 9.75, is that a fudge factor, or allowance for the thread?;
