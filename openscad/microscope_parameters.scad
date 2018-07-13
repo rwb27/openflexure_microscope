@@ -35,6 +35,8 @@ version_numstring = "5.19.0-b";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = big_stage?"rms_f50d13":"pilens"; //see optics.scad for valid values
 led_r = 5/2; //size of the LED used for illumination
+feet_endstops=true;
+
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
@@ -47,7 +49,7 @@ z_strut_l = big_stage?18:15; //length of struts supporting Z carriage
 objective_mount_y = big_stage?15:9; // y position of clip for optics
 objective_mount_nose_w = 6; // width of the pointy end of the mount
 condenser_clip_w = 14; // width of the dovetail clip for the condenser
-foot_height = 15; //height of the feet (distance from bottom of body to table) tall feet are 26mm high
+foot_height=feet_endstops?17:15; //the endstops need a bit of extra height
 
 // These variables set the dimensions of flexures
 // You might want to tweak them if your material (or printer)
@@ -113,3 +115,5 @@ base_mounting_holes = [[-20,z_nut_y-4,0],
                        [-z_flexure_x-4,big_stage?-8:-4,0],
                        [z_flexure_x+4,big_stage?-8:-4,0]]; 
                        // holes to screw the microscope to a baseplate
+
+endstop_extra_ringheight=feet_endstops?1:0;

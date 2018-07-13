@@ -20,6 +20,7 @@
 include <microscope_parameters.scad> //for foot_height
 use <utilities.scad>;
 use <compact_nut_seat.scad>;
+use <endstop.scad>
 d = 0.05;
 
 module foot_ground_plane(tilt=0, top=0, bottom=-999){
@@ -115,7 +116,6 @@ module foot(travel=5,       // how far into the foot the actuator can move down
     translate([0,(lie_flat?(l/2*tan(tilt)*sin(actuator_tilt)):h*tan(actuator_tilt)),0])
     rotate([lie_flat?tilt:0,0,0]) //the foot base may be tilted, lie_flat makes this z=0
     translate([0,0,lie_flat?-l/2*tan(tilt):-h]) //makes the bottom z=0
-    
     difference(){
         union(){
             foot_section(actuator_tilt, 0, h=2*h) screw_seat_shell(); //main part of foot
@@ -154,7 +154,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
         //NB this should match the height and width of the filleted_bridge below.
         intersection(){
             rotate([actuator_tilt,0,0]) cube([999, 4, 999],center=true); 
-            foot_ground_plane(tilt=tilt, bottom=0.5, top=(h-travel-4) - l/2*tan(tilt)); //set the top/bottom of the slot to be parallel to the print bed, and
+            foot_ground_plane(tilt=tilt, bottom=0.5, top=(h-travel-4) - l/2*tan(tilt)-endstop_extra_ringheight); //set the top/bottom of the slot to be parallel to the print bed, and
                 //leave an 0.5mm layer on the bottom to help adhesion.
         }
         
@@ -162,19 +162,24 @@ module foot(travel=5,       // how far into the foot the actuator can move down
         //layer) for the elastic bands to sit in.  Rounded edges should help strength
         //and avoid damaging the bands.  NB width should match the band anchor above,
         //and height/span should match the slot above.
-        skew_flat(bottom_tilt) rotate([actuator_tilt,0,0]) translate([0,0,h-travel-4-2]){
+        skew_flat(bottom_tilt) rotate([actuator_tilt,0,0]) translate([0,0,h-travel-4-2-endstop_extra_ringheight]){
             filleted_bridge([2*column_base_radius()+1.5, 4, 2], roc_xy=4, roc_xz=3);
         }
-        
         //cut off the foot below the "ground plane" (i.e. print bed)
         foot_ground_plane(tilt, top=0);
-    }
-}
+
+         //TODO: check properly parametrized
+        if(feet_endstops){           
+            translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-1.5]) rotate([0,0,-90]) endstop_hole(actuator_tilt);
+          }
+    } 
+    
+}   
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
 
 module middle_foot(lie_flat=false){
-    foot(bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2 + foot_height - 15, lie_flat=lie_flat);
+        foot(bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2, lie_flat=lie_flat);
 }
 
 module outer_foot(lie_flat=false){
@@ -185,7 +190,9 @@ module feet_for_printing(lie_flat=true){
     reflect([1,0,0]) translate([ss_outer()[0]+1.5, 0]) outer_foot(lie_flat=lie_flat);
     middle_foot(lie_flat=lie_flat);
 }
-
+//outer_foot(lie_flat=true);
+//foot(bottom_tilt=0, actuator_tilt=0, hover=2, lie_flat=true);
 feet_for_printing(lie_flat=true);
-
+//middle_foot();
+//translate([20,0,0])rotate([90,0,0]) endstop_switch();
 //translate([0,30,0]) feet_for_printing(lie_flat=false);
