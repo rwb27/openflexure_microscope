@@ -10,10 +10,10 @@ module endstop_switch(){
 }
 
 module endstop_hole(tilt){
-    translate([4.3,-2.4,-1])rotate([0,180,0]){
+    translate([4.3,-2.4,-2.9])rotate([0,180,0]){
         translate([-1.3,0,-3])cube([11.4,4.8,0.6+3+0.2]);
-        translate([8.4,2.4,0]) rotate([0,tilt,0])cylinder(r=1,h=20,$fn=40);
-        translate([0,2.4,0]) rotate([0,tilt,0]) cylinder(r=1,h=20,$fn=40);
+        translate([8.6,2.4,0]) rotate([0,tilt,0])cylinder(r=1.3,h=20,$fn=40);
+        translate([-0.3,2.4,0]) rotate([0,tilt,0]) cylinder(r=1.3,h=20,$fn=40);
     }
 }
 //endstop_switch();

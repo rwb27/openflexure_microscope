@@ -116,5 +116,10 @@ base_mounting_holes = [[-20,z_nut_y-4,0],
                        [z_flexure_x+4,big_stage?-8:-4,0]]; 
                        // holes to screw the microscope to a baseplate
 
-endstop_extra_ringheight=feet_endstops?0:0;
+endstop_extra_ringheight=feet_endstops?1:0;
 endstop_hole_offset=0;
+//this is a temporary option to printfeet with smaller travel
+//without this with 15mm hole the stage hits the objective
+//the stage can move ~3mm in each direction, so the actuator only moves
+//~1.7 mm
+avoid_objective_xyfoot_offset=xy_actuator_travel-1.8;

@@ -171,7 +171,7 @@ module foot(travel=5,       // how far into the foot the actuator can move down
         //TODO: check properly parametrized
         
         if(feet_endstops){           
-            translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-endstop_hole_offset]) rotate([0,0,-90]) scale([1.1,1.1,1])endstop_hole(actuator_tilt);
+            translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-endstop_hole_offset]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
           }
     } 
     
@@ -184,7 +184,7 @@ module middle_foot(lie_flat=false){
 }
 
 module outer_foot(lie_flat=false){
-    foot(travel=xy_actuator_travel,bottom_tilt=15, lie_flat=lie_flat);
+    foot(travel=xy_actuator_travel-avoid_objective_xyfoot_offset,bottom_tilt=15, lie_flat=lie_flat);
 }
 
 module feet_for_printing(lie_flat=true){
@@ -194,8 +194,6 @@ module feet_for_printing(lie_flat=true){
 //outer_foot(lie_flat=true);
 //foot(bottom_tilt=0, actuator_tilt=0, hover=2, lie_flat=true);
 feet_for_printing(lie_flat=true);
-echo(z_actuator_travel);
-echo(xy_actuator_travel);
 //middle_foot();
 //translate([20,0,0])rotate([90,0,0]) endstop_switch();
 //translate([0,30,0]) feet_for_printing(lie_flat=false);
