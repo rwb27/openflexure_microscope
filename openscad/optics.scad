@@ -241,7 +241,8 @@ module camera_mount_body(
         extra_rz = [], //extra [r,z] values to extend the mount
         bottom_r=8, //radius of the bottom of the mount
         fluorescence=false, //whether to leave a port for fluorescence beamsplitter etc.
-        dt_waist=true //whether to make the middle of the dovetail looser for easy insertion
+        dt_waist=true, //whether to make the middle of the dovetail looser for easy insertion
+        dovetail=true //set this to false to remove the attachment point
     ){
     // Make a camera mount, with a cylindrical body and a dovetail.
     // Just add a lens mount on top for a complete optics module!
@@ -253,13 +254,13 @@ module camera_mount_body(
                 translate([0,0,camera_mount_top]) camera_mount_top();
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
-                    objective_fitting_base();
+                    if(dovetail) objective_fitting_base();
                     if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
                 }
                 translate([0,0,dt_bottom]) hull(){
                     cylinder(r=bottom_r,h=d);
                     if(fluorescence) cube([1,1,0]*(fl_cube_w+2) + [0,0,d], center=true);
-                    objective_fitting_base();
+                    if(dovetail) objective_fitting_base();
                 }
                 union(){
                     if(fluorescence) translate([0,0,fl_cube_bottom + fl_cube_w]){
@@ -267,7 +268,7 @@ module camera_mount_body(
                         cylinder(r=body_r,h=d);
                     }
                     translate([0,0,body_top]) cylinder(r=body_r,h=d);
-                    translate([0,0,dt_top]) objective_fitting_base();
+                    if(dovetail) translate([0,0,dt_top]) objective_fitting_base();
                 }
                 // allow for extra coordinates above this, if wanted.
                 // this should really be done with a for loop, but
@@ -313,7 +314,7 @@ module rms_mount_and_tube_lens_gripper(){
 }
 
 module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20, 
-    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=1){
+    tube_lens_r=16/2+0.2, objective_parfocal_distance=35, tube_length=150, fluorescence=false, gripper_t=1, dovetail=true){
     // This optics module takes an RMS objective and a tube length correction lens.
     // important parameters are below:
         
@@ -358,7 +359,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
         // The bottom part is just a camera mount with a flat top
         difference(){
             // camera mount with a body that's shorter than the dovetail
-            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence);
+            camera_mount_body(body_r=lens_assembly_base_r, bottom_r=10.5, body_top=lens_assembly_z, dt_top=dovetail_top,fluorescence=fluorescence, dovetail=dovetail);
             // camera cut-out and hole for the beam
             if(fluorescence){
                 optical_path_fl(tube_lens_aperture, lens_assembly_z, fluorescence=fluorescence);
@@ -513,6 +514,8 @@ module condenser(){
     }
 }
 //optics="beamsplitter_led_mount";
+//optics="rms_f50d13";
+//camera="picamera2";
 difference(){
     if(optics=="pilens"){
         // Optics module for picamera v2 lens, using trylinder
@@ -549,7 +552,7 @@ difference(){
             tube_lens_r=12.7/2+0.1, 
             objective_parfocal_distance=35,
             fluorescence=false,
-            tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
+            tube_length=150,dovetail=false//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
         if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
     }else if(optics=="m12_lens"){
