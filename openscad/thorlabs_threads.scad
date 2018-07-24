@@ -1,3 +1,17 @@
+/*
+
+This file was put together by Graham Gibson, based on a part
+by Hazen Babcock https://github.com/ZhuangLab/3D-printing/tree/master/nikon_filter_cube
+
+That, in turn, borrowed from what I believe became the MCAD threads library.
+
+I think everything in here can be considered GPL, but if I've misunderstood, I would be
+very happy to be corrected.
+
+-- Richard Bowman, July 2018
+
+*/
+
 $fn = 200;
 
 // reverse trapezoid
