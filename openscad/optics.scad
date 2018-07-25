@@ -280,7 +280,7 @@ module camera_mount_body(
             }
             
             // fitting for the objective mount
-            translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=0.5);
+            translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=-0.5);
             // Mount for the nut that holds it on
             lip=0*1.3; // thickness of the plastic lip that retains the nut
             nh=3*1.1; nr=3*1.1;// thickness/radius of the nut
