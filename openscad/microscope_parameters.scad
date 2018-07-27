@@ -46,7 +46,7 @@ xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over
 z_lever_ratio = 1.0; // as above, for Z axis (must be >1)
 // The variables below affect the position of the objective mount
 z_strut_l = big_stage?18:15; //length of struts supporting Z carriage
-objective_mount_y = big_stage?15:9; // y position of clip for optics
+objective_mount_y = big_stage?18:12; // y position of clip for optics
 objective_mount_nose_w = 6; // width of the pointy end of the mount
 condenser_clip_w = 14; // width of the dovetail clip for the condenser
 foot_height=feet_endstops?15:15; //the endstops need a bit of extra height (or not)
@@ -83,7 +83,7 @@ xy_actuator_travel = actuating_nut_r*0.15; // distance moved by XY axis actuator
 // Z axis
 z_flexures_z1 = 8; // height of the lower Z flexure
 z_flexures_z2 = min(sample_z - 12, 35); // " upper "
-objective_mount_back_y = objective_mount_y + 5; //back of objective mount
+objective_mount_back_y = objective_mount_y + 2; //back of objective mount
 z_anchor_y = objective_mount_back_y + z_strut_l + 2*zflex[1]; // fixed end of the flexure-hinged lever that actuates the Z axis
 z_anchor_w = 20; //width of the Z anchor
 zll = (z_strut_l + zflex[1])*z_lever_ratio; //required actuator lever length

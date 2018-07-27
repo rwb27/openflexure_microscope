@@ -30,11 +30,29 @@ use <./gears.scad>;
 use <./illumination.scad>;
 include <./microscope_parameters.scad>;
 
+module each_om_contact_plane(){
+    // This transform puts y=0 in the plane of contact between the
+    // optics module and the mount for it, with the origin at the
+    // nominal corner of the wedge.
+    reflect([1,0,0]) translate([-objective_mount_nose_w/2,objective_mount_y,0])
+                rotate(135) children();
+}
+
 module objective_mount(){
     // The mount for the objective
-    h = z_flexures_z2 + 4;
+    h = z_flexures_z2 + 4*sqrt(2);
+    overlap = 4; // we have this much contact between 
+                 // the mount and the wedge on the optics module.
+    roc=1.5; // radius of curvature of the arms
+    w = objective_mount_nose_w + 2*overlap;//+2*roc; //overall width
     difference(){
-        objective_mount_wedge(h=h, center=false);
+        hull(){
+            // the back of the mount
+            translate([-w/2,objective_mount_back_y+5,0]) cube([w,d,h]);
+            hull()reflect([1,0,0]) z_bridge_wall_vertex();
+            // the front of the mount
+            each_om_contact_plane() translate([0,overlap-d,0]) cube([2*roc,d,h]);
+        }
         
         // bolt hole to mount objective
         hull(){
@@ -42,35 +60,29 @@ module objective_mount(){
             translate([0,0,z_flexures_z2-8]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
         }
         
+        objective_fitting_wedge(h=999,nose_shift=-0.25,center=true);
+        
         // cut-outs for flexures to attach
-        hull() reflect([1,0,0]) translate([1, d, -4])  z_axis_flexures(h=5+8);
+        hull(); reflect([1,0,0]) translate([1, d, -4])  z_axis_flexures(h=5+8);
     }
+    // Nice rounded fronts either side
+    each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
 }
 
 function objective_mount_screw() = [0, objective_mount_back_y, (z_flexures_z2 + 4)/2];
 
-module objective_mount_wedge(h=999, nose_shift=0, center=false){
-    // A trapezoidal wedge, with a screw in the middle, onto
-    // which the objective gets clamped.
+module objective_fitting_wedge(h=999, nose_shift=0, center=false){
+    // A trapezoidal wedge, with a screw in the middle, that clamps
+    // onto the objective mount.
     nw = objective_mount_nose_w; //width of the pointy end
-    translate([0,objective_mount_y,0]) hull(){
+    translate([0,objective_mount_y,0]) mirror([0,1,0]) hull(){
         translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
         reflect([1,0,0]) translate([-nw/2-5+sqrt(2), 5+sqrt(2), 0]) 
                 cylinder(r=2, h=h, $fn=16, center=center);
     }
 }
 
-module objective_fitting_base(overlap=4, h=d){
-    // A solid block from which the objective mount wedge can be
-    // subtracted to make a fitting for the objective
-    w = objective_mount_nose_w + 2*overlap; // width of the cut-out
-    r = 1.5; //radius of corners
-    hull() reflect([1,0,0]) translate([0,objective_mount_y,0]){
-        translate([-w/2,overlap-r,0]) cylinder(r=r, h=h, $fn=12);
-        translate([-w/2-r,-r,0]) cube([d,d,h]);
-    }
-}
-        
+       
 
 module z_axis_flexure(h=zflex[2], z=0){
     // The parts that bend as the Z axis is moved
@@ -198,19 +210,23 @@ module z_actuator_cutout(){
 
 // "scenery" so we can see how it fits with the rest of the microscope
 //legs
-// for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
+ for(a=[-45,45]) rotate(a) translate([-leg_outer_w/2,leg_r,0]) cube([leg_outer_w, 4, sample_z]);
 
 // These are the moving parts of the axis
 objective_mount();
 z_axis_flexures();
 z_axis_struts();
-z_actuator_column();
+//z_actuator_column();
 
 // The casing needs to have voids subtracted from it to fit the moving bits in
-difference(){
-    z_axis_casing(condenser_mount=true);
-    z_axis_casing_cutouts();
-}
+//difference(){
+//    z_axis_casing(condenser_mount=true);
+//    z_axis_casing_cutouts();
+//}
 
 // We add on the actuator housing last, because it's got the clearance subtracted already.
-z_actuator_housing();
+//z_actuator_housing();
+//*/
+// This is what fits onto it
+translate([0,0.5,0]);
+objective_fitting_wedge(h=20);
