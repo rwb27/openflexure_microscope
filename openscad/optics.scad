@@ -233,6 +233,10 @@ module camera_mount_top(){
     // A thin slice of the top of the camera mount
     linear_extrude(d) projection(cut=true) camera_mount();
 }
+module objective_fitting_base(){
+    // A thin slice of the mounting wedge that bolts to the microscope body
+    linear_extrude(d) projection() objective_fitting_wedge();
+}
 
 module camera_mount_body(
         body_r, //radius of mount body
@@ -280,20 +284,10 @@ module camera_mount_body(
             }
             
             // fitting for the objective mount
-            translate([0,0,dt_bottom]) objective_mount_wedge(h=dt_h+2*d, nose_shift=-0.5);
+            //translate([0,0,dt_bottom]) objective_fitting_wedge();
             // Mount for the nut that holds it on
-            lip=0*1.3; // thickness of the plastic lip that retains the nut
-            nh=3*1.1; nr=3*1.1;// thickness/radius of the nut
-            translate([0,objective_mount_y-0.5-lip,z_flexures_z2/2+10]){
-                hull() repeat([0,0,-12],2) rotate([90,30,0])
-                    cylinder(r=nr, h=nh, $fn=6); // nut slot
-                hull() repeat([0,0,-12],2) rotate([90,30,0])
-                    cylinder(d=nr, h=(lip+1)*2, center=true, $fn=12); // access for screw
-                hull() repeat([0,0,2],2) rotate([90,30,0]) 
-                    cylinder(r=nr, h=(lip+1)*2, center=true, $fn=6);
-            }
+            translate([0,0,-1]) objective_fitting_cutout();
         }
-        // add the nut slot for mounting
         
         // add the camera mount
         translate([0,0,camera_mount_top]) camera_mount();
@@ -325,7 +319,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
     tube_lens_aperture = tube_lens_r - 1.5; // clear aperture of the tube lens
     pedestal_h = 2; // height of tube lens above bottom of lens assembly (to allow for flex)
     //sample_z (microscope_parameters.scad) // height of the sample above the bottom of the microscope (depends on size of microscope)
-    dovetail_top = min(27, sample_z-objective_parfocal_distance-1); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
+    dovetail_top = min(27, sample_z-objective_parfocal_distance-0.5); //height of the top of the dovetail, i.e. the position of the objective's "shoulder"
     //tube_length (argument) is the distance behind the objective's "shoulder" where the image is formed.  This should be infinity (safe to use 9999) for infinity-corrected lenses, or 150 for 160mm tube length objectives (the image is formed ~10mm from the end of the tube).
     
     ///////////////// Lens position calculation //////////////////////////
@@ -366,7 +360,7 @@ module optics_module_rms(tube_lens_ffd=16.1, tube_lens_f=20,
             }else{
                 optical_path(tube_lens_aperture, lens_assembly_z);
             }
-            // make sure it makes contact with the lens gripper, but
+            // make sure the camera mount makes contact with the lens gripper, but
             // doesn't foul the inside of it
             translate([0,0,lens_assembly_z]) lens_gripper(lens_r=rms_r-d, lens_h=lens_assembly_h-2.5,h=lens_assembly_h, base_r=lens_assembly_base_r-d, solid=true); //same as the big gripper below
             

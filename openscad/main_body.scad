@@ -79,13 +79,7 @@ module actuator(){
             //don't foul the actuator column
             translate([0,actuating_nut_r,0]) actuator_end_cutout(); 
         }
-        
-        //flag (for the end-stop sensor)
-        if(endstops) sequential_hull(){
-            translate([-w/2,0,0]) cube([w,brace,actuator[2]]);
-            translate([0,0,zawall_h]) cube([w/2,6,d]);
-            translate([0,0,zawall_h + 6]) cube([w/2,6,d]);
-        }
+
 	}
 }
 module actuator_silhouette(h=999){
@@ -248,7 +242,7 @@ union(){
             sequential_hull(){
                 h=999;
                 aw = 2*column_base_radius() + 3;
-                translate([0,z_flexure_x+1.5-18/2,0]) cube([18,2*d,h],center=true);
+                translate([0,z_flexure_x+1.5-14/2,0]) cube([14,2*d,h],center=true);
                 translate([0,0,0]) cube([2*(z_flexure_x+0.5),1,h],center=true);
                 translate([0,0,0]) cube([2*(z_flexure_x-z_flex_w),1,h],center=true);
                 translate([0,8-(z_flexure_x-z_flex_w-d),0]) cube([16,2*d,h],center=true);
@@ -266,11 +260,6 @@ union(){
         for(p=base_mounting_holes) translate(p){ 
              cylinder(r=3/2*1.1,h=50,center=true); 
              translate([0,0,3]) cylinder(r=3*1.1, h=22); 
-        }
-        
-        // mount for limit switches
-        if(endstops){
-            reflect([1,0,0]) xy_limit_switch_mount(d=2.9, h=10);
         }
         
         // screw holes for adjustment of condenser angle/position

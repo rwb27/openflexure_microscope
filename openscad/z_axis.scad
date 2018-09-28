@@ -44,12 +44,12 @@ module objective_mount(){
     overlap = 4; // we have this much contact between 
                  // the mount and the wedge on the optics module.
     roc=1.5; // radius of curvature of the arms
-    w = objective_mount_nose_w + 2*overlap;//+2*roc; //overall width
+    w = objective_mount_nose_w + 2*overlap + 4;//+2*roc; //overall width
     difference(){
         hull(){
             // the back of the mount
             translate([-w/2,objective_mount_back_y+5,0]) cube([w,d,h]);
-            hull()reflect([1,0,0]) z_bridge_wall_vertex();
+            //hull() reflect([1,0,0]) z_bridge_wall_vertex();
             // the front of the mount (this makes contact with the optics module)
             each_om_contact_plane() translate([0,overlap-d,0]) cube([2*roc,d,h]);
         }
@@ -67,12 +67,15 @@ module objective_mount(){
         
         // cut-outs for flexures to attach
         hull() reflect([1,0,0]) translate([1, d, -4])  z_axis_flexures(h=5+8);
+        
+        // cut out the back so it fits in the available space
+        reflect([1,0,0]) translate([-z_flexure_x,0,-99]) rotate(45) cube(999);
     }
     // Nice rounded fronts either side
     each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
 }
 
-function objective_mount_screw_pos() = [0, objective_mount_back_y, (z_flexures_z2 + z_flexures_z1)/2 + 1];
+function objective_mount_screw_pos() = [0, objective_mount_back_y, (z_flexures_z2 + z_flexures_z1)/2];
 
 module objective_mount_screw(){
     translate(objective_mount_screw_pos()) rotate([-90,0,0]){
@@ -81,9 +84,10 @@ module objective_mount_screw(){
     }
 }
 
-module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0, center=false){
-    // A trapezoidal wedge, with a screw in the middle, that clamps
-    // onto the objective mount.
+module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0.2, center=false){
+    // A trapezoidal wedge that clamps onto the objective mount.  
+    // NB you must subtract the objective_fitting_cutout from this to allow
+    // the screw and nut to be attached.
     nw = objective_mount_nose_w; //width of the pointy end
     translate([0,objective_mount_y,0]) mirror([0,1,0]) hull(){
         translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
@@ -93,6 +97,8 @@ module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0, center=false){
 }
 
 module ofc_nut(shaft=false, max_screw=12){
+    // For convenience, this is the nut that we use to hold the optics module on.
+    // it is used from objective_fitting_cutout only.
     nut_y(3, h=2.5, extra_height=0, shaft=shaft, shaft_length=shaft?max_screw-4:0);
 }
 
@@ -242,9 +248,9 @@ module z_actuator_cutout(){
 
 // These are the moving parts of the axis
 objective_mount();
-z_axis_flexures();
-z_axis_struts();
-z_actuator_column();
+//z_axis_flexures();
+//z_axis_struts();
+//z_actuator_column();
 
 // The casing needs to have voids subtracted from it to fit the moving bits in
 //difference(){
@@ -256,9 +262,9 @@ z_actuator_column();
 //z_actuator_housing();
 //*/
 // This is what fits onto it
-translate([0,-1.5,0])
-difference(){
-    objective_fitting_wedge(nose_shift=0.2);
-    objective_fitting_cutout();
-}
+//translate([0,-1.5,0])
+//difference(){
+//    objective_fitting_wedge(nose_shift=0.2);
+//    objective_fitting_cutout();
+//}
 //objective_mount_screw();
