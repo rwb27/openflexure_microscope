@@ -246,7 +246,7 @@ module square_to_circle(r, h, layers=4, top_cylinder=0){
     sides=[4,8,16,32,64,128,256]; //number of sides
     for(i=[0:(layers-1)]) rotate(180/sides[i]) 
         translate([0,0,i*h/layers]) cylinder(r=r/cos(180/sides[i]),h=h/layers+d,$fn=sides[i]);
-    if(top_cylinder>0) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
+    if(top_cylinder>0) translate([0,0,d]) cylinder(r=r,h=h+top_cylinder, $fn=sides[layers-1]);
 }
 
 module hole_from_bottom(r, h, base_w=-1, dz=0.5, big_bottom=true){
