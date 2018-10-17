@@ -32,7 +32,7 @@ use <cameras/camera.scad>; // this will define the 2 functions and 1 module for 
 dt_bottom = -2; //where the dovetail starts (<0 to allow some play)
 camera_mount_top = dt_bottom - 3 - (optics=="rms_f50d13"?11:0); //the 50mm tube lens requires the camera to stick out the bottom.
 bottom = camera_mount_top-camera_mount_height(); //nominal distance from PCB to microscope bottom
-fl_cube_bottom = 0; //bottom of the fluorescence filter cube
+fl_cube_bottom = optics=="rms_f50d13"?-8:0; //bottom of the fluorescence filter cube
 fl_cube_w = 16; //width of the fluorescence filter cube
 fl_cube_top = fl_cube_bottom + fl_cube_w + 2.7; //top of fluorescence cube
 fl_cube_top_w = fl_cube_w - 2.7;
@@ -545,7 +545,7 @@ difference(){
             tube_lens_f=50, 
             tube_lens_r=12.7/2+0.1, 
             objective_parfocal_distance=35,
-            fluorescence=false,
+            fluorescence=true,
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
         if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");
