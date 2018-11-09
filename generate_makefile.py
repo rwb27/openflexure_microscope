@@ -1,4 +1,5 @@
 #!python
+from __future__ import print_function
 import re
 
 """This script generates the Makefile for the Openflexure Microscope.
@@ -7,21 +8,16 @@ It is intended to be run whenever you need a new makefile.  The makefile lives i
 the repository and is versioned, so most people never need to run this script.
 """
 
-body_versions = ["SS40", "SS40-M", "LS65", "LS65-M", "LS75", "LS75-M"]
+body_versions = ["LS65", "LS65-M", "LS75", "LS75-M"]
 
 cameras = ["picamera_2", "logitech_c270", "m12"]
 lenses = ["pilens", "c270_lens", "m12_lens", "rms_f40d16", "rms_f50d13"]
-optics_versions_SS40 = ["picamera_2_pilens", "logitech_c270_c270_lens"]
-optics_versions_LS65 = [cam + "_" + lens for cam in cameras for lens in lenses if "rms" in lens] + ["m12_m12_lens"]
-optics_versions = [v + "_SS40" for v in optics_versions_SS40] + [v + "_LS65" for v in optics_versions_LS65]
+optics_versions_LS65 = ["picamera_2_pilens", "logitech_c270_c270_lens"]
+optics_versions_LS65 += [cam + "_" + lens for cam in cameras for lens in lenses if "rms" in lens] + ["m12_m12_lens"]
+optics_versions = [v + "_LS65" for v in optics_versions_LS65]
 sample_riser_versions = ['LS10', 'LS5', 'SS5']
 slide_riser_versions = ['LS10']
-stand_versions = ['LS65-20', 'LS65-160', 'SS40-20']
-
-illumination_versions = [body + condenser + tall for body in body_versions 
-                                                 for condenser in ["", "_condenser"] 
-                                                 for tall in ["", "_tall"] 
-                                                 if "-M" not in body]
+stand_versions = ['LS65-20', 'LS65-160']
 
 def body_parameters(version):
     """Retrieve the parameters we pass to OpenSCAD to generate the given body version."""
@@ -43,16 +39,10 @@ def optics_module_parameters(version):
                             lens="|".join(lenses),
                             body="|".join(body_versions)), 
                         version)
+    if m is None:
+        raise ValueError("Error finding optics module parameters from version string '{}'".format(version))
     p = {"camera": m.group(1), "optics": m.group(2)}
     p.update(body_parameters(m.group(3)))
-    return p
-    
-def illumination_parameters(version):
-    """Figure out the parameters required for an illumination module"""
-    p = body_parameters(version)
-    p["condenser"] = "_condenser" in version
-    if "_tall" in version:
-        p["foot_height"] = 26
     return p
 	
 def stand_parameters(version):
@@ -99,17 +89,16 @@ if __name__ == "__main__":
         M("")
         M("body_versions = " + " ".join(body_versions))
         M("optics_versions = " + " ".join(optics_versions))
-        M("illumination_versions = " + " ".join(illumination_versions))
         M("sample_riser_versions = " + " ".join(sample_riser_versions))
         M("slide_riser_versions = " + " ".join(slide_riser_versions))
         M("")
         M("TOOLS := actuator_assembly_tools condenser_lens_tool tube_lens_tool")
         M("TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper")
-        M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) ")
+        M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand motor_driver_case")
         M("COMMONPARTS := feet feet_tall gears sample_clips small_gears")
         M("BODIES := $(body_versions:%=main_body_%)")
         M("OPTICS := $(optics_versions:%=optics_%)")
-        M("ILLUMINATIONS := $(illumination_versions:%=illumination_and_rear_foot_%)")
+        M("ILLUMINATIONS := illumination_dovetail condenser)")
         M("ALLPARTS := $(COMMONPARTS) $(TOOLS) $(BODIES) $(ILLUMINATIONS) $(OPTICS) $(ACCESSORIES)")
         M("ALLSTLFILES := $(ALLPARTS:%=$(OUTPUT)/%.stl)")
         M("")
@@ -125,18 +114,24 @@ if __name__ == "__main__":
         M("#parameter and utilities files affect everything")
         M("$(OUTPUT)/%.stl: $(all_deps)")
         M("")
-        M("main_body_dep_names := compact_nut_seat dovetail logo")
+        M("main_body_dep_names := compact_nut_seat dovetail logo z_axis")
         M("main_body_deps := $(main_body_dep_names:%=$(SOURCE)/%.scad)")
         for version in body_versions:
             M("$(OUTPUT)/main_body_" + version + ".stl: $(SOURCE)/main_body.scad $(main_body_deps)")
             M(openscad_recipe(**body_parameters(version)))
         M("")
-        M("illumination_dep_names := dovetail optics")
-        M("illumination_deps := $(illumination_dep_names:%=$(SOURCE)/%.scad)")
-        for version in illumination_versions:
-            M("$(OUTPUT)/illumination_and_rear_foot_" + version + ".stl: $(SOURCE)/illumination_and_rear_foot.scad $(illumination_deps) ")
-            M(openscad_recipe(**illumination_parameters(version)))
+        for version in body_versions:
+            M("$(OUTPUT)/illumination_dovetail_" + version + ".stl: $(SOURCE)/illumination_dovetail.scad $(main_body_deps) $(SOURCE)/illumination.scad")
+            M(openscad_recipe(**body_parameters(version)))
+            M("$(OUTPUT)/condenser_" + version + ".stl: $(SOURCE)/condenser.scad $(main_body_deps) $(SOURCE)/illumination.scad")
+            M(openscad_recipe(**body_parameters(version)))
         M("")
+        # M("illumination_dep_names := dovetail optics")
+        # M("illumination_deps := $(illumination_dep_names:%=$(SOURCE)/%.scad)")
+        # for version in illumination_versions:
+            # M("$(OUTPUT)/illumination_and_rear_foot_" + version + ".stl: $(SOURCE)/illumination_and_rear_foot.scad $(illumination_deps) ")
+            # M(openscad_recipe(**illumination_parameters(version)))
+        # M("")
         M("optics_dep_names := dovetail cameras/camera")
         M("optics_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in optics_versions:

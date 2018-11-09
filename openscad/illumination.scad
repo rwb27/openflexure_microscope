@@ -114,5 +114,4 @@ module tall_condenser(){
     }
 }
 
-illumination_arm();
 tall_condenser();

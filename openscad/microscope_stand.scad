@@ -1,5 +1,5 @@
-// A quick and dirty stand for the microscope to let me play with
-// longer optics modules
+// A "bucket" base for the microscope to raise it up and house
+// the electronics.
 
 use <utilities.scad>;
 include <microscope_parameters.scad>;
@@ -8,11 +8,9 @@ use <main_body_transforms.scad>;
 use <main_body.scad>;
 use <feet.scad>;
 
-motor_board = false;
-
 t = 1.5;
 
-raspi_z = motor_board?1:5;
+raspi_z = 5;
 raspi_board = [85, 58, 19]; //this is wrong, should be 85, 56, 19
 
 h = raspi_z + raspi_board[2] + 5;
@@ -35,16 +33,14 @@ module pi_footprint(){
 module pi_connectors(){
     pi_frame(){
         // USB/network ports
-        translate([raspi_board[0]/2,-1,motor_board?5:1]) cube(raspi_board + [2,2,-1]);
+        translate([raspi_board[0]/2,-1,1]) cube(raspi_board + [2,2,-1]);
         // micro-USB power
-        translate([10.6-10/2, -99, motor_board?0:-2]) cube([10,100,8]);
+        translate([10.6-10/2, -99, -2]) cube([10,100,8]);
         // HDMI
-        translate([32-25/2, -99, motor_board?0:-2]) cube([25,100,18]);
+        translate([32-25/2, -99, -2]) cube([25,100,18]);
         // micro-SD card
-        if(!motor_board){
-            translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
-            translate([-4,raspi_board[1]/2,0]) cube([16,12,20], center=true);
-        }
+        translate([0,raspi_board[1]/2+6,0]) cube([80,12,8], center=true);
+        translate([-4,raspi_board[1]/2,0]) cube([16,12,20], center=true);
     }
 }
 
@@ -58,10 +54,9 @@ module pi_support_frame(){
     pi_frame() translate([3.5,3.5]) repeat([58,0,0],2) repeat([0,49,0], 2) children();
 }
 module pi_supports(){
-    // pillars into which the pi can be screwed
+    // pillars into which the pi can be screwed (holes are hollowed out later)
     difference(){
         pi_support_frame() cylinder(h=raspi_z, d=7);
-        pi_support_frame() cylinder(h=999, d=2.9, center=true);
     }
 }
 
@@ -74,6 +69,7 @@ module hull_from(){
 }
 
 module microscope_bottom(enlarge_legs=1.5, illumination_clip_void=true, lugs=true, feet=true, legs=true){
+    // a 2D representation of the bottom of the microscope
     hull(){
         projection(cut=true) translate([0,0,-d]) wall_inside_xy_stage();
         if(illumination_clip_void){
@@ -121,8 +117,8 @@ module footprint(){
     }
 }
 
-module basic_shell(){
-    // The "bucket" baseplate before holes and supports
+module bucket_base_stackable(h=h){
+    // The stackable "bucket" before holes and supports
     difference(){
         union(){
             sequential_hull(){
@@ -142,11 +138,12 @@ module basic_shell(){
                 translate([-99, illumination_clip_y-14+10-999]) square(999);
                 each_actuator() translate([-99, actuating_nut_r-5]) square(999);
             }
+            translate([0,0,h]) linear_extrude(999) offset(0) footprint();
         }
     }
 }
-module top_casing_shell(os=0, legs=true, lugs=true){
-    // The "bucket" baseplate before holes and supports
+module top_casing_block(h=h, os=0, legs=true, lugs=true){
+    // The "bucket" baseplate before holes and supports (i.e. a solid object)
     bottom = os<0?1:0;
     top_h = os<0?d:2*t;
     union(){
@@ -164,12 +161,14 @@ module top_casing_shell(os=0, legs=true, lugs=true){
     }
 }
 
-module top_shell(){
+module bucket_base_with_microscope_top(h=h){
+    // A bucket base for the microscope, without cut-outs
     difference(){
-        top_casing_shell(os=0, legs=true);
+        top_casing_block(h=h, os=0, legs=true);
         
         difference(){
-            top_casing_shell(os=-t, legs=false, lugs=false);
+            // we hollow out the casing, but not underneath the legs or lugs.
+            top_casing_block(h=h, os=-t, legs=false, lugs=false);
             for(p=base_mounting_holes) hull(){
                 // double-subtract under the mounting holes to make attachment points
                 translate(p+[0,0,h+foot_height-4]) cylinder(r=4,h=4);
@@ -178,52 +177,86 @@ module top_shell(){
         }
         
         // cut-outs so the feet and legs can protrude downwards
-        translate([0,0,h+foot_height+t]) feet_in_place(grow_r=2*t, grow_h=t*4);
+        translate([0,0,h+foot_height]) feet_in_place(grow_r=t, grow_h=t);
+        intersection(){
+            translate([0,0,h+foot_height+t]) feet_in_place(grow_r=1.5*t, grow_h=4*t);
+            translate([0,0,h+foot_height]) cylinder(r=999,h=999,$fn=4);
+        }
         translate([0,0,h+foot_height-t]) linear_extrude(999) offset(1.5) microscope_legs();
-        for(p=base_mounting_holes) translate(p+[0,0,h+foot_height]){ 
-             cylinder(r=3/2*1.7,h=20,$fn=3, center=true); //TODO: better self-tapping holes
+        for(p=base_mounting_holes) if(p[0]>0) reflect([1,0,0]){ 
+            translate(p+[0,0,h+foot_height]) cylinder(r=3/2*1.7,h=20,$fn=3, center=true); //TODO: better self-tapping holes
+            // NB the reflect ensures that the triangular holes work for both y>0 lugs.
+            // otherwise the x<0 one snaps when you screw into it.
+            // TODO: nut traps underneath these holes
         }
     }
 }
 
-union(){
+module mounting_holes(){
+    // holes to mount the buckets together (stacking) or to a breadboard
+
+    // breadboard mounting
+    for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]) translate(p) cylinder(d=6.6,h=999,center=true);
+        
+    // holes at 3 corners to allow mounting to something underneath/stacking
+    // NB the bottom hole is larger to allow for screwing through it, the top 
+    // is approximately "self tapping" (a triangular hole, to allow for some 
+    // space for swarf).
+    each_actuator() translate([0, actuating_nut_r, 0]){
+        cylinder(d=4.4, h=20, center=true);
+        rotate(90) cylinder(d=3*1.7, h=999, $fn=3, center=true);
+    }
+    translate([0, illumination_clip_y-14+7, 0]){
+        cylinder(d=4.4, h=20, center=true);
+        rotate(30) cylinder(d=3*1.7, h=999, $fn=3, center=true);
+    }
+}
+module microscope_stand(){
     difference(){
-        top_shell();
+        union(){
+            bucket_base_with_microscope_top();
+    
+            // supports for the pi circuit board
+            pi_supports();
+        }
         
         // space for pi connectors
         translate([0,0,raspi_z]) pi_connectors();
         
-        // indent the top
-        //translate([0,0,h]) linear_extrude(999) footprint();
+        // holes for the pi go all the way through
+        pi_support_frame() cylinder(h=999, d=2.5*1.7, center=true, $fn=3); //these screws are M2.5, not M3
         
-        // side access
-        //translate([10,-999+30, 10]) cube(999);
+        mounting_holes();
         
+    }
+}
+
+module motor_driver_case(){
+    // A stackable "bucket" that holds the motor board under the microscope stand
+    difference(){
+        union(){
+            bucket_base_stackable();
+    
+            // supports for the circuit board (same as for the Pi)
+            pi_supports();
+        }
+        // space for pi connectors
+        translate([0,0,raspi_z]) pi_connectors();
+    
         // motor cables
-        if(motor_board) translate([0,z_nut_y,h]) cube([20,50,15],center=true);
+        translate([0,z_nut_y,h]) cube([20,50,15],center=true);
         
         // holes for the pi go all the way through
         pi_support_frame() cylinder(h=999, d=2.5*1.7, center=true, $fn=3); //these screws are M2.5, not M3
         
-        // breadboard mounting
-        for(p=[[0,0,0], [25,25,0], [-25,25,0], [0,50,0], [0,-25,0]]) translate(p) cylinder(d=6.6,h=999,center=true);
-            
-        // holes at 3 corners to allow mounting to something underneath/stacking
-        each_actuator() translate([0, actuating_nut_r]){
-            cylinder(d=4.4, h=20, center=true);
-            cylinder(d=2.9, h=999, center=true);
-        }
-        translate([0, illumination_clip_y-14+7]){
-            cylinder(d=4.4, h=20, center=true);
-            cylinder(d=2.9, h=999, center=true);
-        }
+        mounting_holes();
     }
-    
-    // supports for the pi circuit board
-    pi_supports();
 }
 
 
 //top_shell();
 //feet_in_place();
 //footprint();
+
+//motor_driver_case();
+microscope_stand();
