@@ -510,6 +510,7 @@ module condenser(){
 //optics="beamsplitter_led_mount";
 //optics="rms_f50d13";
 //camera="picamera2";
+module richards() {
 difference(){
     if(optics=="pilens"){
         // Optics module for picamera v2 lens, using trylinder
@@ -570,5 +571,13 @@ difference(){
     //#translate([0,0,fl_cube_bottom]) rotate([90,0,0]) translate([0,0,-fl_cube_w/2]) fl_cube();
     //mirror([0,1,0]) fl_led_mount();
     //translate([0,0,21]) mirror([0,0,1]) cylinder(r=999,h=999);
+}
+}
+
+difference(){
+    richards();
+    translate([4.45,6,-4]) mirror([0,1,0]) rotate([0,-90,0]) linear_extrude(height = 8.9, center = false, convexity = 10){
+             polygon([[1,0],[11,0],[1,-10]]);
+        }
 }
 //condenser();
