@@ -38,31 +38,71 @@ module each_om_contact_plane(){
                 rotate(135) children();
 }
 
+module keyhole_slot_y(d1=3.5, d2=6.5, slot=10, h=999, center=false){
+    // A keyhole-shaped slot
+    // this allows a screw to be hooked in, avoiding
+    // the need to dangle it down a channel
+    // Parameters:
+    //     d1: width of the slot (screw shaft clearance)
+    //     d2: diameter of the large part (screw head clearance)
+    //     slot: height of the slot in Z, centre-centre
+    //     h: length of the cylinders (slot depth)
+    //     center: whether the cylinders should be centred on y=0
+    hull(){
+        rotate([-90,0,0]) cylinder(d=d1, h=h, center=center);
+        translate([0,0,slot]) rotate([-90,0,0]) cylinder(d=d1, h=h, center=center);
+    }
+    // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
+    rotate([-90,0,0]) cylinder(d=d2, h=h, center=center);
+}
+
+/////////////// OPTICS MODULE MOUNT //////////////////////
+/* To make the shape to mount the optics module, you start with
+the base, then subtract off the optics module wedge (with a nose
+shift <0), then add back on the rounded corners (which should be
+excluded from any hull operations you do).
+*/
+// difference(){
+//     optics_mount_base(h=20);
+//     objective_fitting_wedge(h=999,nose_shift=-0.25,center=true);
+// }
+// optics_mount_rounded_edges(h=20);
+
+
+// default values for optics mount parameters
+optics_mount_roc=1.5; // curvature of the edges of the mount "arms"
+optics_mount_overlap=4; // length of contact patches with optics module
+
+module optics_mount_base(h=10, roc=optics_mount_roc, overlap=optics_mount_overlap){
+    // A base out of which the optics module mount can be cut
+    // this is used for the Z axis side of the mount
+    w = objective_mount_nose_w + 2*overlap + 4;//+2*roc; //overall width
+    
+    hull(){
+        // the back of the mount
+        translate([-w/2,objective_mount_back_y+5,0]) cube([w,d,h]);
+        //hull() reflect([1,0,0]) z_bridge_wall_vertex();
+        // the front of the mount (this makes contact with the optics module)
+        each_om_contact_plane() translate([0,overlap-d,0]) cube([2*roc,d,h]);
+    }
+}
+
+module optics_mount_rounded_edges(h=10, roc=optics_mount_roc, overlap=optics_mount_overlap){
+    // Rounded edges that can be stuck on to the optics mount
+    // base, after the mounting wedge has been subtracted
+    each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
+}
+
 module objective_mount(){
     // The fitting to which the optics module is attached
     h = z_flexures_z2 + 4*sqrt(2);
-    overlap = 4; // we have this much contact between 
-                 // the mount and the wedge on the optics module.
-    roc=1.5; // radius of curvature of the arms
-    w = objective_mount_nose_w + 2*overlap + 4;//+2*roc; //overall width
     difference(){
-        hull(){
-            // the back of the mount
-            translate([-w/2,objective_mount_back_y+5,0]) cube([w,d,h]);
-            //hull() reflect([1,0,0]) z_bridge_wall_vertex();
-            // the front of the mount (this makes contact with the optics module)
-            each_om_contact_plane() translate([0,overlap-d,0]) cube([2*roc,d,h]);
-        }
+        optics_mount_base(h=h);
         
-        // bolt slot to mount objective
-        hull(){
-            translate([0,0,z_flexures_z1+8]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
-            translate([0,0,z_flexures_z2-5]) rotate([-90,0,0]) cylinder(d=3.5, h=999);
-        }
-        // make the bolt slot keyhole-shaped to allow the screw to be easily inserted
-        translate([0,0,z_flexures_z1+6]) rotate([-90,0,0]) cylinder(d=6.5, h=999);
+        // keyhole shaped slot for mounting screw
+        translate([0,0,z_flexures_z1+6]) keyhole_slot_y(slot=z_flexures_z2 - z_flexures_z1 - 5 - 6);
         
-        
+        // cut out the fitting for the objective
         objective_fitting_wedge(h=999,nose_shift=-0.25,center=true);
         
         // cut-outs for flexures to attach
@@ -72,7 +112,7 @@ module objective_mount(){
         reflect([1,0,0]) translate([-z_flexure_x,0,-99]) rotate(45) cube(999);
     }
     // Nice rounded fronts either side
-    each_om_contact_plane() translate([roc,overlap,0]) cylinder(r=roc,h=h);
+    optics_mount_rounded_edges(h=h);
 }
 
 function objective_mount_screw_pos() = [0, objective_mount_back_y, (z_flexures_z2 + z_flexures_z1)/2];
