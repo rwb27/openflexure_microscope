@@ -126,12 +126,6 @@ if __name__ == "__main__":
             M("$(OUTPUT)/condenser_" + version + ".stl: $(SOURCE)/condenser.scad $(main_body_deps) $(SOURCE)/illumination.scad")
             M(openscad_recipe(**body_parameters(version)))
         M("")
-        # M("illumination_dep_names := dovetail optics")
-        # M("illumination_deps := $(illumination_dep_names:%=$(SOURCE)/%.scad)")
-        # for version in illumination_versions:
-            # M("$(OUTPUT)/illumination_and_rear_foot_" + version + ".stl: $(SOURCE)/illumination_and_rear_foot.scad $(illumination_deps) ")
-            # M(openscad_recipe(**illumination_parameters(version)))
-        # M("")
         M("optics_dep_names := dovetail cameras/camera")
         M("optics_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in optics_versions:

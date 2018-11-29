@@ -12,7 +12,7 @@ slide_riser_versions = LS10
 
 TOOLS := actuator_assembly_tools condenser_lens_tool tube_lens_tool
 TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper
-ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) 
+ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand motor_driver_case
 COMMONPARTS := feet feet_tall gears sample_clips small_gears
 BODIES := $(body_versions:%=main_body_%)
 OPTICS := $(optics_versions:%=optics_%)
