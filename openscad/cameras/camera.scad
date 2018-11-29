@@ -42,10 +42,15 @@ function camera_sensor_height() =
     :(camera=="m12"?m12_camera_sensor_height()
     :picamera_2_camera_sensor_height()
     );
-module camera_mount(){
+module camera_mount(counterbore=false){
     if(camera=="logitech_c270") c270_camera_mount();
     else if(camera=="m12") m12_camera_mount();
-    else picamera_2_camera_mount();
+    else picamera_2_camera_mount(counterbore=counterbore);
+}
+module camera_bottom_mounting_posts(h=2, cutouts_only=false){
+    if(camera=="logitech_c270") c270_bottom_mounting_posts();
+    else if(camera=="m12") m12_bottom_mounting_posts();
+    else picamera_2_bottom_mounting_posts(h, cutouts_only);
 }
 
 echo(str("Camera mount height: ",camera_mount_height()));

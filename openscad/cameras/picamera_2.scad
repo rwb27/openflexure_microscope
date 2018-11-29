@@ -106,24 +106,37 @@ module picam2_cutout( beam_length=15){
 }
 //picam2_cutout();
 
-module picamera_2_camera_mount(){
+module picamera_2_camera_mount(counterbore=false){
     // A mount for the pi camera v2
     // This should finish at z=0+d, with a surface that can be
     // hull-ed onto the lens assembly.
     b = 24;
     w = 25;
-    rotate(45) difference(){
-        translate([0,2.4,0]) sequential_hull(){
+    difference(){
+        rotate(45) translate([0,2.4,0]) sequential_hull(){
             translate([0,0,bottom]) cube([w,b,d],center=true);
             translate([0,0,-1]) cube([w,b,d],center=true);
             translate([0,0,0]) cube([w-(-1.5-bottom)*2,b,d],center=true);
         }
-        translate([0,0,bottom]) picam2_cutout();
+        rotate(45) translate([0,0,bottom]) picam2_cutout();
+        if(counterbore){
+            translate([0,0,bottom-1]) picamera_2_bottom_mounting_posts(h=999, r=1, cutouts=false);
+            translate([0,0,bottom+1])  picamera_2_bottom_mounting_posts(h=999, r=1.7, cutouts=false);
+        }
     }
 }
 difference(){
-    //picamera_2_camera_mount();
+    picamera_2_camera_mount(counterbore=true);
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
+}
+
+module picamera_2_bottom_mounting_posts(h=2, r=2, cutouts=true){
+    // posts to mount to pi camera from below
+    rotate(45)
+    reflect([1,0,0]) for(y=[0,12.5]) translate([21/2, y, 0]) difference(){
+        cylinder(r=r, h=h, $fn=12);
+        if(cutouts) cylinder(d=2, h=999, center=true, $fn=8);
+    }
 }
 
 /////////// Cover for camera board //////////////
