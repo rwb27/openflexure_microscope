@@ -133,7 +133,7 @@ if __name__ == "__main__":
             M(openscad_recipe(**optics_module_parameters(version)))
         M("")
         for n in ["camera_platform_picamera_2_LS65", "lens_spacer_picamera_2_pilens_LS65"]:
-            M("$(OUTPUT)/{}.stl: $(SOURCE)/{}.scad $(optics_deps)")
+            M("$(OUTPUT)/{}.stl: $(SOURCE)/{}.scad $(optics_deps)".format(n,n))
             M(openscad_recipe(camera="picamera_2", optics="pilens", **body_parameters("LS65")))
         M("riser_dep_names := main_body")
         M("riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")

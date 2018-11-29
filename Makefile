@@ -102,10 +102,10 @@ $(OUTPUT)/optics_m12_m12_lens_LS65.stl: $(SOURCE)/optics.scad $(optics_deps)
 	openscad -o $@ -D 'optics="m12_lens"' -D 'camera="m12"' -D 'big_stage=true' -D 'sample_z=65' -D 'motor_lugs=false' $<
 
 
-$(OUTPUT)/{}.stl: $(SOURCE)/{}.scad $(optics_deps)
+$(OUTPUT)/camera_platform_picamera_2_LS65.stl: $(SOURCE)/camera_platform_picamera_2_LS65.scad $(optics_deps)
 	openscad -o $@ -D 'big_stage=true' -D 'camera="picamera_2"' -D 'optics="pilens"' -D 'sample_z=65' -D 'motor_lugs=false' $<
 
-$(OUTPUT)/{}.stl: $(SOURCE)/{}.scad $(optics_deps)
+$(OUTPUT)/lens_spacer_picamera_2_pilens_LS65.stl: $(SOURCE)/lens_spacer_picamera_2_pilens_LS65.scad $(optics_deps)
 	openscad -o $@ -D 'big_stage=true' -D 'camera="picamera_2"' -D 'optics="pilens"' -D 'sample_z=65' -D 'motor_lugs=false' $<
 
 riser_dep_names := main_body
