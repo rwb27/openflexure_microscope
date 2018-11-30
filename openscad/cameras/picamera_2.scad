@@ -120,22 +120,27 @@ module picamera_2_camera_mount(counterbore=false){
         }
         rotate(45) translate([0,0,bottom]) picam2_cutout();
         if(counterbore){
-            translate([0,0,bottom-1]) picamera_2_bottom_mounting_posts(h=999, r=1, cutouts=false);
-            translate([0,0,bottom+1])  picamera_2_bottom_mounting_posts(h=999, r=1.7, cutouts=false);
+            translate([0,0,bottom-1]) picamera_2_bottom_mounting_posts(height=999, radius=1, cutouts=false);
+            translate([0,0,bottom+1])  picamera_2_bottom_mounting_posts(height=999, radius=2.7, cutouts=false);
         }
     }
 }
 difference(){
-    picamera_2_camera_mount(counterbore=true);
+    //picamera_2_camera_mount(counterbore=true);
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
 }
 
-module picamera_2_bottom_mounting_posts(h=2, r=2, cutouts=true){
+module picamera_2_bottom_mounting_posts(height=-1, radius=-1, outers=true, cutouts=true){
     // posts to mount to pi camera from below
+    r = radius > 0 ? radius : 2;
+    h = height > 0 ? height : 4;
     rotate(45)
     reflect([1,0,0]) for(y=[0,12.5]) translate([21/2, y, 0]) difference(){
-        cylinder(r=r, h=h, $fn=12);
-        if(cutouts) cylinder(d=2, h=999, center=true, $fn=8);
+        if(outers) cylinder(r=r, h=h, $fn=12);
+        if(cutouts) intersection(){
+            cylinder(h=13, d=2*1.7, center=true, $fn=3);
+            rotate(60) cylinder(h=999, d=2*1.7*1.4, center=true, $fn=3);
+        }
     }
 }
 

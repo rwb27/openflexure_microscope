@@ -47,10 +47,10 @@ module camera_mount(counterbore=false){
     else if(camera=="m12") m12_camera_mount();
     else picamera_2_camera_mount(counterbore=counterbore);
 }
-module camera_bottom_mounting_posts(h=2, cutouts_only=false){
+module camera_bottom_mounting_posts(h=-1, r=-1, outers=true, cutouts=true){
     if(camera=="logitech_c270") c270_bottom_mounting_posts();
     else if(camera=="m12") m12_bottom_mounting_posts();
-    else picamera_2_bottom_mounting_posts(h, cutouts_only);
+    else picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
 }
 
 echo(str("Camera mount height: ",camera_mount_height()));

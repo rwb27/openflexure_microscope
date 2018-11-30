@@ -93,11 +93,11 @@ module objective_fitting_base(){
 
 module camera_platform(
         base_r, //radius of mount body
-        h //height of dovetail
+        h //height of dovetail (camera will be above this by 4mm
     ){
     // Make a camera platform with a dovetail on the side and a platform on the top
-    union(){
-        difference(){
+    difference(){
+        union(){
             // This is the main body of the mount
             sequential_hull(){
                 translate([0,0,0]) hull(){
@@ -111,15 +111,17 @@ module camera_platform(
                 }
             }
             
-            // fitting for the objective mount
-            //translate([0,0,dt_bottom]) objective_fitting_wedge();
-            // Mount for the nut that holds it on
-            translate([0,0,-1]) objective_fitting_cutout();
+            // add the camera mount
+            translate([0,0,h]) camera_bottom_mounting_posts(r=2, h=4);
         }
         
+        // fitting for the objective mount
+        //translate([0,0,dt_bottom]) objective_fitting_wedge();
+        // Mount for the nut that holds it on
+        translate([0,0,-1]) objective_fitting_cutout(y_stop=true);
         // add the camera mount
-        translate([0,0,h]) camera_bottom_mounting_posts();
+        translate([0,0,h]) camera_bottom_mounting_posts(outers=false, cutouts=true);
     }
 }
 
-camera_platform(10, 40);
+camera_platform(5, z_flexures_z2);

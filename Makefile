@@ -15,7 +15,7 @@ TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper
 ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand motor_driver_case
 COMMONPARTS := feet feet_tall gears sample_clips small_gears
 BODIES := $(body_versions:%=main_body_%)
-OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 lens_spacer_picamera_2_pilens_LS65
+OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 lens_spacer_picamera_2_pilens_LS65 lens_spacer_picamera_2_pilens_LS75
 ILLUMINATIONS := illumination_dovetail condenser
 ALLPARTS := $(COMMONPARTS) $(TOOLS) $(BODIES) $(ILLUMINATIONS) $(OPTICS) $(ACCESSORIES)
 ALLSTLFILES := $(ALLPARTS:%=$(OUTPUT)/%.stl)
@@ -107,6 +107,12 @@ $(OUTPUT)/camera_platform_picamera_2_LS65.stl: $(SOURCE)/camera_platform.scad $(
 
 $(OUTPUT)/lens_spacer_picamera_2_pilens_LS65.stl: $(SOURCE)/lens_spacer.scad $(optics_deps)
 	openscad -o $@ -D 'big_stage=true' -D 'camera="picamera_2"' -D 'optics="pilens"' -D 'sample_z=65' -D 'motor_lugs=false' $<
+
+$(OUTPUT)/camera_platform_picamera_2_LS75.stl: $(SOURCE)/camera_platform.scad $(optics_deps)
+	openscad -o $@ -D 'big_stage=true' -D 'camera="picamera_2"' -D 'optics="pilens"' -D 'sample_z=75' -D 'motor_lugs=false' $<
+
+$(OUTPUT)/lens_spacer_picamera_2_pilens_LS75.stl: $(SOURCE)/lens_spacer.scad $(optics_deps)
+	openscad -o $@ -D 'big_stage=true' -D 'camera="picamera_2"' -D 'optics="pilens"' -D 'sample_z=75' -D 'motor_lugs=false' $<
 
 riser_dep_names := main_body
 riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)

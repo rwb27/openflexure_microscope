@@ -108,7 +108,8 @@ difference(){
         lens_extension(
             lens_r = 3, 
             parfocal_distance = 6,
-            lens_h = 2.5
+            lens_h = 2.5,
+            bottom_z = z_flexures_z2 + 4 + 1
         );
     }else if(optics=="c270_lens"){
         // Optics module for logitech C270 lens

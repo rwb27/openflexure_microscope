@@ -88,6 +88,9 @@ module objective_fitting_wedge(h=z_flexures_z2+4, nose_shift=0.2, center=false){
     // A trapezoidal wedge that clamps onto the objective mount.  
     // NB you must subtract the objective_fitting_cutout from this to allow
     // the screw and nut to be attached.
+    // NB nose_shift moves the tip of the wedge in the -y direction (i.e. increases
+    // the gap at the tip, if we are making the optics module).  If subtracting this
+    // to make a mount for the optics module, use nose_shift < 0
     nw = objective_mount_nose_w; //width of the pointy end
     translate([0,objective_mount_y,0]) mirror([0,1,0]) hull(){
         translate([-nw/2-nose_shift,nose_shift,center?-h/2:0]) cube([nw+2*nose_shift,d,h]);
@@ -102,7 +105,7 @@ module ofc_nut(shaft=false, max_screw=12){
     nut_y(3, h=2.5, extra_height=0, shaft=shaft, shaft_length=shaft?max_screw-4:0);
 }
 
-module objective_fitting_cutout(max_screw=12){
+module objective_fitting_cutout(max_screw=12, y_stop=false, nose_shift=0.2){
     // Subtract this from the optics module, to cut out a hole for the nut
     // that anchors it to the objective mount.
     // TODO: also relieve the faces of the mount in case there are protrusions
@@ -115,6 +118,7 @@ module objective_fitting_cutout(max_screw=12){
             translate([0,10,7]) repeat([0,0,10],2) ofc_nut();
         }
     }
+    if(y_stop) translate([-10,objective_mount_y-nose_shift,-99])cube([20,999,999]); 
 }
 
 module z_axis_flexure(h=zflex[2], z=0){
