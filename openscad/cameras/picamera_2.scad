@@ -106,6 +106,17 @@ module picam2_cutout( beam_length=15){
 }
 //picam2_cutout();
 
+module picam2_board(h=d){
+    // a rounded rectangle with the dimensions of the picamera board v2
+    // centred on the origin
+    b = 24;
+    w = 25;
+    roc = 2;
+    linear_extrude(h) hull(){
+        reflect([1,0]) reflect([0,1]) translate([w/2-roc, b/2-roc]) circle(r=roc,$fn=12);
+    }
+}
+
 module picamera_2_camera_mount(counterbore=false){
     // A mount for the pi camera v2
     // This should finish at z=0+d, with a surface that can be
@@ -114,8 +125,8 @@ module picamera_2_camera_mount(counterbore=false){
     w = 25;
     difference(){
         rotate(45) translate([0,2.4,0]) sequential_hull(){
-            translate([0,0,bottom]) cube([w,b,d],center=true);
-            translate([0,0,-1]) cube([w,b,d],center=true);
+            translate([0,0,bottom]) picam2_board(h=d);
+            translate([0,0,-1]) picam2_board(h=d);
             translate([0,0,0]) cube([w-(-1.5-bottom)*2,b,d],center=true);
         }
         rotate(45) translate([0,0,bottom]) picam2_cutout();
@@ -126,7 +137,7 @@ module picamera_2_camera_mount(counterbore=false){
     }
 }
 difference(){
-    //picamera_2_camera_mount(counterbore=true);
+    picamera_2_camera_mount(counterbore=true);
     //rotate([90,0,0]) cylinder(r=999,h=999,$fn=4);
 }
 
