@@ -4,6 +4,10 @@ An actuator, based on an M3 screw, brass nut, and elastic bands, that can precis
 This assembly is used to actuate each of the three axes of the OpenFlexure Microscope stage.  It consists of a plastic gear that fits onto an M3 screw, which then pulls up on a brass nut.  Elastic bands pull down on the nut, tensioning the system.  This confers two benefits: firstly, it allows us to actuate the flexure mechanism both up and down - doubling the travel - and secondly, it eliminates much of the backlash from the system.
 
 # Requirements
+All the parts you need for this step are in the picture below:
+
+![Parts required for this step](./images/actuator_assembly_parts.jpg)
+
 ## Parts
 *   3 [25mm hex head M3 screws](./parts/25mm_m3_hexagonhead_screw "consumes: 1")
 *   3 [M3 brass nuts](./parts/m3_nut)
@@ -25,11 +29,13 @@ There are three actuator columns on the microscope, for X, Y, and Z.  Follow the
 We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/nut_insertion_tool).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
 
 ![putting the nut into the actuator column](./images/actuator_assembly_nut_insertion_1.jpg)
+![The slot in the body now looks like this](insert_nut_here.jpg)
 
 ## Step 2
 Next, take a screw, and push it into a plastic gear, so that the head of the screw is embedded in the plastic.  Then, thread two washers onto the screw where it sticks out of the gear.  Put a very small blob of light oil or grease (if available) on the screw thread.  Put the screw into the hole at the top of the column, and screw it into the nut that is now inside the actuator.  The two washers should sit between the gear and the microscope body
 
 ![assembling the screw into the actuator column](./images/actuator_assembly_screw_in_1.jpg)
+![The gear, with the screw and washers in place](./images/screw_gear_and_washers.jpg)
 
 ## Step 3
 Turn the microscope over and, using the elastic band tool or a craft knife, snap the two thin plastic supports as shown if they are present.
@@ -41,10 +47,12 @@ Hook one of the Viton bands over the elastic band tool, and pass the tool throug
 You may find it easier to put the band through the foot, then insert the tool and hook the band over either end - either way you should end up with the band, foot, and tool arranged as shown in the pictures.
 
 ![The elastic band on the insertion tool, passed through the foot](./images/band_insertion_through_foot_1.jpg)
-*   ![](./images/band_insertion_through_foot_2.jpg)
+![Inserting the elastic bands](./images/band_insertion_through_foot_2.jpg)
 
 ## Step 5
 Place the foot on the body, taking care that it's in the right place (the outer two actuators have sloping bottoms, but flat tops, the central Z axis has a sloping top and a flat bottom). You must also take care to put them on the right way round; the open part of the foot points towards the optics module in the centre of the microscope.
+
+![Feet fitted into the microscope](./images/insert_feet.jpg)
  
 Push the insertion tool in until the band clicks into place.  Use the nut insertion tool to hold the actuator in place while you do this.  It might help to unscrew the gear a bit (so you can see some of the screw thread between the body and the gear) and push down on the gear.  When you push the band in, it should click twice - once for each side.  If you don't manage to hook both sides on, you may need to completely remove the band and try again - a wooden skewer, or small flat-bladed screwdriver works well to unhook the band without damaging it.
  
@@ -52,6 +60,7 @@ What's happening here is that the elastic band is pushed over little hooks insid
 
 ![Putting in the Viton o ring](./images/band_insertion_body_1.jpg)
 ![Putting in the Viton o ring](./images/band_insertion_body_2.jpg)
+![The bands and feet in place in the microscope body](insert_bands.jpg)
 
 ## Step 6
 You should now have the band pulling both sides of the actuator down as shown.

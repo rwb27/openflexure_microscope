@@ -2,6 +2,10 @@
 The simplest option for the microscope optics is to use a webcam lens.  This is an old photographers' trick, where a wide angle lens is turned backwards and used as a macro lens, so the side that would have pointed at the camera sensor now points at the sample.  Because webcams have very small pixels, using a webcam in reverse makes quite a good microscope objective.  This version of the optics module turns the Raspberry Pi camera into a microscope with a field of view about 400um across and a resolution of around 2um.
 
 # Requirements
+You will need the parts shown in the picture below:
+
+![Parts required for this step](./basic_optics_module_parts.jpg)
+
 ## Parts
 *   1 [Camera platform](./parts/camera_platform)
 *   1 [Lens extension tube](./parts/lens_spacer)
@@ -49,24 +53,23 @@ Before assembling the parts into the holder, make sure it's free from dust by bl
 ## Step 7
 Next, put the lens into the plastic extension tube.  This should just push-fit, but may take a small amount of force, or  require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If you wrap tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.  NB the lens should go in with the side that was next to the camera sensor on top, and the side that was facing outwards (the one with a small hole in the black plastic) facing into the extension tube.
 
-![](./images/lens_insertion_0.jpg)
-![](./images/lens_insertion_1.jpg)
+![The lens in the extension tube](./images/insert_camera_lens.jpg)
 ![](./images/lens_insertion_2.jpg)
 ![](./images/lens_insertion_3.jpg)
-![](./images/lens_insertion_4.jpg)
 
 ## Step 8
 Fit the extension tube onto the camera board, then put the camera board and extension tube onto the camera platform.  Secure it in place with two M2 screws, which go through the extension tube and the camera board, and into the platform.  You can use two more M2 screws if available to make the joint stronger.
 
-![](./images/optics_assembly_0.jpg)
-![](./images/optics_assembly_1.jpg)
-![](./images/optics_assembly_2.jpg)
+![](./images/mount_to_camera_platform.jpg)
 
 ## Step 9
 Slide a nut into the nut trap on the side of the camera platform.  This probably doesn't need a tool, but you could use a 2.5mm hex key to push it in.
 
+![](./images/slide_in_nut_camera_platform.jpg)
+
 ## Step 10
 Screw the M3 screw into the nut, so that it sticks out the side of the camera platform.
+![](./images/camera_platform_mounting_screw.jpg)
 
 ## Step 11
 Well done - you have assembled the optics module.
