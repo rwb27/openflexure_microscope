@@ -29,7 +29,7 @@ There are three actuator columns on the microscope, for X, Y, and Z.  Follow the
 We need to place a nut inside the actuator.  Insert it from the side, through the slot in the actuator column, and push it into place with the [nut insertion tool](./parts/nut_insertion_tool).  Take care to insert the nut corner-first (i.e. with flat sides parallel to the tool), otherwise it will jam.
 
 ![putting the nut into the actuator column](./images/actuator_assembly_nut_insertion_1.jpg)
-![The slot in the body now looks like this](insert_nut_here.jpg)
+![The slot in the body now looks like this](./images/insert_nut_here.jpg)
 
 ## Step 2
 Next, take a screw, and push it into a plastic gear, so that the head of the screw is embedded in the plastic.  Then, thread two washers onto the screw where it sticks out of the gear.  Put a very small blob of light oil or grease (if available) on the screw thread.  Put the screw into the hole at the top of the column, and screw it into the nut that is now inside the actuator.  The two washers should sit between the gear and the microscope body
@@ -60,7 +60,7 @@ What's happening here is that the elastic band is pushed over little hooks insid
 
 ![Putting in the Viton o ring](./images/band_insertion_body_1.jpg)
 ![Putting in the Viton o ring](./images/band_insertion_body_2.jpg)
-![The bands and feet in place in the microscope body](insert_bands.jpg)
+![The bands and feet in place in the microscope body](./images/insert_bands.jpg)
 
 ## Step 6
 You should now have the band pulling both sides of the actuator down as shown.

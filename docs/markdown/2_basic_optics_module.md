@@ -4,7 +4,7 @@ The simplest option for the microscope optics is to use a webcam lens.  This is 
 # Requirements
 You will need the parts shown in the picture below:
 
-![Parts required for this step](./basic_optics_module_parts.jpg)
+![Parts required for this step](./images/basic_optics_module_parts.jpg)
 
 ## Parts
 *   1 [Camera platform](./parts/camera_platform)
