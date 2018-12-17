@@ -179,13 +179,13 @@ module screw_seat_shell(h=1, tilt=0){
 module motor_lugs(h=20, tilt=0, angle=0){
     // lugs to mount a micro geared stepper motor on a screw_seat.
     motor_shaft_pos=[0,-20,h+2]; //see height of screw_seat_shell above
-    motor_screw_pos=[35/2,motor_shaft_pos[1]+7.8,motor_shaft_pos[2]+10];
+    motor_screw_pos=[35/2,motor_shaft_pos[1]+7.8,motor_shaft_pos[2]+11];
     screw_r = sqrt(pow(motor_screw_pos[0],2)+pow(motor_screw_pos[1],2));
     rotate([tilt,0,0]) rotate(angle) reflect([1,0,0]) difference(){
         union(){
             hull(){
-                translate(motor_screw_pos-[0,0,8]) cylinder(r=4,h=8);
-                translate([0,0,motor_screw_pos[2]-screw_r-8]) cylinder(r=5,h=screw_r-5);
+                translate(motor_screw_pos-[0,0,11]) cylinder(r=4,h=11);
+                translate([0,0,motor_screw_pos[2]-screw_r-11]) cylinder(r=5,h=screw_r-5);
             }
         }
         //space for gears
@@ -194,7 +194,7 @@ module motor_lugs(h=20, tilt=0, angle=0){
         //hollow inside of the structure
         rotate(-angle) nut_seat_void(h=h, tilt=tilt);
         //mounting screws
-        translate(motor_screw_pos) cylinder(r=1.9,h=20,center=true);
+        translate(motor_screw_pos) trylinder_selftap(4,h=40,center=true);
     }
 }
 
@@ -381,7 +381,7 @@ translate([40,0,0]){
 //    tilted_actuator(25,25,50, base_w=6);
 }
 //echo(nut_slot);
-/*/
+//
 difference(){
     union(){
         screw_seat(25, motor_lugs=true);
@@ -395,7 +395,7 @@ difference(){
     }
     translate([0,0,2.5]) rotate([180,0,0]) cylinder(r=999,h=999,$fn=4);
 }//*/
-nut_seat_void(99, tilt=30, center=true); // space inside the column
+//nut_seat_void(99, tilt=30, center=true); // space inside the column
 
 /*/ TEST PIECE: different sized nut slots, 3% different in size
 difference(){

@@ -178,8 +178,14 @@ union(){
         translate([leg_middle_w/2-w,0,0.5]) hull()
 			repeat([1,-1,0]*(zflex_l+wall_t/2),2) cube([w,d,zflex_t]);
     }
+    //tie the legs to the wall (built later) during printing
+    reflect([1,0,0]) leg_frame(135) reflect([1,0,0]) {
+        translate([leg_middle_w/2+zflex[1]+zflex[0]/2, -wall_h*0.7*tan(6)-1-zflex[1], wall_h*0.7]) cube([1, wall_h*0.7*tan(6)+2+zflex[1], 0.5]);
+    }
 
-	//flexures between legs and stage
+	// flexures between legs and stage
+    // NB these connect the legs together, and pass all the way under the stage.  This
+    // is important, if they get cut then the bridges will fail!
 	difference(){
 		hull() each_leg() translate([0,0,flex_z2+zflex_t/2+0.5]) cube([leg_middle_w,d,zflex_t],center=true);
 		hull() each_leg() cube([leg_middle_w-2*stage_flex_w,d,999],center=true);
@@ -189,8 +195,14 @@ union(){
    // this must get built up carefully: we start with the bridges round the edge, then work inwards.
 	difference(){
 		hull() each_leg() translate([0,-zflex_l-d,flex_z2+1+(stage_t-1)/2]) cube([leg_middle_w+2*zflex_l,2*d,stage_t-1],center=true); //hole in the stage
-        translate([0,0,flex_z2+1]) rotate(45) hole_from_bottom(hole_r,h=999,base_w=2*(leg_r+leg_middle_w/2-stage_flex_w - hole_r));
-		each_leg() reflect([1,0,0]) translate([leg_middle_w/2,-zflex_l-4,flex_z2+1.5]) cylinder(r=3/2*0.95,h=999); //mounting holes
+        intersection(){
+            // This cuts out the hole in the stage, starting from a square.
+            // The intersection restricts it to the space between the bridges, to avoid any
+            // holes in the sides of the stage.
+            translate([0,0,flex_z2+0.5+0.5]) rotate(45) hole_from_bottom(hole_r,h=999);
+            hull() each_leg() cube([leg_middle_w-2*stage_flex_w,d,999],center=true);
+        }
+		each_leg() translate([0,-zflex_l-4,flex_z2+1.5]) repeat([leg_middle_w/2,0,0],3,center=true) trylinder_selftap(3,h=999); //mounting holes
 	}
 	
 	//z axis

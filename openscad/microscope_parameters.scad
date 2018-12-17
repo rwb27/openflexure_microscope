@@ -28,7 +28,7 @@ d = 0.05;
 $fn=32;
 
 // These are the most useful parameters to change!
-big_stage = true;
+big_stage = true; //this option is obsolete and must now always be true...
 motor_lugs = true;
 endstops = false; //motor_lugs;
 version_numstring = "5.19.0-b";
@@ -41,7 +41,7 @@ feet_endstops=true;
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
 leg_r = big_stage?30:25; // radius of innermost part of legs (stage size)
-hole_r = big_stage?15:10; // size of hole in the stage
+hole_r = big_stage?20:10; // size of hole in the stage
 xy_lever_ratio = big_stage?4.0/7.0:1.0; // mechanical advantage of actuator over stage - can be used to trade speed and precision
 z_lever_ratio = 1.0; // as above, for Z axis (must be >1)
 // The variables below affect the position of the objective mount

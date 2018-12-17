@@ -120,7 +120,7 @@ module motor_clearance(h=15){
         circle(r=14+1.5);
         hull() reflect([1,0]) translate([35/2,0]) circle(r=4.5);
     }
-    reflect([1,0,0]) translate([35/2,0,0]) cylinder(r=1.9,h=20,center=true);
+    reflect([1,0,0]) translate([35/2,0,0]) rotate(180) trylinder_selftap(4,h=20,center=true);
 }
 
 module motor_and_gear_clearance(gear_h=10, h=999){

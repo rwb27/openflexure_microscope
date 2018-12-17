@@ -334,8 +334,25 @@ module add_roof(inner_h){
 module trylinder(r=1, flat=1, h=d, center=false){
     //Halfway between a cylinder and a triangle.
     //NB the largest cylinder that fits inside it has r=r+f/(2*sqrt(3))
+    //One of the sides is parallel with the X axis
     hull() for(a=[0,120,240]) rotate(a)
         translate([0,flat/sqrt(3),0]) cylinder(r=r, h=h, center=center);
+}
+
+module trylinder_selftap(nominal_d=3, h=10, center=false){
+    // Make a trylinder that you can self-tap a machine screw into.
+    // The size is deliberately a bit big for small holes, so that
+    // it compensates for splodgy printing
+    r = max(nominal_d*0.8/2 + 0.2, nominal_d/2 - 0.2);
+    dr = 0.5;
+    flat = dr * 2 * sqrt(3);
+    trylinder(r=r - dr, flat=flat, h=h, center=center);
+}
+
+for(bd=[2.5, 3, 4]) translate([0,(bd-3)*20,0])
+for(dd=[-0.4, -0.3, -0.2, -0.1, 0, 0.1]) translate([dd*100,0,0]) difference(){
+    cylinder(d=7, h=10 + dd*10, $fn=12);
+    trylinder_selftap(bd+dd, h=999,center=true, $fn=12);
 }
 module trylinder_gripper(inner_r=10,h=6,grip_h=3.5,base_r=-1,t=0.65,squeeze=1,flare=0.8,solid=false){
     // This creates a tapering, distorted hollow cylinder suitable for
@@ -407,10 +424,10 @@ module self_tap_hole(mean_r, h, dr=1, dz=0.5, bridge_facets=0, center=false, scr
 
             
         
-difference(){
-    cylinder(r=16, h=5);
-    self_tap_hole(20.4/2, dr=1.2, dz=0.7055/2, h=11, center=true, bridge_facets=5);
-}
+//difference(){
+//    cylinder(r=16, h=5);
+//    self_tap_hole(20.4/2, dr=1.2, dz=0.7055/2, h=11, center=true, bridge_facets=5);
+//}
 
 module exterior_brim(r=4, h=0.2){
     // Add a "brim" around the outside of an object *only*, preserving holes in the object

@@ -182,8 +182,10 @@ module objective_mounting_screw_access(){
     // access hole for the objective mounting screw
     //translate([0,objective_mount_back_y, z_flexures_z2/2]) 
     //        rotate([-75,0,0]) cylinder(h=999, d=8, $fn=16);
-    translate([0,objective_mount_back_y, z_flexures_z2/2]) 
-            rotate([-90,0,15]) cylinder(h=999, d=8, $fn=16);
+    translate([0,objective_mount_back_y, z_flexures_z2/2]) hull(){
+        rotate([-90,0,15]) cylinder(h=999, d=8, $fn=16);
+        translate([0,0,6]) rotate([-90,0,0]) cylinder(h=d, d=4, $fn=16);
+    }
 }
 
 module z_motor_clearance(){
