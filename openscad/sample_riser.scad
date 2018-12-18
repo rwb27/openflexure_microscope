@@ -15,6 +15,7 @@
 
 use <utilities.scad>;
 use <main_body.scad>;
+use <main_body_transforms.scad>;
 include <microscope_parameters.scad>;
 
 $fn=24;
