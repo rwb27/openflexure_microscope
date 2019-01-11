@@ -14,8 +14,16 @@ for image in "$INPUT_DIR"/*.jpg; do
             continue
         fi
     fi
-    set -v
+    echo "Updating $bname"
     mogrify -resize 800x600 -path "$OUTPUT_DIR" "$image"
-    set +v
+done
+
+# Clean up files that don't have an original any more
+for image in "$OUTPUT_DIR"/*.jpg; do
+    bname=`basename "$image"`
+    if [[ ! -e "$INPUT_DIR/$bname" ]]; then
+        echo "removing $bname"
+        rm "$image"
+    fi
 done
 

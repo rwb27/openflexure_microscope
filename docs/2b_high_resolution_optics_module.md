@@ -49,7 +49,8 @@ Next, put the lens into the push-fit holder.  Start by placing the tube lens ins
 ## Step 5
 Screw the objective into the plastic casing.  The printed thread is not hugely strong, and may not have printed very precisely - the means it might be a little loose or a little tight, and you need to be very careful to screw the objective in straight in order to avoid cross-threading.
 
-![The objective, in place in the optics module](./images/hires_optics_objective.jpg)
+![Screw the objective in to the mount - be careful to keep it straight!](./images/hires_optics_objective_1.jpg)
+![The objective, in place in the optics module](./images/hires_optics_objective_2.jpg)
 
 ## Step 6
 We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  It's best to make sure you have completed the steps up to this point before removing the lens, to minimise the amount of time the sensor is exposed to air and dust.
