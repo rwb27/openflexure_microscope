@@ -10,12 +10,12 @@ Assembly is broken up into several steps:
 * [Assembling the actuators](./1_actuator_assembly.md) deals with the mechanism for moving the stage.
 * The optics module comes next, either the [basic optics module](./2a_basic_optics_module.md) or the [high resolution optics module](./2b_high_resolution_optics_module.md).
 * [Illumination](./3_illumination.md) covers attaching the condenser.
-* [Sample clips and wiring](./4_clips_and_wiring) completes the microscope.
+* [Sample clips and wiring](./4_clips_and_wiring.md) completes the microscope.
 * [Motors](./5_motors.md) can be added for automatic control.
 
 Happy building!
 
-![An assembled OpenFlexure Microscope, courtesy of GOSH 2018]
+![An assembled OpenFlexure Microscope, courtesy of GOSH 2018](./images/microscope_gosh.jpg)
 
 ## About the microscope
 The OpenFlexure microscope is a customisable optical microscope, using either very cheap webcam optics or lab quality, RMS threaded microscope objectives.  It uses an inverted geometry, and has a high quality mechanical stage which can be motorised using low cost geared stepper motors.

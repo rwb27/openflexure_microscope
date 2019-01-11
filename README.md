@@ -5,8 +5,8 @@ The OpenFlexure Microscope is a  3D printable microscope, including a precise me
 
 The trick of making a microscope out of a webcam has been around for a little while, and produces good results.  However, getting a nice mechanical stage to focus the microscope and move around on the sample is tricky.  This project is a 3D printable design that enables very fine (sub-micron) mechanical positioning of the sample and the lens, with surprisingly good mechanical stability.  It's discussed in various [media articles](https://github.com/rwb27/openflexure_microscope/wiki/Media-Articles) and a [paper in Review of Scientific Instruments](http://dx.doi.org/10.1063/1.4941068) (open access).
 
-## Come study for a PhD!
-Most of the development of this design has been done as part of [Richard's research](http://www.bath.ac.uk/physics/contacts/academics/richard-bowman/index.html) - if you're interested in studying for a PhD at the University of Bath in the field of open-source scientific instrumentation, please [get in touch](http://www.bath.ac.uk/physics/contacts/academics/richard-bowman/index.html)!  There's currently a [post being advertised](https://www.findaphd.com/search/ProjectDetails.aspx?PJID=91524) (funding for home or EU students) but if you have funding or are interested in applying for it, do get in touch anyway :)
+## Come join us!
+Most of the development of this design has been done as part of [Richard's research](http://www.bath.ac.uk/physics/contacts/academics/richard-bowman/index.html) - if you would like to join our research group at Bath, and you have funding or are interested in applying for it, do get in touch.  Check the University of Bath jobs site, or findaphd.com, to see if we are currently advertising any vacancies.
 
 ## Kits and License
 This project is open-source and is released under the CERN open hardware license.  You can buy a kit of the microscope from [WaterScope](http://www.waterscope.org/).  Currently, the kits being sold are version 5.15 and if you're looking for the assembly instructions they are in the [version 5.16 release](https://github.com/rwb27/openflexure_microscope/releases/tag/v5.16.10-beta).
@@ -19,10 +19,8 @@ that are redundant.  The assembly instructions contain instructions on what part
 
 If you've built one, let us know - add yourself to the [wiki page of builds](https://github.com/rwb27/openflexure_microscope/wiki/Assembly-Logs) or submit a [build report issue](https://github.com/rwb27/openflexure_microscope/issues/new?labels=build%20report).  This is a really helpful thing to do even if you don't suggest improvements or flag up problems.
 
-The previous release is on [DocuBricks](http://docubricks.com/projects/openflexure-microscope), and I will add the latest version once it's been road-tested a bit further. 
-
 ## Instructions
-The instructions are in DocuBricks XML format, which is like an open-source version of Instructables (with the advantage that the files live on GitHub so they can be easily version controlled, etc.).  There are instructions in the [docs](./docs/) folder, but it's now also possible to view the [current development documentation](http://rwb27.github.io/openflexure_microscope/docubricks/current_master_version.html) online.  You can also view [instructions from a specific commit or branch](http://rwb27.github.io/openflexure_microscope/docubricks/docubricks-viewer-pasteurl.html).
+The instructions are MarkDown format, in the [docs folder](./docs/).
 
 ## Get Involved!
 This project is open so that anyone can get involved, and you don't have to learn OpenSCAD to help (although that would be great).  Ways you can contribute include:
