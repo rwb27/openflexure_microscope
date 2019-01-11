@@ -43,8 +43,8 @@ Slide the M3 nut into the plastic holder, and screw the M3 screw into it as show
 Next, put the lens into the push-fit holder.  Start by placing the tube lens insertion tool on a table, with the larger end down.  Then, put the lens on the tool (shown in red below), with the more convex side facing down.  Next, carefully line up the optics module casing with the lens, and push it down on top of the lens.  This might take a little force, I use the heel of my hand.  The glass lens is harder than the plastic so is unlikely to crack, but try to avoid too much sideways motion, as this can scratch the surface of the lens.
 
 ![The lens ready to be inserted](./images/hires_optics_tube_lens_1.jpg)
-![Inserting the lens](./images/hires_optics_tube_lens_1.jpg)
-![The tube lens, fitted into the optics module](./images/hires_optics_tube_lens_1.jpg)
+![Inserting the lens](./images/hires_optics_tube_lens_2.jpg)
+![The tube lens, fitted into the optics module](./images/hires_optics_tube_lens_3.jpg)
 
 ## Step 5
 Screw the objective into the plastic casing.  The printed thread is not hugely strong, and may not have printed very precisely - the means it might be a little loose or a little tight, and you need to be very careful to screw the objective in straight in order to avoid cross-threading.
