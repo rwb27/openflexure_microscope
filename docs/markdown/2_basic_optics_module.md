@@ -10,9 +10,15 @@ You will need the parts shown in the picture below:
 *   1 [Camera platform](./parts/camera_platform)
 *   1 [Lens extension tube](./parts/lens_spacer)
 *   1 Raspberry Pi camera module (ideally v2, though v1 should also work)
-*   1 [Tool for removing the lens](./parts/camera_lens_removal_tools)
 *   1 [M3 steel nut](./parts/m3_nut)
 *   1 [M3x10mm cap head screw](./parts/m3x10mm_cap_head)
+*   4 [M2x6mm cap head screws](./parts/m2x6mm_cap_head)
+
+## Tools
+*   1 2.5mm hex key
+*   1 1.5mm hex key
+*   1 scalpel or craft knife (optional)
+*   1 [Tool for removing the lens](./parts/camera_lens_removal_tools)
 
 # Assembly Instructions
 ## Step 1
@@ -20,14 +26,14 @@ First, get the necessary tools and parts: the optics module plastic parts (the l
  
 NB the lens removal tools, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, version 1 of the Rasbperry Pi camera module will also work, but you will need to remove the lens with pliers or tweezers instead.  Version 2 of the camera module ships with a lens removal tool included, which is a white disc of plastic with a hole in the centre.  This is better than the printed lens removal tool, if it's available.
 
-> **WARNING!** The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.
-
 ## Step 2
-We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.
-![Lens removal tools](./images/picam2_lens_removal_0.jpg)
+We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  It's best to make sure you have completed the steps up to this point before removing the lens, to minimise the amount of time the sensor is exposed to air and dust.
+
+> **WARNING!** The camera board is static sensitive.  Take the usual anti-static precautions (ideally use an anti-static wristband connected to ground, but at the very least make sure you touch an earthed object, such as a metal pipe, before working on the camera module.
 
 ## Step 3
 Remove the protective film from the camera lens.
+
 ![Removing the protective film from the lens](./images/picam2_film_removal.jpg)
 
 ## Step 4
@@ -43,9 +49,7 @@ The printed tool only works if the prongs are pointing anticlockwise, so make su
 
 Once you've removed the lens, be sure to place the camera face down on the desk, or put a piece of tape over the square black lens holder; this will help stop dust settling on the sensor, which is extremely hard to clean.
 
-![Removing the lens from the camera](./images/picam2_lens_removal_1.jpg)
-![Removing the lens from the camera](./images/picam2_lens_removal_2.jpg)
-![Removing the lens from the camera](./images/picam2_lens_removal_3.jpg)
+![Lens removal](./images/picam2_lens_removal.jpg)
 
 ## Step 6
 Before assembling the parts into the holder, make sure it's free from dust by blowing some air through it, and check there are no strings of plastic in the central hole through the mount.

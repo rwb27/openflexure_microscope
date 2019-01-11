@@ -48,6 +48,7 @@ Next, put the lens into the push-fit holder.  Start by placing the tube lens ins
 
 ## Step 5
 Screw the objective into the plastic casing.  The printed thread is not hugely strong, and may not have printed very precisely - the means it might be a little loose or a little tight, and you need to be very careful to screw the objective in straight in order to avoid cross-threading.
+
 ![The objective, in place in the optics module](./images/hires_optics_objective.jpg)
 
 ## Step 6
@@ -57,6 +58,7 @@ We need to remove the lens from the camera.  To do this, you need the two plasti
 
 ## Step 7
 Remove the protective film from the camera lens.
+
 ![Removing the protective film from the lens](./images/picam2_film_removal.jpg)
 
 ## Step 8
