@@ -1,6 +1,8 @@
 #!python
 from __future__ import print_function
 import re
+import argparse
+import functools
 
 """This script generates the Makefile for the Openflexure Microscope.
 
@@ -74,9 +76,26 @@ def openscad_recipe(**kwargs):
     output += " $<\n"
     return output
     
-
+def merge_dicts(*args):
+    """Merge dictionaries together into a single output."""
+    out = args[0].copy()
+    for a in args[1:]:
+        out.update(a)
+    return out
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate the Openflexure Microscope makefile")
+    parser.add_argument("--version_numstring", help="Override the defined version string", default=None)
+    args = parser.parse_args()
+    
+    extra_defines = {}
+    if args.version_numstring:
+        extra_defines['version_numstring'] = args.version_numstring
+        
+    def openscad_recipe_baked(**kwargs):
+        """An openscad recipe, with additional definitions baked in."""
+        return openscad_recipe(**merge_dicts(extra_defines, kwargs))
+    
     with open("Makefile","w") as makefile:
         def M(line):
             makefile.write(line + "\n")
@@ -118,48 +137,48 @@ if __name__ == "__main__":
         M("main_body_deps := $(main_body_dep_names:%=$(SOURCE)/%.scad)")
         for version in body_versions:
             M("$(OUTPUT)/main_body_" + version + ".stl: $(SOURCE)/main_body.scad $(main_body_deps)")
-            M(openscad_recipe(**body_parameters(version)))
+            M(openscad_recipe_baked(**body_parameters(version)))
         M("")
         for version in body_versions:
             M("$(OUTPUT)/illumination_dovetail_" + version + ".stl: $(SOURCE)/illumination_dovetail.scad $(main_body_deps) $(SOURCE)/illumination.scad")
-            M(openscad_recipe(**body_parameters(version)))
+            M(openscad_recipe_baked(**body_parameters(version)))
             M("$(OUTPUT)/condenser_" + version + ".stl: $(SOURCE)/condenser.scad $(main_body_deps) $(SOURCE)/illumination.scad")
-            M(openscad_recipe(**body_parameters(version)))
+            M(openscad_recipe_baked(**body_parameters(version)))
         M("")
         M("optics_dep_names := dovetail cameras/camera")
         M("optics_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in optics_versions:
             M("$(OUTPUT)/optics_" + version + ".stl: $(SOURCE)/optics.scad $(optics_deps)")
-            M(openscad_recipe(**optics_module_parameters(version)))
+            M(openscad_recipe_baked(**optics_module_parameters(version)))
         M("")
         for b in ["LS65", "LS75"]:
             for n in ["camera_platform_picamera_2", "lens_spacer_picamera_2_pilens"]:
                 M("$(OUTPUT)/{}_{}.stl: $(SOURCE)/{}.scad $(optics_deps)".format(n, b, n.split("_picamera_")[0]))
-                M(openscad_recipe(camera="picamera_2", optics="pilens", **body_parameters(b)))
+                M(openscad_recipe_baked(camera="picamera_2", optics="pilens", **body_parameters(b)))
         M("riser_dep_names := main_body")
         M("riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in sample_riser_versions:
             M("$(OUTPUT)/sample_riser_" + version + ".stl: $(SOURCE)/sample_riser.scad $(riser_deps)")
-            M(openscad_recipe(**riser_parameters(version)))
+            M(openscad_recipe_baked(**riser_parameters(version)))
         for version in slide_riser_versions:
             M("$(OUTPUT)/slide_riser_" + version + ".stl: $(SOURCE)/slide_riser.scad $(riser_deps)")
-            M(openscad_recipe(**riser_parameters(version)))
+            M(openscad_recipe_baked(**riser_parameters(version)))
         M("")
         M("stand_dep_names := main_body")
         M("stand_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in stand_versions:
             M("$(OUTPUT)/microscope_stand_" + version + ".stl: $(SOURCE)/microscope_stand.scad $(stand_deps)")
-            M(openscad_recipe(**stand_parameters(version)))
+            M(openscad_recipe_baked(**stand_parameters(version)))
         M("")
         M("$(OUTPUT)/picamera_2_%.stl: $(SOURCE)/cameras/picamera_2_%.scad $(all_deps)")
-        M(openscad_recipe(camera="picamera_2"))
+        M(openscad_recipe_baked(camera="picamera_2"))
         M("")
         M("$(OUTPUT)/feet_tall.stl: $(SOURCE)/feet.scad $(all_deps)")
-        M(openscad_recipe(foot_height=26))
+        M(openscad_recipe_baked(foot_height=26))
         M("")
         M("$(OUTPUT)/actuator_assembly_tools.stl: $(SOURCE)/actuator_assembly_tools.scad $(all_deps)")
-        M(openscad_recipe(foot_height=26))
+        M(openscad_recipe_baked(foot_height=26))
         M("")
         M("$(OUTPUT)/%.stl: $(SOURCE)/%.scad $(all_deps)")
-        M(openscad_recipe())
+        M(openscad_recipe_baked())
         M("")
