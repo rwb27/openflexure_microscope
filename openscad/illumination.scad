@@ -22,6 +22,10 @@ module each_illumination_arm_screw(middle=true){
     // A transform to repeat objects at each mounting point
     for(p=illumination_arm_screws) if(p[0]!=0 || middle) translate(p) children();
 }
+module right_illumination_arm_screw(){
+    // A transform to position objects at the x>0 mounting point
+    for(p=illumination_arm_screws) if(p[0]>0) translate(p) children();
+}
 
 module middle_illumination_arm_screw(){
     for(p=illumination_arm_screws) if(p[0]==0) translate(p) children();

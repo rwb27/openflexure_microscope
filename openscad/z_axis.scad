@@ -225,7 +225,10 @@ module z_axis_casing_cutouts(){
     objective_mounting_screw_access();
     z_actuator_cutout();
     z_motor_clearance();
-    each_illumination_arm_screw(middle=false) cylinder(d=3*0.95, h=16, center=true);
+    reflect([1,0,0]) right_illumination_arm_screw(){
+        trylinder_selftap(3, h=16, center=true); 
+        hull() rotate(110) repeat([100,0,0],2) translate([0,0,-6]) cylinder(d=6.9,h=2.8,$fn=6);
+    }
 }
 
 ////////////// These modules define the actuator column and housing (where the screw/nut/band go)
@@ -259,10 +262,10 @@ objective_mount();
 //z_actuator_column();
 
 // The casing needs to have voids subtracted from it to fit the moving bits in
-//difference(){
-//    z_axis_casing(condenser_mount=true);
-//    z_axis_casing_cutouts();
-//}
+difference(){
+    z_axis_casing(condenser_mount=true);
+    z_axis_casing_cutouts();
+}
 
 // We add on the actuator housing last, because it's got the clearance subtracted already.
 //z_actuator_housing();
