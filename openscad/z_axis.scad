@@ -213,7 +213,7 @@ module z_axis_casing(condenser_mount=false){
         translate([0,z_nut_y,0]) rotate(180) 
                      motor_lugs(h=actuator_h + z_actuator_travel, angle=180, tilt=-z_actuator_tilt);
         // The top is a flat shape that the illumination arm screws onto.
-        each_illumination_arm_screw() mirror([0,0,1]) cylinder(r=4,h=d);
+        each_illumination_arm_screw() mirror([0,0,1]) cylinder(r=5,h=7);
     }
     
 }
