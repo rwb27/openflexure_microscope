@@ -50,18 +50,28 @@ module oshw_logo(){
     linear_extrude(1) translate([-17.5,-16]) resize([35,0],auto=true) import("oshw_gear.dxf");
 }
 
-module logo_and_name(subtitle=""){
+module openflexure_emblem(h=1, resize=[0,0]){
+    linear_extrude(h) import("openflexure_emblem.dxf");
+}
+module openflexure_logo(h=1, resize=[0,0]){
+    // The full logo, including text
+    // This is 47 mm tall in Inkscape, and exported using base units=mm
+    // We resize it to be about the right size for the microscope
+    // The origin is set to x=38 to centre the emblem on x=0
+    // I don't understand the Y origin value...
+    linear_extrude(h) scale(0.85) import("openflexure_logo.dxf", origin=[38,3]);
+}
+
+module oshw_logo_and_text(text=""){
     union(){
-        waterscope_logo();
+        oshw_logo();
         
-        translate([30,-6,0]) linear_extrude(1){
-            text("WaterScope", size=15, font="Calibri");
-        }
-        translate([110,-17,0]) linear_extrude(1){
-            text(subtitle, size=9, font="Calibri", halign="right");
+        translate([100,-7,0]) mirror([1,0,0]) linear_extrude(1){
+            text(text, size=14, font="Calibri", halign="left");
         }
     }
 }
-
-logo_and_name("v5.15.2-LS-M");
-translate([0,-40,0]) oshw_logo();
+//openflexure_logo();
+//logo_and_name("v5.15.2-LS-M");
+//translate([0,-40,0]) oshw_logo();
+oshw_logo_and_text("4ah75s");

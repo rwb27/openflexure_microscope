@@ -281,10 +281,10 @@ union(){
         //////////////// logo and version string /////////////////////
         size = big_stage?0.25:0.2;
         place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
-        scale([size,size,10]) logo_and_name(version_string);
+        scale([size,size,10]) openflexure_logo();
         
         mirror([1,0,0]) place_on_wall() translate([8,wall_h-2-15*size,-0.5]) 
-        scale([size,size,10]) oshw_logo();
+        scale([size,size,10]) oshw_logo_and_text(version_numstring);
 	} ///////// End of things to chop out of base/walls ///////
     
 	//Actuator housings (screw seats and motor mounts)
