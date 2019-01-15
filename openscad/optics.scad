@@ -533,7 +533,7 @@ difference(){
             tube_lens_f=40, 
             tube_lens_r=16/2+0.1, 
             objective_parfocal_distance=35,
-            fluorescence=false,
+            fluorescence=beamsplitter,
             gripper_t=0.65,
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
@@ -545,7 +545,7 @@ difference(){
             tube_lens_f=50, 
             tube_lens_r=12.7/2+0.1, 
             objective_parfocal_distance=35,
-            fluorescence=true,
+            fluorescence=beamsplitter,
             tube_length=150//9999 //use 150 for standard finite-conjugate objectives (cheap ones) or 9999 for infinity-corrected lenses (usually more expensive).
         );
         if(sample_z < 60 || objective_mount_y < 12) echo("Warning: RMS objectives won't fit in small microscope frames!");

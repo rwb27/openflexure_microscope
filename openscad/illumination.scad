@@ -47,15 +47,15 @@ module illumination_arm(){
     
     difference(){
         sequential_hull(){
-            hull(){
-                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=d, dy=3);
-                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
-            }
-            translate([0,0,dt_z-bottom_z-4]) hull(){
-                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=d, dy=3);
-                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
-            }
             translate([-front_dovetail_w/2,front_dovetail_y-2,dt_z]) cube([front_dovetail_w, 15+2, 1]);
+            hull(){
+                each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=3+d, dy=3);
+                middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
+            }
+            //translate([0,0,dt_z-bottom_z-4]) hull(){
+            //    each_illumination_arm_screw(middle=false) cyl_slot(r=4, h=d, dy=3);
+            //    middle_illumination_arm_screw() scale([1,0.5,1]) cylinder(r=4, h=d);
+            //}
             translate([-front_dovetail_w/2,front_dovetail_y+2,dt_z]) cube([front_dovetail_w, 10-2, dt_h]);
         }
         
@@ -67,6 +67,7 @@ module illumination_arm(){
         translate([0,-2,0]) z_motor_clearance();
     }
 }
+illumination_arm();
 
 // parameters of the lens
 pedestal_h = 5.5;
@@ -118,4 +119,4 @@ module tall_condenser(){
     }
 }
 
-tall_condenser();
+//tall_condenser();

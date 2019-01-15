@@ -35,7 +35,8 @@ version_numstring = "5.20.0-b";
 camera = "picamera_2"; //see cameras/camera.scad for valid values
 optics = "pilens"; //see optics.scad for valid values
 led_r = 5/2; //size of the LED used for illumination
-feet_endstops=true;
+feet_endstops = true;
+beamsplitter = false; //enables a cut-out in some optics modules for a beamsplitter
 
 
 // This sets the basic geometry of the microscope
