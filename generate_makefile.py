@@ -17,7 +17,7 @@ lenses = ["pilens", "c270_lens", "m12_lens", "rms_f40d16", "rms_f50d13"]
 optics_versions_LS65 = ["picamera_2_pilens", "logitech_c270_c270_lens"]
 optics_versions_LS65 += [cam + "_" + lens for cam in cameras for lens in lenses if "rms" in lens] + ["m12_m12_lens"]
 optics_versions = [v + "_LS65" for v in optics_versions_LS65]
-sample_riser_versions = ['LS10', 'LS5', 'SS5']
+sample_riser_versions = ['LS10']
 slide_riser_versions = ['LS10']
 stand_versions = ['LS65-20', 'LS65-160']
 
