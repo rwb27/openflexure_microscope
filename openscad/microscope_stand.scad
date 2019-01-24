@@ -204,14 +204,15 @@ module mounting_holes(){
     // space for swarf).
     each_actuator() translate([0, actuating_nut_r, 0]){
         cylinder(d=4.4, h=20, center=true);
-        rotate(90) cylinder(d=3*1.7, h=999, $fn=3, center=true);
+        rotate(90) trylinder_selftap(3, h=999, center=true);
     }
     translate([0, illumination_clip_y-14+7, 0]){
         cylinder(d=4.4, h=20, center=true);
-        rotate(30) cylinder(d=3*1.7, h=999, $fn=3, center=true);
+        rotate(30) trylinder_selftap(3, h=999, center=true);
     }
 }
 module microscope_stand(){
+    // A stand for the microscope, with integrated Raspberry Pi
     difference(){
         union(){
             bucket_base_with_microscope_top();
@@ -224,7 +225,7 @@ module microscope_stand(){
         translate([0,0,raspi_z]) pi_connectors();
         
         // holes for the pi go all the way through
-        pi_support_frame() cylinder(h=999, d=2.5*1.7, center=true, $fn=3); //these screws are M2.5, not M3
+        pi_support_frame() trylinder_selftap(2.5, h=999, center=true);
         
         mounting_holes();
         
@@ -247,7 +248,7 @@ module motor_driver_case(){
         translate([0,z_nut_y,h]) cube([20,50,15],center=true);
         
         // holes for the pi go all the way through
-        pi_support_frame() cylinder(h=999, d=2.5*1.7, center=true, $fn=3); //these screws are M2.5, not M3
+        pi_support_frame() trylinder_selftap(3, h=999, center=true); //these screws are M2.5, not M3
         
         mounting_holes();
     }

@@ -19,7 +19,7 @@ optics_versions_LS65 += [cam + "_" + lens for cam in cameras for lens in lenses 
 optics_versions = [v + "_LS65" for v in optics_versions_LS65]
 sample_riser_versions = ['LS10']
 slide_riser_versions = ['LS10']
-stand_versions = ['LS65-20', 'LS65-160']
+stand_versions = ['LS65-30', 'LS65-160']
 
 def body_parameters(version):
     """Retrieve the parameters we pass to OpenSCAD to generate the given body version."""
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         M("")
         M("TOOLS := actuator_assembly_tools lens_tool")
         M("TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper")
-        M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand motor_driver_case back_foot")
+        M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand microscope_stand_no_pi motor_driver_case back_foot")
         M("COMMONPARTS := feet feet_tall gears sample_clips small_gears")
         M("BODIES := $(body_versions:%=main_body_%)")
         M("OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 lens_spacer_picamera_2_pilens_LS65 lens_spacer_picamera_2_pilens_LS75")
