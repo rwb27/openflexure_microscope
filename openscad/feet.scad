@@ -104,12 +104,17 @@ module foot(travel=5,       // how far into the foot the actuator can move down
             actuator_tilt=0,// the angle of the top of the foot
             entry_w=2*column_base_radius()+3, 
             lie_flat=true){
+    // The feet sit at the bottoms of the actuator columns.  Their main
+    // function is to anchor the Viton bands and provide downward force.  They
+    // may also be two out of the three points of contact between the microscope
+    // and the table (though not if you're using a stand).
+                
     w = ss_outer()[0]; //size of the outside of the screw seat column
     l = ss_outer()[1];
     cw = column_core_size()[0]; //size of the inside of the screw seat column
     cl = column_core_size()[1];
     wall_t = (w-cw)/2; //thickness of the wall
-    h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground
+    h = foot_height - hover; //defined in parameters.scad, set hover=2 to not touch ground, useful for the middle foot.
     tilt = bottom_tilt - actuator_tilt; //the angle of the ground relative to the axis of the foot
     // The following transforms will either make the foot "in place" (i.e. the top is z=0) or
     // printable (i.e. with the bottom on z=0).
@@ -138,15 +143,15 @@ module foot(travel=5,       // how far into the foot the actuator can move down
         //one on either side - rather than a ring around the top.
         intersection(){
             cube([cw-3.3*2, 999, 999],center=true);
-            foot_section(actuator_tilt, 0, h=999, z=999/2+h-travel+1) nut_seat_void();
+            foot_section(actuator_tilt, 0, h=999, z=999/2+h-travel-0.5) nut_seat_void();
         }
         
         //cut out the shell close to the microscope centre to allow the actuator 
         //to protrude below the bottom of the body
         difference(){
-            rotate([actuator_tilt,0,0]) translate([0,-l/2,0]) cube([entry_w, wall_t*3, 999], center=true);
-            //NB we leave the very bottom, to help it stick to the bed.
-            foot_ground_plane(tilt=tilt, top=0.5);
+            rotate([actuator_tilt,0,0]) translate([0,-l/2,h-travel-0.5]) cube([entry_w, wall_t*3, 999], center=true);
+            //NB we leave the very bottom, to keep the foot strong.
+            foot_ground_plane(tilt=0, top=h-travel-0.5);
         }
         
         //cut out a slot to allow bands to wrap round the outside 
@@ -168,8 +173,8 @@ module foot(travel=5,       // how far into the foot the actuator can move down
         //cut off the foot below the "ground plane" (i.e. print bed)
         foot_ground_plane(tilt, top=0);
 
+        //Void for endstop switch
         //TODO: check properly parametrized
-        
         if(feet_endstops){           
             translate([0,0.5-(h-travel)*sin(actuator_tilt),h-travel-endstop_hole_offset]) rotate([0,0,-90]) scale([1.03,1.08,1])endstop_hole(actuator_tilt);
           }
@@ -178,13 +183,12 @@ module foot(travel=5,       // how far into the foot the actuator can move down
 }   
 //foot(tilt=15);
 //foot(tilt=0,hover=2);
-
 module middle_foot(lie_flat=false){
         foot(travel=z_actuator_travel,bottom_tilt=0, actuator_tilt=z_actuator_tilt, hover=2, lie_flat=lie_flat);
 }
 
 module outer_foot(lie_flat=false){
-    foot(travel=xy_actuator_travel-avoid_objective_xyfoot_offset,bottom_tilt=15, lie_flat=lie_flat);
+    foot(travel=xy_actuator_travel,bottom_tilt=15, lie_flat=lie_flat);
 }
 
 module feet_for_printing(lie_flat=true){
