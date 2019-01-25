@@ -112,7 +112,7 @@ if __name__ == "__main__":
         M("slide_riser_versions = " + " ".join(slide_riser_versions))
         M("")
         M("TOOLS := actuator_assembly_tools lens_tool")
-        M("TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper")
+        M("TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper actuator_drilling_jig")
         M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand microscope_stand_no_pi motor_driver_case back_foot")
         M("COMMONPARTS := feet feet_tall gears sample_clips small_gears")
         M("BODIES := $(body_versions:%=main_body_%)")
