@@ -116,7 +116,7 @@ if __name__ == "__main__":
         M("ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand microscope_stand_no_pi motor_driver_case back_foot")
         M("COMMONPARTS := feet feet_tall gears sample_clips small_gears")
         M("BODIES := $(body_versions:%=main_body_%)")
-        M("OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 lens_spacer_picamera_2_pilens_LS65 lens_spacer_picamera_2_pilens_LS75")
+        M("OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 camera_platform_6led_LS65 lens_spacer_picamera_2_pilens_LS65 lens_spacer_picamera_2_pilens_LS75")
         M("ILLUMINATIONS := illumination_dovetail condenser")
         M("ALLPARTS := $(COMMONPARTS) $(TOOLS) $(BODIES) $(ILLUMINATIONS) $(OPTICS) $(ACCESSORIES)")
         M("ALLSTLFILES := $(ALLPARTS:%=$(OUTPUT)/%.stl)")
@@ -155,6 +155,10 @@ if __name__ == "__main__":
             for n in ["camera_platform_picamera_2", "lens_spacer_picamera_2_pilens"]:
                 M("$(OUTPUT)/{}_{}.stl: $(SOURCE)/{}.scad $(optics_deps)".format(n, b, n.split("_picamera_")[0]))
                 M(openscad_recipe_baked(camera="picamera_2", optics="pilens", **body_parameters(b)))
+        for b in ["LS65", "LS75"]:
+            n = "camera_platform_6led"
+            M("$(OUTPUT)/{}_{}.stl: $(SOURCE)/{}.scad $(optics_deps)".format(n, b, n.split("_6led")[0]))
+            M(openscad_recipe_baked(camera="6led", optics="pilens", **body_parameters(b)))
         M("riser_dep_names := main_body")
         M("riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)")
         for version in sample_riser_versions:
