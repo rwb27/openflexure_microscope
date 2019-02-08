@@ -20,6 +20,7 @@ use <./z_axis.scad>;
 use <./gears.scad>;
 use <./wall.scad>;
 use <./main_body_transforms.scad>;
+use <./sample_riser.scad>
 include <./microscope_parameters.scad>; //All the geometric variables are now in here.
 
 
@@ -205,6 +206,10 @@ union(){
 		each_leg() translate([0,-zflex_l-4,flex_z2+1.5]) repeat([leg_middle_w/2,0,0],3,center=true) trylinder_selftap(3,h=999); //mounting holes
 	}
 	
+    if(merge_sample_riser)
+        translate([0,0,sample_z-0.1])
+            simple_riser(h=riser_h+0.1);
+
 	//z axis
     z_axis_flexures();
     z_axis_struts();

@@ -37,7 +37,7 @@ optics = "pilens"; //see optics.scad for valid values
 led_r = 5/2; //size of the LED used for illumination
 feet_endstops = true;
 beamsplitter = false; //enables a cut-out in some optics modules for a beamsplitter
-
+merge_sample_riser = false;
 
 // This sets the basic geometry of the microscope
 sample_z = big_stage?65:40; // height of the top of the stage
