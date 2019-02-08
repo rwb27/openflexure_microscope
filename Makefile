@@ -117,7 +117,7 @@ $(OUTPUT)/lens_spacer_picamera_2_pilens_LS75.stl: $(SOURCE)/lens_spacer.scad $(o
 riser_dep_names := main_body
 riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)
 $(OUTPUT)/sample_riser_LS10.stl: $(SOURCE)/sample_riser.scad $(riser_deps)
-	openscad -o $@ -D 'h=10' -D 'big_stage=true' $<
+	openscad -o $@ -D 'riser_h=10' -D 'big_stage=true' $<
 
 $(OUTPUT)/slide_riser_LS10.stl: $(SOURCE)/slide_riser.scad $(riser_deps)
 	openscad -o $@ -D 'h=10' -D 'big_stage=true' $<
@@ -146,5 +146,4 @@ $(OUTPUT)/actuator_assembly_tools.stl: $(SOURCE)/actuator_assembly_tools.scad $(
 
 $(OUTPUT)/%.stl: $(SOURCE)/%.scad $(all_deps)
 	openscad -o $@ $<
-
 

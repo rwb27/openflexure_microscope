@@ -67,6 +67,7 @@ version_string = str("v",version_numstring, big_stage?"-LS":"-SS", sample_z, mot
 echo(str("Compiling OpenFlexure Microscope ",version_string));
 
 stage_t=5; //thickness of the XY stage (at thickest point, most is 1mm less)
+riser_h=10;
 flex_z1 = 0;      // z position of lower flexures for XY axis
 flex_z2 = sample_z-stage_t; //height of upper XY flexures
 z_strut_t = 6;  // (z) thickness of struts for Z axis
