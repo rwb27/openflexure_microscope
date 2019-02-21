@@ -19,10 +19,10 @@
 ******************************************************************/
 
 include <../microscope_parameters.scad>;
-use <logitech_c270.scad>;
-use <picamera_2.scad>;
-use <m12.scad>;
-use <6led.scad>;
+use <./logitech_c270.scad>;
+use <./picamera_2.scad>;
+use <./m12.scad>;
+use <./6led.scad>;
 
 // If I was able to selectively include different files, this wouldn't be needed.
 // However, doing this saves the faff of precompiling the SCAD source with some
