@@ -57,7 +57,7 @@ Once you've removed the lens, be sure to place the camera face down on the desk,
 Before assembling the parts into the holder, make sure it's free from dust by blowing some air through it, and check there are no strings of plastic in the central hole through the mount.
 
 ## Step 7
-Next, put the lens into the plastic extension tube.  This should just push-fit, but may take a small amount of force, or  require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If you wrap tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.  NB the lens should go in with the side that was next to the camera sensor on top, and the side that was facing outwards (the one with a small hole in the black plastic) facing into the extension tube.
+Next, put the lens into the plastic extension tube.  The lens should go in with the side that was next to the camera sensor on top, and the side that was facing outwards (the one with a small hole in the black plastic) facing into the extension tube.  This should just push-fit, but may take a small amount of force, or  require a layer of tape wrapped around the lens to make it fit tightly (depending on your printer).  If you wrap tape around the lens, trim off any tape that protrudes above the lens with a scalpel or sharp craft knife.
 
 ![The lens in the extension tube](./images/insert_camera_lens.jpg)
 ![](./images/lens_insertion_2.jpg)
