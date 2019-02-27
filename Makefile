@@ -11,11 +11,11 @@ sample_riser_versions = LS10
 slide_riser_versions = LS10
 
 TOOLS := actuator_assembly_tools lens_tool
-TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper
-ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand motor_driver_case back_foot
+TOOLS := $(TOOLS) picamera_2_cover picamera_2_gripper picamera_2_lens_gripper actuator_drilling_jig
+ACCESSORIES := picamera_2_cover $(sample_riser_versions:%=sample_riser_%) $(slide_riser_versions:%=slide_riser_%) microscope_stand microscope_stand_no_pi motor_driver_case back_foot
 COMMONPARTS := feet feet_tall gears sample_clips small_gears
 BODIES := $(body_versions:%=main_body_%)
-OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 lens_spacer_picamera_2_pilens_LS65 lens_spacer_picamera_2_pilens_LS75
+OPTICS := $(optics_versions:%=optics_%) camera_platform_picamera_2_LS65 camera_platform_6led_LS65 lens_spacer_picamera_2_pilens_LS65 lens_spacer_picamera_2_pilens_LS75
 ILLUMINATIONS := illumination_dovetail condenser
 ALLPARTS := $(COMMONPARTS) $(TOOLS) $(BODIES) $(ILLUMINATIONS) $(OPTICS) $(ACCESSORIES)
 ALLSTLFILES := $(ALLPARTS:%=$(OUTPUT)/%.stl)
@@ -114,6 +114,12 @@ $(OUTPUT)/camera_platform_picamera_2_LS75.stl: $(SOURCE)/camera_platform.scad $(
 $(OUTPUT)/lens_spacer_picamera_2_pilens_LS75.stl: $(SOURCE)/lens_spacer.scad $(optics_deps)
 	openscad -o $@ -D 'big_stage=true' -D 'camera="picamera_2"' -D 'optics="pilens"' -D 'sample_z=75' -D 'motor_lugs=false' $<
 
+$(OUTPUT)/camera_platform_6led_LS65.stl: $(SOURCE)/camera_platform.scad $(optics_deps)
+	openscad -o $@ -D 'big_stage=true' -D 'camera="6led"' -D 'optics="pilens"' -D 'sample_z=65' -D 'motor_lugs=false' $<
+
+$(OUTPUT)/camera_platform_6led_LS75.stl: $(SOURCE)/camera_platform.scad $(optics_deps)
+	openscad -o $@ -D 'big_stage=true' -D 'camera="6led"' -D 'optics="pilens"' -D 'sample_z=75' -D 'motor_lugs=false' $<
+
 riser_dep_names := main_body
 riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)
 $(OUTPUT)/sample_riser_LS10.stl: $(SOURCE)/sample_riser.scad $(riser_deps)
@@ -125,8 +131,8 @@ $(OUTPUT)/slide_riser_LS10.stl: $(SOURCE)/slide_riser.scad $(riser_deps)
 
 stand_dep_names := main_body
 stand_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)
-$(OUTPUT)/microscope_stand_LS65-20.stl: $(SOURCE)/microscope_stand.scad $(stand_deps)
-	openscad -o $@ -D 'h=20' -D 'big_stage=true' -D 'sample_z=65' -D 'motor_lugs=false' $<
+$(OUTPUT)/microscope_stand_LS65-30.stl: $(SOURCE)/microscope_stand.scad $(stand_deps)
+	openscad -o $@ -D 'h=30' -D 'big_stage=true' -D 'sample_z=65' -D 'motor_lugs=false' $<
 
 $(OUTPUT)/microscope_stand_LS65-160.stl: $(SOURCE)/microscope_stand.scad $(stand_deps)
 	openscad -o $@ -D 'h=160' -D 'big_stage=true' -D 'sample_z=65' -D 'motor_lugs=false' $<

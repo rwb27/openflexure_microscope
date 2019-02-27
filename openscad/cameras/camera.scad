@@ -19,9 +19,10 @@
 ******************************************************************/
 
 include <../microscope_parameters.scad>;
-use <logitech_c270.scad>;
-use <picamera_2.scad>;
-use <m12.scad>;
+use <./logitech_c270.scad>;
+use <./picamera_2.scad>;
+use <./m12.scad>;
+use <./6led.scad>;
 
 // If I was able to selectively include different files, this wouldn't be needed.
 // However, doing this saves the faff of precompiling the SCAD source with some
@@ -34,22 +35,26 @@ function camera_mount_height() =
     // the height of the camera mount - above this comes the optics module.
     camera=="logitech_c270"?c270_camera_mount_height()
     :(camera=="m12"?m12_camera_mount_height()
+    :(camera=="6led"?6led_camera_mount_height()
     :picamera_2_camera_mount_height()
-    );
+    ));
 function camera_sensor_height() =
     // the height of the camera mount - above this comes the optics module.
     camera=="logitech_c270"?c270_camera_sensor_height()
     :(camera=="m12"?m12_camera_sensor_height()
+    :(camera=="6led"?6led_camera_sensor_height()
     :picamera_2_camera_sensor_height()
-    );
+    ));
 module camera_mount(counterbore=false){
     if(camera=="logitech_c270") c270_camera_mount();
     else if(camera=="m12") m12_camera_mount();
+    else if(camera=="6led") 6led_camera_mount();
     else picamera_2_camera_mount(counterbore=counterbore);
 }
 module camera_bottom_mounting_posts(h=-1, r=-1, outers=true, cutouts=true){
     if(camera=="logitech_c270") c270_bottom_mounting_posts();
     else if(camera=="m12") m12_bottom_mounting_posts();
+    else if(camera=="6led") 6led_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
     else picamera_2_bottom_mounting_posts(height=h, radius=r, outers=outers, cutouts=cutouts);
 }
 
