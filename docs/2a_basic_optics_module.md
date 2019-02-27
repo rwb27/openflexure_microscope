@@ -9,7 +9,7 @@ You will need the parts shown in the picture below:
 ## Parts
 *   1 [Camera platform](./parts/camera_platform)
 *   1 [Lens extension tube](./parts/lens_spacer)
-*   1 Raspberry Pi camera module (ideally v2, though v1 should also work)
+*   1 Raspberry Pi camera module (ideally v2, though v1 should also work) - you could substitute a 6-LED webcam for an even lower-cost solution.
 *   1 [M3 steel nut](./parts/m3_nut)
 *   1 [M3x10mm cap head screw](./parts/m3x10mm_cap_head)
 *   4 [M2x6mm cap head screws](./parts/m2x6mm_cap_head)
@@ -25,6 +25,8 @@ You will need the parts shown in the picture below:
 First, get the necessary tools and parts: the optics module plastic parts (the lens spacer and the camera platform), the Raspberry Pi camera module, the tools for removing the camera lens, two M2 screws to secure the camera.  Depending on print quality, you might also need a sharp craft knife or some tape.
  
 NB the lens removal tools, board gripper, and optics module are all specific to the camera you're using.  This version of the instructions is for version 2 of the camera board, version 1 of the Rasbperry Pi camera module will also work, but you will need to remove the lens with pliers or tweezers instead.  Version 2 of the camera module ships with a lens removal tool included, which is a white disc of plastic with a hole in the centre.  This is better than the printed lens removal tool, if it's available.
+
+If you are using the 6-LED USB webcam (available for around £3 from eBay or AliExpress) you will need to skip some of these steps and also disassemble the plastic casing to extract the circuit board for the camera.  You can simply unscrew the webcam lens and tape or glue it upside down onto the holder, which is fixed onto the circuit board.  There is a camera platform STL for the 6-LED camera in the build, substitute this for the Raspberry Pi camera platform part.
 
 ## Step 2
 We need to remove the lens from the camera.  To do this, you need the two plastic tools (the board gripper and the lens remover) as well as the camera module.  It's best to make sure you have completed the steps up to this point before removing the lens, to minimise the amount of time the sensor is exposed to air and dust.
