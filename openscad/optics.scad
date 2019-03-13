@@ -39,6 +39,8 @@ fl_cube_top_w = fl_cube_w - 2.7;
 d = 0.05;
 $fn=24;
 
+function fl_cube_width() = fl_cube_w;
+
 module fl_cube_cutout(taper=true){
     // A cut-out that enables a filter cube to be inserted.
     union(){
@@ -187,7 +189,7 @@ module fl_cube(){
     }
 }
 
-module fl_led_mount(){
+module fl_led_mount(led_d=5){
     // This part clips on to the filter cube, to allow a light source (generally LED) to be coupled in using the beamsplitter.
     roc = 0.6;
     w = fl_cube_w - 1; //nominal width of the mount (is the width between the outsides of the dovetail clip points)
@@ -201,7 +203,6 @@ module fl_led_mount(){
     back_y = fl_cube_w/2 + roc + 1.5; //flat of dovetail (we actually start 1.5mm behind this)
     led_y = back_y+3; //don't worry about precise imaging (is this OK?)
     front_y = led_y + front_t;
-    led_d = 5;
     
     union() translate([0,0,0]){
         difference(){
