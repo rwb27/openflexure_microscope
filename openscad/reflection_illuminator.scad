@@ -9,7 +9,7 @@ module lens_holder(led_d=5){
     // A simple one-lens condenser, re-imaging the LED onto the sample.
     led_h = 8;              //distance from bottom to the top of the LED
     aperture_h = 2;
-    aperture_to_lens = 7.3; //distance from aperture stop to lens
+    aperture_to_lens = 6.5; //distance from aperture stop to lens
     aperture_stop_r = 0.6;
     
     lens_z = led_h + aperture_to_lens + aperture_h;
@@ -30,7 +30,8 @@ module lens_holder(led_d=5){
         }
         //beam
         hull(){ // todo: make this a light trap?
-            translate([0,0,led_h+aperture_h]) cylinder(r=4,h=d);
+            translate([0,0,led_h+aperture_h-d]) cylinder(r=d,h=d);
+            translate([0,0,led_h+aperture_h+1]) cylinder(r=4,h=d);
             //translate([0,0,lens_z]) cube([3,4,d], center=true);
             translate([0,0,lens_z]) cylinder(r=lens_r-2,h=d);
         }
@@ -79,8 +80,8 @@ module illuminator_holder(illuminator_d = 2*base_r){
     }
 }
 
-translate([20,20,0]) rotate(90) illuminator_holder();
-translate([-20,0,0]) field_stop();
+//translate([20,20,0]) rotate(90) illuminator_holder();
+//translate([-20,0,0]) field_stop();
 
 difference(){
     lens_holder();
