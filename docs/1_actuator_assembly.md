@@ -7,15 +7,15 @@ All the parts you need for this step are in the picture below:
 ![Parts required for this step](./images/actuator_assembly_parts.jpg)
 
 ## Parts
-*   3 [25mm hex head M3 screws](./parts/25mm_m3_hexagonhead_screw "consumes: 1")
-*   3 [M3 brass nuts](./parts/m3_nut)
-*   6 [M3 Washers](./parts/m3_washer)
-*   3 [Viton O rings](./parts/viton_o_ring_30mm_inner_diameter_2mm_cross_section)
+*   3x [M3x25mm hexagon head screws](./parts/fixings/m3x25mm_hexagonhead_screw.md), stainless steel
+*   3x [M3 brass nut](./parts/fixings/m3_brass_nut.md)
+*   6x [M3 stainless steel washers](./parts/fixings/m3_washer.md)
+*   3x [Viton O-ring, 30x2mm](./parts/fixings/viton_o_ring_30mm_inner_diameter_2mm_cross_section.md) (NB: get some spares!)
 *   3 [Plastic gears](./parts/gearthumbscrew)
 *   1 set of [Microscope Feet](./parts/microscope_feet) (NB there are different feet for X/Y axes and for the Z axis).
 *   light grease (if available)
 
-## Printed tools
+## Tools
 *   [Nut insertion tool](./parts/nut_insertion_tool)
 *   [O ring insertion tool](./parts/o_ring_insertion_tool)
 *   [Craft knife](./parts/craft_knife)

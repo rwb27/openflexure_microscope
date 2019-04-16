@@ -8,8 +8,8 @@ You will need the parts shown in the picture below:
 
 ## Parts
 *   1 [RMS optics module casing](./parts/hires_optics_casing)
-*   1 Raspberry Pi camera module (ideally v2, though v1 should also work)
-*   1 [M3 steel nut](./parts/m3_nut)
+*   1 [Raspbery Pi camera module](./parts/electronics/raspberry_pi_camera.md)  (ideally v2, though v1 should also work)
+*   1 [M3 steel nut](./parts/fixings/m3_steel_nut.md)
 *   1 [M3x10mm cap head screw](./parts/m3x10mm_cap_head)
 *   2 [M2x6mm cap head screws](./parts/m2x6mm_cap_head)
 *   1 [12.7mm diameter, 50mm focal length achromatic lens](./parts/d13_f50_achromat)
