@@ -6,9 +6,10 @@ Before we start, a note on printing - there are many possible versions of the mi
 
 ## Contents
 Assembly is broken up into several steps:
+* [Obtaining non-printed parts](./0_bill_of_materials.md)
 * [Printing parts](./0_printing.md)
 * [Assembling the actuators](./1_actuator_assembly.md) deals with the mechanism for moving the stage.
-* The optics module comes next, either the [basic optics module](./2a_basic_optics_module.md) or the [high resolution optics module](./2b_high_resolution_optics_module.md).
+* The optics module comes next, either the [basic optics module](./2a_basic_optics_module.md) or the [high resolution optics module](./2b_high_resolution_optics_module.md) depending on your needs.
 * [Illumination](./3_illumination.md) covers attaching the condenser.
 * [Sample clips and wiring](./4_clips_and_wiring.md) completes the microscope.
 * [Motors](./5_motors.md) can be added for automatic control.
