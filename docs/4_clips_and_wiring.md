@@ -24,7 +24,7 @@ Plug in the camera to the camera connector as described in the [Raspberry Pi lea
 ![Raspberry Pi GPIO pins](./images/camera_wiring.jpg)
 
 ## Step 2
-If you are using a tall optics module, e.g. if you are using a plan corrected objective, you may need to fit a sample riser between the microscope body and the microscope slide.  This is not necessary if you are using the basic optics module.
+If you are using a tall optics module, e.g. if you are using a plan corrected objective, you may need to fit a [sample riser](./parts/printed/sample_riser.md) between the microscope body and the microscope slide.  This is not necessary if you are using the basic optics module.
 
 ## Step 3
 Fit the optics module onto the microscope - it slides in from the bottom as shown.  The screw sticking out the side fits into the "keyhole" shaped slot in the microscope body.
