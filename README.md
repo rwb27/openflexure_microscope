@@ -1,3 +1,6 @@
+# This repository has moved!
+Active development continues on [GitLab.com](https://gitlab.com/openflexure/openflexure-microscope/) where you can find not only the up-to-date microscope designs, but also software and lots of other fun goodies.
+
 # OpenFlexure Microscope
 The OpenFlexure Microscope is a  3D printable microscope, including a precise mechanical stage to move the sample and focus the optics.  There are many different options for the optics, ranging from a webcam lens to a 100x, oil immersion objective.
 
