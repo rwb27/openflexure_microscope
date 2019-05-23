@@ -123,10 +123,10 @@ $(OUTPUT)/camera_platform_6led_LS75.stl: $(SOURCE)/camera_platform.scad $(optics
 riser_dep_names := main_body
 riser_deps := $(optics_dep_names:%=$(SOURCE)/%.scad)
 $(OUTPUT)/sample_riser_LS10.stl: $(SOURCE)/sample_riser.scad $(riser_deps)
-	openscad -o $@ -D 'h=10' -D 'big_stage=true' $<
+	openscad -o $@ -D 'riser_h=10' -D 'big_stage=true' $<
 
 $(OUTPUT)/slide_riser_LS10.stl: $(SOURCE)/slide_riser.scad $(riser_deps)
-	openscad -o $@ -D 'h=10' -D 'big_stage=true' $<
+	openscad -o $@ -D 'riser_h=10' -D 'big_stage=true' $<
 
 
 stand_dep_names := main_body

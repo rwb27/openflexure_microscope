@@ -33,32 +33,32 @@ def body_parameters(version):
     p["motor_lugs"] = m.group(4)=="-M"
     p["sample_z"] = m.group(2)
     return p
-    
+
 def optics_module_parameters(version):
     """Figure out the parameters we need to generate the optics module"""
     m = re.search("({cam})_({lens})_({body})".format(
-                            cam="|".join(cameras), 
+                            cam="|".join(cameras),
                             lens="|".join(lenses),
-                            body="|".join(body_versions)), 
+                            body="|".join(body_versions)),
                         version)
     if m is None:
         raise ValueError("Error finding optics module parameters from version string '{}'".format(version))
     p = {"camera": m.group(1), "optics": m.group(2)}
     p.update(body_parameters(m.group(3)))
     return p
-	
+
 def stand_parameters(version):
 	m = re.match("({body})-([\d]+)$".format(body="|".join(body_versions)), version)
 	p = body_parameters(m.group(1))
 	p["h"] = int(m.group(2))
 	return p
-    
+
 def riser_parameters(version):
     """extract the parameters for sample risers"""
     m = re.match("(LS|SS)([\d]+)", version)
     p = {}
     p["big_stage"] = "LS" == m.group(1)
-    p["h"] = int(m.group(2))
+    p["riser_h"] = int(m.group(2))
     return p
 
 def openscad_recipe(**kwargs):
@@ -75,7 +75,7 @@ def openscad_recipe(**kwargs):
         output += " -D '{name}={value}'".format(name=name, value=str(value))
     output += " $<\n"
     return output
-    
+
 def merge_dicts(*args):
     """Merge dictionaries together into a single output."""
     out = args[0].copy()
@@ -87,15 +87,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate the Openflexure Microscope makefile")
     parser.add_argument("--version_numstring", help="Override the defined version string", default=None)
     args = parser.parse_args()
-    
+
     extra_defines = {}
     if args.version_numstring:
         extra_defines['version_numstring'] = args.version_numstring
-        
+
     def openscad_recipe_baked(**kwargs):
         """An openscad recipe, with additional definitions baked in."""
         return openscad_recipe(**merge_dicts(extra_defines, kwargs))
-    
+
     with open("Makefile","w") as makefile:
         def M(line):
             makefile.write(line + "\n")
